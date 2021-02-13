@@ -7,10 +7,10 @@ import LocalityDetails from "../screen/LocalityDetails";
 import PropertyDetails from "../screen/PropertyDetails";
 import RentDetails from "../screen/RentDetails";
 import AddImages from "../screen/AddImages";
-import CardDetails from "../screen/CardDetails";
+import AddNewPropFinalDetails from "../screen/AddNewPropFinalDetails";
 
 const Stack = createStackNavigator();
-const StackScreens = () => {
+const AddNewPropStackScreens = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -52,12 +52,12 @@ const StackScreens = () => {
         options={{ title: "Add Images" }}
       />
       <Stack.Screen
-        name="CardDetails"
-        component={CardDetails}
+        name="AddNewPropFinalDetails"
+        component={AddNewPropFinalDetails}
         options={{ title: "Final Details" }}
       />
     </Stack.Navigator>
   );
 };
 
-export default StackScreens;
+export default AddNewPropStackScreens;

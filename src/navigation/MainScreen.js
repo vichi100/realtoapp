@@ -7,7 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
 import HomeStackNav from "./HomeStackNav";
-import StackScreens from "./StackScreens";
+import AddNewPropStackScreens from "./AddNewPropStackScreens";
 import ListingStackScreens from "./ListingStackScreens";
 import Notification from "../screen/Notification";
 import Profile from "../screen/Profile";
@@ -54,7 +54,7 @@ export default function MainScreen() {
         />
         <Tab.Screen
           name="Add"
-          component={StackScreens}
+          component={AddNewPropStackScreens}
           options={{
             tabBarLabel: "",
             tabBarIcon: ({ color }) => (

@@ -68,7 +68,7 @@ const AddImages = props => {
         </View>
         <Button
           title="NEXT"
-          onPress={() => navigation.navigate("CardDetails")}
+          onPress={() => navigation.navigate("AddNewPropFinalDetails")}
         />
       </ScrollView>
     </SafeAreaView>

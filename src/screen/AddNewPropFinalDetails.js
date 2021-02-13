@@ -3,7 +3,7 @@ import { StyleSheet, View, Image, Text, ScrollView } from "react-native";
 import Slideshow from "../components/Slideshow";
 import Button from "../components/Button";
 
-const CardDetails = () => {
+const AddNewPropFinalDetails = () => {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <View style={[styles.headerContainer]}>
@@ -235,4 +235,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CardDetails;
+export default AddNewPropFinalDetails;
