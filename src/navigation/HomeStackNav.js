@@ -6,7 +6,18 @@ const HomeStack = createStackNavigator();
 
 function HomeStackNav() {
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator
+      screenOptions={{
+        headerShown: false,
+        headerTitleAlign: "center",
+        // headerTintColor: "#fff",
+        headerStyle: {
+          backgroundColor: "#ffffff"
+        },
+        headerBackTitleVisible: false,
+        headerTintColor: "rgba(105,105,105, .9)"
+      }}
+    >
       <HomeStack.Screen
         name="Home"
         component={Home}

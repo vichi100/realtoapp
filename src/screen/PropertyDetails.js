@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -7,114 +7,136 @@ import {
   Platform,
   KeyboardAvoidingView,
   SafeAreaView,
-  ScrollView
+  ScrollView,
+  Keyboard
 } from "react-native";
 // ezora
 // eza
 import { ButtonGroup } from "react-native-elements";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
 import Button from "../components/Button";
-
-const TextInputAvoidingView = ({ children }) => {
-  return Platform.OS === "ios" ? (
-    <KeyboardAvoidingView
-      style={styles.wrapper}
-      behavior="padding"
-      keyboardVerticalOffset={80}
-    >
-      {children}
-    </KeyboardAvoidingView>
-  ) : (
-    <>{children}</>
-  );
-};
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Snackbar from "../components/SnackbarComponent";
 
 const PropertyDetails = props => {
   const { navigation } = props;
-  const [city, setCity] = React.useState("");
-  const [locality, setLocality] = React.useState("");
-  const [index, setIndex] = React.useState(null);
-  const [text, setText] = React.useState("");
+  // const [city, setCity] = React.useState("");
+  // const [locality, setLocality] = React.useState("");
+  // const [index, setIndex] = React.useState(null);
+  // const [text, setText] = React.useState("");
 
-  const updateIndex = index => {
-    setIndex(index);
+  const [houseTypeIndex, setHouseTypeIndex] = useState(-1);
+  const [bhkIndex, setBHKIndex] = useState(-1);
+  const [washroomIndex, setWashroomIndex] = useState(-1);
+  const [furnishingIndex, setFurnishingIndex] = useState(-1);
+  const [parkingIndex, setParkingIndex] = useState(-1);
+  const [parkingTypeIndex, setParkingTypeIndex] = useState(-1);
+  const [propertyAgeIndex, setPropertyAgeIndex] = useState(-1);
+  const [floor, setFloor] = useState("");
+  const [totalFloor, setTotalFloor] = useState("");
+  const [liftIndex, setLiftIndex] = useState(-1);
+  const [propertySize, setPropertySize] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const dismissSnackBar = () => {
+    setIsVisible(false);
   };
-  const data = [
-    {
-      id: "10000",
-      property: "residential",
-      property_type: "apartment",
-      bhk: "2",
-      washrooms: "2",
-      furnishing: "full",
-      parking: "2",
-      parking_for: "car",
-      property_age: "10",
-      floor: "3 / 4",
-      lift: "yes",
-      property_area: "800",
-      possession: "immediate",
-      preferred_tenant: "anyone",
-      rent: "15000",
-      deposit: "90000",
-      location: "Andheri west",
-      address_line1: "Flat 305, ZA Tower",
-      address_line2: "yarri road, versova"
-    },
-    {
-      id: "10000",
-      property: "residential",
-      property_type: "apartment",
-      bhk: "2",
-      washrooms: "2",
-      furnishing: "full",
-      parking: "2",
-      parking_for: "car",
-      property_age: "10",
-      floor: "3 / 4",
-      lift: "yes",
-      property_area: "800",
-      possession: "immediate",
-      preferred_tenant: "anyone",
-      rent: "15000",
-      deposit: "90000",
-      location: "Andheri west",
-      address_line1: "Flat 305, ZA Tower",
-      address_line2: "yarri road, versova"
-    },
-    {
-      id: "10000",
-      property: "residential",
-      property_type: "apartment",
-      bhk: "2",
-      washrooms: "2",
-      furnishing: "full",
-      parking: "2",
-      parking_for: "car",
-      property_age: "10",
-      floor: "3 / 4",
-      lift: "yes",
-      property_area: "800",
-      possession: "immediate",
-      preferred_tenant: "anyone",
-      rent: "15000",
-      deposit: "90000",
-      location: "Andheri west",
-      address_line1: "Flat 305, ZA Tower",
-      address_line2: "yarri road, versova"
+
+  const onSubmit = () => {
+    if (houseTypeIndex === -1) {
+      setErrorMessage("House Type is missing");
+      setIsVisible(true);
+      return;
+    } else if (bhkIndex === -1) {
+      setErrorMessage("BHK is missing");
+      setIsVisible(true);
+      return;
+    } else if (washroomIndex === -1) {
+      setErrorMessage("Wash rooms number is missing");
+      setIsVisible(true);
+      return;
+    } else if (furnishingIndex === -1) {
+      setErrorMessage("Furnishing status is missing");
+      setIsVisible(true);
+      return;
+    } else if (parkingIndex === -1) {
+      setErrorMessage("Parking is missing");
+      setIsVisible(true);
+      return;
+    } else if (furnishingIndex === -1) {
+      setErrorMessage("Parking car/bike is missing");
+      setIsVisible(true);
+      return;
+    } else if (propertyAgeIndex === -1) {
+      setErrorMessage("Property age is missing");
+      setIsVisible(true);
+      return;
+    } else if (floor.trim() === "") {
+      setErrorMessage("Floor is missing");
+      setIsVisible(true);
+      return;
+    } else if (totalFloor.trim() === "") {
+      setErrorMessage("Total floors is missing");
+      setIsVisible(true);
+      return;
+    } else if (liftIndex === -1) {
+      setErrorMessage("Lift is missing");
+      setIsVisible(true);
+      return;
+    } else if (propertySize.trim() === "") {
+      setErrorMessage("Property size is missing");
+      setIsVisible(true);
+      return;
     }
-  ];
+
+    navigation.navigate("RentDetails");
+  };
+
+  const selectHouseTypeIndex = index => {
+    setHouseTypeIndex(index);
+    setIsVisible(false);
+  };
+  const selectBHkIndex = index => {
+    setBHKIndex(index);
+    setIsVisible(false);
+  };
+  const selectWashroomIndex = index => {
+    setWashroomIndex(index);
+    setIsVisible(false);
+  };
+  const selectFurnishingIndex = index => {
+    setFurnishingIndex(index);
+    setIsVisible(false);
+  };
+  const selectParkingIndex = index => {
+    setParkingIndex(index);
+    setIsVisible(false);
+  };
+  const selectParkingTypeIndex = index => {
+    setParkingTypeIndex(index);
+    setIsVisible(false);
+  };
+  const selectPropertyAgeIndex = index => {
+    setPropertyAgeIndex(index);
+    setIsVisible(false);
+  };
+  const selectLiftIndex = index => {
+    setLiftIndex(index);
+    setIsVisible(false);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-      <ScrollView style={styles.container}>
-        <View style={{ paddingTop: 30, marginLeft: 20, marginRight: 20 }}>
-          <TextInputAvoidingView>
+      <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
+        <ScrollView style={styles.container}>
+          <View style={{ paddingTop: 30, marginLeft: 20, marginRight: 20 }}>
             <Text>House Type*</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
+                onPress={selectHouseTypeIndex}
+                selectedIndex={houseTypeIndex}
                 buttons={["Appartment", "Villa", "Independent House"]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
@@ -127,8 +149,8 @@ const PropertyDetails = props => {
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
+                onPress={selectBHkIndex}
+                selectedIndex={bhkIndex}
                 buttons={["1RK", "1BHK", "2BHK", "3BHK", "4BHK", "4+BHK"]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
@@ -142,8 +164,8 @@ const PropertyDetails = props => {
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
+                onPress={selectWashroomIndex}
+                selectedIndex={washroomIndex}
                 buttons={["1", "2", "3", "4"]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
@@ -156,8 +178,8 @@ const PropertyDetails = props => {
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
+                onPress={selectFurnishingIndex}
+                selectedIndex={furnishingIndex}
                 buttons={["Full", "Semi", "Empty"]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
@@ -171,9 +193,9 @@ const PropertyDetails = props => {
             <View style={styles.doubleColSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["1", "2", "3", "4"]}
+                onPress={selectParkingIndex}
+                selectedIndex={parkingIndex}
+                buttons={["1", "2", "3", "4", "4+"]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -182,8 +204,8 @@ const PropertyDetails = props => {
               />
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
+                onPress={selectParkingTypeIndex}
+                selectedIndex={parkingTypeIndex}
                 buttons={["Car", "Bike"]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
@@ -196,8 +218,8 @@ const PropertyDetails = props => {
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
+                onPress={selectPropertyAgeIndex}
+                selectedIndex={propertyAgeIndex}
                 buttons={["1-5", "6-10", "11-15", "20+"]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
@@ -213,21 +235,6 @@ const PropertyDetails = props => {
                 { marginBottom: 5, marginTop: 5 }
               ]}
             >
-              {/* <TextInput
-              label="Floor*"
-              value={text}
-              onChangeText={text => setText(text)}
-              style={{ backgroundColor: "#ffffff", marginTop: 8 }}
-              theme={{
-                colors: {
-                  // placeholder: "white",
-                  // text: "white",
-                  primary: "rgba(0,191,255, .9)",
-                  underlineColor: "transparent",
-                  background: "#ffffff"
-                }
-              }}
-            /> */}
               <TextInput
                 mode="outlined"
                 style={[
@@ -236,9 +243,11 @@ const PropertyDetails = props => {
                 ]}
                 label="Floor*"
                 placeholder="Floor"
-                value={locality}
+                value={floor}
                 keyboardType={"numeric"}
-                onChangeText={locality => setLocality(locality)}
+                returnKeyType={"done"}
+                onChangeText={text => setFloor(text)}
+                onFocus={() => setIsVisible(false)}
                 theme={{
                   colors: {
                     // placeholder: "white",
@@ -255,11 +264,14 @@ const PropertyDetails = props => {
                   styles.inputContainerStyle,
                   { width: "30%", backgroundColor: "#ffffff" }
                 ]}
+                keyboardType={"numeric"}
+                returnKeyType={"done"}
                 label="Total Floor*"
                 placeholder="Total Floor"
-                value={locality}
+                value={totalFloor}
                 keyboardType={"numeric"}
-                onChangeText={locality => setLocality(locality)}
+                onChangeText={text => setTotalFloor(text)}
+                onFocus={() => setIsVisible(false)}
                 theme={{
                   colors: {
                     // placeholder: "white",
@@ -275,8 +287,8 @@ const PropertyDetails = props => {
                 <Text>Lift*</Text>
                 <ButtonGroup
                   selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                  onPress={updateIndex}
-                  selectedIndex={index}
+                  onPress={selectLiftIndex}
+                  selectedIndex={liftIndex}
                   buttons={["Yes", "No"]}
                   // containerStyle={{ height: 30 }}
                   textStyle={{ textAlign: "center" }}
@@ -300,10 +312,13 @@ const PropertyDetails = props => {
               mode="outlined"
               style={styles.inputContainerStyle}
               label="Property Size*"
-              placeholder="Type something"
-              value={locality}
               keyboardType={"numeric"}
-              onChangeText={locality => setLocality(locality)}
+              returnKeyType={"done"}
+              placeholder="Property Size"
+              value={propertySize}
+              keyboardType={"numeric"}
+              onChangeText={text => setPropertySize(text)}
+              onFocus={() => setIsVisible(false)}
               theme={{
                 colors: {
                   // placeholder: "white",
@@ -314,16 +329,20 @@ const PropertyDetails = props => {
                 }
               }}
             />
-          </TextInputAvoidingView>
 
-          <View style={{ marginTop: 15 }}>
-            <Button
-              title="NEXT"
-              onPress={() => navigation.navigate("RentDetails")}
-            />
+            <View style={{ marginTop: 15 }}>
+              <Button title="NEXT" onPress={() => onSubmit()} />
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAwareScrollView>
+      <Snackbar
+        visible={isVisible}
+        textMessage={errorMessage}
+        position={"top"}
+        actionHandler={() => dismissSnackBar()}
+        actionText="OK"
+      />
     </SafeAreaView>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -7,38 +7,63 @@ import {
   Platform,
   KeyboardAvoidingView,
   SafeAreaView,
-  ScrollView
+  ScrollView,
+  Keyboard
 } from "react-native";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
 import Button from "../components/Button";
-
-const TextInputAvoidingView = ({ children }) => {
-  return Platform.OS === "ios" ? (
-    <KeyboardAvoidingView
-      style={styles.wrapper}
-      behavior="padding"
-      keyboardVerticalOffset={80}
-    >
-      {children}
-    </KeyboardAvoidingView>
-  ) : (
-    <>{children}</>
-  );
-};
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Snackbar from "../components/SnackbarComponent";
 
 const LocalityDetails = props => {
-  const [city, setCity] = React.useState("");
-  const [locality, setLocality] = React.useState("");
-  const [text, setText] = React.useState("");
   const { navigation } = props;
+  const [city, setCity] = useState("");
+  const [area, setArea] = useState("");
+  const [flatNumber, setFlatNumber] = useState("");
+  const [buildingName, setBuildingName] = useState("");
+  const [landmark, setLandmark] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const dismissSnackBar = () => {
+    setIsVisible(false);
+  };
+
+  const onSubmit = () => {
+    if (city.trim() === "") {
+      setErrorMessage("City is missing");
+      setIsVisible(true);
+      return;
+    } else if (area.trim() === "") {
+      setErrorMessage("Area is missing");
+      setIsVisible(true);
+      return;
+    } else if (flatNumber.trim() === "") {
+      setErrorMessage("Flat Number is missing");
+      setIsVisible(true);
+      return;
+    } else if (buildingName.trim() === "") {
+      setErrorMessage("Building name is missing");
+      setIsVisible(true);
+      return;
+    } else if (landmark.trim() === "") {
+      setErrorMessage("Street/Landmark is missing");
+      setIsVisible(true);
+      return;
+    }
+
+    navigation.navigate("PropertyDetails");
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-      <ScrollView style={styles.container}>
-        <TextInputAvoidingView>
+      <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
+        <ScrollView style={styles.container}>
           <TextInput
             label="City*"
-            value={text}
-            onChangeText={text => setText(text)}
+            value={city}
+            onChangeText={text => setCity(text)}
+            onFocus={() => setIsVisible(false)}
             style={{ backgroundColor: "#ffffff", marginTop: 0 }}
             theme={{
               colors: {
@@ -52,8 +77,9 @@ const LocalityDetails = props => {
           />
           <TextInput
             label="Area*"
-            value={text}
-            onChangeText={text => setText(text)}
+            value={area}
+            onChangeText={text => setArea(text)}
+            onFocus={() => setIsVisible(false)}
             style={{ backgroundColor: "#ffffff", marginTop: 8 }}
             theme={{
               colors: {
@@ -66,9 +92,27 @@ const LocalityDetails = props => {
             }}
           />
           <TextInput
-            label="Flat No/Building Name*"
-            value={text}
-            onChangeText={text => setText(text)}
+            label="Flat No*"
+            value={flatNumber}
+            onChangeText={text => setFlatNumber(text)}
+            onFocus={() => setIsVisible(false)}
+            style={{ backgroundColor: "#ffffff", marginTop: 8 }}
+            theme={{
+              colors: {
+                // placeholder: "white",
+                // text: "white",
+                primary: "rgba(0,191,255, .9)",
+                underlineColor: "transparent",
+                background: "#ffffff"
+              }
+            }}
+          />
+
+          <TextInput
+            label="Building Name*"
+            value={buildingName}
+            onChangeText={text => setBuildingName(text)}
+            onFocus={() => setIsVisible(false)}
             style={{ backgroundColor: "#ffffff", marginTop: 8 }}
             theme={{
               colors: {
@@ -83,8 +127,9 @@ const LocalityDetails = props => {
 
           <TextInput
             label="Street/Landmark*"
-            value={text}
-            onChangeText={text => setText(text)}
+            value={landmark}
+            onChangeText={text => setLandmark(text)}
+            onFocus={() => setIsVisible(false)}
             style={{ backgroundColor: "#ffffff", marginTop: 8 }}
             theme={{
               colors: {
@@ -96,14 +141,18 @@ const LocalityDetails = props => {
               }
             }}
           />
-        </TextInputAvoidingView>
-        <View style={{ marginTop: 20 }}>
-          <Button
-            title="NEXT"
-            onPress={() => navigation.navigate("PropertyDetails")}
-          />
-        </View>
-      </ScrollView>
+          <View style={{ marginTop: 20 }}>
+            <Button title="NEXT" onPress={() => onSubmit()} />
+          </View>
+        </ScrollView>
+      </KeyboardAwareScrollView>
+      <Snackbar
+        visible={isVisible}
+        textMessage={errorMessage}
+        position={"top"}
+        actionHandler={() => dismissSnackBar()}
+        actionText="OK"
+      />
     </SafeAreaView>
   );
 };
@@ -114,9 +163,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 20,
     marginRight: 20
-  },
-  inputContainerStyle: {
-    margin: 8
   }
 });
 

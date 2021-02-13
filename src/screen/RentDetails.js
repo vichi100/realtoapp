@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -7,61 +7,97 @@ import {
   Platform,
   KeyboardAvoidingView,
   SafeAreaView,
-  ScrollView
+  ScrollView,
+  Keyboard
 } from "react-native";
 import { DatePickerModal } from "react-native-paper-dates";
 import { ButtonGroup } from "react-native-elements";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
 import Button from "../components/Button";
-
-const TextInputAvoidingView = ({ children }) => {
-  return Platform.OS === "ios" ? (
-    <KeyboardAvoidingView
-      style={styles.wrapper}
-      behavior="padding"
-      keyboardVerticalOffset={80}
-    >
-      {children}
-    </KeyboardAvoidingView>
-  ) : (
-    <>{children}</>
-  );
-};
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Snackbar from "../components/SnackbarComponent";
 
 const RentDetails = props => {
   const { navigation } = props;
   const date = new Date();
-  const [city, setCity] = React.useState("");
-  const [locality, setLocality] = React.useState("");
   const [newDate, setNewDate] = React.useState("");
-  const [index, setIndex] = React.useState(null);
+
+  const [expectedRent, setExpectedRent] = useState("");
+  const [expectedDeposit, setExpectedDeposit] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [preferredTenantsIndex, setPreferredTenantsIndex] = useState(-1);
+  const [nonvegAllowedIndex, setNonvegAllowedIndex] = useState(-1);
+
+  const dismissSnackBar = () => {
+    setIsVisible(false);
+  };
 
   const [visible, setVisible] = React.useState(false);
   const onDismiss = React.useCallback(() => {
     setVisible(false);
+    setIsVisible(false);
   }, [setVisible]);
+
   const onChange = React.useCallback(({ date }) => {
     setVisible(false);
-    setNewDate(date.toString());
+    setIsVisible(false);
+    const x = date.toString().split("00:00");
+    setNewDate(x[0]);
+    // setNewDate(date.toString());
     console.log({ date });
   }, []);
 
-  const updateIndex = index => {
-    setIndex(index);
+  const selectedPreferredTenantsIndex = index => {
+    setPreferredTenantsIndex(index);
+    setIsVisible(false);
+  };
+
+  const selectNonvegAllowedIndex = index => {
+    setNonvegAllowedIndex(index);
+    setIsVisible(false);
+  };
+
+  const onSubmit = () => {
+    if (expectedRent.trim() === "") {
+      setErrorMessage("Expected rent is missing");
+      setIsVisible(true);
+      return;
+    } else if (expectedDeposit.trim() === "") {
+      setErrorMessage("Expected deposit is missing");
+      setIsVisible(true);
+      return;
+    } else if (newDate.trim() === "") {
+      setErrorMessage("Available date is missing");
+      setIsVisible(true);
+      return;
+    } else if (preferredTenantsIndex === -1) {
+      setErrorMessage("Preferred tenants is missing");
+      setIsVisible(true);
+      return;
+    } else if (nonvegAllowedIndex === -1) {
+      setErrorMessage("Nonveg allowed is missing");
+      setIsVisible(true);
+      return;
+    }
+    navigation.navigate("AddImages");
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-      <ScrollView>
-        <View style={styles.container}>
-          <TextInputAvoidingView>
+      <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
+        <ScrollView>
+          <View style={styles.container}>
             <TextInput
               mode="outlined"
+              keyboardType={"numeric"}
+              returnKeyType={"done"}
               style={styles.inputContainerStyle}
               label="Expected Rent*"
               placeholder="Expected Rent"
-              value={locality}
+              value={expectedRent}
               keyboardType={"numeric"}
-              onChangeText={locality => setLocality(locality)}
+              onChangeText={text => setExpectedRent(text)}
+              onFocus={() => setIsVisible(false)}
               theme={{
                 colors: {
                   // placeholder: "white",
@@ -75,11 +111,14 @@ const RentDetails = props => {
             <TextInput
               mode="outlined"
               style={styles.inputContainerStyle}
+              keyboardType={"numeric"}
+              returnKeyType={"done"}
               label="Expected Deposit*"
               placeholder="Expected Deposit"
-              value={locality}
+              value={expectedDeposit}
               keyboardType={"numeric"}
-              onChangeText={locality => setLocality(locality)}
+              onChangeText={text => setExpectedDeposit(text)}
+              onFocus={() => setIsVisible(false)}
               theme={{
                 colors: {
                   // placeholder: "white",
@@ -102,6 +141,7 @@ const RentDetails = props => {
                 colors: {
                   // placeholder: "white",
                   // text: "white",
+
                   primary: "rgba(0,191,255, .9)",
                   underlineColor: "transparent",
                   background: "#ffffff"
@@ -112,9 +152,9 @@ const RentDetails = props => {
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Famliy", "Bachelors", "Any"]}
+                onPress={selectedPreferredTenantsIndex}
+                selectedIndex={preferredTenantsIndex}
+                buttons={["Family", "Bachelors", "Any"]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -126,8 +166,8 @@ const RentDetails = props => {
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
+                onPress={selectNonvegAllowedIndex}
+                selectedIndex={nonvegAllowedIndex}
                 buttons={["Yes", "No"]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
@@ -136,24 +176,28 @@ const RentDetails = props => {
                 containerBorderRadius={10}
               />
             </View>
-          </TextInputAvoidingView>
 
-          <Button
-            title="NEXT"
-            onPress={() => navigation.navigate("AddImages")}
-          />
-        </View>
-      </ScrollView>
-      <DatePickerModal
-        mode="single"
-        visible={visible}
-        onDismiss={onDismiss}
-        date={date}
-        onConfirm={onChange}
-        saveLabel="Save" // optional
-        label="Select date" // optional
-        animationType="slide" // optional, default is 'slide' on ios/android and 'none' on web
-        locale={"en"} // optional, default is automically detected by your system
+            <Button title="NEXT" onPress={() => onSubmit()} />
+          </View>
+        </ScrollView>
+        <DatePickerModal
+          mode="single"
+          visible={visible}
+          onDismiss={onDismiss}
+          date={date}
+          onConfirm={onChange}
+          saveLabel="Ok" // optional
+          label="Select date" // optional
+          animationType="slide" // optional, default is 'slide' on ios/android and 'none' on web
+          locale={"en"} // optional, default is automically detected by your system
+        />
+      </KeyboardAwareScrollView>
+      <Snackbar
+        visible={isVisible}
+        textMessage={errorMessage}
+        position={"top"}
+        actionHandler={() => dismissSnackBar()}
+        actionText="OK"
       />
     </SafeAreaView>
   );

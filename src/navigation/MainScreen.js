@@ -23,9 +23,9 @@ export default function MainScreen() {
     <NavigationContainer>
       <Tab.Navigator
         initialRouteName="Home"
-        activeColor="#f0edf6"
-        inactiveColor="#3e2465"
-        barStyle={{ backgroundColor: "#694fad", paddingBottom: 0 }}
+        activeColor="rgb(135,206,235)"
+        inactiveColor="rgb(105,105,105)"
+        barStyle={{ backgroundColor: "#ffffff", paddingBottom: 0 }}
       >
         <Tab.Screen
           name="Home"

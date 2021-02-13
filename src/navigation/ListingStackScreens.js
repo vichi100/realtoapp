@@ -10,6 +10,7 @@ const ListingStackScreens = () => {
   return (
     <Stack.Navigator
       screenOptions={{
+        // headerShown: false,
         headerTitleAlign: "center",
         // headerTintColor: "#fff",
         headerStyle: {
@@ -22,6 +23,7 @@ const ListingStackScreens = () => {
       <Stack.Screen
         name="Listing"
         component={Listing}
+        options={{ headerShown: false }}
         // options={{ tabBarLabel: "Home!" }}
       />
       {/* <Stack.Screen

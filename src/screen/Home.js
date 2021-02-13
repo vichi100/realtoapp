@@ -42,11 +42,21 @@ function Home(props) {
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <ScrollView>
         <View style={styles.container}>
-          <View style={styles.componentContainer}>
+          <View
+            style={[
+              styles.componentContainer,
+              { marginLeft: 10, marginRight: 10 }
+            ]}
+          >
             <View style={styles.bar}>
               <Text style={styles.barHeader}>Listing Summary</Text>
             </View>
-            <View style={styles.cardContainer}>
+            <View
+              style={[
+                styles.cardContainer,
+                { marginLeft: 10, marginRight: 10 }
+              ]}
+            >
               <View style={styles.card}>
                 <Text style={styles.cardHeader1}>Residential</Text>
                 <View style={styles.cardContent}>
@@ -214,8 +224,8 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flexDirection: "row",
-    margin: (10, 10, 10, 3),
-    width: "100%"
+    margin: (10, 10, 10, 3)
+    // width: "90%"
   },
   bar: {
     shadowOpacity: 0.0015 * 5 + 0.18,
@@ -223,8 +233,8 @@ const styles = StyleSheet.create({
     shadowOffset: {
       height: 0.6 * 1
     },
-    backgroundColor: "#ffffff",
-    width: "100%"
+    backgroundColor: "#ffffff"
+    // width: "90%"
     // marginLeft: 15,
     // marginRight: 15
   },
