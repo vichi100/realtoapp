@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -8,7 +8,8 @@ import {
   KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
-  Keyboard
+  Keyboard,
+  AsyncStorage
 } from "react-native";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
 import Button from "../components/Button";
@@ -29,7 +30,13 @@ const LocalityDetails = props => {
     setIsVisible(false);
   };
 
-  const onSubmit = () => {
+  useEffect(() => {
+    console.log("useEffect");
+    // const property = await AsyncStorage.getItem("property");
+    // console.log(property);
+  }, []);
+
+  const onSubmit = async () => {
     if (city.trim() === "") {
       setErrorMessage("City is missing");
       setIsVisible(true);
@@ -51,7 +58,22 @@ const LocalityDetails = props => {
       setIsVisible(true);
       return;
     }
+    const property = JSON.parse(await AsyncStorage.getItem("property"));
+    // console.log(property);
 
+    const property_address = {
+      city: city.trim(),
+      location_area: area.trim(),
+      flat_number: flatNumber.trim(),
+      building_name: buildingName.trim(),
+      landmark_or_street: landmark.trim(),
+      pin: "123"
+    };
+
+    property["property_address"] = property_address;
+    // console.log(property_address);
+    AsyncStorage.setItem("property", JSON.stringify(property));
+    // console.log(property);
     navigation.navigate("PropertyDetails");
   };
 

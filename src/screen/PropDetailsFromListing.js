@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, Image, Text, ScrollView } from "react-native";
 import Slideshow from "../components/Slideshow";
 
-const CardDetails = () => {
+const PropDetailsFromListing = () => {
   return (
     <ScrollView style={[styles.container]}>
       <View style={[styles.headerContainer]}>
@@ -229,4 +229,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CardDetails;
+export default PropDetailsFromListing;

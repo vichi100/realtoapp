@@ -1,17 +1,97 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Image, Text, ScrollView } from "react-native";
+import React, { Component, useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  ScrollView,
+  AsyncStorage
+} from "react-native";
 import Slideshow from "../components/Slideshow";
 import Button from "../components/Button";
+import axios from "axios";
+import SERVER_URL from "../util/constant";
 
-const AddNewPropFinalDetails = () => {
-  return (
+const AddNewPropFinalDetails = props => {
+  const { navigation } = props;
+  const [propertyFinalDetails, setPropertyFinalDetails] = useState(null);
+  const [bhk, setBHK] = useState(null);
+  const [possessionDate, setPossessionDate] = useState(null);
+
+  useEffect(() => {
+    getPropFinalDetails();
+  }, []);
+
+  useEffect(() => {
+    if (propertyFinalDetails !== null) {
+      let bhkTemp = propertyFinalDetails.property_details.bhk_type;
+      if (bhkTemp.indexOf("RK") > -1) {
+        setBHK(bhkTemp);
+      } else {
+        let x = bhkTemp.split("BHK");
+        setBHK(x[0]);
+      }
+      const availableDateStr = propertyFinalDetails.rent_details.available_from;
+      const availableDate = new Date(availableDateStr);
+      const t = convert(availableDate);
+      var today = new Date();
+      const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+      const diffDays = Math.round((today - new Date(t)) / oneDay);
+      // console.log(diffDays);
+      if (diffDays >= 0) {
+        setPossessionDate("Immediately");
+      } else {
+        setPossessionDate(availableDateStr);
+      }
+    }
+  }, [propertyFinalDetails]);
+
+  const getPropFinalDetails = async () => {
+    const property = JSON.parse(await AsyncStorage.getItem("property"));
+    setPropertyFinalDetails(property);
+    console.log(property);
+  };
+
+  const convert = str => {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  };
+
+  const send = async () => {
+    console.log(await AsyncStorage.getItem("property"));
+    axios
+      .post(
+        SERVER_URL + "/addNewProperty",
+        // await AsyncStorage.getItem("property")
+        // JSON.stringify({ vichi: "vchi" })
+        propertyFinalDetails
+      )
+      .then(
+        response => {
+          console.log(response.data);
+          navigation.navigate("CardDetails");
+        },
+        error => {
+          console.log(error);
+        }
+      );
+  };
+  return propertyFinalDetails ? (
     <ScrollView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
-          2 BHK For Rent In Anant Villa, Koregaon Park
+          {propertyFinalDetails.property_address.flat_number},
+          {propertyFinalDetails.property_address.building_name},
+          {propertyFinalDetails.property_address.location_area}
+          {/* 2 BHK For Rent In Anant Villa, Koregaon Park */}
         </Text>
         <Text style={[StyleSheet.subTitle]}>
-          Meera Nagar, Near Marvel Exotica
+          {propertyFinalDetails.property_address.landmark_or_street},
+          {propertyFinalDetails.property_address.city},
+          {propertyFinalDetails.property_address.pin}
+          {/* Meera Nagar, Near Marvel Exotica */}
         </Text>
       </View>
       <Slideshow
@@ -30,27 +110,37 @@ const AddNewPropFinalDetails = () => {
       <View style={[styles.detailsContainer]}>
         <View style={[styles.details]}>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>2</Text>
+            <Text style={[styles.subDetailsValue]}>{bhk}</Text>
             <Text style={[styles.subDetailsTitle]}>BHK</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>20000</Text>
-            <Text style={[styles.subDetailsTitle]}>Rent</Text>
+            <Text style={[styles.subDetailsValue]}>
+              {propertyFinalDetails.rent_details.expected_rent}
+            </Text>
+            <Text style={[styles.subDetailsTitle]}>
+              {propertyFinalDetails.property_for}
+            </Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>90000</Text>
+            <Text style={[styles.subDetailsValue]}>
+              {propertyFinalDetails.rent_details.expected_deposit}
+            </Text>
             <Text style={[styles.subDetailsTitle]}>Deposit</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>Full</Text>
+            <Text style={[styles.subDetailsValue]}>
+              {propertyFinalDetails.property_details.furnishing_status}
+            </Text>
             <Text style={[styles.subDetailsTitle]}>Furnishing</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>800 sqft</Text>
+            <Text style={[styles.subDetailsValue]}>
+              {propertyFinalDetails.property_details.property_size}sqft
+            </Text>
             <Text style={[styles.subDetailsTitle]}>Buildup</Text>
           </View>
         </View>
@@ -66,37 +156,53 @@ const AddNewPropFinalDetails = () => {
         <View style={styles.overviewColumnWrapper}>
           <View style={styles.overviewLeftColumn}>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>2</Text>
+              <Text style={[styles.subDetailsValue]}>
+                {propertyFinalDetails.property_details.washroom_numbers}
+              </Text>
               <Text style={[styles.subDetailsTitle]}>Bathroom</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>Immediately</Text>
+              <Text style={[styles.subDetailsValue]}>{possessionDate}</Text>
               <Text style={[styles.subDetailsTitle]}>Possession</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>Anyone</Text>
+              <Text style={[styles.subDetailsValue]}>
+                {propertyFinalDetails.rent_details.preferred_tenants}
+              </Text>
               <Text style={[styles.subDetailsTitle]}>Preferred Tenant</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>Yes</Text>
+              <Text style={[styles.subDetailsValue]}>
+                {propertyFinalDetails.property_details.lift}
+              </Text>
               <Text style={[styles.subDetailsTitle]}>Lift</Text>
             </View>
           </View>
           <View style={styles.overviewRightColumn}>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>1</Text>
+              <Text style={[styles.subDetailsValue]}>
+                {propertyFinalDetails.property_details.parking_number}{" "}
+                {propertyFinalDetails.property_details.parking_type}
+              </Text>
               <Text style={[styles.subDetailsTitle]}>Parking</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>3/6</Text>
+              <Text style={[styles.subDetailsValue]}>
+                {propertyFinalDetails.property_details.floor_number}/
+                {propertyFinalDetails.property_details.total_floor}
+              </Text>
               <Text style={[styles.subDetailsTitle]}>Floor</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>Yes</Text>
+              <Text style={[styles.subDetailsValue]}>
+                {propertyFinalDetails.rent_details.non_veg_allowed}
+              </Text>
               <Text style={[styles.subDetailsTitle]}>NonVeg</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>7 years</Text>
+              <Text style={[styles.subDetailsValue]}>
+                {propertyFinalDetails.property_details.property_age}
+              </Text>
               <Text style={[styles.subDetailsTitle]}>Age of Building</Text>
             </View>
           </View>
@@ -109,20 +215,17 @@ const AddNewPropFinalDetails = () => {
           <Text>Owner</Text>
           <View style={styles.horizontalLine}></View>
           <View style={styles.ownerDetails}>
-            <Text>Vichitra Rajan</Text>
-            <Text>Flat 305, ZA tower, Yarri road, Mumbai</Text>
-            <Text>+91 9833097595</Text>
+            <Text>{propertyFinalDetails.owner_details.name}</Text>
+            <Text>{propertyFinalDetails.owner_details.address}</Text>
+            <Text>+91 {propertyFinalDetails.owner_details.mobile1}</Text>
           </View>
         </View>
       </View>
       <View style={{ margin: 20 }}>
-        <Button
-          title="POST"
-          onPress={() => navigation.navigate("CardDetails")}
-        />
+        <Button title="ADD" onPress={() => send()} />
       </View>
     </ScrollView>
-  );
+  ) : null;
 };
 
 const styles = StyleSheet.create({

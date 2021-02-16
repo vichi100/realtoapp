@@ -8,7 +8,8 @@ import {
   KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
-  Keyboard
+  Keyboard,
+  AsyncStorage
 } from "react-native";
 // ezora
 // eza
@@ -17,6 +18,15 @@ import { TextInput, HelperText, useTheme } from "react-native-paper";
 import Button from "../components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../components/SnackbarComponent";
+
+const houseTypeArray = ["Apartment", "Villa", "Independent House"];
+const bhkArray = ["1RK", "1BHK", "2BHK", "3BHK", "4BHK", "+4BHK"];
+const washroomArray = ["1", "2", "3", "4", "4+"];
+const furnishingStatusArray = ["Full", "Semi", "Empty"];
+const parkingNumberArray = ["1", "2", "3", "4", "4+"];
+const parkingTypeArray = ["Car", "Bike"];
+const propertyAgeArray = ["1-5", "6-10", "11-15", "20+"];
+const liftArray = ["Yes", "No"];
 
 const PropertyDetails = props => {
   const { navigation } = props;
@@ -43,7 +53,7 @@ const PropertyDetails = props => {
     setIsVisible(false);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (houseTypeIndex === -1) {
       setErrorMessage("House Type is missing");
       setIsVisible(true);
@@ -89,6 +99,26 @@ const PropertyDetails = props => {
       setIsVisible(true);
       return;
     }
+    const property = JSON.parse(await AsyncStorage.getItem("property"));
+
+    const property_details = {
+      house_type: houseTypeArray[houseTypeIndex],
+      bhk_type: bhkArray[bhkIndex],
+      washroom_numbers: washroomArray[washroomIndex],
+      furnishing_status: furnishingStatusArray[furnishingIndex],
+      parking_type: parkingTypeArray[parkingTypeIndex],
+      parking_number: parkingNumberArray[parkingIndex],
+      property_age: propertyAgeArray[propertyAgeIndex],
+      floor_number: floor,
+      total_floor: totalFloor,
+      lift: liftArray[liftIndex],
+      property_size: propertySize
+    };
+
+    property["property_details"] = property_details;
+    // console.log(property);
+    AsyncStorage.setItem("property", JSON.stringify(property));
+    // console.log(property);
 
     navigation.navigate("RentDetails");
   };
@@ -137,7 +167,7 @@ const PropertyDetails = props => {
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={selectHouseTypeIndex}
                 selectedIndex={houseTypeIndex}
-                buttons={["Appartment", "Villa", "Independent House"]}
+                buttons={houseTypeArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -151,7 +181,7 @@ const PropertyDetails = props => {
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={selectBHkIndex}
                 selectedIndex={bhkIndex}
-                buttons={["1RK", "1BHK", "2BHK", "3BHK", "4BHK", "4+BHK"]}
+                buttons={bhkArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -166,7 +196,7 @@ const PropertyDetails = props => {
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={selectWashroomIndex}
                 selectedIndex={washroomIndex}
-                buttons={["1", "2", "3", "4"]}
+                buttons={washroomArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -180,7 +210,7 @@ const PropertyDetails = props => {
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={selectFurnishingIndex}
                 selectedIndex={furnishingIndex}
-                buttons={["Full", "Semi", "Empty"]}
+                buttons={furnishingStatusArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -195,7 +225,7 @@ const PropertyDetails = props => {
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={selectParkingIndex}
                 selectedIndex={parkingIndex}
-                buttons={["1", "2", "3", "4", "4+"]}
+                buttons={parkingNumberArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -206,7 +236,7 @@ const PropertyDetails = props => {
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={selectParkingTypeIndex}
                 selectedIndex={parkingTypeIndex}
-                buttons={["Car", "Bike"]}
+                buttons={parkingTypeArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -220,7 +250,7 @@ const PropertyDetails = props => {
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={selectPropertyAgeIndex}
                 selectedIndex={propertyAgeIndex}
-                buttons={["1-5", "6-10", "11-15", "20+"]}
+                buttons={propertyAgeArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -289,7 +319,7 @@ const PropertyDetails = props => {
                   selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                   onPress={selectLiftIndex}
                   selectedIndex={liftIndex}
-                  buttons={["Yes", "No"]}
+                  buttons={liftArray}
                   // containerStyle={{ height: 30 }}
                   textStyle={{ textAlign: "center" }}
                   selectedTextStyle={{ color: "#fff" }}

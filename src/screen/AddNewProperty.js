@@ -7,7 +7,8 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  AsyncStorage
 } from "react-native";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
 import RadioButton from "../components/RadioButtons";
@@ -29,6 +30,8 @@ const options = [
   }
 ];
 
+const propertyForArray = ["Rent", "Sell"];
+
 const AddNewProperty = props => {
   const { navigation } = props;
   const [propertyForIndex, setPropertyForIndex] = useState(-1);
@@ -41,6 +44,7 @@ const AddNewProperty = props => {
   const [isVisible, setIsVisible] = useState(false);
 
   const onSelectPropType = item => {
+    // console.log(item);
     if (selectedPropType && selectedPropType.key === item.key) {
       setSelectedPropType(null);
     } else {
@@ -50,6 +54,8 @@ const AddNewProperty = props => {
   };
 
   const selectPropertyForIndex = index => {
+    // console.log(index);
+    // console.log(propertyForArray[index]);
     setPropertyForIndex(index);
     setIsVisible(false);
   };
@@ -59,12 +65,13 @@ const AddNewProperty = props => {
   };
 
   const onSubmit = () => {
-    if (propertyForIndex === -1) {
+    console.log("-1");
+    if (selectedPropType === null) {
       setErrorMessage("Select Property type missing");
       setIsVisible(true);
       return;
-    } else if (selectedPropType === null) {
-      setErrorMessage("Select Property type missing");
+    } else if (propertyForIndex === -1) {
+      setErrorMessage("Select Property for missing");
       setIsVisible(true);
       return;
     } else if (ownerName.trim() === "") {
@@ -76,7 +83,21 @@ const AddNewProperty = props => {
       setIsVisible(true);
       return;
     }
-
+    // console.log("0");
+    const property = {
+      property_type: selectedPropType.key,
+      property_for: propertyForArray[propertyForIndex],
+      property_status: "open",
+      owner_details: {
+        name: ownerName.trim(),
+        mobile1: ownerMobile.trim(),
+        mobile2: ownerMobile.trim(),
+        address: ownerAddress.trim()
+      }
+    };
+    // console.log(property);
+    AsyncStorage.setItem("property", JSON.stringify(property));
+    // console.log("1");
     navigation.navigate("LocalityDetails");
   };
 
@@ -105,7 +126,7 @@ const AddNewProperty = props => {
               selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
               onPress={selectPropertyForIndex}
               selectedIndex={propertyForIndex}
-              buttons={["Rent", "Sell"]}
+              buttons={propertyForArray}
               // containerStyle={{ height: 30 }}
               textStyle={{ textAlign: "center" }}
               selectedTextStyle={{ color: "#fff" }}

@@ -10,7 +10,7 @@ import HomeStackNav from "./HomeStackNav";
 import AddNewPropStackScreens from "./AddNewPropStackScreens";
 import ListingStackScreens from "./ListingStackScreens";
 import Notification from "../screen/Notification";
-import Profile from "../screen/Profile";
+import ProfileStackScreens from "./ProfileStackScreens";
 
 import Listing from "../screen/Listing";
 import LocalityDetails from "../screen/LocalityDetails";
@@ -80,7 +80,7 @@ export default function MainScreen() {
 
         <Tab.Screen
           name="Profile"
-          component={Profile}
+          component={ProfileStackScreens}
           options={{
             tabBarLabel: "",
             tabBarIcon: ({ color }) => (

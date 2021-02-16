@@ -128,7 +128,7 @@ const Detail = props => {
       // Single Comes here which will be repeatative for the FlatListItems
       // <Text>vichi</Text>
       <TouchableOpacity
-        onPress={() => navigation.navigate("CardDetailsFromCard")}
+        onPress={() => navigation.navigate("PropDetailsFromListing")}
       >
         <Card navigation={navigation}>{item.id}</Card>
       </TouchableOpacity>

@@ -7,7 +7,7 @@ import {
   Text,
   TouchableRipple
 } from "react-native-paper";
-import Button from "../components/Button";
+
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 // import Share from "react-native-share";
@@ -17,11 +17,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 // https://github.com/itzpradip/Food-Finder-React-Native-App/blob/master/screens/EditProfileScreen.js
 // https://www.youtube.com/watch?v=mjJzaiGkaQA
 
-const Profile = props => {
-  const { navigation } = props;
-  const onSubmit = () => {
-    navigation.navigate("ManageEmployee");
-  };
+const Profile = () => {
   const myCustomShare = async () => {
     const shareOptions = {
       message:
@@ -86,16 +82,22 @@ const Profile = props => {
         </View>
       </View>
 
-      <View style={[{ flexDirection: "column" }]}>
+      <View style={styles.infoBoxWrapper}>
         <View
-          style={{
-            marginTop: 10,
-            marginBottom: 10,
-            marginLeft: 10,
-            marginRight: 10
-          }}
+          style={[
+            styles.infoBox,
+            {
+              borderRightColor: "#dddddd",
+              borderRightWidth: 1
+            }
+          ]}
         >
-          <Button title="MANAGE EMP" onPress={() => onSubmit()} />
+          <Title>₹140.50</Title>
+          <Caption>Wallet</Caption>
+        </View>
+        <View style={styles.infoBox}>
+          <Title>12</Title>
+          <Caption>Orders</Caption>
         </View>
       </View>
 
@@ -139,8 +141,7 @@ export default Profile;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#ffffff"
+    flex: 1
   },
   userInfoSection: {
     paddingHorizontal: 30,

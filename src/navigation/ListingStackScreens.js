@@ -2,7 +2,7 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import Listing from "../screen/Listing";
 import Meeting from "../screen/Meeting";
-import CardDetails from "../screen/CardDetailsFromCard";
+import PropDetailsFromListing from "../screen/PropDetailsFromListing";
 
 const Stack = createStackNavigator();
 
@@ -39,8 +39,8 @@ const ListingStackScreens = () => {
       />
 
       <Stack.Screen
-        name="CardDetailsFromCard"
-        component={CardDetails}
+        name="PropDetailsFromListing"
+        component={PropDetailsFromListing}
         options={{ title: "Property details" }}
       />
     </Stack.Navigator>

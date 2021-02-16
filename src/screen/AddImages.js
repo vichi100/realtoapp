@@ -8,7 +8,8 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
-  Platform
+  Platform,
+  AsyncStorage
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
@@ -50,6 +51,14 @@ const AddImages = props => {
     }
   };
 
+  const onSubmit = async () => {
+    const property = JSON.parse(await AsyncStorage.getItem("property"));
+    property["image_urls"] = imageArray;
+    // console.log(property);
+    AsyncStorage.setItem("property", JSON.stringify(property));
+    navigation.navigate("AddNewPropFinalDetails");
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -66,10 +75,7 @@ const AddImages = props => {
             <PhotoGrid source={imageArray} />
           </View>
         </View>
-        <Button
-          title="NEXT"
-          onPress={() => navigation.navigate("AddNewPropFinalDetails")}
-        />
+        <Button title="NEXT" onPress={() => onSubmit()} />
       </ScrollView>
     </SafeAreaView>
   );

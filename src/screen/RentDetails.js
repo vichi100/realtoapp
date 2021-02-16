@@ -8,7 +8,8 @@ import {
   KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
-  Keyboard
+  Keyboard,
+  AsyncStorage
 } from "react-native";
 import { DatePickerModal } from "react-native-paper-dates";
 import { ButtonGroup } from "react-native-elements";
@@ -16,6 +17,9 @@ import { TextInput, HelperText, useTheme } from "react-native-paper";
 import Button from "../components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../components/SnackbarComponent";
+
+const preferredTenantsArray = ["Family", "Bachelors", "Any"];
+const nonvegAllowedArray = ["Yes", "No"];
 
 const RentDetails = props => {
   const { navigation } = props;
@@ -28,12 +32,12 @@ const RentDetails = props => {
   const [errorMessage, setErrorMessage] = useState("");
   const [preferredTenantsIndex, setPreferredTenantsIndex] = useState(-1);
   const [nonvegAllowedIndex, setNonvegAllowedIndex] = useState(-1);
+  const [visible, setVisible] = React.useState(false);
 
   const dismissSnackBar = () => {
     setIsVisible(false);
   };
 
-  const [visible, setVisible] = React.useState(false);
   const onDismiss = React.useCallback(() => {
     setVisible(false);
     setIsVisible(false);
@@ -43,9 +47,9 @@ const RentDetails = props => {
     setVisible(false);
     setIsVisible(false);
     const x = date.toString().split("00:00");
-    setNewDate(x[0]);
+    setNewDate(x[0].toString().trim());
     // setNewDate(date.toString());
-    console.log({ date });
+    // console.log({ date });
   }, []);
 
   const selectedPreferredTenantsIndex = index => {
@@ -58,7 +62,7 @@ const RentDetails = props => {
     setIsVisible(false);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (expectedRent.trim() === "") {
       setErrorMessage("Expected rent is missing");
       setIsVisible(true);
@@ -80,6 +84,19 @@ const RentDetails = props => {
       setIsVisible(true);
       return;
     }
+
+    const rent_details = {
+      expected_rent: expectedRent,
+      expected_deposit: expectedDeposit,
+      available_from: newDate.trim(),
+      preferred_tenants: preferredTenantsArray[preferredTenantsIndex],
+      non_veg_allowed: nonvegAllowedArray[nonvegAllowedIndex]
+    };
+    const property = JSON.parse(await AsyncStorage.getItem("property"));
+    property["rent_details"] = rent_details;
+    // console.log(property);
+    AsyncStorage.setItem("property", JSON.stringify(property));
+
     navigation.navigate("AddImages");
   };
   return (
@@ -154,7 +171,7 @@ const RentDetails = props => {
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={selectedPreferredTenantsIndex}
                 selectedIndex={preferredTenantsIndex}
-                buttons={["Family", "Bachelors", "Any"]}
+                buttons={preferredTenantsArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -168,7 +185,7 @@ const RentDetails = props => {
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={selectNonvegAllowedIndex}
                 selectedIndex={nonvegAllowedIndex}
-                buttons={["Yes", "No"]}
+                buttons={nonvegAllowedArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
