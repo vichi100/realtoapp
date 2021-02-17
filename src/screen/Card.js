@@ -26,7 +26,7 @@ const Sliding_Drawer_Width = 250;
 const width = Dimensions.get("window").width;
 
 const Card = props => {
-  const { navigation } = props;
+  const { navigation, item } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
   const [disabled, setDisabled] = useState(false);
@@ -85,9 +85,13 @@ const Card = props => {
 
       <View style={styles.MainContainer}>
         <View style={[styles.headerContainer]}>
-          <Text style={[styles.title]}>Rent In Anant Villa, Koregaon Park</Text>
+          <Text style={[styles.title]}>
+            Rent In {item.property_address.building_name},{" "}
+            {item.property_address.landmark_or_street}
+          </Text>
           <Text style={[StyleSheet.subTitle]}>
-            Meera Nagar, Near Marvel Exotica
+            {item.property_address.location_area}, {item.property_address.city}-
+            {item.property_address.pin}
           </Text>
         </View>
 
@@ -145,23 +149,31 @@ const Card = props => {
       <View style={[styles.detailsContainer]}>
         <View style={[styles.details]}>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>2</Text>
+            <Text style={[styles.subDetailsValue]}>
+              {item.property_details.bhk_type}
+            </Text>
             <Text style={[styles.subDetailsTitle]}>BHK</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>20000</Text>
+            <Text style={[styles.subDetailsValue]}>
+              {item.rent_details.expected_rent}
+            </Text>
             <Text style={[styles.subDetailsTitle]}>Rent</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>90000</Text>
+            <Text style={[styles.subDetailsValue]}>
+              {item.rent_details.expected_deposit}
+            </Text>
             <Text style={[styles.subDetailsTitle]}>Deposit</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>Furnished</Text>
-            <Text style={[styles.subDetailsTitle]}>Status</Text>
+            <Text style={[styles.subDetailsValue]}>
+              {item.property_details.furnishing_status}
+            </Text>
+            <Text style={[styles.subDetailsTitle]}>Furnishing</Text>
           </View>
           {/* <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>

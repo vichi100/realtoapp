@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   FlatList,
   View,
@@ -15,14 +15,14 @@ import { BottomSheet } from "react-native-btr";
 import { ButtonGroup } from "react-native-elements";
 import { HelperText, useTheme } from "react-native-paper";
 import Button from "../components/Button";
-import { Divider } from "react-native-paper";
+
 import { SocialIcon } from "react-native-elements";
 import Slider from "../components/Slider";
 import Card from "./Card";
-import axios from "axios";
-import SERVER_URL from "../util/constant";
 
-const dataX = [
+import { Divider } from "react-native-paper";
+
+const data = [
   {
     id: "10000",
     property: "residential",
@@ -88,58 +88,12 @@ const dataX = [
   }
 ];
 
-const Listing = props => {
+const Detail = props => {
   const { navigation } = props;
   const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
-  const [index, setIndex] = useState(null);
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    getListing();
-    // console.log("Listing useEffect");
-  }, []);
-
-  const getListing = () => {
-    const user = {
-      name: "tom"
-    };
-
-    axios("http://172.20.10.2:3000/propertyListings", {
-      method: "post",
-      headers: {
-        "Content-type": "Application/json",
-        Accept: "Application/json"
-      },
-      data: { user }
-    }).then(
-      response => {
-        // console.log(response.data);
-        setData(response.data);
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  };
-
-  const getListingX = async () => {
-    const filter = {
-      agent_id: "123"
-    };
-    fetch(SERVER_URL + "addNewProperty", {
-      method: "get",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => response.json())
-      .then(json => setData(json.movies))
-      .catch(error => console.error(error))
-      .finally(() => setIndex(0));
-  };
+  const [index, setIndex] = React.useState(null);
 
   const updateIndex = index => {
     setIndex(index);
@@ -174,9 +128,9 @@ const Listing = props => {
       // Single Comes here which will be repeatative for the FlatListItems
       // <Text>vichi</Text>
       <TouchableOpacity
-        onPress={() => navigation.navigate("PropDetailsFromListing", item)}
+        onPress={() => navigation.navigate("PropDetailsFromListing")}
       >
-        <Card navigation={navigation} item={item}></Card>
+        <Card navigation={navigation}>{item.id}</Card>
       </TouchableOpacity>
     );
   };
@@ -518,4 +472,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Listing;
+export default Detail;

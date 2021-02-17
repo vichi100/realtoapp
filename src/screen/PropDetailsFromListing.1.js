@@ -2,20 +2,15 @@ import React, { Component } from "react";
 import { StyleSheet, View, Image, Text, ScrollView } from "react-native";
 import Slideshow from "../components/Slideshow";
 
-const PropDetailsFromListing = ({ route, navigation }) => {
-  // const { navigation } = props;
-  const item = route.params;
-  console.log(item);
+const PropDetailsFromListing = () => {
   return (
     <ScrollView style={[styles.container]}>
       <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
-          Rent {item.property_address.building_name},{" "}
-          {item.property_address.landmark_or_street}
+          2 BHK For Rent In Anant Villa, Koregaon Park
         </Text>
         <Text style={[StyleSheet.subTitle]}>
-          {item.property_address.location_area}, {item.property_address.city}-
-          {item.property_address.pin}
+          Meera Nagar, Near Marvel Exotica
         </Text>
       </View>
       {/* <Image
@@ -34,37 +29,27 @@ const PropDetailsFromListing = ({ route, navigation }) => {
       <View style={[styles.detailsContainer]}>
         <View style={[styles.details]}>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>
-              {item.property_details.bhk_type}
-            </Text>
+            <Text style={[styles.subDetailsValue]}>2</Text>
             <Text style={[styles.subDetailsTitle]}>BHK</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>
-              {item.rent_details.expected_rent}
-            </Text>
+            <Text style={[styles.subDetailsValue]}>20000</Text>
             <Text style={[styles.subDetailsTitle]}>Rent</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>
-              {item.rent_details.expected_deposit}
-            </Text>
+            <Text style={[styles.subDetailsValue]}>90000</Text>
             <Text style={[styles.subDetailsTitle]}>Deposit</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>
-              {item.property_details.furnishing_status}
-            </Text>
+            <Text style={[styles.subDetailsValue]}>Full</Text>
             <Text style={[styles.subDetailsTitle]}>Furnishing</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>
-              {item.property_details.property_size}sqft
-            </Text>
+            <Text style={[styles.subDetailsValue]}>800 sqft</Text>
             <Text style={[styles.subDetailsTitle]}>Buildup</Text>
           </View>
         </View>
@@ -80,55 +65,37 @@ const PropDetailsFromListing = ({ route, navigation }) => {
         <View style={styles.overviewColumnWrapper}>
           <View style={styles.overviewLeftColumn}>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {item.property_details.washroom_numbers}
-              </Text>
+              <Text style={[styles.subDetailsValue]}>2</Text>
               <Text style={[styles.subDetailsTitle]}>Bathroom</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {item.rent_details.available_from}
-              </Text>
+              <Text style={[styles.subDetailsValue]}>Immediately</Text>
               <Text style={[styles.subDetailsTitle]}>Possession</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {item.rent_details.preferred_tenants}
-              </Text>
+              <Text style={[styles.subDetailsValue]}>Anyone</Text>
               <Text style={[styles.subDetailsTitle]}>Preferred Tenant</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {item.property_details.lift}
-              </Text>
+              <Text style={[styles.subDetailsValue]}>Yes</Text>
               <Text style={[styles.subDetailsTitle]}>Lift</Text>
             </View>
           </View>
           <View style={styles.overviewRightColumn}>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {item.property_details.parking_number}{" "}
-                {item.property_details.parking_type}
-              </Text>
+              <Text style={[styles.subDetailsValue]}>1</Text>
               <Text style={[styles.subDetailsTitle]}>Parking</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {item.property_details.floor_number}/
-                {item.property_details.total_floor}
-              </Text>
+              <Text style={[styles.subDetailsValue]}>3/6</Text>
               <Text style={[styles.subDetailsTitle]}>Floor</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {item.rent_details.non_veg_allowed}
-              </Text>
+              <Text style={[styles.subDetailsValue]}>Yes</Text>
               <Text style={[styles.subDetailsTitle]}>NonVeg</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {item.property_details.property_age} years
-              </Text>
+              <Text style={[styles.subDetailsValue]}>7 years</Text>
               <Text style={[styles.subDetailsTitle]}>Age of Building</Text>
             </View>
           </View>
@@ -141,9 +108,9 @@ const PropDetailsFromListing = ({ route, navigation }) => {
           <Text>Owner</Text>
           <View style={styles.horizontalLine}></View>
           <View style={styles.ownerDetails}>
-            <Text>{item.owner_details.name}</Text>
-            <Text>{item.owner_details.address}</Text>
-            <Text>+91 {item.owner_details.mobile1}</Text>
+            <Text>Vichitra Rajan</Text>
+            <Text>Flat 305, ZA tower, Yarri road, Mumbai</Text>
+            <Text>+91 9833097595</Text>
           </View>
         </View>
       </View>
