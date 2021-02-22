@@ -99,7 +99,7 @@ const ListingResidential = props => {
 
   useEffect(() => {
     getListing();
-    // console.log("Listing useEffect");
+    console.log("residential Listing useEffect");
   }, []);
 
   const getListing = () => {

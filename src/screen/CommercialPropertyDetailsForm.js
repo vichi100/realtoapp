@@ -104,7 +104,7 @@ const PropertyDetails = props => {
     const propertyFor = property.property_for;
 
     const property_details = {
-      house_type: propertyTypeArray[propertyTypeIndex],
+      property_used_for: propertyTypeArray[propertyTypeIndex],
       building_type: buildingTypeArray[buildingIndex],
       ideal_for: idealForSelectArray,
       parking_type: parkingTypeArray[parkingTypeIndex],

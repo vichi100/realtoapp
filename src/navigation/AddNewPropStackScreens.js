@@ -13,6 +13,8 @@ import AddImages from "../screen/AddImages";
 import AddNewPropFinalDetails from "../screen/AddNewPropFinalDetails";
 import AddNewPropSellFinalDetails from "../screen/AddNewPropSellFinalDetails";
 
+import AddNewPropCommercialRentFinalDetails from "../screen/AddNewPropCommercialRentFinalDetails";
+
 const Stack = createStackNavigator();
 const AddNewPropStackScreens = () => {
   return (
@@ -76,6 +78,12 @@ const AddNewPropStackScreens = () => {
       <Stack.Screen
         name="AddNewPropSellFinalDetails"
         component={AddNewPropSellFinalDetails}
+        options={{ title: "Final Details" }}
+      />
+
+      <Stack.Screen
+        name="AddNewPropCommercialRentFinalDetails"
+        component={AddNewPropCommercialRentFinalDetails}
         options={{ title: "Final Details" }}
       />
     </Stack.Navigator>

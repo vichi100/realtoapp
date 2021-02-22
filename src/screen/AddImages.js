@@ -62,6 +62,14 @@ const AddImages = props => {
       } else if (property.property_for.toLowerCase() === "Sell".toLowerCase()) {
         navigation.navigate("AddNewPropSellFinalDetails");
       }
+    } else if (
+      property.property_type.toLowerCase() === "Commercial".toLowerCase()
+    ) {
+      if (property.property_for.toLowerCase() === "Rent".toLowerCase()) {
+        navigation.navigate("AddNewPropCommercialRentFinalDetails");
+      } else if (property.property_for.toLowerCase() === "Sell".toLowerCase()) {
+        navigation.navigate("AddNewPropCommercialSellFinalDetails");
+      }
     }
   };
 

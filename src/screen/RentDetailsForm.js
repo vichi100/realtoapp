@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -26,6 +26,7 @@ const RentDetailsForm = props => {
   const date = new Date();
   const [newDate, setNewDate] = React.useState("");
 
+  const [propertyDetailsX, setPropertyDetailsX] = useState({});
   const [expectedRent, setExpectedRent] = useState("");
   const [expectedDeposit, setExpectedDeposit] = useState("");
   const [isVisible, setIsVisible] = useState(false);
@@ -33,6 +34,15 @@ const RentDetailsForm = props => {
   const [preferredTenantsIndex, setPreferredTenantsIndex] = useState(-1);
   const [nonvegAllowedIndex, setNonvegAllowedIndex] = useState(-1);
   const [visible, setVisible] = React.useState(false);
+
+  useEffect(() => {
+    init();
+  }, [propertyDetailsX]);
+
+  const init = async () => {
+    const property = JSON.parse(await AsyncStorage.getItem("property"));
+    setPropertyDetailsX(property);
+  };
 
   const dismissSnackBar = () => {
     setIsVisible(false);
@@ -80,11 +90,17 @@ const RentDetailsForm = props => {
       setErrorMessage("Available date is missing");
       setIsVisible(true);
       return;
-    } else if (preferredTenantsIndex === -1) {
+    } else if (
+      propertyDetailsX.property_type === "Residential" &&
+      preferredTenantsIndex === -1
+    ) {
       setErrorMessage("Preferred tenants is missing");
       setIsVisible(true);
       return;
-    } else if (nonvegAllowedIndex === -1) {
+    } else if (
+      propertyDetailsX.property_type === "Residential" &&
+      nonvegAllowedIndex === -1
+    ) {
       setErrorMessage("Nonveg allowed is missing");
       setIsVisible(true);
       return;
@@ -170,34 +186,38 @@ const RentDetailsForm = props => {
                 }
               }}
             />
-            <Text>Preferred Tenants*</Text>
-            <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectedPreferredTenantsIndex}
-                selectedIndex={preferredTenantsIndex}
-                buttons={preferredTenantsArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 300 }}
-                containerBorderRadius={10}
-              />
-            </View>
-            <Text>Nonveg Allowed*</Text>
-            <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectNonvegAllowedIndex}
-                selectedIndex={nonvegAllowedIndex}
-                buttons={nonvegAllowedArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 300 }}
-                containerBorderRadius={10}
-              />
-            </View>
+            {propertyDetailsX.property_type === "Residential" ? (
+              <View>
+                <Text>Preferred Tenants*</Text>
+                <View style={styles.propSubSection}>
+                  <ButtonGroup
+                    selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                    onPress={selectedPreferredTenantsIndex}
+                    selectedIndex={preferredTenantsIndex}
+                    buttons={preferredTenantsArray}
+                    // containerStyle={{ height: 30 }}
+                    textStyle={{ textAlign: "center" }}
+                    selectedTextStyle={{ color: "#fff" }}
+                    containerStyle={{ borderRadius: 10, width: 300 }}
+                    containerBorderRadius={10}
+                  />
+                </View>
+                <Text>Nonveg Allowed*</Text>
+                <View style={styles.propSubSection}>
+                  <ButtonGroup
+                    selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                    onPress={selectNonvegAllowedIndex}
+                    selectedIndex={nonvegAllowedIndex}
+                    buttons={nonvegAllowedArray}
+                    // containerStyle={{ height: 30 }}
+                    textStyle={{ textAlign: "center" }}
+                    selectedTextStyle={{ color: "#fff" }}
+                    containerStyle={{ borderRadius: 10, width: 300 }}
+                    containerBorderRadius={10}
+                  />
+                </View>
+              </View>
+            ) : null}
 
             <Button title="NEXT" onPress={() => onSubmit()} />
           </View>

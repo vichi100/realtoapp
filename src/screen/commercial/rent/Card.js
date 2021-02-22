@@ -17,6 +17,7 @@ import { ButtonGroup } from "react-native-elements";
 
 import Slideshow from "../../../components/Slideshow";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { numDifferentiation } from "../../../util/methods";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -148,22 +149,30 @@ const Card = props => {
       <View style={[styles.detailsContainer]}>
         <View style={[styles.details]}>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue, { marginTop: 5 }]}>Shop</Text>
+            <Text style={[styles.subDetailsValue, { marginTop: 5 }]}>
+              {item.property_details.property_used_for}
+            </Text>
             <Text style={[styles.subDetailsTitle]}>Prop Type</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>15000</Text>
+            <Text style={[styles.subDetailsValue]}>
+              {numDifferentiation(item.rent_details.expected_rent)}
+            </Text>
             <Text style={[styles.subDetailsTitle]}>Rent</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>60000</Text>
+            <Text style={[styles.subDetailsValue]}>
+              {numDifferentiation(item.rent_details.expected_deposit)}
+            </Text>
             <Text style={[styles.subDetailsTitle]}>Deposit</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>200sqft</Text>
+            <Text style={[styles.subDetailsValue]}>
+              {item.property_details.property_size}
+            </Text>
             <Text style={[styles.subDetailsTitle]}>Builtup</Text>
           </View>
           {/* <View style={styles.verticalLine}></View>

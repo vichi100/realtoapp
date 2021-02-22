@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image, Text, ScrollView } from "react-native";
 import Slideshow from "../../../components/Slideshow";
+import { numDifferentiation, dateFormat } from "../../../util/methods";
 
 const CommercialRentPropDetails = ({ route, navigation }) => {
   // const { navigation } = props;
@@ -34,20 +35,22 @@ const CommercialRentPropDetails = ({ route, navigation }) => {
       <View style={[styles.detailsContainer]}>
         <View style={[styles.details]}>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>Shop</Text>
+            <Text style={[styles.subDetailsValue]}>
+              {item.property_details.property_used_for}
+            </Text>
             <Text style={[styles.subDetailsTitle]}>Prop Type</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {item.rent_details.expected_rent}
+              {numDifferentiation(item.rent_details.expected_rent)}
             </Text>
             <Text style={[styles.subDetailsTitle]}>Rent</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {item.rent_details.expected_deposit}
+              {numDifferentiation(item.rent_details.expected_deposit)}
             </Text>
             <Text style={[styles.subDetailsTitle]}>Deposit</Text>
           </View>
@@ -78,7 +81,9 @@ const CommercialRentPropDetails = ({ route, navigation }) => {
         <View style={styles.overviewColumnWrapper}>
           <View style={styles.overviewLeftColumn}>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>Mall</Text>
+              <Text style={[styles.subDetailsValue]}>
+                {item.property_details.building_type}
+              </Text>
               <Text style={[styles.subDetailsTitle]}>Building Type</Text>
             </View>
             <View style={[styles.subDetails]}>
@@ -88,32 +93,35 @@ const CommercialRentPropDetails = ({ route, navigation }) => {
               <Text style={[styles.subDetailsTitle]}>Possession</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>Atm, Bank, Retail</Text>
+              <Text style={[styles.subDetailsValue]}>
+                {item.property_details.ideal_for.join(", ")}
+              </Text>
               <Text style={[styles.subDetailsTitle]}>Ideal For</Text>
-            </View>
-            <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>Yes</Text>
-              <Text style={[styles.subDetailsTitle]}>Power backup</Text>
             </View>
           </View>
           <View style={styles.overviewRightColumn}>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {item.property_details.parking_number}{" "}
                 {item.property_details.parking_type}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Parking</Text>
             </View>
-            <View style={[styles.subDetails]}>
+            {/* <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>Shop</Text>
               <Text style={[styles.subDetailsTitle]}>Last used for</Text>
-            </View>
+            </View> */}
 
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
                 {item.property_details.property_age} years
               </Text>
               <Text style={[styles.subDetailsTitle]}>Age of Building</Text>
+            </View>
+            <View style={[styles.subDetails]}>
+              <Text style={[styles.subDetailsValue]}>
+                {item.property_details.power_backup}
+              </Text>
+              <Text style={[styles.subDetailsTitle]}>Power backup</Text>
             </View>
           </View>
         </View>

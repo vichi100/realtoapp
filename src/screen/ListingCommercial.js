@@ -106,7 +106,7 @@ const ListingCommercial = props => {
 
   useEffect(() => {
     getListing();
-    // console.log("Listing useEffect");
+    console.log("commercial Listing useEffect");
   }, []);
 
   const getListing = () => {
@@ -114,7 +114,7 @@ const ListingCommercial = props => {
       name: "tom"
     };
 
-    axios("http://172.20.10.2:3000/propertyListings", {
+    axios("http://172.20.10.2:3000/commercialPropertyListings", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -184,7 +184,7 @@ const ListingCommercial = props => {
       <TouchableOpacity
         onPress={() => navigation.navigate("CommercialRentPropDetails", item)}
       >
-        <Card navigation={navigation} item={item}></Card>
+        <Card navigation={navigation} item={item} />
       </TouchableOpacity>
     );
   };

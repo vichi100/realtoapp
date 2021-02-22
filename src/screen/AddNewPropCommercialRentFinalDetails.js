@@ -11,8 +11,9 @@ import Slideshow from "../components/Slideshow";
 import Button from "../components/Button";
 import axios from "axios";
 import SERVER_URL from "../util/constant";
+import { numDifferentiation, dateFormat } from "../util/methods";
 
-const AddNewPropFinalDetails = props => {
+const AddNewPropCommercialRentFinalDetails = props => {
   const { navigation } = props;
   const [propertyFinalDetails, setPropertyFinalDetails] = useState(null);
   const [bhk, setBHK] = useState(null);
@@ -20,31 +21,31 @@ const AddNewPropFinalDetails = props => {
 
   useEffect(() => {
     getPropFinalDetails();
-  }, [propertyFinalDetails]);
+  }, []);
 
-  useEffect(() => {
-    if (propertyFinalDetails !== null) {
-      let bhkTemp = propertyFinalDetails.property_details.bhk_type;
-      if (bhkTemp.indexOf("RK") > -1) {
-        setBHK(bhkTemp);
-      } else {
-        let x = bhkTemp.split("BHK");
-        setBHK(x[0]);
-      }
-      const availableDateStr = propertyFinalDetails.rent_details.available_from;
-      const availableDate = new Date(availableDateStr);
-      const t = convert(availableDate);
-      var today = new Date();
-      const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-      const diffDays = Math.round((today - new Date(t)) / oneDay);
-      // console.log(diffDays);
-      if (diffDays >= 0) {
-        setPossessionDate("Immediately");
-      } else {
-        setPossessionDate(availableDateStr);
-      }
-    }
-  }, [propertyFinalDetails]);
+  // useEffect(() => {
+  //   if (propertyFinalDetails !== null) {
+  //     let bhkTemp = propertyFinalDetails.property_details.bhk_type;
+  //     if (bhkTemp.indexOf("RK") > -1) {
+  //       setBHK(bhkTemp);
+  //     } else {
+  //       let x = bhkTemp.split("BHK");
+  //       setBHK(x[0]);
+  //     }
+  //     const availableDateStr = propertyFinalDetails.rent_details.available_from;
+  //     const availableDate = new Date(availableDateStr);
+  //     const t = convert(availableDate);
+  //     var today = new Date();
+  //     const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+  //     const diffDays = Math.round((today - new Date(t)) / oneDay);
+  //     // console.log(diffDays);
+  //     if (diffDays >= 0) {
+  //       setPossessionDate("Immediately");
+  //     } else {
+  //       setPossessionDate(availableDateStr);
+  //     }
+  //   }
+  // }, [propertyFinalDetails]);
 
   const getPropFinalDetails = async () => {
     const property = JSON.parse(await AsyncStorage.getItem("property"));
@@ -63,7 +64,7 @@ const AddNewPropFinalDetails = props => {
     console.log(await AsyncStorage.getItem("property"));
     axios
       .post(
-        "http://172.20.10.2:3000/addNewResidentialRentProperty",
+        "http://172.20.10.2:3000/addNewCommercialProperty",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -72,7 +73,7 @@ const AddNewPropFinalDetails = props => {
       .then(
         response => {
           console.log(response.data);
-          navigation.navigate("CardDetails");
+          // navigation.navigate("CardDetails");
         },
         error => {
           console.log(error);
@@ -111,13 +112,17 @@ const AddNewPropFinalDetails = props => {
       <View style={[styles.detailsContainer]}>
         <View style={[styles.details]}>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>{bhk}</Text>
-            <Text style={[styles.subDetailsTitle]}>BHK</Text>
+            <Text style={[styles.subDetailsValue]}>
+              {propertyFinalDetails.property_details.property_used_for}
+            </Text>
+            <Text style={[styles.subDetailsTitle]}>Prop Type</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {propertyFinalDetails.rent_details.expected_rent}
+              {numDifferentiation(
+                propertyFinalDetails.rent_details.expected_rent
+              )}
             </Text>
             <Text style={[styles.subDetailsTitle]}>
               {propertyFinalDetails.property_for}
@@ -126,16 +131,11 @@ const AddNewPropFinalDetails = props => {
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {propertyFinalDetails.rent_details.expected_deposit}
+              {numDifferentiation(
+                propertyFinalDetails.rent_details.expected_deposit
+              )}
             </Text>
             <Text style={[styles.subDetailsTitle]}>Deposit</Text>
-          </View>
-          <View style={styles.verticalLine}></View>
-          <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>
-              {propertyFinalDetails.property_details.furnishing_status}
-            </Text>
-            <Text style={[styles.subDetailsTitle]}>Furnishing</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
@@ -158,48 +158,49 @@ const AddNewPropFinalDetails = props => {
           <View style={styles.overviewLeftColumn}>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {propertyFinalDetails.property_details.washroom_numbers}
+                {propertyFinalDetails.property_details.building_type}
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Bathroom</Text>
+              <Text style={[styles.subDetailsTitle]}>Building Type</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>{possessionDate}</Text>
+              <Text style={[styles.subDetailsValue]}>
+                {dateFormat(propertyFinalDetails.rent_details.available_from)}
+              </Text>
               <Text style={[styles.subDetailsTitle]}>Possession</Text>
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {propertyFinalDetails.rent_details.preferred_tenants}
+                {propertyFinalDetails.property_details.ideal_for.join(", ")}
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Preferred Tenant</Text>
+              <Text style={[styles.subDetailsTitle]}>Ideal for</Text>
             </View>
-            <View style={[styles.subDetails]}>
+            {/* <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
                 {propertyFinalDetails.property_details.lift}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Lift</Text>
-            </View>
+            </View> */}
           </View>
           <View style={styles.overviewRightColumn}>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {propertyFinalDetails.property_details.parking_number}{" "}
                 {propertyFinalDetails.property_details.parking_type}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Parking</Text>
             </View>
-            <View style={[styles.subDetails]}>
+            {/* <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
                 {propertyFinalDetails.property_details.floor_number}/
                 {propertyFinalDetails.property_details.total_floor}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Floor</Text>
-            </View>
-            <View style={[styles.subDetails]}>
+            </View> */}
+            {/* <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
                 {propertyFinalDetails.rent_details.non_veg_allowed}
               </Text>
               <Text style={[styles.subDetailsTitle]}>NonVeg</Text>
-            </View>
+            </View> */}
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
                 {propertyFinalDetails.property_details.property_age}
@@ -339,4 +340,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddNewPropFinalDetails;
+export default AddNewPropCommercialRentFinalDetails;
