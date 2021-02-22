@@ -18,7 +18,6 @@ import { ButtonGroup } from "react-native-elements";
 
 import Slideshow from "../components/Slideshow";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { numDifferentiation } from "../util/methods";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -158,14 +157,14 @@ const Card = props => {
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {numDifferentiation(item.rent_details.expected_rent)}
+              {item.rent_details.expected_rent}
             </Text>
             <Text style={[styles.subDetailsTitle]}>Rent</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {numDifferentiation(item.rent_details.expected_deposit)}
+              {item.rent_details.expected_deposit}
             </Text>
             <Text style={[styles.subDetailsTitle]}>Deposit</Text>
           </View>

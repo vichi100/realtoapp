@@ -12,9 +12,6 @@ import ListingStackScreens from "./ListingStackScreens";
 import Notification from "../screen/Notification";
 import ProfileStackScreens from "./ProfileStackScreens";
 
-import Listing from "../screen/Listing";
-import LocalityDetails from "../screen/LocalityDetails";
-
 export default function MainScreen() {
   const Tab = createMaterialBottomTabNavigator();
   const Stack = createStackNavigator();

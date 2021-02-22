@@ -1,10 +1,14 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import Listing from "../screen/Listing";
+import Listing from "../screen/ListingResidential";
 import Meeting from "../screen/Meeting";
 import PropDetailsFromListing from "../screen/PropDetailsFromListing";
+import PropDetailsFromListingForSell from "../screen/PropDetailsFromListingForSell";
+import ListingTopTab from "./ListingTopTab";
+import CommercialRentPropDetails from "../screen/commercial/rent/CommercialRentPropDetails";
 
 const Stack = createStackNavigator();
+export const hideTabBarComponents = ["ProductDetails"];
 
 const ListingStackScreens = () => {
   return (
@@ -22,7 +26,7 @@ const ListingStackScreens = () => {
     >
       <Stack.Screen
         name="Listing"
-        component={Listing}
+        component={ListingTopTab}
         options={{ headerShown: false }}
         // options={{ tabBarLabel: "Home!" }}
       />
@@ -35,13 +39,35 @@ const ListingStackScreens = () => {
       <Stack.Screen
         name="Meeting"
         component={Meeting}
-        options={{ title: "Reminders" }}
+        options={{ title: "Reminders", tabBarVisible: false }}
+        navigationOptions={{ tabBarVisible: false }}
       />
 
       <Stack.Screen
         name="PropDetailsFromListing"
         component={PropDetailsFromListing}
-        options={{ title: "Property details" }}
+        navigationOptions={{ tabBarVisible: false }}
+        options={{
+          title: "Property details"
+        }}
+      />
+
+      <Stack.Screen
+        name="PropDetailsFromListingForSell"
+        component={PropDetailsFromListingForSell}
+        navigationOptions={{ tabBarVisible: false }}
+        options={{
+          title: "Property details"
+        }}
+      />
+
+      <Stack.Screen
+        name="CommercialRentPropDetails"
+        component={CommercialRentPropDetails}
+        navigationOptions={{ tabBarVisible: false }}
+        options={{
+          title: "Property details"
+        }}
       />
     </Stack.Navigator>
   );

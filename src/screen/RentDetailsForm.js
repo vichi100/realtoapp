@@ -21,7 +21,7 @@ import Snackbar from "../components/SnackbarComponent";
 const preferredTenantsArray = ["Family", "Bachelors", "Any"];
 const nonvegAllowedArray = ["Yes", "No"];
 
-const RentDetails = props => {
+const RentDetailsForm = props => {
   const { navigation } = props;
   const date = new Date();
   const [newDate, setNewDate] = React.useState("");
@@ -46,8 +46,13 @@ const RentDetails = props => {
   const onChange = React.useCallback(({ date }) => {
     setVisible(false);
     setIsVisible(false);
-    const x = date.toString().split("00:00");
-    setNewDate(x[0].toString().trim());
+    // const x = date.toString().split("00:00");
+    setNewDate(
+      date
+        .toString()
+        .slice(0, 16)
+        .trim()
+    );
     // setNewDate(date.toString());
     // console.log({ date });
   }, []);
@@ -243,4 +248,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default RentDetails;
+export default RentDetailsForm;

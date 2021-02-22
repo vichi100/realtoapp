@@ -28,7 +28,7 @@ const parkingTypeArray = ["Car", "Bike"];
 const propertyAgeArray = ["1-5", "6-10", "11-15", "20+"];
 const liftArray = ["Yes", "No"];
 
-const PropertyDetails = props => {
+const ResidentialPropertyDetailsForm = props => {
   const { navigation } = props;
   // const [city, setCity] = React.useState("");
   // const [locality, setLocality] = React.useState("");
@@ -100,6 +100,7 @@ const PropertyDetails = props => {
       return;
     }
     const property = JSON.parse(await AsyncStorage.getItem("property"));
+    const propertyFor = property.property_for;
 
     const property_details = {
       house_type: houseTypeArray[houseTypeIndex],
@@ -119,8 +120,11 @@ const PropertyDetails = props => {
     // console.log(property);
     AsyncStorage.setItem("property", JSON.stringify(property));
     // console.log(property);
-
-    navigation.navigate("RentDetails");
+    if (propertyFor.toLowerCase() === "Rent".toLowerCase()) {
+      navigation.navigate("RentDetailsForm");
+    } else if (propertyFor.toLowerCase() === "Sell".toLowerCase()) {
+      navigation.navigate("SellDetailsForm");
+    }
   };
 
   const selectHouseTypeIndex = index => {
@@ -400,4 +404,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default PropertyDetails;
+export default ResidentialPropertyDetailsForm;

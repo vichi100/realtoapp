@@ -18,7 +18,8 @@ import Button from "../components/Button";
 import { Divider } from "react-native-paper";
 import { SocialIcon } from "react-native-elements";
 import Slider from "../components/Slider";
-import Card from "./Card";
+import CardResidentialRent from "./Card";
+import CardResidentialSell from "./CardSell";
 import axios from "axios";
 import SERVER_URL from "../util/constant";
 
@@ -88,7 +89,7 @@ const dataX = [
   }
 ];
 
-const Listing = props => {
+const ListingResidential = props => {
   const { navigation } = props;
   const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
@@ -169,16 +170,28 @@ const Listing = props => {
   };
 
   const ItemView = ({ item }) => {
-    // console.log("hi");
-    return (
-      // Single Comes here which will be repeatative for the FlatListItems
-      // <Text>vichi</Text>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("PropDetailsFromListing", item)}
-      >
-        <Card navigation={navigation} item={item}></Card>
-      </TouchableOpacity>
-    );
+    // console.log(item);
+    if (item.property_type === "Residential") {
+      if (item.property_for === "Rent") {
+        return (
+          <TouchableOpacity
+            onPress={() => navigation.navigate("PropDetailsFromListing", item)}
+          >
+            <CardResidentialRent navigation={navigation} item={item} />
+          </TouchableOpacity>
+        );
+      } else if (item.property_for === "Sell") {
+        return (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("PropDetailsFromListingForSell", item)
+            }
+          >
+            <CardResidentialSell navigation={navigation} item={item} />
+          </TouchableOpacity>
+        );
+      }
+    }
   };
 
   const ItemSeparatorView = () => {
@@ -518,4 +531,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Listing;
+export default ListingResidential;

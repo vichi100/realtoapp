@@ -3,11 +3,15 @@ import { StyleSheet, Text, View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import AddNewProperty from "../screen/AddNewProperty";
-import LocalityDetails from "../screen/LocalityDetails";
-import PropertyDetails from "../screen/PropertyDetails";
-import RentDetails from "../screen/RentDetails";
+import LocalityDetailsForm from "../screen/LocalityDetailsForm";
+import ResidentialPropertyDetailsForm from "../screen/ResidentialPropertyDetailsForm";
+import CommercialPropertyDetailsForm from "../screen/CommercialPropertyDetailsForm";
+
+import RentDetailsForm from "../screen/RentDetailsForm";
+import SellDetailsForm from "../screen/SellDetailsForm";
 import AddImages from "../screen/AddImages";
 import AddNewPropFinalDetails from "../screen/AddNewPropFinalDetails";
+import AddNewPropSellFinalDetails from "../screen/AddNewPropSellFinalDetails";
 
 const Stack = createStackNavigator();
 const AddNewPropStackScreens = () => {
@@ -29,21 +33,33 @@ const AddNewPropStackScreens = () => {
         options={{ title: "Add New Property" }}
       />
       <Stack.Screen
-        name="LocalityDetails"
-        component={LocalityDetails}
+        name="LocalityDetailsForm"
+        component={LocalityDetailsForm}
         options={{ title: "Locality Details" }}
       />
 
       <Stack.Screen
-        name="PropertyDetails"
-        component={PropertyDetails}
+        name="ResidentialPropertyDetailsForm"
+        component={ResidentialPropertyDetailsForm}
         options={{ title: "Property Details" }}
       />
 
       <Stack.Screen
-        name="RentDetails"
-        component={RentDetails}
+        name="CommercialPropertyDetailsForm"
+        component={CommercialPropertyDetailsForm}
+        options={{ title: "Property Details" }}
+      />
+
+      <Stack.Screen
+        name="RentDetailsForm"
+        component={RentDetailsForm}
         options={{ title: "Rent Details" }}
+      />
+
+      <Stack.Screen
+        name="SellDetailsForm"
+        component={SellDetailsForm}
+        options={{ title: "Selling Details" }}
       />
 
       <Stack.Screen
@@ -54,6 +70,12 @@ const AddNewPropStackScreens = () => {
       <Stack.Screen
         name="AddNewPropFinalDetails"
         component={AddNewPropFinalDetails}
+        options={{ title: "Final Details" }}
+      />
+
+      <Stack.Screen
+        name="AddNewPropSellFinalDetails"
+        component={AddNewPropSellFinalDetails}
         options={{ title: "Final Details" }}
       />
     </Stack.Navigator>

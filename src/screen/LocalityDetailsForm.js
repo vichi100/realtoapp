@@ -16,7 +16,7 @@ import Button from "../components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../components/SnackbarComponent";
 
-const LocalityDetails = props => {
+const LocalityDetailsForm = props => {
   const { navigation } = props;
   const [city, setCity] = useState("");
   const [area, setArea] = useState("");
@@ -59,6 +59,7 @@ const LocalityDetails = props => {
       return;
     }
     const property = JSON.parse(await AsyncStorage.getItem("property"));
+    const propertyType = property.property_type;
     // console.log(property);
 
     const property_address = {
@@ -74,7 +75,11 @@ const LocalityDetails = props => {
     // console.log(property_address);
     AsyncStorage.setItem("property", JSON.stringify(property));
     // console.log(property);
-    navigation.navigate("PropertyDetails");
+    if (propertyType.toLowerCase() === "Residential".toLowerCase()) {
+      navigation.navigate("ResidentialPropertyDetailsForm");
+    } else {
+      navigation.navigate("CommercialPropertyDetailsForm");
+    }
   };
 
   return (
@@ -188,4 +193,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LocalityDetails;
+export default LocalityDetailsForm;

@@ -87,7 +87,7 @@ const Card = props => {
       <View style={styles.MainContainer}>
         <View style={[styles.headerContainer]}>
           <Text style={[styles.title]}>
-            Rent In {item.property_address.building_name},{" "}
+            Sell in {item.property_address.building_name},{" "}
             {item.property_address.landmark_or_street}
           </Text>
           <Text style={[StyleSheet.subTitle]}>
@@ -158,16 +158,16 @@ const Card = props => {
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {numDifferentiation(item.rent_details.expected_rent)}
+              {numDifferentiation(item.sell_details.expected_sell_price)}
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Rent</Text>
+            <Text style={[styles.subDetailsTitle]}>Price</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {numDifferentiation(item.rent_details.expected_deposit)}
+              {item.property_details.property_size}
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Deposit</Text>
+            <Text style={[styles.subDetailsTitle]}>Buildup</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>

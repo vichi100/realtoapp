@@ -98,7 +98,7 @@ const AddNewProperty = props => {
     // console.log(property);
     AsyncStorage.setItem("property", JSON.stringify(property));
     // console.log("1");
-    navigation.navigate("LocalityDetails");
+    navigation.navigate("LocalityDetailsForm");
   };
 
   return (

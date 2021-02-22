@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image, Text, ScrollView } from "react-native";
-import Slideshow from "../components/Slideshow";
-import { numDifferentiation } from "../util/methods";
+import Slideshow from "../../../components/Slideshow";
 
-const PropDetailsFromListing = ({ route, navigation }) => {
+const CommercialRentPropDetails = ({ route, navigation }) => {
   // const { navigation } = props;
   const item = route.params;
   console.log(item);
@@ -11,7 +10,7 @@ const PropDetailsFromListing = ({ route, navigation }) => {
     <ScrollView style={[styles.container]}>
       <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
-          Rent {item.property_address.building_name},{" "}
+          Rent in {item.property_address.building_name},{" "}
           {item.property_address.landmark_or_street}
         </Text>
         <Text style={[StyleSheet.subTitle]}>
@@ -35,32 +34,30 @@ const PropDetailsFromListing = ({ route, navigation }) => {
       <View style={[styles.detailsContainer]}>
         <View style={[styles.details]}>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>
-              {item.property_details.bhk_type}
-            </Text>
-            <Text style={[styles.subDetailsTitle]}>BHK</Text>
+            <Text style={[styles.subDetailsValue]}>Shop</Text>
+            <Text style={[styles.subDetailsTitle]}>Prop Type</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {numDifferentiation(item.rent_details.expected_rent)}
+              {item.rent_details.expected_rent}
             </Text>
             <Text style={[styles.subDetailsTitle]}>Rent</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {numDifferentiation(item.rent_details.expected_deposit)}
+              {item.rent_details.expected_deposit}
             </Text>
             <Text style={[styles.subDetailsTitle]}>Deposit</Text>
           </View>
-          <View style={styles.verticalLine}></View>
+          {/* <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
               {item.property_details.furnishing_status}
             </Text>
             <Text style={[styles.subDetailsTitle]}>Furnishing</Text>
-          </View>
+          </View> */}
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
@@ -81,10 +78,8 @@ const PropDetailsFromListing = ({ route, navigation }) => {
         <View style={styles.overviewColumnWrapper}>
           <View style={styles.overviewLeftColumn}>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {item.property_details.washroom_numbers}
-              </Text>
-              <Text style={[styles.subDetailsTitle]}>Bathroom</Text>
+              <Text style={[styles.subDetailsValue]}>Mall</Text>
+              <Text style={[styles.subDetailsTitle]}>Building Type</Text>
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
@@ -93,16 +88,12 @@ const PropDetailsFromListing = ({ route, navigation }) => {
               <Text style={[styles.subDetailsTitle]}>Possession</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {item.rent_details.preferred_tenants}
-              </Text>
-              <Text style={[styles.subDetailsTitle]}>Preferred Tenant</Text>
+              <Text style={[styles.subDetailsValue]}>Atm, Bank, Retail</Text>
+              <Text style={[styles.subDetailsTitle]}>Ideal For</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {item.property_details.lift}
-              </Text>
-              <Text style={[styles.subDetailsTitle]}>Lift</Text>
+              <Text style={[styles.subDetailsValue]}>Yes</Text>
+              <Text style={[styles.subDetailsTitle]}>Power backup</Text>
             </View>
           </View>
           <View style={styles.overviewRightColumn}>
@@ -114,18 +105,10 @@ const PropDetailsFromListing = ({ route, navigation }) => {
               <Text style={[styles.subDetailsTitle]}>Parking</Text>
             </View>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {item.property_details.floor_number}/
-                {item.property_details.total_floor}
-              </Text>
-              <Text style={[styles.subDetailsTitle]}>Floor</Text>
+              <Text style={[styles.subDetailsValue]}>Shop</Text>
+              <Text style={[styles.subDetailsTitle]}>Last used for</Text>
             </View>
-            <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {item.rent_details.non_veg_allowed}
-              </Text>
-              <Text style={[styles.subDetailsTitle]}>NonVeg</Text>
-            </View>
+
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
                 {item.property_details.property_age} years
@@ -263,4 +246,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default PropDetailsFromListing;
+export default CommercialRentPropDetails;

@@ -11,8 +11,9 @@ import Slideshow from "../components/Slideshow";
 import Button from "../components/Button";
 import axios from "axios";
 import SERVER_URL from "../util/constant";
+import { numDifferentiation } from "../util/methods";
 
-const AddNewPropFinalDetails = props => {
+const AddNewPropSellFinalDetails = props => {
   const { navigation } = props;
   const [propertyFinalDetails, setPropertyFinalDetails] = useState(null);
   const [bhk, setBHK] = useState(null);
@@ -31,7 +32,7 @@ const AddNewPropFinalDetails = props => {
         let x = bhkTemp.split("BHK");
         setBHK(x[0]);
       }
-      const availableDateStr = propertyFinalDetails.rent_details.available_from;
+      const availableDateStr = propertyFinalDetails.sell_details.available_from;
       const availableDate = new Date(availableDateStr);
       const t = convert(availableDate);
       var today = new Date();
@@ -72,7 +73,7 @@ const AddNewPropFinalDetails = props => {
       .then(
         response => {
           console.log(response.data);
-          navigation.navigate("CardDetails");
+          // navigation.navigate("CardDetails");
         },
         error => {
           console.log(error);
@@ -111,13 +112,17 @@ const AddNewPropFinalDetails = props => {
       <View style={[styles.detailsContainer]}>
         <View style={[styles.details]}>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>{bhk}</Text>
-            <Text style={[styles.subDetailsTitle]}>BHK</Text>
+            <Text style={[styles.subDetailsValue, { textAlign: "center" }]}>
+              {propertyFinalDetails.property_details.bhk_type}
+            </Text>
+            {/* <Text style={[styles.subDetailsTitle]}>BHK</Text> */}
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {propertyFinalDetails.rent_details.expected_rent}
+              {numDifferentiation(
+                propertyFinalDetails.sell_details.expected_sell_price
+              )}
             </Text>
             <Text style={[styles.subDetailsTitle]}>
               {propertyFinalDetails.property_for}
@@ -126,9 +131,9 @@ const AddNewPropFinalDetails = props => {
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {propertyFinalDetails.rent_details.expected_deposit}
+              {propertyFinalDetails.property_details.property_size}
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Deposit</Text>
+            <Text style={[styles.subDetailsTitle]}>Buildup</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
@@ -137,13 +142,13 @@ const AddNewPropFinalDetails = props => {
             </Text>
             <Text style={[styles.subDetailsTitle]}>Furnishing</Text>
           </View>
-          <View style={styles.verticalLine}></View>
+          {/* <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
               {propertyFinalDetails.property_details.property_size}sqft
             </Text>
             <Text style={[styles.subDetailsTitle]}>Buildup</Text>
-          </View>
+          </View> */}
         </View>
       </View>
 
@@ -168,9 +173,11 @@ const AddNewPropFinalDetails = props => {
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {propertyFinalDetails.rent_details.preferred_tenants}
+                {numDifferentiation(
+                  propertyFinalDetails.sell_details.maintenance_charge
+                )}
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Preferred Tenant</Text>
+              <Text style={[styles.subDetailsTitle]}>Maintenance charge</Text>
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
@@ -196,9 +203,9 @@ const AddNewPropFinalDetails = props => {
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {propertyFinalDetails.rent_details.non_veg_allowed}
+                {propertyFinalDetails.sell_details.negotiable}
               </Text>
-              <Text style={[styles.subDetailsTitle]}>NonVeg</Text>
+              <Text style={[styles.subDetailsTitle]}>Negotiable</Text>
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
@@ -339,4 +346,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddNewPropFinalDetails;
+export default AddNewPropSellFinalDetails;
