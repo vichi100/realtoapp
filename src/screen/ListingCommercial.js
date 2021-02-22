@@ -19,7 +19,8 @@ import Button from "../components/Button";
 import { Divider } from "react-native-paper";
 import { SocialIcon } from "react-native-elements";
 import Slider from "../components/Slider";
-import Card from "./commercial/rent/Card";
+import CardRent from "./commercial/rent/Card";
+import CardSell from "./commercial/sell/Card";
 import axios from "axios";
 import SERVER_URL from "../util/constant";
 
@@ -177,16 +178,31 @@ const ListingCommercial = props => {
   };
 
   const ItemView = ({ item }) => {
+    if (item.property_type === "Commercial") {
+      if (item.property_for === "Rent") {
+        return (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("CommercialRentPropDetails", item)
+            }
+          >
+            <CardRent navigation={navigation} item={item} />
+          </TouchableOpacity>
+        );
+      } else if (item.property_for === "Sell") {
+        return (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("CommercialSellPropDetails", item)
+            }
+          >
+            <CardSell navigation={navigation} item={item} />
+          </TouchableOpacity>
+        );
+      }
+    }
+
     // console.log("hi");
-    return (
-      // Single Comes here which will be repeatative for the FlatListItems
-      // <Text>vichi</Text>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("CommercialRentPropDetails", item)}
-      >
-        <Card navigation={navigation} item={item} />
-      </TouchableOpacity>
-    );
   };
 
   const ItemSeparatorView = () => {

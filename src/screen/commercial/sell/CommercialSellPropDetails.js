@@ -3,7 +3,7 @@ import { StyleSheet, View, Image, Text, ScrollView } from "react-native";
 import Slideshow from "../../../components/Slideshow";
 import { numDifferentiation, dateFormat } from "../../../util/methods";
 
-const CommercialRentPropDetails = ({ route, navigation }) => {
+const CommercialSellPropDetails = ({ route, navigation }) => {
   // const { navigation } = props;
   const item = route.params;
   // console.log(item);
@@ -11,7 +11,7 @@ const CommercialRentPropDetails = ({ route, navigation }) => {
     <ScrollView style={[styles.container]}>
       <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
-          Rent in {item.property_address.building_name},{" "}
+          Sell in {item.property_address.building_name},{" "}
           {item.property_address.landmark_or_street}
         </Text>
         <Text style={[StyleSheet.subTitle]}>
@@ -43,16 +43,16 @@ const CommercialRentPropDetails = ({ route, navigation }) => {
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {numDifferentiation(item.rent_details.expected_rent)}
+              {numDifferentiation(item.sell_details.expected_sell_price)}
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Rent</Text>
+            <Text style={[styles.subDetailsTitle]}>Price</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {numDifferentiation(item.rent_details.expected_deposit)}
+              {item.property_details.building_type}
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Deposit</Text>
+            <Text style={[styles.subDetailsTitle]}>Building Type</Text>
           </View>
           {/* <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
@@ -82,13 +82,13 @@ const CommercialRentPropDetails = ({ route, navigation }) => {
           <View style={styles.overviewLeftColumn}>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {item.property_details.building_type}
+                {item.sell_details.negotiable}
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Building Type</Text>
+              <Text style={[styles.subDetailsTitle]}>Negotiable</Text>
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {item.rent_details.available_from}
+                {dateFormat(item.sell_details.available_from)}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Possession</Text>
             </View>
@@ -254,4 +254,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CommercialRentPropDetails;
+export default CommercialSellPropDetails;

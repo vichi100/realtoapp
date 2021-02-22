@@ -6,6 +6,7 @@ import PropDetailsFromListing from "../screen/PropDetailsFromListing";
 import PropDetailsFromListingForSell from "../screen/PropDetailsFromListingForSell";
 import ListingTopTab from "./ListingTopTab";
 import CommercialRentPropDetails from "../screen/commercial/rent/CommercialRentPropDetails";
+import CommercialSellPropDetails from "../screen/commercial/sell/CommercialSellPropDetails";
 
 const Stack = createStackNavigator();
 export const hideTabBarComponents = ["ProductDetails"];
@@ -64,6 +65,14 @@ const ListingStackScreens = () => {
       <Stack.Screen
         name="CommercialRentPropDetails"
         component={CommercialRentPropDetails}
+        navigationOptions={{ tabBarVisible: false }}
+        options={{
+          title: "Property details"
+        }}
+      />
+      <Stack.Screen
+        name="CommercialSellPropDetails"
+        component={CommercialSellPropDetails}
         navigationOptions={{ tabBarVisible: false }}
         options={{
           title: "Property details"

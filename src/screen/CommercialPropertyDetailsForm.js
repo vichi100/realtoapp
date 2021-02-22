@@ -154,7 +154,12 @@ const PropertyDetails = props => {
     temp[index].checked = !tempChecked;
     // console.log(temp);
     setIdealForArray(temp);
-    idealForSelectArray.push(temp[index].name);
+    if (!tempChecked === true) {
+      idealForSelectArray.push(temp[index].name);
+    } else {
+      var filteredAry = ary.filter(e => e !== temp[index].name);
+      setIdealForSelectArray(filteredAry);
+    }
   };
 
   return (

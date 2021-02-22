@@ -14,6 +14,7 @@ import AddNewPropFinalDetails from "../screen/AddNewPropFinalDetails";
 import AddNewPropSellFinalDetails from "../screen/AddNewPropSellFinalDetails";
 
 import AddNewPropCommercialRentFinalDetails from "../screen/AddNewPropCommercialRentFinalDetails";
+import AddNewPropCommercialSellFinalDetails from "../screen/AddNewPropCommercialSellFinalDetails";
 
 const Stack = createStackNavigator();
 const AddNewPropStackScreens = () => {
@@ -84,6 +85,11 @@ const AddNewPropStackScreens = () => {
       <Stack.Screen
         name="AddNewPropCommercialRentFinalDetails"
         component={AddNewPropCommercialRentFinalDetails}
+        options={{ title: "Final Details" }}
+      />
+      <Stack.Screen
+        name="AddNewPropCommercialSellFinalDetails"
+        component={AddNewPropCommercialSellFinalDetails}
         options={{ title: "Final Details" }}
       />
     </Stack.Navigator>
