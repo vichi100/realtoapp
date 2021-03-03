@@ -17,7 +17,6 @@ const Login = props => {
   const [otp, setOTP] = useState("");
   useEffect(() => {
     console.log("Login");
-    // navigation.navigate("Home");
   }, []);
 
   const getOtp = otp => {
@@ -60,10 +59,11 @@ const Login = props => {
                 borderColor: "lightgrey", // color of the border
                 backgroundColor: "lightgrey",
                 paddingLeft: 10,
-                width: 50,
+                width: 60,
                 height: 45,
                 // borderRadius: 5
-                color: "#000000"
+                color: "#000000",
+                fontSize: 16
               }}
               // placeholder="+91"
               value="+91"
@@ -74,8 +74,9 @@ const Login = props => {
                 borderColor: "lightgrey", // color of the border
                 paddingLeft: 10,
                 width: "80%",
-                height: 45
+                height: 45,
                 // borderRadius: 5
+                fontSize: 16
               }}
               placeholder="Mobile"
             />

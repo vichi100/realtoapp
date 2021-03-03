@@ -29,7 +29,6 @@ const BottomTabScreen = () => {
         component={HomeStackNav}
         options={{
           tabBarLabel: "",
-          tabBarVisible: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
           )
