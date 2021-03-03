@@ -1,12 +1,20 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Image, Text, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  ScrollView,
+  TouchableOpacity
+} from "react-native";
 import Slideshow from "../components/Slideshow";
 import { numDifferentiation } from "../util/methods";
+import Feather from "react-native-vector-icons/Feather";
 
 const PropDetailsFromListing = ({ route, navigation }) => {
   // const { navigation } = props;
   const item = route.params;
-  console.log(item);
+  // console.log(item);
   return (
     <ScrollView style={[styles.container]}>
       <View style={[styles.headerContainer]}>
@@ -75,7 +83,21 @@ const PropDetailsFromListing = ({ route, navigation }) => {
       {/* property details */}
       <View style={styles.overviewContainer}>
         <View style={styles.overview}>
-          <Text>Details</Text>
+          <View
+            style={{ justifyContent: "space-between", flexDirection: "row" }}
+          >
+            <Text>Details</Text>
+            <TouchableOpacity
+              onPress={() => toggleBottomNavigationView()}
+              style={styles.fabIcon2}
+            >
+              <Feather
+                name="edit"
+                // color={"#ffffff"}
+                size={20}
+              />
+            </TouchableOpacity>
+          </View>
           <View style={styles.horizontalLine}></View>
         </View>
         <View style={styles.overviewColumnWrapper}>

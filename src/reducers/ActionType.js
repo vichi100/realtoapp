@@ -1,0 +1,3 @@
+export const ACTION_TYPES = {
+  SET_EMPLOYEE_LIST: "APP.SET_EMPLOYEE_LIST"
+};

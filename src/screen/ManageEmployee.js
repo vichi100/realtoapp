@@ -19,19 +19,18 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../components/SnackbarComponent";
 import EmployeeList from "./EmployeeList";
+import axios from "axios";
+import { setEmployeeList } from "../reducers/Action";
+import { connect } from "react-redux";
 
 const ManageEmployee = props => {
   const { navigation } = props;
-  const date = new Date();
-  const [newDate, setNewDate] = React.useState("");
-  const [newTime, setNewTime] = React.useState("");
-  const [clientName, setClientName] = useState("");
-  const [clientMobile, setClientMobile] = useState("");
-  const [reminderForIndex, setReminderForIndex] = React.useState(-1);
-  const [isVisible, setIsVisible] = useState(false);
+  const [employeeName, setEmployeeName] = useState("");
+  const [employeeMobile, setEmployeeMobile] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isReadEnabled, setIsReadEnabled] = useState(false);
   const [isEditEnabled, setIsEditEnabled] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const toggleReadSwitch = () =>
     setIsReadEnabled(previousState => !previousState);
@@ -39,68 +38,45 @@ const ManageEmployee = props => {
   const toggleEditSwitch = () =>
     setIsEditEnabled(previousState => !previousState);
 
-  const selectReminderForIndex = index => {
-    setReminderForIndex(index);
-    setIsVisible(false);
-  };
-
   const dismissSnackBar = () => {
     setIsVisible(false);
   };
 
-  const [visible, setVisible] = React.useState(false);
-  const onDismiss = React.useCallback(() => {
-    setVisible(false);
-    setIsVisible(false);
-  }, [setVisible]);
-  const onChange = React.useCallback(({ date }) => {
-    setVisible(false);
-    setIsVisible(false);
-    const x = date.toString().split("00:00");
-    setNewDate(x[0]);
-    console.log(new Date(date).getDay());
-    console.log(date.toString());
-  }, []);
-
-  const [timeVisible, setTimeVisible] = React.useState(false);
-  const onDismissTimePicker = React.useCallback(() => {
-    setTimeVisible(false);
-    // setIsVisible(false);
-  }, [setTimeVisible]);
-
-  const onConfirmTimePicker = React.useCallback(
-    ({ hours, minutes }) => {
-      setTimeVisible(false);
-      // setIsVisible(false);
-      console.log({ hours, minutes });
-      setNewTime(hours + ":" + minutes);
-    },
-    [setTimeVisible]
-  );
-
   const onSubmit = () => {
-    if (reminderForIndex === -1) {
-      setErrorMessage("Reminder type is missing");
-      setIsVisible(true);
-      return;
-    } else if (clientName.trim() === "") {
+    if (employeeName.trim() === "") {
       setErrorMessage("Client name is missing");
       setIsVisible(true);
       return;
-    } else if (clientMobile.trim() === "") {
+    } else if (employeeMobile.trim() === "") {
       setErrorMessage("Client mobile is missing");
       setIsVisible(true);
       return;
-    } else if (newDate.trim() === "") {
-      setErrorMessage("Date is missing");
-      setIsVisible(true);
-      return;
-    } else if (newTime.trim() === "") {
-      setErrorMessage("Time is missing");
-      setIsVisible(true);
-      return;
     }
-    navigation.navigate("AddImages");
+    const user = {
+      agent_id: "1234",
+      employee: {
+        employee_name: employeeName.trim(),
+        employee_mobile: employeeMobile.trim(),
+        access_rights: isEditEnabled ? "edit" : "read"
+      }
+    };
+    props.setEmployeeList("vichi");
+    axios("http://192.168.0.104:3000/addEmployee", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: { user }
+    }).then(
+      response => {
+        // console.log(response.data);
+        setData(response.data);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   };
 
   return (
@@ -116,8 +92,8 @@ const ManageEmployee = props => {
 
             <TextInput
               label="Employee Name*"
-              value={clientName}
-              onChangeText={text => setClientName(text)}
+              value={employeeName}
+              onChangeText={text => setEmployeeName(text)}
               onFocus={() => setIsVisible(false)}
               style={{ backgroundColor: "#ffffff", marginTop: 8 }}
               theme={{
@@ -133,8 +109,8 @@ const ManageEmployee = props => {
 
             <TextInput
               label="Employee Mobile*"
-              value={clientMobile}
-              onChangeText={text => setClientMobile(text)}
+              value={employeeMobile}
+              onChangeText={text => setEmployeeMobile(text)}
               onFocus={() => setIsVisible(false)}
               keyboardType={"numeric"}
               returnKeyType={"done"}
@@ -245,4 +221,16 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ManageEmployee;
+// export default ManageEmployee;
+
+const mapStateToProps = state => ({
+  employeeList: state.AppReducer.employeeList
+});
+const mapDispatchToProps = {
+  setEmployeeList
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ManageEmployee);

@@ -115,7 +115,7 @@ const ListingCommercial = props => {
       name: "tom"
     };
 
-    axios("http://172.20.10.2:3000/commercialPropertyListings", {
+    axios("http://192.168.0.104:3000/commercialPropertyListings", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -327,6 +327,7 @@ const ListingCommercial = props => {
                 selectedTextStyle={{ color: "#fff" }}
                 containerStyle={{ borderRadius: 10, width: 350 }}
                 containerBorderRadius={10}
+                vertical={true}
               />
             </View>
             <Text style={styles.marginBottom10}>Building type</Text>

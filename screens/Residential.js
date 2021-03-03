@@ -2,7 +2,7 @@ import * as React from "react";
 import { Text, View, Dimensions } from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import TopTabBar from "./TopTabBar";
+// import TopTabBar from "./TopTabBar";
 import RentScreen from "./RentScreen";
 import SellScreen from "./SellScreen";
 

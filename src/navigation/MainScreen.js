@@ -11,81 +11,43 @@ import AddNewPropStackScreens from "./AddNewPropStackScreens";
 import ListingStackScreens from "./ListingStackScreens";
 import Notification from "../screen/Notification";
 import ProfileStackScreens from "./ProfileStackScreens";
+import NotificationTopTab from "./NotificationTopTab";
+import Login from "../screen/Login";
+import BottomTabScreen from "./BottomTabScreen";
 
 export default function MainScreen() {
-  const Tab = createMaterialBottomTabNavigator();
-  const Stack = createStackNavigator();
+  const RootStack = createStackNavigator();
 
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="Home"
-        activeColor="rgb(135,206,235)"
-        inactiveColor="rgb(105,105,105)"
-        barStyle={{ backgroundColor: "#ffffff", paddingBottom: 0 }}
+      <RootStack.Navigator
+        screenOptions={{
+          headerShown: false,
+          headerTitleAlign: "center",
+          // headerTintColor: "#fff",
+          headerStyle: {
+            backgroundColor: "#ffffff"
+          },
+          headerBackTitleVisible: false,
+          headerTintColor: "rgba(105,105,105, .9)"
+        }}
       >
-        <Tab.Screen
-          name="Home"
-          component={HomeStackNav}
-          options={{
-            tabBarLabel: "",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="home" color={color} size={26} />
-            )
+        <RootStack.Screen name="BottomTabScreen" component={BottomTabScreen} />
+        <RootStack.Screen
+          name="Login"
+          component={Login}
+          screenOptions={{
+            headerShown: false,
+            headerTitleAlign: "center",
+            // headerTintColor: "#fff",
+            headerStyle: {
+              backgroundColor: "#ffffff"
+            },
+            headerBackTitleVisible: false,
+            headerTintColor: "rgba(105,105,105, .9)"
           }}
         />
-        <Tab.Screen
-          name="Listing"
-          component={ListingStackScreens}
-          title="My Properties"
-          options={{
-            tabBarLabel: "",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="view-grid-outline"
-                color={color}
-                size={26}
-              />
-            )
-          }}
-        />
-        <Tab.Screen
-          name="Add"
-          component={AddNewPropStackScreens}
-          options={{
-            tabBarLabel: "",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="view-grid-plus-outline"
-                color={color}
-                size={26}
-              />
-            )
-          }}
-        />
-
-        <Tab.Screen
-          name="Notification"
-          component={Notification}
-          options={{
-            tabBarLabel: "",
-            tabBarIcon: ({ color }) => (
-              <Ionicons name="notifications-outline" color={color} size={26} />
-            )
-          }}
-        />
-
-        <Tab.Screen
-          name="Profile"
-          component={ProfileStackScreens}
-          options={{
-            tabBarLabel: "",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="account" color={color} size={26} />
-            )
-          }}
-        />
-      </Tab.Navigator>
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 }

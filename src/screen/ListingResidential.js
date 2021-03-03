@@ -107,7 +107,7 @@ const ListingResidential = props => {
       name: "tom"
     };
 
-    axios("http://172.20.10.2:3000/propertyListings", {
+    axios("http://192.168.0.104:3000/propertyListings", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -296,7 +296,7 @@ const ListingResidential = props => {
                 containerBorderRadius={10}
               />
             </View>
-            <Text style={styles.marginBottom10}>Property type</Text>
+            {/* <Text style={styles.marginBottom10}>Property type</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
@@ -309,7 +309,7 @@ const ListingResidential = props => {
                 containerStyle={{ borderRadius: 10, width: 350 }}
                 containerBorderRadius={10}
               />
-            </View>
+            </View> */}
             <Text style={styles.marginBottom10}>Home type</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup

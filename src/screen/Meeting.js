@@ -17,23 +17,14 @@ import { ButtonGroup } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../components/SnackbarComponent";
+import axios from "axios";
 
-const TextInputAvoidingView = ({ children }) => {
-  return Platform.OS === "ios" ? (
-    <KeyboardAvoidingView
-      style={styles.wrapper}
-      behavior="padding"
-      keyboardVerticalOffset={80}
-    >
-      {children}
-    </KeyboardAvoidingView>
-  ) : (
-    <>{children}</>
-  );
-};
+const reminderForArray = ["Call", "Meeting", "Property Visit"];
 
-const Meeting = props => {
-  const { navigation } = props;
+const Meeting = ({ route, navigation }) => {
+  // const { navigation } = props;
+  const item = route.params;
+  // console.log(item);
   const date = new Date();
   const [newDate, setNewDate] = React.useState("");
   const [newTime, setNewTime] = React.useState("");
@@ -100,12 +91,44 @@ const Meeting = props => {
       setErrorMessage("Date is missing");
       setIsVisible(true);
       return;
-    } else if (newTime.trim() === "") {
-      setErrorMessage("Time is missing");
-      setIsVisible(true);
-      return;
     }
-    navigation.navigate("AddImages");
+    // else if (newTime.trim() === "") {
+    //   setErrorMessage("Time is missing");
+    //   setIsVisible(true);
+    //   return;
+    // }
+    // navigation.navigate("AddImages");
+    send();
+  };
+
+  const send = async () => {
+    const reminderDetails = {
+      agent_id: item.agent_id,
+      property_id: item.property_id,
+      property_type: item.property_type,
+      reminder_for: reminderForArray[reminderForIndex],
+      client_name: clientName.trim(),
+      client_mobile: clientMobile.trim(),
+      meeting_date: newDate.trim(),
+      meeting_time: "12:40" // newTime.trim()
+    };
+    axios
+      .post(
+        "http://192.168.0.104:3000/addNewReminder",
+        // SERVER_URL + "/addNewResidentialRentProperty",
+        // await AsyncStorage.getItem("property")
+        // JSON.stringify({ vichi: "vchi" })
+        reminderDetails
+      )
+      .then(
+        response => {
+          console.log(response.data);
+          // navigation.navigate("CardDetails");
+        },
+        error => {
+          console.log(error);
+        }
+      );
   };
 
   return (
@@ -126,7 +149,7 @@ const Meeting = props => {
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={selectReminderForIndex}
                 selectedIndex={reminderForIndex}
-                buttons={["Call", "Meeting", "Property Visit"]}
+                buttons={reminderForArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -231,9 +254,11 @@ const Meeting = props => {
               justifyContent: "space-between",
               backgroundColor: "rgba(135,206,250, 0.5)",
               borderRadius: 5
+              // alignContent: "center"
+              // alignItems: "center"
             }}
           >
-            <View style={{ padding: 10, fontSize: 16 }}>
+            <View style={{ padding: 10, fontSize: 16, paddingTop: 15 }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -247,6 +272,7 @@ const Meeting = props => {
             </View>
             <View style={{ flexDirection: "row" }}>
               <View style={{ padding: 10 }}>
+                <Text>Meeting</Text>
                 <Text>12:30 PM</Text>
                 <Text>12 Jun 2021</Text>
               </View>
@@ -270,7 +296,7 @@ const Meeting = props => {
               borderRadius: 5
             }}
           >
-            <View style={{ padding: 10, fontSize: 16 }}>
+            <View style={{ padding: 10, fontSize: 16, alignContent: "center" }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -283,6 +309,7 @@ const Meeting = props => {
               <Text>91 9833097595</Text>
             </View>
             <View style={{ padding: 10 }}>
+              <Text>Call</Text>
               <Text>12:30 PM</Text>
               <Text>12 Jun 2021</Text>
             </View>

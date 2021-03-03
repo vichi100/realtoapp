@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -37,7 +37,12 @@ const data2 = [
 ];
 const chartHeight = Dimensions.get("window").height * 0.3;
 const chartWidth = Dimensions.get("window").width;
-function Home(props) {
+const Home = props => {
+  const { navigation } = props;
+  useEffect(() => {
+    console.log("home");
+    navigation.navigate("Login");
+  }, []);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <ScrollView>
@@ -206,7 +211,7 @@ function Home(props) {
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
