@@ -103,7 +103,7 @@ const LocalityDetailsForm = props => {
             }}
           />
           <TextInput
-            label="Area*"
+            label="Area / Location*"
             value={area}
             onChangeText={text => setArea(text)}
             onFocus={() => setIsVisible(false)}
@@ -119,7 +119,7 @@ const LocalityDetailsForm = props => {
             }}
           />
           <TextInput
-            label="Flat No*"
+            label="Flat No and Wing*"
             value={flatNumber}
             onChangeText={text => setFlatNumber(text)}
             onFocus={() => setIsVisible(false)}
@@ -136,7 +136,7 @@ const LocalityDetailsForm = props => {
           />
 
           <TextInput
-            label="Building Name*"
+            label="Building Name / Society*"
             value={buildingName}
             onChangeText={text => setBuildingName(text)}
             onFocus={() => setIsVisible(false)}
@@ -153,7 +153,7 @@ const LocalityDetailsForm = props => {
           />
 
           <TextInput
-            label="Street/Landmark*"
+            label="Street / Landmark*"
             value={landmark}
             onChangeText={text => setLandmark(text)}
             onFocus={() => setIsVisible(false)}

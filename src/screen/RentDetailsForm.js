@@ -17,6 +17,7 @@ import { TextInput, HelperText, useTheme } from "react-native-paper";
 import Button from "../components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../components/SnackbarComponent";
+import { numDifferentiation } from "../util/methods";
 
 const preferredTenantsArray = ["Family", "Bachelors", "Any"];
 const nonvegAllowedArray = ["Yes", "No"];
@@ -130,7 +131,12 @@ const RentDetailsForm = props => {
               keyboardType={"numeric"}
               returnKeyType={"done"}
               style={styles.inputContainerStyle}
-              label="Expected Rent*"
+              label={
+                expectedRent.trim() === ""
+                  ? "Expected Rent*"
+                  : numDifferentiation(expectedRent) + " Expected Rent"
+              }
+              // label="Expected Rent*"
               placeholder="Expected Rent"
               value={expectedRent}
               keyboardType={"numeric"}
@@ -151,7 +157,12 @@ const RentDetailsForm = props => {
               style={styles.inputContainerStyle}
               keyboardType={"numeric"}
               returnKeyType={"done"}
-              label="Expected Deposit*"
+              label={
+                expectedDeposit.trim() === ""
+                  ? "Expected Deposit*"
+                  : numDifferentiation(expectedDeposit) + " Expected Deposit"
+              }
+              // label="Expected Deposit*"
               placeholder="Expected Deposit"
               value={expectedDeposit}
               keyboardType={"numeric"}
