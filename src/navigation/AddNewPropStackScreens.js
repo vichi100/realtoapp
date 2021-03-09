@@ -33,7 +33,14 @@ const AddNewPropStackScreens = () => {
       <Stack.Screen
         name="AddNewProperty"
         component={AddNewProperty}
-        options={{ title: "Add New Property" }}
+        options={{
+          title: "Add New Property",
+          headerBackTitleVisible: false,
+          // headerShown: false
+          headerLeft: () => {
+            return null;
+          }
+        }}
       />
       <Stack.Screen
         name="LocalityDetailsForm"

@@ -7,7 +7,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 // import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
 import Login from "../screen/Login";
+import OtpScreen from "../screen/OtpScreen";
 import BottomTabScreen from "./BottomTabScreen";
+import ProfileForm from "../screen/ProfileForm";
 
 export default function MainScreen() {
   const RootStack = createStackNavigator();
@@ -17,17 +19,57 @@ export default function MainScreen() {
       <RootStack.Navigator
         screenOptions={{
           headerShown: false,
+          headerBackTitleVisible: false,
           headerTitleAlign: "center",
-          // headerTintColor: "#fff",
+          headerTintColor: "#fff",
           headerStyle: {
             backgroundColor: "#ffffff"
           },
-          headerBackTitleVisible: false,
+          // headerBackTitleVisible: true,
           headerTintColor: "rgba(105,105,105, .9)"
         }}
       >
-        <RootStack.Screen name="BottomTabScreen" component={BottomTabScreen} />
-        <RootStack.Screen name="Login" component={Login} />
+        <RootStack.Screen
+          name="Login"
+          component={Login}
+          options={{
+            headerShown: false,
+            headerBackTitleVisible: false
+          }}
+        />
+        <RootStack.Screen
+          name="BottomTabScreen"
+          component={BottomTabScreen}
+          options={{
+            headerShown: false,
+            headerBackTitleVisible: false
+          }}
+        />
+
+        <RootStack.Screen
+          name="OtpScreen"
+          component={OtpScreen}
+          options={{
+            headerTitle: "OTP Screen",
+            headerShown: true,
+            // tabBarLabel: "Home!",
+            // tabBarVisible: false,
+            // headerTintColor: "rgba(0,0,0, .9)",
+            headerBackTitleVisible: false
+          }}
+        />
+        <RootStack.Screen
+          name="ProfileForm"
+          component={ProfileForm}
+          options={{
+            headerTitle: "Profile Form",
+            headerShown: true,
+            // tabBarLabel: "Home!",
+            // tabBarVisible: false,
+            // headerTintColor: "rgba(0,0,0, .9)",
+            headerBackTitleVisible: false
+          }}
+        />
       </RootStack.Navigator>
     </NavigationContainer>
   );

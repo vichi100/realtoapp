@@ -2,6 +2,10 @@ import React from "react";
 import { StyleSheet, Text } from "react-native";
 import { Content, Item, Input } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
+import { connect } from "react-redux";
+import { View } from "react-native-animatable";
+// 38204547172 - bule dart
+// 6 digit
 
 class OtpInputs extends React.Component {
   state = { otp: [] };
@@ -50,7 +54,18 @@ class OtpInputs extends React.Component {
   render() {
     return (
       <Content padder>
-        <Text style={{ textAlign: "center" }}>ENTER OTP</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            textAlign: "center",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <Text style={{ textAlign: "center" }}>Enter OTP sent to +91</Text>
+          <Text>{"  " + this.props.agentMobileNumber}</Text>
+        </View>
+
         <Grid style={styles.gridPad}>{this.renderInputs()}</Grid>
       </Content>
     );
@@ -63,4 +78,16 @@ const styles = StyleSheet.create({
   inputRadius: { textAlign: "center" }
 });
 
-export default OtpInputs;
+const mapStateToProps = state => ({
+  agentMobileNumber: state.AppReducer.agentMobileNumber
+});
+// const mapDispatchToProps = {
+//   setAgentMobile
+// };
+
+export default connect(
+  mapStateToProps,
+  null
+)(OtpInputs);
+
+// export default OtpInputs;

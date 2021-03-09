@@ -7,7 +7,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  TextInput
+  TextInput,
+  AsyncStorage
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -22,6 +23,7 @@ import CardResidentialRent from "./Card";
 import CardResidentialSell from "./CardSell";
 import axios from "axios";
 import SERVER_URL from "../util/constant";
+import { getBottomSpace } from "react-native-iphone-x-helper";
 
 const dataX = [
   {
@@ -102,12 +104,24 @@ const ListingResidential = props => {
     console.log("residential Listing useEffect");
   }, []);
 
+  const getAgentDetails = async () => {
+    // AsyncStorage.setItem("agent_details", JSON.stringify(agentDetails));
+    const agentDetailsStr = await AsyncStorage.getItem("agent_details");
+    console.log(agentDetailsStr);
+    if (agentDetailsStr !== null) {
+      return JSON.parse(agentDetailsStr);
+    } else {
+      return null;
+    }
+  };
+
   const getListing = () => {
+    const agentDetailsX = getAgentDetails();
     const user = {
-      name: "tom"
+      agent_id: agentDetailsX ? agentDetailsX.agent_id : "1234"
     };
 
-    axios("http://192.168.0.104:3000/propertyListings", {
+    axios("http://192.168.1.103:3000/residentialPropertyListings", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -216,6 +230,10 @@ const ListingResidential = props => {
     setVisibleSorting(!visibleSorting);
   };
 
+  const navigateTo = () => {
+    navigation.navigate("Add");
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.searchBarContainer}>
@@ -227,35 +245,57 @@ const ListingResidential = props => {
           placeholder="Search Here"
         />
       </View>
-      <View style={styles.container}>
-        <FlatList
-          data={data}
-          //data defined in constructor
-          // ItemSeparatorComponent={ItemSeparatorView}
-          //Item Separator View
-          renderItem={ItemView}
-          keyExtractor={(item, index) => index.toString()}
-        />
-        <View style={styles.fab}>
-          <TouchableOpacity
-            onPress={() => toggleSortingBottomNavigationView()}
-            style={styles.fabIcon1}
-          >
-            <MaterialCommunityIcons name="sort" color={"#ffffff"} size={26} />
-          </TouchableOpacity>
-          <View style={styles.verticalLine}></View>
-          <TouchableOpacity
-            onPress={() => toggleBottomNavigationView()}
-            style={styles.fabIcon2}
-          >
-            <MaterialCommunityIcons
-              name="filter-variant-plus"
-              color={"#ffffff"}
-              size={26}
-            />
+      {data.length > 0 ? (
+        <View style={styles.container}>
+          <FlatList
+            data={data}
+            //data defined in constructor
+            // ItemSeparatorComponent={ItemSeparatorView}
+            //Item Separator View
+            renderItem={ItemView}
+            keyExtractor={(item, index) => index.toString()}
+          />
+          <View style={styles.fab}>
+            <TouchableOpacity
+              onPress={() => toggleSortingBottomNavigationView()}
+              style={styles.fabIcon1}
+            >
+              <MaterialCommunityIcons name="sort" color={"#ffffff"} size={26} />
+            </TouchableOpacity>
+            <View style={styles.verticalLine}></View>
+            <TouchableOpacity
+              onPress={() => toggleBottomNavigationView()}
+              style={styles.fabIcon2}
+            >
+              <MaterialCommunityIcons
+                name="filter-variant-plus"
+                color={"#ffffff"}
+                size={26}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center"
+          }}
+        >
+          <Text style={{ textAlign: "center" }}>
+            You have no property listing
+          </Text>
+          <TouchableOpacity onPress={() => navigateTo()}>
+            <Text
+              style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
+            >
+              Add New Property
+            </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      )}
       {/* Bottom for filters */}
       <BottomSheet
         visible={visible}

@@ -7,3 +7,10 @@ export const setEmployeeList = payload => {
     payload
   };
 };
+export const setAgentMobile = payload => {
+  console.log(payload);
+  return {
+    type: ACTION_TYPES.SET_AGENT_MOBILE_NUMBER,
+    payload
+  };
+};

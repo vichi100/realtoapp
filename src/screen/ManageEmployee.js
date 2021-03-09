@@ -61,7 +61,7 @@ const ManageEmployee = props => {
       }
     };
     props.setEmployeeList("vichi");
-    axios("http://192.168.0.104:3000/addEmployee", {
+    axios("http://192.168.1.103:3000/addEmployee", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

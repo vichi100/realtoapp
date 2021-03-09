@@ -114,7 +114,7 @@ const Meeting = ({ route, navigation }) => {
     };
     axios
       .post(
-        "http://192.168.0.104:3000/addNewReminder",
+        "http://192.168.1.103:3000/addNewReminder",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })

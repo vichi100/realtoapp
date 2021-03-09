@@ -115,7 +115,7 @@ const ListingCommercial = props => {
       name: "tom"
     };
 
-    axios("http://192.168.0.104:3000/commercialPropertyListings", {
+    axios("http://192.168.1.103:3000/commercialPropertyListings", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

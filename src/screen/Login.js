@@ -8,16 +8,56 @@ import {
   ScrollView,
   TextInput,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from "react-native";
 import OtpInputs from "./OtpInputs";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { Left } from "native-base";
+import { setAgentMobile } from "../reducers/Action";
+import { connect } from "react-redux";
 
 const Login = props => {
   const { navigation } = props;
+  const [mobileNumber, setMobileNumber] = useState("");
   const [otp, setOTP] = useState("");
+  const [userDetails, setUserDetails] = useState(null);
   useEffect(() => {
     console.log("Login");
-  }, []);
+    // const userDetails = getUserDetails().then(console.log(userDetails));
+    console.log("userDetails: " + JSON.stringify(userDetails));
+    if (userDetails !== null) {
+      if (userDetails.user_type === "agent") {
+        const agentDetailsObj = {
+          agent_id: String,
+          expo_token: String,
+          agent_name: String,
+          company_name: String,
+          agent_mobile: String,
+          agent_address: String,
+          agent_city: String
+        };
+      } else if (userDetails.user_type === "employee") {
+      }
+
+      navigation.navigate("BottomTabScreen");
+    } else {
+      getUserDetails();
+    }
+  }, [userDetails]);
+
+  const getUserDetails = async () => {
+    // AsyncStorage.setItem("agent_details", JSON.stringify(agentDetails));
+
+    // AsyncStorage.clear();
+
+    const userDetailsStr = await AsyncStorage.getItem("user_details");
+    // console.log(userDetailsStr);
+    if (userDetailsStr !== null) {
+      setUserDetails(JSON.parse(userDetailsStr));
+    }
+  };
 
   const getOtp = otp => {
     console.log(otp);
@@ -25,7 +65,13 @@ const Login = props => {
   };
 
   const onSkip = () => {
-    navigation.navigate("Home");
+    navigation.navigate("BottomTabScreen");
+  };
+
+  const onNext = () => {
+    console.log(mobileNumber);
+    props.setAgentMobile(mobileNumber);
+    navigation.navigate("OtpScreen");
   };
 
   return (
@@ -78,6 +124,7 @@ const Login = props => {
                 // borderRadius: 5
                 fontSize: 16
               }}
+              onChangeText={text => setMobileNumber(text)}
               placeholder="Mobile"
             />
           </View>
@@ -86,17 +133,45 @@ const Login = props => {
             style={{
               flex: 1,
               justifyContent: "center",
+              alignItems: "center",
               width: "100%",
               marginTop: 20
             }}
           >
-            <OtpInputs getOtp={otp => getOtp(otp)} />
+            <TouchableOpacity
+              onPress={() => onNext()}
+              style={{
+                padding: 5,
+                // width: 200,
+                justifyContent: "flex-end",
+                flexDirection: "row",
+                // backgroundColor: "rgba(60,179,113, .9)",
+                left: 0
+              }}
+            >
+              {/* <Text style={{ padding: 5, textAlign: "center" }}>NEXT</Text> */}
+              <Ionicons
+                name="caret-forward-circle"
+                color={"#000000"}
+                size={50}
+                color={"rgba(60,179,113, .9)"}
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
-      <TouchableOpacity onPress={() => onSkip()}>
+      <TouchableOpacity
+        style={{
+          position: "absolute",
+          bottom: 10,
+          right: 10,
+          margin: 20
+          // backgroundColor: "rgba(60,179,113, .9)"
+        }}
+        onPress={() => onSkip()}
+      >
         <Text
-          style={{ position: "absolute", bottom: 20, right: 20, margin: 20 }}
+        // style={{ position: "absolute", bottom: 20, right: 20, margin: 20 }}
         >
           Skip
         </Text>
@@ -105,4 +180,16 @@ const Login = props => {
   );
 };
 
-export default Login;
+const mapStateToProps = state => ({
+  agentMobileNumber: state.AppReducer.agentMobileNumber
+});
+const mapDispatchToProps = {
+  setAgentMobile
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);
+
+// export default Login;

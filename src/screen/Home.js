@@ -23,26 +23,40 @@ import {
 // rezo
 // https://www.youtube.com/watch?v=mjJzaiGkaQA profile screen
 
-const data1 = [
+const rent = [
+  { quarter: "Jan", earnings: 13 },
+  { quarter: "Feb", earnings: 1 },
+  { quarter: "Mar", earnings: 0 },
+  { quarter: "Apr", earnings: 0 }
+];
+const sell = [
+  { quarter: "Jan", earnings: 10 },
+  { quarter: "Feb", earnings: 0 },
+  { quarter: "Mar", earnings: 0 },
+  { quarter: "Apr", earnings: 0 }
+];
+
+const winDealData = [
   { quarter: "Jan", earnings: 13 },
   { quarter: "Feb", earnings: 16 },
   { quarter: "Mar", earnings: 14 },
   { quarter: "Apr", earnings: 19 }
 ];
-const data2 = [
+const lostDealData = [
   { quarter: "Jan", earnings: 3 },
   { quarter: "Feb", earnings: 6 },
   { quarter: "Mar", earnings: 4 },
-  { quarter: "Apr", earnings: 0 }
+  { quarter: "Apr", earnings: 10 }
 ];
+
 const chartHeight = Dimensions.get("window").height * 0.3;
 const chartWidth = Dimensions.get("window").width;
 const Home = props => {
   const { navigation } = props;
-  useEffect(() => {
-    console.log("home");
-    navigation.navigate("Login");
-  }, []);
+  // useEffect(() => {
+  //   console.log("home");
+  //   navigation.navigate("Login");
+  // }, []);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <ScrollView>
@@ -95,27 +109,31 @@ const Home = props => {
           </View>
 
           <VictoryChart
-            height={chartHeight}
-            width={chartWidth}
+            // height={chartHeight}
+            // width={chartWidth}
             containerComponent={<VictoryContainer responsive={true} />}
+            // minDomain={{ y: 0 }}
+            // domainPadding={{ y: 1 }}
           >
             <VictoryGroup offset={20}>
               <VictoryBar
                 horizontal
-                data={data1}
+                data={rent}
+                // barRatio={0.8}
+                // barWidth={({ index }) => index * 2 + 8}
                 x="quarter"
                 y="earnings"
                 labels={({ datum }) => datum.earnings}
                 // style={{
                 //   data: {
-                //     fill: "blue"
+                //     fill: "#00b0ff"
                 //   }
                 // }}
                 offsetY={20}
-                padding={{ top: 20, bottom: 60 }}
+                // padding={{ top: 50, bottom: 60 }}
                 style={{
-                  data: { fill: "rgb(23, 52, 76)" },
-                  parent: { border: "1px solid #ccc" }
+                  data: { fill: "#00b0ff" }
+                  // parent: { border: "1px solid #ccc" }
                 }}
                 // labelComponent={<VictoryLabel dy={30} />}
               />
@@ -130,83 +148,106 @@ const Home = props => {
             tickFormat={["Yes", "No", "Probably", "Never"]}
           /> */}
               <VictoryBar
-                data={data2}
+                data={sell}
+                // barWidth={({ index }) => index * 2 + 8}
                 x="quarter"
                 y="earnings"
                 labels={({ datum }) => datum.earnings}
                 style={{
                   data: {
-                    fill: "green"
+                    fill: "#d500f9"
                   }
                 }}
               />
             </VictoryGroup>
 
             <VictoryLegend
-              x={115}
-              y={30}
-              title="Legend"
+              x={200}
+              y={20}
+              // title="Legend"
               centerTitle
               orientation="horizontal"
-              gutter={20}
-              // style={{ border: { stroke: "black" }, title: { fontSize: 20 } }}
+              // gutter={10}
+              style={{
+                // border: { stroke: "black" },
+                // title: { fontSize: 20 },
+                margin: 30
+              }}
               data={[
                 // { name: "Rent", symbol: { fill: "tomato", type: "star" } },
-                { name: "Rent", symbol: { fill: "orange" } },
-                { name: "Sell", symbol: { fill: "gold" } }
+                { name: "Rent", symbol: { fill: "#00b0ff" } },
+                { name: "Sell", symbol: { fill: "#d500f9" } }
               ]}
             />
           </VictoryChart>
-          <Text>Deal Summary</Text>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "500",
+              color: "rgba(128,128,128, .9)",
+              marginBottom: 20
+            }}
+          >
+            Listing Summary / Months
+          </Text>
 
           <VictoryChart
-            height={chartHeight}
-            width={chartWidth}
+            // height={chartHeight}
+            // width={chartWidth}
             containerComponent={<VictoryContainer responsive={true} />}
           >
             <VictoryGroup offset={20}>
               <VictoryBar
                 horizontal
-                data={data1}
+                data={winDealData}
                 x="quarter"
                 y="earnings"
                 labels={({ datum }) => datum.earnings}
                 style={{
                   data: {
-                    fill: "blue"
+                    fill: "#6fbf73"
                   }
                 }}
                 // labelComponent={<VictoryLabel dy={30} />}
               />
               <VictoryBar
-                data={data2}
+                data={lostDealData}
                 x="quarter"
                 y="earnings"
                 labels={({ datum }) => datum.earnings}
                 style={{
                   data: {
-                    fill: "green"
+                    fill: "#ff9100"
                   }
                 }}
               />
             </VictoryGroup>
 
             <VictoryLegend
-              x={115}
-              y={30}
-              title="Legend"
+              x={200}
+              y={4}
+              // title="Legend"
               centerTitle
               orientation="horizontal"
               gutter={20}
               // style={{ border: { stroke: "black" }, title: { fontSize: 20 } }}
               data={[
-                { name: "One", symbol: { fill: "tomato", type: "star" } },
-                { name: "Two", symbol: { fill: "orange" } },
-                { name: "Three", symbol: { fill: "gold" } }
+                // { name: "One", symbol: { fill: "tomato", type: "star" } },
+                { name: "Won", symbol: { fill: "#6fbf73" } },
+                { name: "Lost", symbol: { fill: "#ff9100" } }
               ]}
             />
           </VictoryChart>
-          <Text>Deal Summary</Text>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "500",
+              color: "rgba(128,128,128, .9)",
+              marginBottom: 20
+            }}
+          >
+            Deal Summary / Months
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>

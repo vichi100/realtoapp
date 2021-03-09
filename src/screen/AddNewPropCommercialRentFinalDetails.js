@@ -64,7 +64,7 @@ const AddNewPropCommercialRentFinalDetails = props => {
     console.log(await AsyncStorage.getItem("property"));
     axios
       .post(
-        "http://192.168.0.104:3000/addNewCommercialProperty",
+        "http://192.168.1.103:3000/addNewCommercialProperty",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
