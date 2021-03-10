@@ -12,6 +12,7 @@ import {
   style,
   FlatList
 } from "react-native";
+import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 
@@ -19,7 +20,7 @@ const Reminder = props => {
   const [reminderList, setReminderList] = useState([]);
   useEffect(() => {
     const agentId = {
-      agent_id: "1234"
+      agent_id: props.userDetails.user_details.works_for
     };
     axios
       .post(
@@ -116,4 +117,12 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Reminder;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails
+});
+export default connect(
+  mapStateToProps,
+  null
+)(Reminder);
+
+// export default Reminder;

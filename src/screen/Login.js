@@ -15,7 +15,7 @@ import OtpInputs from "./OtpInputs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Left } from "native-base";
-import { setAgentMobile } from "../reducers/Action";
+import { setUserMobile, setUserDetails } from "../reducers/Action";
 import { connect } from "react-redux";
 
 const Login = props => {
@@ -26,21 +26,9 @@ const Login = props => {
   useEffect(() => {
     console.log("Login");
     // const userDetails = getUserDetails().then(console.log(userDetails));
-    console.log("userDetails: " + JSON.stringify(userDetails));
+    console.log("userDetails1: " + JSON.stringify(userDetails));
     if (userDetails !== null) {
-      if (userDetails.user_type === "agent") {
-        const agentDetailsObj = {
-          agent_id: String,
-          expo_token: String,
-          agent_name: String,
-          company_name: String,
-          agent_mobile: String,
-          agent_address: String,
-          agent_city: String
-        };
-      } else if (userDetails.user_type === "employee") {
-      }
-
+      props.setUserDetails(userDetails);
       navigation.navigate("BottomTabScreen");
     } else {
       getUserDetails();
@@ -53,15 +41,10 @@ const Login = props => {
     // AsyncStorage.clear();
 
     const userDetailsStr = await AsyncStorage.getItem("user_details");
-    // console.log(userDetailsStr);
+    console.log("userDetailsStr: " + userDetailsStr);
     if (userDetailsStr !== null) {
       setUserDetails(JSON.parse(userDetailsStr));
     }
-  };
-
-  const getOtp = otp => {
-    console.log(otp);
-    setOTP(otp);
   };
 
   const onSkip = () => {
@@ -70,7 +53,7 @@ const Login = props => {
 
   const onNext = () => {
     console.log(mobileNumber);
-    props.setAgentMobile(mobileNumber);
+    props.setUserMobile(mobileNumber);
     navigation.navigate("OtpScreen");
   };
 
@@ -181,10 +164,11 @@ const Login = props => {
 };
 
 const mapStateToProps = state => ({
-  agentMobileNumber: state.AppReducer.agentMobileNumber
+  userMobileNumber: state.AppReducer.userMobileNumber
 });
 const mapDispatchToProps = {
-  setAgentMobile
+  setUserMobile,
+  setUserDetails
 };
 
 export default connect(

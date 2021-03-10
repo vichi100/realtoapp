@@ -2,7 +2,8 @@ import { ACTION_TYPES } from "./ActionType";
 
 const initialState = {
   employeeList: [],
-  agentMobileNumber: null
+  userMobileNumber: null,
+  userDetails: null
 };
 const AppReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -12,11 +13,17 @@ const AppReducer = (state = initialState, action) => {
         ...state,
         employeeList: action.payload
       };
-    case ACTION_TYPES.SET_AGENT_MOBILE_NUMBER:
-      console.log("SET_AGENT_MOBILE_NUMBER");
+    case ACTION_TYPES.SET_USER_MOBILE_NUMBER:
+      console.log("SET_USER_MOBILE_NUMBER");
       return {
         ...state,
-        agentMobileNumber: action.payload
+        userMobileNumber: action.payload
+      };
+    case ACTION_TYPES.SET_USER_DETAILS:
+      console.log("SET_USER_DETAILS");
+      return {
+        ...state,
+        userDetails: action.payload
       };
     default:
       return state;

@@ -11,15 +11,21 @@ import Slideshow from "../components/Slideshow";
 import Button from "../components/Button";
 import axios from "axios";
 import SERVER_URL from "../util/constant";
+import { numDifferentiation } from "../util/methods";
+import Snackbar from "../components/SnackbarComponent";
 
 const AddNewPropFinalDetails = props => {
   const { navigation } = props;
+  const [isVisible, setIsVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [propertyFinalDetails, setPropertyFinalDetails] = useState(null);
   const [bhk, setBHK] = useState(null);
   const [possessionDate, setPossessionDate] = useState(null);
 
   useEffect(() => {
-    getPropFinalDetails();
+    if (propertyFinalDetails === null) {
+      getPropFinalDetails();
+    }
   }, [propertyFinalDetails]);
 
   useEffect(() => {
@@ -59,8 +65,15 @@ const AddNewPropFinalDetails = props => {
     return [date.getFullYear(), mnth, day].join("-");
   };
 
+  const dismissSnackBar = () => {
+    setIsVisible(false);
+  };
+
   const send = async () => {
     console.log(await AsyncStorage.getItem("property"));
+    console.log(
+      "propertyFinalDetails: " + JSON.stringify(propertyFinalDetails)
+    );
     axios
       .post(
         "http://192.168.1.103:3000/addNewResidentialRentProperty",
@@ -70,15 +83,23 @@ const AddNewPropFinalDetails = props => {
         propertyFinalDetails
       )
       .then(
-        response => {
+        async response => {
           console.log(response.data);
-          navigation.navigate("CardDetails");
+          if (response.data.property_id !== null) {
+            await AsyncStorage.removeItem("property");
+            navigation.navigate("Listing");
+          } else {
+            setErrorMessage(
+              "Error: Seems there is some network issue, please try later"
+            );
+          }
         },
         error => {
           console.log(error);
         }
       );
   };
+
   return propertyFinalDetails ? (
     <ScrollView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <View style={[styles.headerContainer]}>
@@ -117,7 +138,9 @@ const AddNewPropFinalDetails = props => {
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {propertyFinalDetails.rent_details.expected_rent}
+              {numDifferentiation(
+                propertyFinalDetails.rent_details.expected_rent
+              )}
             </Text>
             <Text style={[styles.subDetailsTitle]}>
               {propertyFinalDetails.property_for}
@@ -126,7 +149,9 @@ const AddNewPropFinalDetails = props => {
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {propertyFinalDetails.rent_details.expected_deposit}
+              {numDifferentiation(
+                propertyFinalDetails.rent_details.expected_deposit
+              )}
             </Text>
             <Text style={[styles.subDetailsTitle]}>Deposit</Text>
           </View>
@@ -225,6 +250,13 @@ const AddNewPropFinalDetails = props => {
       <View style={{ margin: 20 }}>
         <Button title="ADD" onPress={() => send()} />
       </View>
+      <Snackbar
+        visible={isVisible}
+        textMessage={errorMessage}
+        position={"top"}
+        actionHandler={() => dismissSnackBar()}
+        actionText="OK"
+      />
     </ScrollView>
   ) : null;
 };
@@ -305,7 +337,7 @@ const styles = StyleSheet.create({
     shadowOffset: {
       height: 0.6 * 5
     },
-    backgroundColor: "white"
+    backgroundColor: "#ffffff"
   },
   overview: {
     padding: 10

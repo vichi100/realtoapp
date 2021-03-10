@@ -54,8 +54,9 @@ const AddImages = props => {
   const onSubmit = async () => {
     const property = JSON.parse(await AsyncStorage.getItem("property"));
     property["image_urls"] = imageArray;
-    // console.log(property);
+
     AsyncStorage.setItem("property", JSON.stringify(property));
+    console.log(JSON.stringify(property));
     if (property.property_type.toLowerCase() === "Residential".toLowerCase()) {
       if (property.property_for.toLowerCase() === "Rent".toLowerCase()) {
         navigation.navigate("AddNewPropFinalDetails");

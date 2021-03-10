@@ -11,6 +11,7 @@ import {
   AsyncStorage
 } from "react-native";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
+import { connect } from "react-redux";
 import RadioButton from "../components/RadioButtons";
 import { ButtonGroup } from "react-native-elements";
 import Button from "../components/Button";
@@ -83,8 +84,9 @@ const AddNewProperty = props => {
       setIsVisible(true);
       return;
     }
-    // console.log("0");
+    console.log("props.userDetails: " + JSON.stringify(props.userDetails));
     const property = {
+      agent_id: props.userDetails.user_details.works_for,
       property_type: selectedPropType.key,
       property_for: propertyForArray[propertyForIndex],
       property_status: "open",
@@ -95,14 +97,16 @@ const AddNewProperty = props => {
         address: ownerAddress.trim()
       }
     };
-    // console.log(property);
+    console.log(property);
     AsyncStorage.setItem("property", JSON.stringify(property));
     // console.log("1");
     navigation.navigate("LocalityDetailsForm");
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: "rgba(254,254,250, 0.1)" }}
+    >
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
         <ScrollView style={styles.container}>
           <View style={styles.header}>
@@ -149,7 +153,7 @@ const AddNewProperty = props => {
               // returnKeyType={"done"}
               onChangeText={text => setOwnerName(text)}
               onFocus={() => setIsVisible(false)}
-              style={{ backgroundColor: "#ffffff" }}
+              style={{ backgroundColor: "rgba(245,245,245, 0.1)" }}
               theme={{
                 colors: {
                   // placeholder: "white",
@@ -167,7 +171,10 @@ const AddNewProperty = props => {
               onFocus={() => setIsVisible(false)}
               keyboardType={"numeric"}
               returnKeyType={"done"}
-              style={{ backgroundColor: "#ffffff", marginTop: 8 }}
+              style={{
+                backgroundColor: "rgba(245,245,245, 0.1)",
+                marginTop: 8
+              }}
               theme={{
                 colors: {
                   // placeholder: "white",
@@ -184,7 +191,10 @@ const AddNewProperty = props => {
               // returnKeyType={"done"}
               onChangeText={text => setOwnerAddress(text)}
               onFocus={() => setIsVisible(false)}
-              style={{ backgroundColor: "#ffffff", marginTop: 8 }}
+              style={{
+                backgroundColor: "rgba(245,245,245, 0.1)",
+                marginTop: 8
+              }}
               theme={{
                 colors: {
                   // placeholder: "white",
@@ -228,6 +238,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginLeft: 20,
     marginRight: 20
+    // backgroundColor: "rgba(245,245,245, 0.8)"
   },
   header: {
     alignContent: "flex-start"
@@ -252,4 +263,11 @@ const styles = StyleSheet.create({
   // },
 });
 
-export default AddNewProperty;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails
+});
+export default connect(
+  mapStateToProps,
+  null
+)(AddNewProperty);
+// export default AddNewProperty;

@@ -25,8 +25,9 @@ const OtpScreen = props => {
     setOTP(otp);
   };
   const onSubmit = () => {
-    const agentObj = {
-      user_mobile: props.agentMobileNumber
+    console.log("onSubmit");
+    const userObj = {
+      user_mobile: props.userMobileNumber
     };
     axios
       .post(
@@ -34,7 +35,7 @@ const OtpScreen = props => {
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
-        agentObj
+        userObj
       )
       .then(
         response => {
@@ -45,7 +46,7 @@ const OtpScreen = props => {
           // 3) already have installed app n logged in as agent but now recommanded as employee
           // 4)
 
-          save(response.data.agent_id).then(() => {
+          save(response.data).then(() => {
             navigation.navigate("BottomTabScreen");
           });
         },
@@ -55,17 +56,19 @@ const OtpScreen = props => {
       );
   };
 
-  const save = async agentId => {
-    const agentDetails = {
-      agent_id: agentId,
-      expo_token: null,
-      agent_name: null,
-      company_name: null,
-      agent_mobile: props.agentMobileNumber,
-      agent_address: null,
-      agent_city: null
-    };
-    AsyncStorage.setItem("user_details", JSON.stringify(agentDetails));
+  const save = async userData => {
+    console.log("userData: " + JSON.stringify(userData));
+    // const userDetails = {
+    //   user_id: userData.user_details.id,
+    //   user_type: userData.user_details.user_type, // agent, employee
+    //   expo_token: userData.user_details.expo_token,
+    //   user_name: userData.user_details.user_name,
+    //   company_name: userData.user_details.company_name,
+    //   user_mobile: props.userMobileNumber.user_mobile,
+    //   user_city: userData.user_details.user_city,
+    //   works_for: userData.user_details.works_for // agent_id
+    // };
+    AsyncStorage.setItem("user_details", JSON.stringify(userData));
   };
 
   return (
@@ -94,7 +97,7 @@ const OtpScreen = props => {
 };
 
 const mapStateToProps = state => ({
-  agentMobileNumber: state.AppReducer.agentMobileNumber
+  userMobileNumber: state.AppReducer.userMobileNumber
 });
 // const mapDispatchToProps = {
 //   setAgentMobile

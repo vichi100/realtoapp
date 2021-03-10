@@ -10,6 +10,7 @@ import {
   TextInput,
   AsyncStorage
 } from "react-native";
+import { connect } from "react-redux";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { BottomSheet } from "react-native-btr";
@@ -100,34 +101,37 @@ const ListingResidential = props => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    getListing();
-    console.log("residential Listing useEffect");
-  }, []);
-
-  const getAgentDetails = async () => {
-    // AsyncStorage.setItem("agent_details", JSON.stringify(agentDetails));
-    const agentDetailsStr = await AsyncStorage.getItem("agent_details");
-    console.log(agentDetailsStr);
-    if (agentDetailsStr !== null) {
-      return JSON.parse(agentDetailsStr);
-    } else {
-      return null;
+    if (props.userDetails && props.userDetails.works_for !== null) {
+      getListing();
     }
-  };
+
+    console.log("residential Listing useEffect");
+  }, [props.userDetails]);
+
+  // const getAgentDetails = async () => {
+  //   // AsyncStorage.setItem("agent_details", JSON.stringify(agentDetails));
+  //   const agentDetailsStr = await AsyncStorage.getItem("user_details");
+  //   console.log(agentDetailsStr);
+  //   if (agentDetailsStr !== null) {
+  //     return JSON.parse(agentDetailsStr);
+  //   } else {
+  //     return null;
+  //   }
+  // };
 
   const getListing = () => {
-    const agentDetailsX = getAgentDetails();
+    // const agentDetailsX = getAgentDetails();
     const user = {
-      agent_id: agentDetailsX ? agentDetailsX.agent_id : "1234"
+      agent_id: props.userDetails.user_details.works_for
     };
-
+    console.log(JSON.stringify(user));
     axios("http://192.168.1.103:3000/residentialPropertyListings", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
         Accept: "Application/json"
       },
-      data: { user }
+      data: user
     }).then(
       response => {
         // console.log(response.data);
@@ -571,4 +575,12 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ListingResidential;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails
+});
+export default connect(
+  mapStateToProps,
+  null
+)(ListingResidential);
+
+// export default ListingResidential;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -8,8 +8,11 @@ import {
   SafeAreaView,
   ScrollView,
   KeyboardAvoidingView,
+  TouchableHighlight,
+  Modal,
   Keyboard
 } from "react-native";
+import { connect } from "react-redux";
 import { DatePickerModal, TimePickerModal } from "react-native-paper-dates";
 import { TextInput, Divider } from "react-native-paper";
 import Button from "../components/Button";
@@ -20,10 +23,12 @@ import Snackbar from "../components/SnackbarComponent";
 import axios from "axios";
 
 const reminderForArray = ["Call", "Meeting", "Property Visit"];
+const ampmArray = ["AM", "PM"];
 
 const Meeting = ({ route, navigation }) => {
   // const { navigation } = props;
   const item = route.params;
+  const inputRef = useRef(null);
   // console.log(item);
   const date = new Date();
   const [newDate, setNewDate] = React.useState("");
@@ -34,6 +39,42 @@ const Meeting = ({ route, navigation }) => {
   const [reminderForIndex, setReminderForIndex] = React.useState(-1);
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [hour, setHour] = useState(null);
+  const [minutes, setMinutes] = useState(null);
+  const [ampmIndex, setAMPMIndex] = useState(-1);
+
+  const setModalVisibleTemp = flag => {
+    console.log("setModalVisible: " + flag);
+    setModalVisible(flag);
+  };
+  const setModalVisibleTemp1 = flag => {
+    console.log("setModalVisible1: " + flag);
+    setModalVisible(flag);
+    inputRef.current.blur();
+  };
+
+  const checkHourValidation = hour => {
+    setIsVisible(false);
+    if (parseInt(hour) > 24 || parseInt(hour) < 0) {
+      setErrorMessage("Hours can between 0 to 24 only");
+      setHour(hour);
+      setIsVisible(true);
+      return;
+    }
+    setHour(hour);
+  };
+
+  const checkMinutesValidation = minutes => {
+    setIsVisible(false);
+    if (parseInt(minutes) > 59 || parseInt(minutes) < 0) {
+      setErrorMessage("Minutes can between 0 to 59 only");
+      setMinutes(minutes);
+      setIsVisible(true);
+      return;
+    }
+    setMinutes(minutes);
+  };
 
   const selectReminderForIndex = index => {
     setReminderForIndex(index);
@@ -73,6 +114,26 @@ const Meeting = ({ route, navigation }) => {
     },
     [setTimeVisible]
   );
+
+  const selectAMPMIndex = index => {
+    console.log(index);
+    setAMPMIndex(index);
+  };
+
+  const onApply = () => {
+    console.log();
+    if (ampmIndex === -1) {
+      setErrorMessage("AM / PM is missing");
+      setIsVisible(true);
+      return;
+    }
+    const timeX = hour + ":" + minutes + " " + ampmArray[ampmIndex];
+    inputRef.current.blur();
+    setNewTime(timeX);
+    setModalVisibleTemp(false);
+    inputRef.current.blur();
+    // refs.timeInput.blur();
+  };
 
   const onSubmit = () => {
     if (reminderForIndex === -1) {
@@ -214,14 +275,15 @@ const Meeting = ({ route, navigation }) => {
                   }
                 }}
               />
-              {/* <TextInput
+              <TextInput
+                ref={inputRef}
                 mode="outlined"
                 style={styles.inputContainerStyle}
                 label="Time*"
                 placeholder="Time*"
                 value={newTime}
-                // onChangeText={newDate => setNewDate(newDate)}
-                onFocus={() => setTimeVisible(true)}
+                onChangeText={() => setModalVisibleTemp(false)}
+                onFocus={() => setModalVisibleTemp1(true)}
                 style={{ width: "30%", marginLeft: 10 }}
                 theme={{
                   colors: {
@@ -232,7 +294,7 @@ const Meeting = ({ route, navigation }) => {
                     background: "#ffffff"
                   }
                 }}
-              /> */}
+              />
             </View>
             <View
               style={{
@@ -373,6 +435,115 @@ const Meeting = ({ route, navigation }) => {
         actionHandler={() => dismissSnackBar()}
         actionText="OK"
       />
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisibleTemp(false);
+        }}
+      >
+        <View style={styles.centeredView1}>
+          <View style={styles.modalView}>
+            <View style={{ flexDirection: "row" }}>
+              <TextInput
+                mode="outlined"
+                keyboardType={"numeric"}
+                returnKeyType={"done"}
+                style={[
+                  styles.inputContainerStyle,
+                  { width: 80, textAlign: "center" }
+                ]}
+                label={"Hour*"}
+                // label="Expected Rent*"
+                placeholder="Hour"
+                value={hour}
+                keyboardType={"numeric"}
+                onChangeText={text => checkHourValidation(text)}
+                onFocus={() => setIsVisible(false)}
+                theme={{
+                  colors: {
+                    // placeholder: "white",
+                    // text: "white",
+                    primary: "rgba(0,191,255, .9)",
+                    underlineColor: "transparent",
+                    backgroundColor: "rgba(245,245,245, 0.2)"
+                  }
+                }}
+              />
+              <TextInput
+                mode="outlined"
+                keyboardType={"numeric"}
+                returnKeyType={"done"}
+                style={[
+                  styles.inputContainerStyle,
+                  { width: 90, textAlign: "center" }
+                ]}
+                label={"Minute*"}
+                // label="Expected Rent*"
+                placeholder="Minute"
+                value={minutes}
+                keyboardType={"numeric"}
+                onChangeText={text => checkMinutesValidation(text)}
+                onFocus={() => setIsVisible(false)}
+                theme={{
+                  colors: {
+                    // placeholder: "white",
+                    // text: "white",
+                    primary: "rgba(0,191,255, .9)",
+                    underlineColor: "transparent",
+                    backgroundColor: "rgba(245,245,245, 0.2)"
+                  }
+                }}
+              />
+              <ButtonGroup
+                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                onPress={selectAMPMIndex}
+                selectedIndex={ampmIndex}
+                buttons={ampmArray}
+                // containerStyle={{ height: 30 }}
+                textStyle={{ textAlign: "center" }}
+                selectedTextStyle={{ color: "#fff" }}
+                containerStyle={{ borderRadius: 5, width: 70, height: 80 }}
+                containerBorderRadius={10}
+                vertical={true}
+              />
+            </View>
+
+            <View
+              style={{
+                position: "absolute",
+                flexDirection: "row",
+                right: 0,
+                bottom: 0,
+                marginTop: 20,
+                marginBottom: 15,
+                padding: 20
+                // justifyContent: "flex-end"
+              }}
+            >
+              <TouchableHighlight
+                style={{ ...styles.cancelButton }}
+                onPress={() => {
+                  setModalVisibleTemp(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Cancel</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={{ ...styles.applyButton }}
+                onPress={() => {
+                  onApply(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Apply</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -400,7 +571,71 @@ const styles = StyleSheet.create({
     height: "100%",
     width: 2,
     backgroundColor: "#ffffff"
+  },
+  centeredView1: {
+    flex: 1,
+    justifyContent: "center",
+    alignContent: "center",
+    marginTop: 22,
+    marginBottom: 20
+  },
+  modalView: {
+    margin: 20,
+    height: 200,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  applyButton: {
+    // backgroundColor: "#F194FF",
+    // width: 150,
+    // textAlign: "center",
+    // borderRadius: 20,
+    // paddingLeft: 60,
+    // paddingRight: 20,
+    // paddingTop: 10,
+    // paddingBottom: 10,
+    // elevation: 2,
+    // marginTop: 20,
+    marginLeft: 10,
+    marginRight: 10
+  },
+
+  cancelButton: {
+    // backgroundColor: "#F194FF",
+    // width: 150,
+    // textAlign: "center",
+    // borderRadius: 20,
+    // paddingLeft: 55,
+    // paddingRight: 20,
+    // paddingTop: 10,
+    // paddingBottom: 10,
+    // elevation: 2,
+    // marginTop: 20,
+    marginLeft: 10,
+    marginRight: 30
+  },
+  modalText: {
+    // marginBottom: 15,
+    textAlign: "center"
   }
 });
 
-export default Meeting;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails
+});
+export default connect(
+  mapStateToProps,
+  null
+)(Meeting);
+
+// export default Meeting;

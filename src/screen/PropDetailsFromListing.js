@@ -43,10 +43,10 @@ const PropDetailsFromListing = ({ route, navigation }) => {
       <View style={[styles.detailsContainer]}>
         <View style={[styles.details]}>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>
+            <Text style={[styles.subDetailsValue, { paddingTop: 5 }]}>
               {item.property_details.bhk_type}
             </Text>
-            <Text style={[styles.subDetailsTitle]}>BHK</Text>
+            {/* <Text style={[styles.subDetailsTitle]}>BHK</Text> */}
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>

@@ -20,7 +20,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Snackbar from "../components/SnackbarComponent";
 
 const houseTypeArray = ["Apartment", "Villa", "Independent House"];
-const bhkArray = ["1RK", "1BHK", "2BHK", "3BHK", "4BHK", "+4BHK"];
+const bhkArray = ["1RK", "1BHK", "2BHK", "3BHK", "4+BHK"];
 const washroomArray = ["1", "2", "3", "4", "4+"];
 const furnishingStatusArray = ["Full", "Semi", "Empty"];
 const parkingNumberArray = ["1", "2", "3", "4", "4+"];
@@ -119,7 +119,7 @@ const ResidentialPropertyDetailsForm = props => {
     property["property_details"] = property_details;
     // console.log(property);
     AsyncStorage.setItem("property", JSON.stringify(property));
-    // console.log(property);
+    console.log(JSON.stringify(property));
     if (propertyFor.toLowerCase() === "Rent".toLowerCase()) {
       navigation.navigate("RentDetailsForm");
     } else if (propertyFor.toLowerCase() === "Sell".toLowerCase()) {
@@ -161,7 +161,9 @@ const ResidentialPropertyDetailsForm = props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
+    >
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
         <ScrollView style={styles.container}>
           <View style={{ paddingTop: 30, marginLeft: 20, marginRight: 20 }}>
@@ -175,12 +177,12 @@ const ResidentialPropertyDetailsForm = props => {
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 350 }}
+                containerStyle={{ borderRadius: 10, width: 310 }}
                 containerBorderRadius={10}
               />
             </View>
             <Text>How many BHK*</Text>
-            <View style={styles.propSubSection}>
+            <View style={[styles.propSubSection, { margin: 10 }]}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={selectBHkIndex}
@@ -189,7 +191,7 @@ const ResidentialPropertyDetailsForm = props => {
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 350 }}
+                containerStyle={{ borderRadius: 10, width: 300 }}
                 containerBorderRadius={10}
               />
             </View>
@@ -273,7 +275,7 @@ const ResidentialPropertyDetailsForm = props => {
                 mode="outlined"
                 style={[
                   styles.inputContainerStyle,
-                  { width: "20%", backgroundColor: "#ffffff" }
+                  { width: "20%", backgroundColor: "rgba(245,245,245, 0.2)" }
                 ]}
                 label="Floor*"
                 placeholder="Floor"
@@ -296,7 +298,7 @@ const ResidentialPropertyDetailsForm = props => {
                 mode="outlined"
                 style={[
                   styles.inputContainerStyle,
-                  { width: "30%", backgroundColor: "#ffffff" }
+                  { width: "30%", backgroundColor: "rgba(245,245,245, 0.2)" }
                 ]}
                 keyboardType={"numeric"}
                 returnKeyType={"done"}
@@ -359,7 +361,7 @@ const ResidentialPropertyDetailsForm = props => {
                   // text: "white",
                   primary: "rgba(0,191,255, .9)",
                   underlineColor: "transparent",
-                  background: "#ffffff"
+                  backgroundColor: "rgba(245,245,245, 0.2)"
                 }
               }}
             />

@@ -92,6 +92,7 @@ const RentDetailsForm = props => {
       setIsVisible(true);
       return;
     } else if (
+      propertyDetailsX &&
       propertyDetailsX.property_type === "Residential" &&
       preferredTenantsIndex === -1
     ) {
@@ -99,6 +100,7 @@ const RentDetailsForm = props => {
       setIsVisible(true);
       return;
     } else if (
+      propertyDetailsX &&
       propertyDetailsX.property_type === "Residential" &&
       nonvegAllowedIndex === -1
     ) {
@@ -116,13 +118,16 @@ const RentDetailsForm = props => {
     };
     const property = JSON.parse(await AsyncStorage.getItem("property"));
     property["rent_details"] = rent_details;
-    // console.log(property);
+
     AsyncStorage.setItem("property", JSON.stringify(property));
+    console.log(JSON.stringify(property));
 
     navigation.navigate("AddImages");
   };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
+    >
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
         <ScrollView>
           <View style={styles.container}>
@@ -148,7 +153,7 @@ const RentDetailsForm = props => {
                   // text: "white",
                   primary: "rgba(0,191,255, .9)",
                   underlineColor: "transparent",
-                  background: "#ffffff"
+                  backgroundColor: "rgba(245,245,245, 0.2)"
                 }
               }}
             />
@@ -174,7 +179,10 @@ const RentDetailsForm = props => {
                   // text: "white",
                   primary: "rgba(0,191,255, .9)",
                   underlineColor: "transparent",
-                  background: "#ffffff"
+                  backgroundColor: "rgba(245,245,245, 0.2)",
+                  borderColor: "#ffffff",
+                  borderStyle: "solid",
+                  borderWidth: 0.5
                 }
               }}
             />
@@ -193,11 +201,12 @@ const RentDetailsForm = props => {
 
                   primary: "rgba(0,191,255, .9)",
                   underlineColor: "transparent",
-                  background: "#ffffff"
+                  backgroundColor: "rgba(245,245,245, 0.2)"
                 }
               }}
             />
-            {propertyDetailsX.property_type === "Residential" ? (
+            {propertyDetailsX &&
+            propertyDetailsX.property_type === "Residential" ? (
               <View>
                 <Text>Preferred Tenants*</Text>
                 <View style={styles.propSubSection}>

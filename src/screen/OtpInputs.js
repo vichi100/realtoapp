@@ -63,7 +63,7 @@ class OtpInputs extends React.Component {
           }}
         >
           <Text style={{ textAlign: "center" }}>Enter OTP sent to +91</Text>
-          <Text>{"  " + this.props.agentMobileNumber}</Text>
+          <Text>{"  " + this.props.userMobileNumber}</Text>
         </View>
 
         <Grid style={styles.gridPad}>{this.renderInputs()}</Grid>
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  agentMobileNumber: state.AppReducer.agentMobileNumber
+  userMobileNumber: state.AppReducer.userMobileNumber
 });
 // const mapDispatchToProps = {
 //   setAgentMobile

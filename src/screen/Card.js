@@ -114,7 +114,12 @@ const Card = props => {
       />
 
       <View style={styles.MainContainer}>
-        <View style={[styles.headerContainer]}>
+        <View
+          style={[
+            styles.headerContainer,
+            { backgroundColor: "rgba(245,245,245, 0.8)" }
+          ]}
+        >
           <Text style={[styles.title]}>
             Rent In {item.property_address.building_name},{" "}
             {item.property_address.landmark_or_street}
@@ -176,7 +181,12 @@ const Card = props => {
         </Animated.View>
       </View>
 
-      <View style={[styles.detailsContainer]}>
+      <View
+        style={[
+          styles.detailsContainer,
+          { backgroundColor: "rgba(192,192,192, 0.1)" }
+        ]}
+      >
         <View style={[styles.details]}>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue, { marginTop: 5 }]}>
@@ -317,8 +327,11 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     // borderBottomWidth: 1,
-    borderTopColor: "#fff59d",
-    borderTopWidth: 1
+    borderTopColor: "#DCDCDC",
+    borderBottomColor: "#DCDCDC",
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    marginBottom: 3
   },
 
   details: {

@@ -74,7 +74,7 @@ const LocalityDetailsForm = props => {
     property["property_address"] = property_address;
     // console.log(property_address);
     AsyncStorage.setItem("property", JSON.stringify(property));
-    // console.log(property);
+    console.log(JSON.stringify(property));
     if (propertyType.toLowerCase() === "Residential".toLowerCase()) {
       navigation.navigate("ResidentialPropertyDetailsForm");
     } else {
@@ -83,7 +83,9 @@ const LocalityDetailsForm = props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
+    >
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
         <ScrollView style={styles.container}>
           <TextInput
@@ -91,7 +93,7 @@ const LocalityDetailsForm = props => {
             value={city}
             onChangeText={text => setCity(text)}
             onFocus={() => setIsVisible(false)}
-            style={{ backgroundColor: "#ffffff", marginTop: 0 }}
+            style={{ backgroundColor: "rgba(245,245,245, 0.1)", marginTop: 0 }}
             theme={{
               colors: {
                 // placeholder: "white",
@@ -107,7 +109,7 @@ const LocalityDetailsForm = props => {
             value={area}
             onChangeText={text => setArea(text)}
             onFocus={() => setIsVisible(false)}
-            style={{ backgroundColor: "#ffffff", marginTop: 8 }}
+            style={{ backgroundColor: "rgba(245,245,245, 0.1)", marginTop: 8 }}
             theme={{
               colors: {
                 // placeholder: "white",
@@ -123,7 +125,7 @@ const LocalityDetailsForm = props => {
             value={flatNumber}
             onChangeText={text => setFlatNumber(text)}
             onFocus={() => setIsVisible(false)}
-            style={{ backgroundColor: "#ffffff", marginTop: 8 }}
+            style={{ backgroundColor: "rgba(245,245,245, 0.1)", marginTop: 8 }}
             theme={{
               colors: {
                 // placeholder: "white",
@@ -140,7 +142,7 @@ const LocalityDetailsForm = props => {
             value={buildingName}
             onChangeText={text => setBuildingName(text)}
             onFocus={() => setIsVisible(false)}
-            style={{ backgroundColor: "#ffffff", marginTop: 8 }}
+            style={{ backgroundColor: "rgba(245,245,245, 0.1)", marginTop: 8 }}
             theme={{
               colors: {
                 // placeholder: "white",
@@ -157,14 +159,14 @@ const LocalityDetailsForm = props => {
             value={landmark}
             onChangeText={text => setLandmark(text)}
             onFocus={() => setIsVisible(false)}
-            style={{ backgroundColor: "#ffffff", marginTop: 8 }}
+            style={{ backgroundColor: "rgba(245,245,245, 0.1)", marginTop: 8 }}
             theme={{
               colors: {
                 // placeholder: "white",
                 // text: "white",
                 primary: "rgba(0,191,255, .9)",
                 underlineColor: "transparent",
-                background: "#ffffff"
+                backgroundColor: "rgba(245,245,245, 0.1)"
               }
             }}
           />

@@ -9,6 +9,7 @@ import {
   ScrollView,
   TextInput
 } from "react-native";
+import { connect } from "react-redux";
 import { CheckBox } from "react-native-elements";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -112,7 +113,7 @@ const ListingCommercial = props => {
 
   const getListing = () => {
     const user = {
-      name: "tom"
+      agent_id: props.userDetails.user_details.works_for
     };
 
     axios("http://192.168.1.103:3000/commercialPropertyListings", {
@@ -121,7 +122,7 @@ const ListingCommercial = props => {
         "Content-type": "Application/json",
         Accept: "Application/json"
       },
-      data: { user }
+      data: user
     }).then(
       response => {
         // console.log(response.data);
@@ -214,6 +215,10 @@ const ListingCommercial = props => {
     );
   };
 
+  const navigateTo = () => {
+    navigation.navigate("Add");
+  };
+
   const [visible, setVisible] = useState(false);
   const [visibleSorting, setVisibleSorting] = useState(false);
 
@@ -238,35 +243,57 @@ const ListingCommercial = props => {
           placeholder="Search Here"
         />
       </View>
-      <View style={styles.container}>
-        <FlatList
-          data={data}
-          //data defined in constructor
-          // ItemSeparatorComponent={ItemSeparatorView}
-          //Item Separator View
-          renderItem={ItemView}
-          keyExtractor={(item, index) => index.toString()}
-        />
-        <View style={styles.fab}>
-          <TouchableOpacity
-            onPress={() => toggleSortingBottomNavigationView()}
-            style={styles.fabIcon1}
-          >
-            <MaterialCommunityIcons name="sort" color={"#ffffff"} size={26} />
-          </TouchableOpacity>
-          <View style={styles.verticalLine}></View>
-          <TouchableOpacity
-            onPress={() => toggleBottomNavigationView()}
-            style={styles.fabIcon2}
-          >
-            <MaterialCommunityIcons
-              name="filter-variant-plus"
-              color={"#ffffff"}
-              size={26}
-            />
+      {data.length > 0 ? (
+        <View style={styles.container}>
+          <FlatList
+            data={data}
+            //data defined in constructor
+            // ItemSeparatorComponent={ItemSeparatorView}
+            //Item Separator View
+            renderItem={ItemView}
+            keyExtractor={(item, index) => index.toString()}
+          />
+          <View style={styles.fab}>
+            <TouchableOpacity
+              onPress={() => toggleSortingBottomNavigationView()}
+              style={styles.fabIcon1}
+            >
+              <MaterialCommunityIcons name="sort" color={"#ffffff"} size={26} />
+            </TouchableOpacity>
+            <View style={styles.verticalLine}></View>
+            <TouchableOpacity
+              onPress={() => toggleBottomNavigationView()}
+              style={styles.fabIcon2}
+            >
+              <MaterialCommunityIcons
+                name="filter-variant-plus"
+                color={"#ffffff"}
+                size={26}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center"
+          }}
+        >
+          <Text style={{ textAlign: "center" }}>
+            You have no property listing
+          </Text>
+          <TouchableOpacity onPress={() => navigateTo()}>
+            <Text
+              style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
+            >
+              Add New Property
+            </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      )}
       {/* Bottom for filters */}
       <BottomSheet
         visible={visible}
@@ -557,4 +584,11 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ListingCommercial;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails
+});
+export default connect(
+  mapStateToProps,
+  null
+)(ListingCommercial);
+// export default ListingCommercial;
