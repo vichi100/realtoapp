@@ -27,15 +27,13 @@ import {
   setUserDetails,
   setPropReminderList
 } from "../reducers/Action";
-import PropertyReminder from "./PropertyReminder";
 
 const reminderForArray = ["Call", "Meeting", "Property Visit"];
 const ampmArray = ["AM", "PM"];
 
-const Meeting = props => {
+const Meeting = ({ route, navigation }) => {
   // const { navigation } = props;
-  const item = props.route.params;
-  // console.log("route.params: " + JSON.stringify(props.route.params));
+  const item = route.params;
   const inputRef = useRef(null);
   // console.log(item);
   const date = new Date();
@@ -51,14 +49,13 @@ const Meeting = props => {
   const [hour, setHour] = useState(null);
   const [minutes, setMinutes] = useState(null);
   const [ampmIndex, setAMPMIndex] = useState(-1);
-  const [propertyIdX, setPropertyIdX] = useState(item.property_id);
 
   const setModalVisibleTemp = flag => {
-    // console.log("setModalVisible: " + flag);
+    console.log("setModalVisible: " + flag);
     setModalVisible(flag);
   };
   const setModalVisibleTemp1 = flag => {
-    // console.log("setModalVisible1: " + flag);
+    console.log("setModalVisible1: " + flag);
     setModalVisible(flag);
     inputRef.current.blur();
   };
@@ -177,7 +174,7 @@ const Meeting = props => {
 
   const send = async () => {
     // console.log("newDate: " + newDate);
-
+    console.log(item);
     const reminderDetails = {
       user_id: item.agent_id,
       property_id: item.property_id,
@@ -200,10 +197,6 @@ const Meeting = props => {
         response => {
           console.log(response.data);
           // navigation.navigate("CardDetails");
-          if (response.data !== "fail") {
-            const x = [reminderDetails, ...props.propReminderList];
-            props.setPropReminderList(x);
-          }
         },
         error => {
           console.log(error);
@@ -212,9 +205,8 @@ const Meeting = props => {
   };
 
   const getPropReminders = () => {
-    console.log("item getPropReminders: " + propertyIdX);
     const propertyId = {
-      property_id: propertyIdX
+      property_id: item.property_id
     };
     axios
       .post(
@@ -226,14 +218,11 @@ const Meeting = props => {
       )
       .then(
         response => {
-          console.log("response.data.length: " + response.data.length);
+          console.log(response.data);
           // navigation.navigate("CardDetails");
           if (response.data && response.data.length > 0) {
-            // const x = [...props.propReminderList, ...response.data];
-            // console.log("X: " + x);
-            props.setPropReminderList(response.data);
-          } else {
-            props.setPropReminderList([]);
+            const x = [...props.propReminderList, ...response.data];
+            props.setPropReminderList(x);
           }
         },
         error => {
@@ -243,17 +232,10 @@ const Meeting = props => {
   };
 
   useEffect(() => {
-    console.log("useEffect called: " + props.propReminderList.length);
-    // if (props.propReminderList.length === 0) {
-    console.log("getPropReminders called");
-    getPropReminders();
-    // }
-  }, [propertyIdX]);
-
-  // useEffect(() => {
-  //   console.log("propertyIdX: " + propertyIdX);
-  //   props.setPropReminderList([]);
-  // }, [propertyIdX]);
+    if (props.propReminderList.length === 0) {
+      getPropReminders();
+    }
+  }, [props.propReminderList]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
@@ -371,7 +353,101 @@ const Meeting = props => {
             </View>
           </View>
           {/* Property releted reminder list */}
-          <PropertyReminder />
+
+          <View
+            style={{
+              flexDirection: "row",
+              flex: 1,
+              justifyContent: "space-between",
+              backgroundColor: "rgba(135,206,250, 0.5)",
+              borderRadius: 5
+              // alignContent: "center"
+              // alignItems: "center"
+            }}
+          >
+            <View style={{ padding: 10, fontSize: 16, paddingTop: 15 }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "600",
+                  color: "rgba(0,0,0, 0.7)"
+                }}
+              >
+                Vichi
+              </Text>
+              <Text>91 9833097595</Text>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ padding: 10 }}>
+                <Text>Meeting</Text>
+                <Text>12:30 PM</Text>
+                <Text>12 Jun 2021</Text>
+              </View>
+              <View style={styles.verticalLine} />
+              <TouchableOpacity
+                onPress={() => toggleSortingBottomNavigationView()}
+                style={{ padding: 10 }}
+              >
+                <Ionicons name="call" color={"#ffffff"} size={26} />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={{ margin: 1 }} />
+
+          <View
+            style={{
+              flexDirection: "row",
+              flex: 1,
+              justifyContent: "space-between",
+              backgroundColor: "rgba(64,224,208, 0.5)",
+              borderRadius: 5
+            }}
+          >
+            <View style={{ padding: 10, fontSize: 16, alignContent: "center" }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "600",
+                  color: "rgba(128,128,128, 0.9)"
+                }}
+              >
+                Vichi
+              </Text>
+              <Text>91 9833097595</Text>
+            </View>
+            <View style={{ padding: 10 }}>
+              <Text>Call</Text>
+              <Text>12:30 PM</Text>
+              <Text>12 Jun 2021</Text>
+            </View>
+          </View>
+          <View style={{ margin: 1 }} />
+          <View
+            style={{
+              flexDirection: "row",
+              flex: 1,
+              justifyContent: "space-between",
+              backgroundColor: "rgba(255,182,193, 0.5)",
+              borderRadius: 5
+            }}
+          >
+            <View style={{ padding: 10, fontSize: 16 }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "600",
+                  color: "rgba(128,128,128, 0.9)"
+                }}
+              >
+                Vichi
+              </Text>
+              <Text>91 9833097595</Text>
+            </View>
+            <View style={{ padding: 10 }}>
+              <Text>12:30 PM</Text>
+              <Text>12 Jun 2021</Text>
+            </View>
+          </View>
         </ScrollView>
         <DatePickerModal
           mode="single"

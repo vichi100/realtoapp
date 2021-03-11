@@ -33,7 +33,7 @@ const Profile = props => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const makeCall = async () => {
-    const url = "tel://12355654656";
+    const url = "tel://9833097595";
     Linking.openURL(url);
   };
 

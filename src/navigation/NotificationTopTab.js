@@ -21,7 +21,7 @@ const NotificationTopTab = () => {
         />
       </View> */}
       <Tab.Navigator>
-        <Tab.Screen name="General" component={Meeting} />
+        <Tab.Screen name="General" component={Reminder} />
         <Tab.Screen name="Reminders" component={Reminder} />
       </Tab.Navigator>
     </SafeAreaView>

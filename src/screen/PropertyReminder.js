@@ -17,34 +17,37 @@ import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 
-const Reminder = props => {
+const PropertyReminder = props => {
   const [reminderList, setReminderList] = useState([]);
   useEffect(() => {
-    if (reminderList.length > 0) {
-      return;
-    }
-    const agentId = {
-      agent_id: props.userDetails.user_details.works_for
-    };
-    axios
-      .post(
-        "http://192.168.1.103:3000/getReminderList",
-        // SERVER_URL + "/addNewResidentialRentProperty",
-        // await AsyncStorage.getItem("property")
-        // JSON.stringify({ vichi: "vchi" })
-        agentId
-      )
-      .then(
-        response => {
-          console.log(response.data);
-          setReminderList(response.data);
-          // navigation.navigate("CardDetails");
-        },
-        error => {
-          console.log(error);
-        }
-      );
-  }, []);
+    setReminderList(props.propReminderList);
+  }, [props.propReminderList]);
+  // useEffect(() => {
+  //   if(reminderList.length > 0){
+  //     return;
+  //   }
+  //   const agentId = {
+  //     agent_id: props.userDetails.user_details.works_for
+  //   };
+  //   axios
+  //     .post(
+  //       "http://192.168.1.103:3000/getReminderList",
+  //       // SERVER_URL + "/addNewResidentialRentProperty",
+  //       // await AsyncStorage.getItem("property")
+  //       // JSON.stringify({ vichi: "vchi" })
+  //       agentId
+  //     )
+  //     .then(
+  //       response => {
+  //         console.log(response.data);
+  //         setReminderList(response.data);
+  //         // navigation.navigate("CardDetails");
+  //       },
+  //       error => {
+  //         console.log(error);
+  //       }
+  //     );
+  // }, []);
 
   const makeCall = mobile => {
     const url = "tel://" + mobile;
@@ -218,11 +221,12 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  userDetails: state.AppReducer.userDetails
+  userDetails: state.AppReducer.userDetails,
+  propReminderList: state.AppReducer.propReminderList
 });
 export default connect(
   mapStateToProps,
   null
-)(Reminder);
+)(PropertyReminder);
 
 // export default Reminder;

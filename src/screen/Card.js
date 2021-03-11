@@ -77,8 +77,8 @@ const Card = props => {
 
   // console.log(width);
 
-  const makeCall = () => {
-    const url = "tel://12355654656";
+  const makeCall = mobile => {
+    const url = "tel://" + mobile;
     Linking.openURL(url);
   };
 
@@ -172,10 +172,11 @@ const Card = props => {
               <Ionicons name="ios-alarm-outline" color={"#ffffff"} size={30} />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => makeCall()}
+              onPress={() => makeCall(item.owner_details.mobile1)}
               style={{ padding: 15, backgroundColor: "#00bfa5" }}
             >
               <Ionicons name="call" color={"#ffffff"} size={30} />
+              <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text>
             </TouchableOpacity>
           </View>
         </Animated.View>
