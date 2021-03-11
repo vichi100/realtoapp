@@ -53,7 +53,7 @@ const ManageEmployee = props => {
       return;
     }
     const user = {
-      agent_id: "1234",
+      agent_id: props.userDetails.user_details.works_for[0],
       employee: {
         employee_name: employeeName.trim(),
         employee_mobile: employeeMobile.trim(),
@@ -224,7 +224,8 @@ const styles = StyleSheet.create({
 // export default ManageEmployee;
 
 const mapStateToProps = state => ({
-  employeeList: state.AppReducer.employeeList
+  employeeList: state.AppReducer.employeeList,
+  userDetails: state.AppReducer.userDetails
 });
 const mapDispatchToProps = {
   setEmployeeList

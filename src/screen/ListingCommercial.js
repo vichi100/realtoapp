@@ -112,8 +112,9 @@ const ListingCommercial = props => {
   }, []);
 
   const getListing = () => {
+    console.log("props.userDetails4 " + JSON.stringify(props.userDetails));
     const user = {
-      agent_id: props.userDetails.user_details.works_for
+      agent_id: props.userDetails.user_details.works_for[0]
     };
 
     axios("http://192.168.1.103:3000/commercialPropertyListings", {
