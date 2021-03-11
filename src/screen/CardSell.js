@@ -9,7 +9,9 @@ import {
   TouchableOpacity,
   Modal,
   TouchableHighlight,
-  Dimensions
+  Dimensions,
+  Share,
+  Linking
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -40,6 +42,32 @@ const Card = props => {
 
   const updateIndex = index => {
     setIndex(index);
+  };
+
+  const makeCall = mobile => {
+    const url = "tel://" + mobile;
+    Linking.openURL(url);
+  };
+
+  const onShare = async () => {
+    // https://docs.expo.io/versions/latest/react-native/share/
+    try {
+      const result = await Share.share({
+        message:
+          "React Native | A framework for building native apps using React"
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   const ShowSlidingDrawer = () => {
@@ -116,7 +144,7 @@ const Card = props => {
             </TouchableOpacity>
             <View style={styles.verticalLine} />
             <TouchableOpacity
-              disabled={Sliding_Drawer_Toggle}
+              // disabled={Sliding_Drawer_Toggle}
               onPress={() => {
                 setModalVisible(true);
               }}
@@ -126,22 +154,23 @@ const Card = props => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={ShowSlidingDrawer}
+              onPress={() => onShare()}
               style={{ padding: 15, backgroundColor: "#0091ea" }}
             >
               <Ionicons name="share-social" color={"#ffffff"} size={30} />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Meeting")}
+              onPress={() => navigation.navigate("Meeting", item)}
               style={{ padding: 15, backgroundColor: "#ffd600" }}
             >
               <Ionicons name="ios-alarm-outline" color={"#ffffff"} size={30} />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={ShowSlidingDrawer}
+              onPress={() => makeCall(item.owner_details.mobile1)}
               style={{ padding: 15, backgroundColor: "#00bfa5" }}
             >
               <Ionicons name="call" color={"#ffffff"} size={30} />
+              <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text>
             </TouchableOpacity>
           </View>
         </Animated.View>
@@ -349,7 +378,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    height: 300,
+    height: 250,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -373,8 +402,8 @@ const styles = StyleSheet.create({
     // paddingTop: 10,
     // paddingBottom: 10,
     // elevation: 2,
-    marginTop: 20,
-    marginLeft: 10
+    marginLeft: 10,
+    marginRight: 10
   },
 
   cancelButton: {
@@ -387,8 +416,8 @@ const styles = StyleSheet.create({
     // paddingTop: 10,
     // paddingBottom: 10,
     // elevation: 2,
-    marginTop: 20,
-    marginLeft: 10
+    marginLeft: 10,
+    marginRight: 30
   },
   modalText: {
     marginBottom: 15,

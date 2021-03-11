@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    height: 300,
+    height: 250,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -417,8 +417,8 @@ const styles = StyleSheet.create({
     // paddingTop: 10,
     // paddingBottom: 10,
     // elevation: 2,
-    marginTop: 20,
-    marginLeft: 10
+    marginLeft: 10,
+    marginRight: 10
   },
 
   cancelButton: {
@@ -431,8 +431,8 @@ const styles = StyleSheet.create({
     // paddingTop: 10,
     // paddingBottom: 10,
     // elevation: 2,
-    marginTop: 20,
-    marginLeft: 10
+    marginLeft: 10,
+    marginRight: 30
   },
   modalText: {
     marginBottom: 15,

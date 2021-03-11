@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   SafeAreaView,
@@ -15,11 +15,17 @@ import {
   Text,
   TouchableRipple
 } from "react-native-paper";
+import { connect } from "react-redux";
 import Button from "../components/Button";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import {
+  setUserMobile,
+  setUserDetails,
+  setPropReminderList
+} from "../reducers/Action";
 
 // import Share from "react-native-share";
 
@@ -31,7 +37,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 const Profile = props => {
   const { navigation } = props;
   const [modalVisible, setModalVisible] = useState(false);
-
+  // useEffect(() => {
+  //   console.log(props.userDetails.user_details.user_type);
+  // });
   const makeCall = async () => {
     const url = "tel://9833097595";
     Linking.openURL(url);
@@ -97,9 +105,15 @@ const Profile = props => {
                 }
               ]}
             >
-              John Doe
+              {props.userDetails.user_details.name
+                ? props.userDetails.user_details.name
+                : "Guest"}
             </Title>
-            <Caption style={styles.caption}>@j_doe</Caption>
+            <Caption style={styles.caption}>
+              {props.userDetails.user_details.company_name
+                ? props.userDetails.user_details.company_name
+                : "Company"}
+            </Caption>
           </View>
         </View>
       </View>
@@ -108,21 +122,23 @@ const Profile = props => {
         <View style={styles.row}>
           <Icon name="map-marker-radius" color="#777777" size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>
-            Kolkata, India
+            {props.userDetails.user_details.city
+              ? props.userDetails.user_details.city
+              : "Guest City"}
           </Text>
         </View>
         <View style={styles.row}>
           <Icon name="phone" color="#777777" size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>
-            +91-900000009
+            +91 {" " + props.userDetails.user_details.mobile}
           </Text>
         </View>
-        <View style={styles.row}>
+        {/* <View style={styles.row}>
           <Icon name="email" color="#777777" size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>
             john_doe@email.com
           </Text>
-        </View>
+        </View> */}
       </View>
       <View
         style={{
@@ -142,18 +158,30 @@ const Profile = props => {
         </TouchableOpacity>
       </View>
 
-      <View style={[{ flexDirection: "column" }]}>
+      {props.userDetails.user_details.user_type === "agent" ? (
+        <View style={[{ flexDirection: "column", marginTop: 20 }]}>
+          <View
+            style={{
+              marginTop: 10,
+              marginBottom: 10,
+              marginLeft: 10,
+              marginRight: 10
+            }}
+          >
+            <Button title="ADD EMPLOYEE" onPress={() => onSubmit()} />
+          </View>
+        </View>
+      ) : (
         <View
           style={{
-            marginTop: 10,
-            marginBottom: 10,
+            borderBottomColor: "rgba(211,211,211, 0.5)",
+            borderBottomWidth: 1,
+            marginTop: 30,
             marginLeft: 10,
             marginRight: 10
           }}
-        >
-          <Button title="ADD EMPLOYEE" onPress={() => onSubmit()} />
-        </View>
-      </View>
+        />
+      )}
 
       <View style={styles.menuWrapper}>
         <TouchableRipple onPress={() => onShare()}>
@@ -192,10 +220,13 @@ const Profile = props => {
       >
         <View style={styles.centeredView1}>
           <View style={styles.modalView}>
+            <Text style={{ color: "rgba(255,0,0, .9)", marginBottom: 10 }}>
+              Do you really want to delete your account ?
+            </Text>
             <Text style={styles.modalText}>
-              Do you really want to delete your account ? Your account will be
-              in suspended mode for 15 days after that it will be permanently
-              removed. Please note once it removed it can not be recovered.
+              Your account will be in suspended mode for 15 days after that it
+              will be permanently removed. Please note once it removed, it can
+              not be recovered.
             </Text>
 
             <View
@@ -234,7 +265,19 @@ const Profile = props => {
   );
 };
 
-export default Profile;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails
+});
+
+const mapDispatchToProps = {
+  // setUserMobile,
+  // setUserDetails,
+  // setPropReminderList
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Profile);
 
 const styles = StyleSheet.create({
   container: {
@@ -463,7 +506,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    height: 300,
+    height: 230,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
