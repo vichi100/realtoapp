@@ -71,9 +71,16 @@ const AddNewPropCommercialSellFinalDetails = props => {
         propertyFinalDetails
       )
       .then(
-        response => {
+        async response => {
           console.log(response.data);
-          // navigation.navigate("CardDetails");
+          if (response.data.property_id !== null) {
+            await AsyncStorage.removeItem("property");
+            navigation.navigate("Listing");
+          } else {
+            setErrorMessage(
+              "Error: Seems there is some network issue, please try later"
+            );
+          }
         },
         error => {
           console.log(error);
