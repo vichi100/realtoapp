@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,22 +6,97 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  Switch
+  Switch,
+  Linking
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements";
+import { setEmployeeList } from "../reducers/Action";
+import { connect } from "react-redux";
+import axios from "axios";
 
 const EmployeeAccess = props => {
   const [isReadEnabled, setIsReadEnabled] = useState(false);
   const [isEditEnabled, setIsEditEnabled] = useState(false);
 
+  useEffect(() => {
+    if (props.item.access_rights === "read") {
+      setIsReadEnabled(true);
+    }
+
+    if (props.item.access_rights === "edit") {
+      setIsEditEnabled(true);
+    }
+  }, []);
+
+  const makeCall = mobile => {
+    const url = "tel://" + mobile;
+    Linking.openURL(url);
+  };
+
   const toggleReadSwitch = () =>
     setIsReadEnabled(previousState => !previousState);
 
-  const toggleEditSwitch = () =>
-    setIsEditEnabled(previousState => !previousState);
+  // const toggleEditSwitch = () =>{
 
-  return (
+  //   updateEmployeeEditRights
+  // }
+
+  const removeEmployee = empIdToBeRemoved => {
+    const user = {
+      agent_id: props.userDetails.user_details.works_for[0],
+      employee_id: empIdToBeRemoved
+    };
+    axios("http://192.168.1.103:3000/removeEmployee", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: user
+    }).then(
+      response => {
+        console.log(response.data);
+        if (response.data === "success") {
+          const x = props.employeeList.filter(function(el) {
+            return el.id !== empIdToBeRemoved;
+          });
+          props.setEmployeeList([...x]);
+        }
+        // setData(response.data);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  };
+
+  const updateEmployeeEditRights = employeeId => {
+    const user = {
+      employee_id: employeeId,
+      access_rights: isEditEnabled ? "read" : "edit"
+    };
+    axios("http://192.168.1.103:3000/updateEmployeeEditRights", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: user
+    }).then(
+      response => {
+        console.log(response.data);
+        if (response.data === "success") {
+          setIsEditEnabled(!isEditEnabled);
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  };
+
+  return props.userDetails.user_details.id === props.item.id ? null : (
     <View
       style={{
         flex: 1,
@@ -45,11 +120,17 @@ const EmployeeAccess = props => {
         <Avatar
           rounded
           size={60}
-          title={props.item.name.slice(0, 2)}
+          title={props.item.name && props.item.name.slice(0, 2)}
           activeOpacity={0.7}
           titleStyle={{ color: "rgba(105,105,105, .9)" }}
           source={{
             uri: props.item.photo
+          }}
+          avatarStyle={{
+            borderWidth: 1,
+            borderColor: "rgba(127,255,212, .9)",
+            // borderTopLeftRadius: 1,
+            borderStyle: "solid"
           }}
         />
         {/* <Image
@@ -63,7 +144,7 @@ const EmployeeAccess = props => {
                 {props.item.name}
               </Text>
               <Text style={{ fontSize: 12, textAlign: "left" }}>
-                +91 9833097595
+                +91 {props.item.mobile}
               </Text>
             </View>
             <View style={{ marginLeft: 5 }}>
@@ -74,6 +155,7 @@ const EmployeeAccess = props => {
                   justifyContent: "center",
                   alignItems: "center"
                 }}
+                onPress={() => removeEmployee(props.item.id)}
               >
                 <Ionicons
                   name="md-remove-circle-outline"
@@ -93,8 +175,8 @@ const EmployeeAccess = props => {
                 }}
                 thumbColor={isReadEnabled ? "#ffffff" : "#f4f3f4"}
                 ios_backgroundColor="rgba(211,211,211, .3)"
-                onValueChange={toggleReadSwitch}
-                value={isReadEnabled}
+                // onValueChange={toggleReadSwitch}
+                value={true} //{isReadEnabled}
                 style={{ transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }] }}
               />
             </View>
@@ -113,7 +195,7 @@ const EmployeeAccess = props => {
                 }}
                 thumbColor={isEditEnabled ? "#ffffff" : "#f4f3f4"}
                 ios_backgroundColor="rgba(211,211,211, .3)"
-                onValueChange={toggleEditSwitch}
+                onValueChange={() => updateEmployeeEditRights(props.item.id)}
                 value={isEditEnabled}
                 style={{ transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }] }}
               />
@@ -129,6 +211,7 @@ const EmployeeAccess = props => {
           justifyContent: "center",
           alignItems: "center"
         }}
+        onPress={() => makeCall(props.item.mobile)}
       >
         <Ionicons name="md-call" color={"rgba(30,144,255,.7)"} size={26} />
       </TouchableOpacity>
@@ -136,4 +219,15 @@ const EmployeeAccess = props => {
   );
 };
 
-export default EmployeeAccess;
+const mapStateToProps = state => ({
+  employeeList: state.AppReducer.employeeList,
+  userDetails: state.AppReducer.userDetails
+});
+const mapDispatchToProps = {
+  setEmployeeList
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EmployeeAccess);

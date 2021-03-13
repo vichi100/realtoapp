@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -32,6 +32,8 @@ const ManageEmployee = props => {
   const [isEditEnabled, setIsEditEnabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
+  const [employeeList, setEmployeeList] = useState([]);
+
   const toggleReadSwitch = () =>
     setIsReadEnabled(previousState => !previousState);
 
@@ -53,25 +55,59 @@ const ManageEmployee = props => {
       return;
     }
     const user = {
-      agent_id: props.userDetails.user_details.works_for[0],
-      employee: {
-        employee_name: employeeName.trim(),
-        employee_mobile: employeeMobile.trim(),
-        access_rights: isEditEnabled ? "edit" : "read"
-      }
+      user_id: props.userDetails.user_details.works_for[0],
+      company_name: props.userDetails.user_details.company_name,
+      address: props.userDetails.user_details.address,
+      city: props.userDetails.user_details.city,
+      name: employeeName.trim(),
+      mobile: employeeMobile.trim(),
+      access_rights: isEditEnabled ? "edit" : "read"
     };
-    props.setEmployeeList("vichi");
     axios("http://192.168.1.103:3000/addEmployee", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
         Accept: "Application/json"
       },
-      data: { user }
+      data: user
     }).then(
       response => {
-        // console.log(response.data);
-        setData(response.data);
+        console.log(response.data);
+        if (response.data) {
+          const empObj = {
+            id: response.data,
+            name: employeeName.trim(),
+            mobile: employeeMobile.trim(),
+            access_rights: isEditEnabled ? "edit" : "read"
+          };
+          const x = [empObj, ...props.employeeList];
+          props.setEmployeeList(x);
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  };
+
+  useEffect(() => {
+    getEmployeeList();
+  }, []);
+
+  const getEmployeeList = () => {
+    console.log("user_id: " + JSON.stringify(props.userDetails));
+    const user = { user_id: props.userDetails.user_details.id };
+    axios("http://192.168.1.103:3000/getEmployeeList", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: user
+    }).then(
+      response => {
+        console.log("emp list: " + JSON.stringify(response.data));
+        props.setEmployeeList(response.data);
       },
       error => {
         console.log(error);
@@ -140,8 +176,8 @@ const ManageEmployee = props => {
                     }}
                     thumbColor={isReadEnabled ? "#ffffff" : "#f4f3f4"}
                     ios_backgroundColor="rgba(211,211,211, .3)"
-                    onValueChange={toggleReadSwitch}
-                    value={isReadEnabled}
+                    // onValueChange={toggleReadSwitch}
+                    value={true} //{isReadEnabled}
                     style={{ transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }] }}
                   />
                 </View>
@@ -181,7 +217,7 @@ const ManageEmployee = props => {
           </View>
           {/* Property releted reminder list */}
 
-          <EmployeeList />
+          <EmployeeList employeeList={props.employeeList} />
         </ScrollView>
       </KeyboardAwareScrollView>
       <Snackbar

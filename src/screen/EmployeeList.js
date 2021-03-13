@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -79,7 +79,7 @@ const data = [
   }
 ];
 
-const EmployeeList = () => {
+const EmployeeList = props => {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
@@ -91,7 +91,7 @@ const EmployeeList = () => {
     <View style={styles.container}>
       <FlatList
         style={{ flex: 1 }}
-        data={data}
+        data={props.employeeList}
         renderItem={({ item }) => <Item item={item} />}
         keyExtractor={item => item.email}
       />
