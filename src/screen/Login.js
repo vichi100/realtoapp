@@ -26,24 +26,26 @@ const Login = props => {
   useEffect(() => {
     console.log("Login");
     // const userDetails = getUserDetails().then(console.log(userDetails));
-    console.log("userDetails1: " + JSON.stringify(userDetails));
-    if (userDetails !== null) {
-      props.setUserDetails(userDetails);
+    console.log("userDetails1: " + JSON.stringify(props.userDetails));
+    if (props.userDetails !== null) {
+      // props.setUserDetails(userDetails);
+      console.log("Login useffect: " + JSON.stringify(props.userDetails));
       navigation.navigate("BottomTabScreen");
     } else {
       getUserDetails();
     }
-  }, [userDetails]);
+  }, [props.userDetails]);
 
   const getUserDetails = async () => {
     // AsyncStorage.setItem("agent_details", JSON.stringify(agentDetails));
 
     // AsyncStorage.clear();
+    // userDetailsStr: { "user_details": { "user_type": "agent", "id": "15476a82-997a-4bef-bf1b-b1236f6c177e", "expo_token": null, "name": null, "company_name": null, "mobile": "9833097595", "address": null, "city": null, "access_rights": "all", "works_for": ["15476a82-997a-4bef-bf1b-b1236f6c177e"] } }
 
     const userDetailsStr = await AsyncStorage.getItem("user_details");
     console.log("userDetailsStr: " + userDetailsStr);
     if (userDetailsStr !== null) {
-      setUserDetails(JSON.parse(userDetailsStr));
+      props.setUserDetails(JSON.parse(userDetailsStr));
     }
   };
 
@@ -164,7 +166,8 @@ const Login = props => {
 };
 
 const mapStateToProps = state => ({
-  userMobileNumber: state.AppReducer.userMobileNumber
+  userMobileNumber: state.AppReducer.userMobileNumber,
+  userDetails: state.AppReducer.userDetails
 });
 const mapDispatchToProps = {
   setUserMobile,

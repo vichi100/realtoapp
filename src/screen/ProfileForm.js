@@ -11,68 +11,90 @@ import {
   AsyncStorage
 } from "react-native";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
-import RadioButton from "../components/RadioButtons";
-import { ButtonGroup } from "react-native-elements";
 import Button from "../components/Button";
-import { Formik } from "formik";
-import * as yup from "yup";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../components/SnackbarComponent";
+import { setUserDetails } from "../reducers/Action";
+import { connect } from "react-redux";
+
+import axios from "axios";
 
 const ProfileForm = props => {
   const { navigation } = props;
-  const [propertyForIndex, setPropertyForIndex] = useState(-1);
-  const [selectedPropType, setSelectedPropType] = useState(null);
-  const [ownerName, setOwnerName] = useState("");
-  const [ownerMobile, setOwnerMobile] = useState("");
-  const [ownerAddress, setOwnerAddress] = useState("");
+
+  const [name, setName] = useState("");
+  const [city, setCity] = useState("");
+  const [company, setCompany] = useState("");
+  const [email, setEmail] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-
-  const onSelectPropType = item => {
-    // console.log(item);
-    if (selectedPropType && selectedPropType.key === item.key) {
-      setSelectedPropType(null);
-    } else {
-      setSelectedPropType(item);
-    }
-    setIsVisible(false);
-  };
-
-  const selectPropertyForIndex = index => {
-    // console.log(index);
-    // console.log(propertyForArray[index]);
-    setPropertyForIndex(index);
-    setIsVisible(false);
-  };
 
   const dismissSnackBar = () => {
     setIsVisible(false);
   };
 
   const onSubmit = () => {
-    console.log("-1");
-    if (ownerName.trim() === "") {
-      setErrorMessage("Owner name is missing");
+    if (name.trim() === "") {
+      setErrorMessage("Name is missing");
       setIsVisible(true);
       return;
-    } else if (ownerMobile.trim() === "") {
-      setErrorMessage("Owner mobile is missing");
+    } else if (city.trim() === "") {
+      setErrorMessage("City is missing");
       setIsVisible(true);
       return;
     }
     // console.log("0");
     const profileDetails = {
-      name: ownerName.trim(),
-      mobile: ownerMobile.trim(),
-      city: ownerMobile.trim(),
-      email: ownerAddress.trim()
+      user_id: props.userDetails.user_details.id,
+      name: name.trim(),
+      company: company.trim(),
+      city: city.trim(),
+      email: email.trim()
     };
     // console.log(property);
-    AsyncStorage.setItem("property", JSON.stringify(property));
-    // console.log("1");
-    navigation.navigate("LocalityDetailsForm");
+
+    updateUserProfile(profileDetails);
+  };
+  const updateUserProfile = profileDetails => {
+    axios("http://192.168.1.103:3000/updateUserProfile", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: profileDetails
+    }).then(
+      response => {
+        if (response.data === "success") {
+          // AsyncStorage.setItem("property", JSON.stringify(property));
+          console.log("1: " + JSON.stringify(props.userDetails.user_details));
+          props.userDetails.user_details["name"] = profileDetails.name;
+          props.userDetails.user_details["city"] = profileDetails.city;
+          props.userDetails.user_details["company_name"] =
+            profileDetails.company;
+          props.userDetails.user_details["email"] = profileDetails.email;
+          props.setUserDetails({ ...props.userDetails });
+
+          updateAsyncStorageData(profileDetails);
+          navigation.navigate("Profile");
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  };
+
+  const updateAsyncStorageData = async profileDetails => {
+    const userDetailsDataX = await AsyncStorage.getItem("user_details");
+    console.log("userDetailsDataX: " + userDetailsDataX);
+    const userDetailsData = JSON.parse(userDetailsDataX);
+    userDetailsData["name"] = profileDetails.name;
+    userDetailsData["city"] = profileDetails.city;
+    userDetailsData["company_name"] = profileDetails.company;
+    userDetailsData["email"] = profileDetails.email;
+    AsyncStorage.setItem("user_details", JSON.stringify(userDetailsData));
   };
 
   return (
@@ -85,9 +107,9 @@ const ProfileForm = props => {
           <View style={styles.propSection}>
             <TextInput
               label="Name*"
-              value={ownerName}
+              value={name}
               // returnKeyType={"done"}
-              onChangeText={text => setOwnerName(text)}
+              onChangeText={text => setName(text)}
               onFocus={() => setIsVisible(false)}
               style={{ backgroundColor: "#ffffff" }}
               theme={{
@@ -102,9 +124,9 @@ const ProfileForm = props => {
             />
             <TextInput
               label="City*"
-              value={ownerAddress}
+              value={city}
               // returnKeyType={"done"}
-              onChangeText={text => setOwnerAddress(text)}
+              onChangeText={text => setCity(text)}
               onFocus={() => setIsVisible(false)}
               style={{ backgroundColor: "#ffffff", marginTop: 8 }}
               theme={{
@@ -119,9 +141,9 @@ const ProfileForm = props => {
             />
             <TextInput
               label="Company"
-              value={ownerAddress}
+              value={company}
               // returnKeyType={"done"}
-              onChangeText={text => setOwnerAddress(text)}
+              onChangeText={text => setCompany(text)}
               onFocus={() => setIsVisible(false)}
               style={{ backgroundColor: "#ffffff", marginTop: 8 }}
               theme={{
@@ -136,9 +158,9 @@ const ProfileForm = props => {
             />
             <TextInput
               label="Email"
-              value={ownerAddress}
+              value={email}
               // returnKeyType={"done"}
-              onChangeText={text => setOwnerAddress(text)}
+              onChangeText={text => setEmail(text)}
               onFocus={() => setIsVisible(false)}
               style={{ backgroundColor: "#ffffff", marginTop: 8 }}
               theme={{
@@ -198,4 +220,16 @@ const styles = StyleSheet.create({
   // },
 });
 
-export default ProfileForm;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails
+});
+const mapDispatchToProps = {
+  setUserDetails
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProfileForm);
+
+// export default ProfileForm;

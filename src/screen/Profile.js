@@ -6,7 +6,8 @@ import {
   Modal,
   TouchableHighlight,
   Share,
-  Linking
+  Linking,
+  AsyncStorage
 } from "react-native";
 import {
   Avatar,
@@ -26,6 +27,7 @@ import {
   setUserDetails,
   setPropReminderList
 } from "../reducers/Action";
+import axios from "axios";
 
 // import Share from "react-native-share";
 
@@ -37,9 +39,11 @@ import {
 const Profile = props => {
   const { navigation } = props;
   const [modalVisible, setModalVisible] = useState(false);
+
   // useEffect(() => {
-  //   console.log(props.userDetails.user_details.user_type);
-  // });
+  //   console.log(JSON.stringify(props.userDetails));
+  // }, [props.userDetails]);
+
   const makeCall = async () => {
     const url = "tel://9833097595";
     Linking.openURL(url);
@@ -85,6 +89,42 @@ const Profile = props => {
     }
   };
 
+  const deleteAgentAccount = () => {
+    const agent = {
+      agent_id: props.userDetails.user_details.id
+    };
+    axios("http://192.168.1.103:3000/deleteAgentAccount", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: agent
+    }).then(
+      response => {
+        if (response.data === "success") {
+          console.log("1: " + JSON.stringify(props.userDetails.user_details));
+          props.userDetails.user_details["user_status"] = "suspend";
+
+          setModalVisible(!modalVisible);
+          updateAsyncStorageData();
+          // navigation.navigate("Profile");
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  };
+
+  const updateAsyncStorageData = async () => {
+    const userDetailsDataX = await AsyncStorage.getItem("user_details");
+    console.log("userDetailsDataX: " + userDetailsDataX);
+    const userDetailsData = JSON.parse(userDetailsDataX);
+    userDetailsData["user_status"] = "suspend";
+    AsyncStorage.setItem("user_details", JSON.stringify(userDetailsData));
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.userInfoSection}>
@@ -105,12 +145,14 @@ const Profile = props => {
                 }
               ]}
             >
-              {props.userDetails.user_details.name
+              {props.userDetails.user_details &&
+              props.userDetails.user_details.name
                 ? props.userDetails.user_details.name
                 : "Guest"}
             </Title>
             <Caption style={styles.caption}>
-              {props.userDetails.user_details.company_name
+              {props.userDetails.user_details &&
+              props.userDetails.user_details.company_name
                 ? props.userDetails.user_details.company_name
                 : "Company"}
             </Caption>
@@ -122,7 +164,8 @@ const Profile = props => {
         <View style={styles.row}>
           <Icon name="map-marker-radius" color="#777777" size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>
-            {props.userDetails.user_details.city
+            {props.userDetails.user_details &&
+            props.userDetails.user_details.city
               ? props.userDetails.user_details.city
               : "Guest City"}
           </Text>
@@ -130,7 +173,9 @@ const Profile = props => {
         <View style={styles.row}>
           <Icon name="phone" color="#777777" size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>
-            +91 {" " + props.userDetails.user_details.mobile}
+            +91{" "}
+            {" " + props.userDetails.user_details &&
+              props.userDetails.user_details.mobile}
           </Text>
         </View>
         {/* <View style={styles.row}>
@@ -140,25 +185,29 @@ const Profile = props => {
           </Text>
         </View> */}
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          // flex: 1,
-          justifyContent: "space-between",
-          marginLeft: 40,
-          marginRight: 40,
-          marginBottom: 10
-        }}
-      >
-        <TouchableOpacity onPress={() => setModalVisible(true)}>
-          <Icon name="account-off" color="#777777" size={20} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("ProfileForm")}>
-          <Icon name="account-edit" color="#777777" size={20} />
-        </TouchableOpacity>
-      </View>
+      {props.userDetails.user_details &&
+      props.userDetails.user_details.user_type === "agent" ? (
+        <View
+          style={{
+            flexDirection: "row",
+            // flex: 1,
+            justifyContent: "space-between",
+            marginLeft: 40,
+            marginRight: 40,
+            marginBottom: 10
+          }}
+        >
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Icon name="account-off" color="#777777" size={20} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("ProfileForm")}>
+            <Icon name="account-edit" color="#777777" size={20} />
+          </TouchableOpacity>
+        </View>
+      ) : null}
 
-      {props.userDetails.user_details.user_type === "agent" ? (
+      {props.userDetails.user_details &&
+      props.userDetails.user_details.user_type === "agent" ? (
         <View style={[{ flexDirection: "column", marginTop: 20 }]}>
           <View
             style={{
@@ -247,15 +296,15 @@ const Profile = props => {
                   setModalVisible(!modalVisible);
                 }}
               >
-                <Text style={styles.textStyle}>Cancel</Text>
+                <Text style={styles.textStyle}>No</Text>
               </TouchableHighlight>
               <TouchableHighlight
                 style={{ ...styles.applyButton }}
                 onPress={() => {
-                  setModalVisible(!modalVisible);
+                  deleteAgentAccount();
                 }}
               >
-                <Text style={styles.textStyle}>Apply</Text>
+                <Text style={styles.textStyle}>Yes</Text>
               </TouchableHighlight>
             </View>
           </View>

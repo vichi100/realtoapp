@@ -15,6 +15,7 @@ import OtpInputs from "./OtpInputs";
 import Counter from "./Counter";
 import Button from "../components/Button";
 import axios from "axios";
+import { setUserDetails } from "../reducers/Action";
 
 const OtpScreen = props => {
   const { navigation } = props;
@@ -69,6 +70,7 @@ const OtpScreen = props => {
     //   works_for: userData.user_details.works_for // agent_id
     // };
     AsyncStorage.setItem("user_details", JSON.stringify(userData));
+    props.setUserDetails(userData);
   };
 
   return (
@@ -99,12 +101,12 @@ const OtpScreen = props => {
 const mapStateToProps = state => ({
   userMobileNumber: state.AppReducer.userMobileNumber
 });
-// const mapDispatchToProps = {
-//   setAgentMobile
-// };
+const mapDispatchToProps = {
+  setUserDetails
+};
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(OtpScreen);
 // export default OtpScreen;
