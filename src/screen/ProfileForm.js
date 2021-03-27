@@ -57,7 +57,7 @@ const ProfileForm = props => {
     updateUserProfile(profileDetails);
   };
   const updateUserProfile = profileDetails => {
-    axios("http://192.168.1.103:3000/updateUserProfile", {
+    axios("http://192.168.43.64:3000/updateUserProfile", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -90,10 +90,11 @@ const ProfileForm = props => {
     const userDetailsDataX = await AsyncStorage.getItem("user_details");
     console.log("userDetailsDataX: " + userDetailsDataX);
     const userDetailsData = JSON.parse(userDetailsDataX);
-    userDetailsData["name"] = profileDetails.name;
-    userDetailsData["city"] = profileDetails.city;
-    userDetailsData["company_name"] = profileDetails.company;
-    userDetailsData["email"] = profileDetails.email;
+    userDetailsData.user_details["name"] = profileDetails.name;
+    userDetailsData.user_details["city"] = profileDetails.city;
+    userDetailsData.user_details["company_name"] = profileDetails.company;
+    userDetailsData.user_details["email"] = profileDetails.email;
+    console.log("userDetailsDataX2: " + JSON.stringify(userDetailsData));
     AsyncStorage.setItem("user_details", JSON.stringify(userDetailsData));
   };
 

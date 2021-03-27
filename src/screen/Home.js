@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -6,7 +6,10 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
+  AsyncStorage,
+  Modal,
+  TouchableHighlight
 } from "react-native";
 import {
   VictoryBar,
@@ -18,6 +21,9 @@ import {
   VictoryContainer,
   VictoryAxis
 } from "victory-native";
+import { setUserDetails, setPropReminderList } from "../reducers/Action";
+import axios from "axios";
+import { connect } from "react-redux";
 
 // rezar
 // rezo
@@ -53,10 +59,86 @@ const chartHeight = Dimensions.get("window").height * 0.3;
 const chartWidth = Dimensions.get("window").width;
 const Home = props => {
   const { navigation } = props;
-  // useEffect(() => {
-  //   console.log("home");
-  //   navigation.navigate("Login");
-  // }, []);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    console.log("home1: " + JSON.stringify(props.userDetails));
+    if (
+      props.userDetails.user_details.user_status === "suspend" &&
+      props.userDetails.user_details.user_type === "agent"
+    ) {
+      console.log("home2");
+      setModalVisible(true);
+    }
+    // else if (props.userDetails.user_details.user_status === "suspend" &&
+    //   props.userDetails.user_details.user_type === "agent"){
+
+    // }
+    // navigation.navigate("Login");
+  }, [props.userDetails]);
+
+  useEffect(() => {
+    getTotalListingSummary();
+  }, []);
+
+  const getTotalListingSummary = () => {
+    const agent = {
+      agent_id: props.userDetails.user_details.works_for[0]
+    };
+    axios("http://192.168.43.64:3000/getTotalListingSummary", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: agent
+    }).then(
+      response => {
+        if (response.data) {
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  };
+
+  const reactivateAccount = () => {
+    const agent = {
+      agent_id: props.userDetails.user_details.id
+    };
+    axios("http://192.168.43.64:3000/reactivateAccount", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: agent
+    }).then(
+      response => {
+        if (response.data === "success") {
+          console.log("1: " + JSON.stringify(props.userDetails.user_details));
+          props.userDetails.user_details["user_status"] = "active";
+
+          setModalVisible(!modalVisible);
+          updateAsyncStorageData();
+          // navigation.navigate("Profile");
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  };
+
+  const updateAsyncStorageData = async () => {
+    const userDetailsDataX = await AsyncStorage.getItem("user_details");
+    console.log("userDetailsDataX: " + userDetailsDataX);
+    const userDetailsData = JSON.parse(userDetailsDataX);
+    userDetailsData.user_details["user_status"] = "active";
+    AsyncStorage.setItem("user_details", JSON.stringify(userDetailsData));
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <ScrollView>
@@ -249,10 +331,73 @@ const Home = props => {
             Deal Summary / Months
           </Text>
         </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(false);
+          }}
+        >
+          <View style={styles.centeredView1}>
+            <View style={styles.modalView}>
+              <Text style={{ color: "rgba(255,0,0, .9)", marginBottom: 10 }}>
+                Your account is in suspend mode by you. Do you want to activate
+                it ?
+              </Text>
+              {/* <Text style={styles.modalText}>
+                Your account is in suspend mode by you. Do you want to activate it
+              </Text> */}
+
+              <View
+                style={{
+                  position: "absolute",
+                  flexDirection: "row",
+                  right: 0,
+                  bottom: 0,
+                  // marginTop: 20,
+                  marginBottom: 20,
+                  padding: 20
+                  // justifyContent: "flex-end"
+                }}
+              >
+                {/* <TouchableHighlight
+                  style={{ ...styles.cancelButton }}
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <Text style={styles.textStyle}>No</Text>
+                </TouchableHighlight> */}
+                <TouchableHighlight
+                  style={{ ...styles.applyButton }}
+                  onPress={() => {
+                    reactivateAccount();
+                  }}
+                >
+                  <Text style={styles.textStyle}>Yes</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </ScrollView>
     </SafeAreaView>
   );
 };
+
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails
+});
+const mapDispatchToProps = {
+  setUserDetails
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);
 
 const styles = StyleSheet.create({
   container: {
@@ -344,7 +489,61 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 20,
     color: "#fff"
+  },
+  modalView: {
+    margin: 20,
+    height: 230,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  applyButton: {
+    // backgroundColor: "#F194FF",
+    // width: 150,
+    // textAlign: "center",
+    // borderRadius: 20,
+    // paddingLeft: 60,
+    // paddingRight: 20,
+    // paddingTop: 10,
+    // paddingBottom: 10,
+    // elevation: 2,
+    // marginTop: 20,
+    marginLeft: 10,
+    marginRight: 10
+  },
+
+  cancelButton: {
+    // backgroundColor: "#F194FF",
+    // width: 150,
+    // textAlign: "center",
+    // borderRadius: 20,
+    // paddingLeft: 55,
+    // paddingRight: 20,
+    // paddingTop: 10,
+    // paddingBottom: 10,
+    // elevation: 2,
+    // marginTop: 20,
+    marginLeft: 10,
+    marginRight: 30
+  },
+  modalText: {
+    // marginBottom: 15,
+    textAlign: "center"
+  },
+  centeredView1: {
+    flex: 1,
+    justifyContent: "center",
+    alignContent: "center",
+    marginTop: 22,
+    marginBottom: 20
   }
 });
-
-export default Home;

@@ -31,7 +31,7 @@ const PropertyReminder = props => {
   //   };
   //   axios
   //     .post(
-  //       "http://192.168.1.103:3000/getReminderList",
+  //       "http://192.168.43.64:3000/getReminderList",
   //       // SERVER_URL + "/addNewResidentialRentProperty",
   //       // await AsyncStorage.getItem("property")
   //       // JSON.stringify({ vichi: "vchi" })

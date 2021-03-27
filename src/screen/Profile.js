@@ -93,7 +93,7 @@ const Profile = props => {
     const agent = {
       agent_id: props.userDetails.user_details.id
     };
-    axios("http://192.168.1.103:3000/deleteAgentAccount", {
+    axios("http://192.168.43.64:3000/deleteAgentAccount", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -121,7 +121,7 @@ const Profile = props => {
     const userDetailsDataX = await AsyncStorage.getItem("user_details");
     console.log("userDetailsDataX: " + userDetailsDataX);
     const userDetailsData = JSON.parse(userDetailsDataX);
-    userDetailsData["user_status"] = "suspend";
+    userDetailsData.user_details["user_status"] = "suspend";
     AsyncStorage.setItem("user_details", JSON.stringify(userDetailsData));
   };
 

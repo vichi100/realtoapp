@@ -7,37 +7,37 @@ import {
   ScrollView,
   AsyncStorage
 } from "react-native";
-import Slideshow from "../components/Slideshow";
-import Button from "../components/Button";
+import Button from "../../components/Button";
 import axios from "axios";
-import SERVER_URL from "../util/constant";
-import { numDifferentiation } from "../util/methods";
-import Snackbar from "../components/SnackbarComponent";
+import SERVER_URL from "../../util/constant";
+import { numDifferentiation } from "../../util/methods";
+import { Avatar } from "react-native-elements";
 
-const AddNewPropFinalDetails = props => {
+const AddNewCustomerFinalDetails = props => {
   const { navigation } = props;
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [propertyFinalDetails, setPropertyFinalDetails] = useState(null);
+  const [customerFinalDetails, setCustomerFinalDetails] = useState(null);
   const [bhk, setBHK] = useState(null);
   const [possessionDate, setPossessionDate] = useState(null);
 
   useEffect(() => {
-    if (propertyFinalDetails === null) {
+    if (customerFinalDetails === null) {
       getPropFinalDetails();
     }
-  }, [propertyFinalDetails]);
+  }, [customerFinalDetails]);
 
   useEffect(() => {
-    if (propertyFinalDetails !== null) {
-      let bhkTemp = propertyFinalDetails.property_details.bhk_type;
-      if (bhkTemp.indexOf("RK") > -1) {
-        setBHK(bhkTemp);
-      } else {
-        let x = bhkTemp.split("BHK");
-        setBHK(x[0]);
-      }
-      const availableDateStr = propertyFinalDetails.rent_details.available_from;
+    if (customerFinalDetails !== null) {
+      // let bhkTemp = customerFinalDetails.customer_property_details.bhk_type;
+      // if (bhkTemp.indexOf("RK") > -1) {
+      //   setBHK(bhkTemp);
+      // } else {
+      //   let x = bhkTemp.split("BHK");
+      //   setBHK(x[0]);
+      // }
+      const availableDateStr =
+        customerFinalDetails.customer_rent_details.available_from;
       const availableDate = new Date(availableDateStr);
       const t = convert(availableDate);
       var today = new Date();
@@ -50,12 +50,14 @@ const AddNewPropFinalDetails = props => {
         setPossessionDate(availableDateStr);
       }
     }
-  }, [propertyFinalDetails]);
+  }, [customerFinalDetails]);
 
   const getPropFinalDetails = async () => {
-    const property = JSON.parse(await AsyncStorage.getItem("property"));
-    setPropertyFinalDetails(property);
-    console.log(property);
+    const customer = JSON.parse(await AsyncStorage.getItem("customer"));
+    setCustomerFinalDetails(customer);
+    console.log(
+      "AddNewCustomerFinalDetails customer:  " + JSON.stringify(customer)
+    );
   };
 
   const convert = str => {
@@ -70,24 +72,26 @@ const AddNewPropFinalDetails = props => {
   };
 
   const send = async () => {
-    console.log(await AsyncStorage.getItem("property"));
+    console.log(await AsyncStorage.getItem("customer"));
     console.log(
-      "propertyFinalDetails: " + JSON.stringify(propertyFinalDetails)
+      "customerFinalDetails: " + JSON.stringify(customerFinalDetails)
     );
     axios
       .post(
-        "http://192.168.43.64:3000/addNewResidentialRentProperty",
+        "http://192.168.43.64:3000/addNewResidentialCustomer",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
-        propertyFinalDetails
+        customerFinalDetails
       )
       .then(
         async response => {
-          console.log(response.data);
-          if (response.data.property_id !== null) {
-            await AsyncStorage.removeItem("property");
-            navigation.navigate("Listing");
+          // console.log("vichi: " + response.data.customer_id);
+          if (response.data.customer_id !== null) {
+            // console.log("inside");
+            await AsyncStorage.removeItem("customer");
+            navigation.navigate("Contacts");
+            // console.log("inside");
           } else {
             setErrorMessage(
               "Error: Seems there is some network issue, please try later"
@@ -100,75 +104,99 @@ const AddNewPropFinalDetails = props => {
       );
   };
 
-  return propertyFinalDetails ? (
+  return customerFinalDetails ? (
     <ScrollView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <View style={[styles.headerContainer]}>
-        <Text style={[styles.title]}>
-          {propertyFinalDetails.property_address.flat_number},
-          {propertyFinalDetails.property_address.building_name},
-          {propertyFinalDetails.property_address.location_area}
-          {/* 2 BHK For Rent In Anant Villa, Koregaon Park */}
-        </Text>
-        <Text style={[StyleSheet.subTitle]}>
-          {propertyFinalDetails.property_address.landmark_or_street},
-          {propertyFinalDetails.property_address.city},
-          {propertyFinalDetails.property_address.pin}
-          {/* Meera Nagar, Near Marvel Exotica */}
-        </Text>
+        <View
+          style={[
+            {
+              flexDirection: "row",
+              alignItems: "flex-start",
+              paddingRight: 16,
+              // paddingLeft: 16,
+              // paddingBottom: 16,
+              // paddingTop: 16,
+              width: "100%",
+              backgroundColor: "#d1d1d1"
+            }
+            // { backgroundColor: "rgba(245,245,245, 0.8)" }
+          ]}
+        >
+          <Avatar
+            square
+            size={80}
+            title={
+              customerFinalDetails.customer_details.name &&
+              customerFinalDetails.customer_details.name.slice(0, 2)
+            }
+            activeOpacity={0.7}
+            titleStyle={{ color: "rgba(105,105,105, .9)" }}
+            // source={{
+            //   uri: props.item.photo
+            // }}
+            avatarStyle={{
+              borderWidth: 1,
+              borderColor: "rgba(127,255,212, .9)",
+              // borderTopLeftRadius: 1,
+              borderStyle: "solid"
+            }}
+          />
+          <View style={{ paddingLeft: 20, paddingTop: 10 }}>
+            <Text style={[styles.title]}>
+              {customerFinalDetails.customer_details.name}
+            </Text>
+            <Text style={[StyleSheet.subTitle]}>
+              {customerFinalDetails.customer_details.mobile1}
+            </Text>
+            <Text style={[StyleSheet.subTitle]}>
+              {customerFinalDetails.customer_details.address}
+            </Text>
+          </View>
+        </View>
       </View>
-      <Slideshow
-        dataSource={[
-          { url: "http://placeimg.com/640/480/any" },
-          { url: "http://placeimg.com/640/480/any" },
-          { url: "http://placeimg.com/640/480/any" }
-        ]}
-      />
-      {/* <Image
-        source={require("../../assets/images/p1.jpg")}
-        resizeMode={"stretch"}
-        resizeMethod={"resize"}
-        style={[StyleSheet.cardImage]}
-      /> */}
+
       <View style={[styles.detailsContainer]}>
         <View style={[styles.details]}>
           <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>{bhk}</Text>
-            <Text style={[styles.subDetailsTitle]}>BHK</Text>
+            <Text style={[styles.subDetailsValue]}>
+              {customerFinalDetails.customer_property_details.bhk_type}
+            </Text>
+            <Text style={[styles.subDetailsTitle]}>Looking for</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
               {numDifferentiation(
-                propertyFinalDetails.rent_details.expected_rent
+                customerFinalDetails.customer_rent_details.expected_rent
               )}
             </Text>
             <Text style={[styles.subDetailsTitle]}>
-              {propertyFinalDetails.property_for}
+              Max {customerFinalDetails.customer_locality.property_for}
             </Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
               {numDifferentiation(
-                propertyFinalDetails.rent_details.expected_deposit
+                customerFinalDetails.customer_rent_details.expected_deposit
               )}
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Deposit</Text>
+            <Text style={[styles.subDetailsTitle]}>Max Deposit</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {propertyFinalDetails.property_details.furnishing_status}
+              {customerFinalDetails.customer_property_details.furnishing_status}
             </Text>
             <Text style={[styles.subDetailsTitle]}>Furnishing</Text>
           </View>
-          <View style={styles.verticalLine}></View>
+          {/* <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {propertyFinalDetails.property_details.property_size}sqft
+              {customerFinalDetails.property_details.property_size}sqft
             </Text>
             <Text style={[styles.subDetailsTitle]}>Buildup</Text>
-          </View>
+          </View> */}
         </View>
       </View>
 
@@ -181,83 +209,76 @@ const AddNewPropFinalDetails = props => {
         </View>
         <View style={styles.overviewColumnWrapper}>
           <View style={styles.overviewLeftColumn}>
-            <View style={[styles.subDetails]}>
+            {/* <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {propertyFinalDetails.property_details.washroom_numbers}
+                {customerFinalDetails.property_details.washroom_numbers}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Bathroom</Text>
-            </View>
+            </View> */}
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>{possessionDate}</Text>
               <Text style={[styles.subDetailsTitle]}>Possession</Text>
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {propertyFinalDetails.rent_details.preferred_tenants}
+                {customerFinalDetails.customer_rent_details.preferred_tenants}
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Preferred Tenant</Text>
+              <Text style={[styles.subDetailsTitle]}>Tenant Type</Text>
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {propertyFinalDetails.property_details.lift}
+                {customerFinalDetails.customer_property_details.lift}
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Lift</Text>
+              <Text style={[styles.subDetailsTitle]}>Lift Mandatory</Text>
             </View>
           </View>
           <View style={styles.overviewRightColumn}>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {propertyFinalDetails.property_details.parking_number}{" "}
-                {propertyFinalDetails.property_details.parking_type}
+                {/* {customerFinalDetails.property_details.parking_number}{" "} */}
+                {customerFinalDetails.customer_property_details.parking_type}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Parking</Text>
             </View>
-            <View style={[styles.subDetails]}>
+            {/* <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {propertyFinalDetails.property_details.floor_number}/
-                {propertyFinalDetails.property_details.total_floor}
+                {customerFinalDetails.property_details.floor_number}/
+                {customerFinalDetails.property_details.total_floor}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Floor</Text>
-            </View>
+            </View> */}
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {propertyFinalDetails.rent_details.non_veg_allowed}
+                {customerFinalDetails.customer_rent_details.non_veg_allowed}
               </Text>
               <Text style={[styles.subDetailsTitle]}>NonVeg</Text>
             </View>
-            <View style={[styles.subDetails]}>
+            {/* <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {propertyFinalDetails.property_details.property_age}
+                {customerFinalDetails.property_details.property_age}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Age of Building</Text>
-            </View>
+            </View> */}
           </View>
         </View>
       </View>
       {/* owner details */}
       <View style={styles.margin1}></View>
-      <View style={styles.overviewContainer}>
+      {/* <View style={styles.overviewContainer}>
         <View style={styles.overview}>
           <Text>Owner</Text>
           <View style={styles.horizontalLine}></View>
           <View style={styles.ownerDetails}>
-            <Text>{propertyFinalDetails.owner_details.name}</Text>
-            <Text>{propertyFinalDetails.owner_details.address}</Text>
-            <Text>+91 {propertyFinalDetails.owner_details.mobile1}</Text>
+            <Text>{customerFinalDetails.owner_details.name}</Text>
+            <Text>{customerFinalDetails.owner_details.address}</Text>
+            <Text>+91 {customerFinalDetails.owner_details.mobile1}</Text>
           </View>
         </View>
-      </View>
+      </View> */}
 
       <View style={{ margin: 20 }}>
         <Button title="ADD" onPress={() => send()} />
       </View>
-      <Snackbar
-        visible={isVisible}
-        textMessage={errorMessage}
-        position={"top"}
-        actionHandler={() => dismissSnackBar()}
-        actionText="OK"
-      />
     </ScrollView>
   ) : null;
 };
@@ -278,13 +299,13 @@ const styles = StyleSheet.create({
     alignItems: "stretch"
   },
   headerContainer: {
-    flexDirection: "column",
-    alignItems: "flex-start",
-    paddingRight: 16,
-    paddingLeft: 16,
-    paddingBottom: 16,
-    paddingTop: 16,
-    backgroundColor: "#d1d1d1"
+    // flexDirection: "column",
+    // alignItems: "flex-start",
+    // paddingRight: 16,
+    // paddingLeft: 16,
+    // paddingBottom: 16,
+    // paddingTop: 16,
+    // backgroundColor: "#d1d1d1"
   },
   title: {
     fontSize: 16,
@@ -372,4 +393,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddNewPropFinalDetails;
+export default AddNewCustomerFinalDetails;

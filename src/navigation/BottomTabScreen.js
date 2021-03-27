@@ -5,10 +5,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import AntDesign from "react-native-vector-icons/AntDesign";
+
 // import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
 import HomeStackNav from "./HomeStackNav";
 import AddNewPropStackScreens from "./AddNewPropStackScreens";
 import ListingStackScreens from "./ListingStackScreens";
+import ContactsStackScreens from "./ContactsStackScreens";
 import Notification from "../screen/Notification";
 import ProfileStackScreens from "./ProfileStackScreens";
 import NotificationTopTab from "./NotificationTopTab";
@@ -60,6 +63,17 @@ const BottomTabScreen = () => {
               color={color}
               size={26}
             />
+          )
+        }}
+      />
+
+      <Tab.Screen
+        name="Contact"
+        component={ContactsStackScreens}
+        options={{
+          tabBarLabel: "",
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="contacts" color={color} size={26} />
           )
         }}
       />

@@ -13,17 +13,19 @@ import {
 import { connect } from "react-redux";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import AntDesign from "react-native-vector-icons/AntDesign";
+
 import { BottomSheet } from "react-native-btr";
 import { ButtonGroup } from "react-native-elements";
 import { HelperText, useTheme } from "react-native-paper";
-import Button from "../components/Button";
+import Button from "../../components/Button";
 import { Divider } from "react-native-paper";
 import { SocialIcon } from "react-native-elements";
-import Slider from "../components/Slider";
-import CardResidentialRent from "./Card";
-import CardResidentialSell from "./CardSell";
+import Slider from "../../components/Slider";
+import ContactResidentialRentCard from "./ContactResidentialRentCard";
+import ContactResidentialSellCard from "./ContactResidentialSellCard";
 import axios from "axios";
-import SERVER_URL from "../util/constant";
+import SERVER_URL from "../../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 
 const dataX = [
@@ -92,7 +94,7 @@ const dataX = [
   }
 ];
 
-const ListingResidential = props => {
+const ContactsResidential = props => {
   const { navigation } = props;
   const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
@@ -132,7 +134,7 @@ const ListingResidential = props => {
       agent_id: props.userDetails.user_details.works_for[0]
     };
     console.log(JSON.stringify(user));
-    axios("http://192.168.43.64:3000/residentialPropertyListings", {
+    axios("http://192.168.43.64:3000/residentialCustomerList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -141,7 +143,7 @@ const ListingResidential = props => {
       data: user
     }).then(
       response => {
-        // console.log(response.data);
+        console.log(response.data);
         setData(response.data);
       },
       error => {
@@ -196,23 +198,28 @@ const ListingResidential = props => {
 
   const ItemView = ({ item }) => {
     // console.log(item);
-    if (item.property_type === "Residential") {
-      if (item.property_for === "Rent") {
-        return (
-          <TouchableOpacity
-            onPress={() => navigation.navigate("PropDetailsFromListing", item)}
-          >
-            <CardResidentialRent navigation={navigation} item={item} />
-          </TouchableOpacity>
-        );
-      } else if (item.property_for === "Sell") {
+    if (item.customer_locality.property_type === "Residential") {
+      if (item.customer_locality.property_for === "Rent") {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("PropDetailsFromListingForSell", item)
+              navigation.navigate(
+                "CustomerDetailsResidentialRentFromList",
+                item
+              )
             }
           >
-            <CardResidentialSell navigation={navigation} item={item} />
+            <ContactResidentialRentCard navigation={navigation} item={item} />
+          </TouchableOpacity>
+        );
+      } else if (item.customer_locality.property_for === "Buy") {
+        return (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("CustomerDetailsResidentialBuyFromList", item)
+            }
+          >
+            <ContactResidentialSellCard navigation={navigation} item={item} />
           </TouchableOpacity>
         );
       }
@@ -490,6 +497,25 @@ const ListingResidential = props => {
           </ScrollView>
         </View>
       </BottomSheet>
+      <TouchableOpacity
+        style={{
+          // borderWidth: 1,
+          // borderColor: "rgba(0,0,0,0.2)",
+          alignItems: "center",
+          justifyContent: "center",
+          // width: 40,
+          position: "absolute",
+          bottom: 15,
+          right: 10,
+          // height: 40,
+          backgroundColor: "#01a699",
+          borderRadius: 100
+        }}
+        onPress={() => navigation.navigate("AddCustomer")}
+      >
+        <AntDesign name="pluscircleo" size={40} color="#ffffff" />
+        {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -588,6 +614,6 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   null
-)(ListingResidential);
+)(ContactsResidential);
 
 // export default ListingResidential;

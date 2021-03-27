@@ -7,41 +7,49 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  TextInput,
-  AsyncStorage
+  TextInput
 } from "react-native";
 import { connect } from "react-redux";
+import { CheckBox } from "react-native-elements";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import AntDesign from "react-native-vector-icons/AntDesign";
+
 import { BottomSheet } from "react-native-btr";
 import { ButtonGroup } from "react-native-elements";
 import { HelperText, useTheme } from "react-native-paper";
-import Button from "../components/Button";
+import Button from "../../components/Button";
 import { Divider } from "react-native-paper";
 import { SocialIcon } from "react-native-elements";
-import Slider from "../components/Slider";
-import CardResidentialRent from "./Card";
-import CardResidentialSell from "./CardSell";
+import CustomerCommercialRentCard from "./CustomerCommercialRentCard";
+import CustomerCommercialBuyCard from "./CustomerCommercialBuyCard";
 import axios from "axios";
-import SERVER_URL from "../util/constant";
-import { getBottomSpace } from "react-native-iphone-x-helper";
+import SERVER_URL from "../../util/constant";
+import Slider from "../../components/Slider";
+
+const buildingTypeArray = [
+  "Businesses park ",
+  "Mall",
+  "StandAlone",
+  "Industrial",
+  "Shopping complex"
+];
 
 const dataX = [
   {
     id: "10000",
-    property: "residential",
-    property_type: "apartment",
-    bhk: "2",
-    washrooms: "2",
+    property: "commercial",
+    property_type: "shop",
     furnishing: "full",
-    parking: "2",
+    parking: "private", // private or public
     parking_for: "car",
     property_age: "10",
     floor: "3 / 4",
     lift: "yes",
     property_area: "800",
     possession: "immediate",
-    preferred_tenant: "anyone",
+    building_type: "anyone",
+    last_used_for: "shop",
     rent: "15000",
     deposit: "90000",
     location: "Andheri west",
@@ -92,7 +100,7 @@ const dataX = [
   }
 ];
 
-const ListingResidential = props => {
+const CustomersCommercial = props => {
   const { navigation } = props;
   const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
@@ -101,38 +109,17 @@ const ListingResidential = props => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    // console.log(
-    //   "props.userDetail33 " +
-    //     JSON.stringify(props.userDetails.user_details.works_for[0])
-    // );
-    if (
-      props.userDetails &&
-      props.userDetails.user_details.works_for[0] !== null
-    ) {
-      getListing();
-    }
-    console.log("residential Listing useEffect");
-  }, [props.userDetails]);
-
-  // const getAgentDetails = async () => {
-  //   // AsyncStorage.setItem("agent_details", JSON.stringify(agentDetails));
-  //   const agentDetailsStr = await AsyncStorage.getItem("user_details");
-  //   console.log(agentDetailsStr);
-  //   if (agentDetailsStr !== null) {
-  //     return JSON.parse(agentDetailsStr);
-  //   } else {
-  //     return null;
-  //   }
-  // };
+    getListing();
+    console.log("commercial Listing useEffect");
+  }, []);
 
   const getListing = () => {
-    // const agentDetailsX = getAgentDetails();
-    console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
+    console.log("props.userDetails4 " + JSON.stringify(props.userDetails));
     const user = {
       agent_id: props.userDetails.user_details.works_for[0]
     };
-    console.log(JSON.stringify(user));
-    axios("http://192.168.43.64:3000/residentialPropertyListings", {
+
+    axios("http://192.168.43.64:3000/commercialCustomerList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -141,7 +128,7 @@ const ListingResidential = props => {
       data: user
     }).then(
       response => {
-        // console.log(response.data);
+        console.log(response.data);
         setData(response.data);
       },
       error => {
@@ -195,28 +182,31 @@ const ListingResidential = props => {
   };
 
   const ItemView = ({ item }) => {
-    // console.log(item);
-    if (item.property_type === "Residential") {
-      if (item.property_for === "Rent") {
-        return (
-          <TouchableOpacity
-            onPress={() => navigation.navigate("PropDetailsFromListing", item)}
-          >
-            <CardResidentialRent navigation={navigation} item={item} />
-          </TouchableOpacity>
-        );
-      } else if (item.property_for === "Sell") {
+    if (item.customer_locality.property_type === "Commercial") {
+      if (item.customer_locality.property_for === "Rent") {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("PropDetailsFromListingForSell", item)
+              navigation.navigate("CustomerDetailsCommercialRentFromList", item)
             }
           >
-            <CardResidentialSell navigation={navigation} item={item} />
+            <CustomerCommercialRentCard navigation={navigation} item={item} />
+          </TouchableOpacity>
+        );
+      } else if (item.customer_locality.property_for === "Buy") {
+        return (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("CustomerDetailsCommercialBuyFromList", item)
+            }
+          >
+            <CustomerCommercialBuyCard navigation={navigation} item={item} />
           </TouchableOpacity>
         );
       }
     }
+
+    // console.log("hi");
   };
 
   const ItemSeparatorView = () => {
@@ -226,6 +216,10 @@ const ListingResidential = props => {
         style={{ height: 0.5, width: "100%", backgroundColor: "#C8C8C8" }}
       />
     );
+  };
+
+  const navigateTo = () => {
+    navigation.navigate("Add");
   };
 
   const [visible, setVisible] = useState(false);
@@ -239,10 +233,6 @@ const ListingResidential = props => {
   const toggleSortingBottomNavigationView = () => {
     //Toggling the visibility state of the bottom sheet
     setVisibleSorting(!visibleSorting);
-  };
-
-  const navigateTo = () => {
-    navigation.navigate("Add");
   };
 
   return (
@@ -322,6 +312,7 @@ const ListingResidential = props => {
           <Text style={{ marginTop: 15, fontSize: 16, fontWeight: "600" }}>
             Filter
           </Text>
+
           <TouchableOpacity
             onPress={() => toggleBottomNavigationView()}
             style={{ position: "absolute", top: 10, right: 10 }}
@@ -339,7 +330,7 @@ const ListingResidential = props => {
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={updateIndex}
                 selectedIndex={index}
-                buttons={["RENT", "Sell"]}
+                buttons={["Rent", "Sell"]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -347,49 +338,76 @@ const ListingResidential = props => {
                 containerBorderRadius={10}
               />
             </View>
-            {/* <Text style={styles.marginBottom10}>Property type</Text>
+
+            <Text style={styles.marginBottom10}>Prop type</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={updateIndex}
                 selectedIndex={index}
-                buttons={["Residential", "Commercial", "Any"]}
+                buttons={[
+                  "Shop",
+                  "Office",
+                  "Showroom",
+                  "Godown",
+                  "Restaurant/Cafe"
+                ]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
                 containerStyle={{ borderRadius: 10, width: 350 }}
                 containerBorderRadius={10}
-              />
-            </View> */}
-            <Text style={styles.marginBottom10}>Home type</Text>
-            <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Apartment", "Villa", "Independent House", "Any"]}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 350 }}
-                containerBorderRadius={10}
+                vertical={true}
               />
             </View>
-            <Text style={styles.marginBottom10}>BHK type</Text>
+            <Text style={styles.marginBottom10}>Building type</Text>
             <View style={styles.propSubSection}>
-              <ButtonGroup
+              <FlatList
+                data={buildingTypeArray}
+                renderItem={({ item }) => (
+                  <View style={{ flex: 1, flexDirection: "column", margin: 1 }}>
+                    {/* <Text>{item}</Text> */}
+                    <CheckBox
+                      title={item}
+                      checked={false}
+                      onPress={() => onPess()}
+                      containerStyle={{
+                        backgroundColor: "#ffffff",
+                        borderColor: "#ffffff",
+                        margin: 0
+                      }}
+                      textStyle={{
+                        fontSize: 12,
+                        fontWeight: "400"
+                      }}
+                    />
+                  </View>
+                )}
+                //Setting the number of column
+                numColumns={2}
+                keyExtractor={(item, index) => index}
+              />
+              {/* <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={updateIndex}
                 selectedIndex={index}
-                buttons={["1RK", "1BHK", "2BHK", "3BHK", "4BHK", "4+BHK"]}
+                buttons={[
+                  "Businesses park ",
+                  "Mall",
+                  "StandAlone",
+                  "Industrial",
+                  "Shopping complex"
+                ]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
                 containerStyle={{ borderRadius: 10, width: 350 }}
                 containerBorderRadius={10}
-              />
+              /> */}
             </View>
             <Text>Rent Range</Text>
+            <Slider />
+            <Text>Buildup area Range</Text>
             <Slider />
             <Text style={styles.marginBottom10}>Availability</Text>
             <View style={styles.propSubSection}>
@@ -405,20 +423,7 @@ const ListingResidential = props => {
                 containerBorderRadius={10}
               />
             </View>
-            <Text style={styles.marginBottom10}>Furnishing</Text>
-            <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Full", "Semi", "Empty", "Any"]}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 350 }}
-                containerBorderRadius={10}
-              />
-            </View>
+
             <Button
               title="Apply"
               onPress={() => navigation.navigate("AddImages")}
@@ -490,6 +495,25 @@ const ListingResidential = props => {
           </ScrollView>
         </View>
       </BottomSheet>
+      <TouchableOpacity
+        style={{
+          // borderWidth: 1,
+          // borderColor: "rgba(0,0,0,0.2)",
+          alignItems: "center",
+          justifyContent: "center",
+          // width: 40,
+          position: "absolute",
+          bottom: 15,
+          right: 10,
+          // height: 40,
+          backgroundColor: "#01a699",
+          borderRadius: 100
+        }}
+        onPress={() => navigation.navigate("AddCustomer")}
+      >
+        <AntDesign name="pluscircleo" size={40} color="#ffffff" />
+        {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -588,6 +612,5 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   null
-)(ListingResidential);
-
-// export default ListingResidential;
+)(CustomersCommercial);
+// export default ListingCommercial;

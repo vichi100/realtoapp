@@ -4,12 +4,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import ListingResidential from "../screen/ListingResidential";
+import ContactsResidential from "../screen/contacts/ContactsResidential";
+import CustomersCommercial from "../screen/contacts/CustomersCommercial";
 import ListingCommercial from "../screen/ListingCommercial";
 
 const Tab = createMaterialTopTabNavigator();
 
-const ListingTopTab = () => {
+const ContactsTopTab = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {/* <View style={styles.searchBarContainer}>
@@ -41,11 +42,15 @@ const ListingTopTab = () => {
       >
         <Tab.Screen
           name="Residential"
-          component={ListingResidential}
+          component={ContactsResidential}
           options={{
             tabBarLabel: () => (
               <View style={{ flexDirection: "row" }}>
-                <Ionicons name="home-outline" color="#000000" size={24} />
+                <MaterialCommunityIcons
+                  name="account-outline"
+                  color="#000000"
+                  size={24}
+                />
                 <Text style={{ marginLeft: 5, paddingTop: 5 }}>
                   RESIDENTIAL
                 </Text>
@@ -58,12 +63,12 @@ const ListingTopTab = () => {
         />
         <Tab.Screen
           name="Commercial"
-          component={ListingCommercial}
+          component={CustomersCommercial}
           options={{
             tabBarLabel: () => (
               <View style={{ flexDirection: "row" }}>
                 <MaterialCommunityIcons
-                  name="city-variant-outline"
+                  name="account-tie"
                   color="#000000"
                   size={24}
                 />
@@ -168,4 +173,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ListingTopTab;
+export default ContactsTopTab;

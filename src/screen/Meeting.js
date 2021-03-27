@@ -190,7 +190,7 @@ const Meeting = props => {
     };
     axios
       .post(
-        "http://192.168.1.103:3000/addNewReminder",
+        "http://192.168.43.64:3000/addNewReminder",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -218,7 +218,7 @@ const Meeting = props => {
     };
     axios
       .post(
-        "http://192.168.1.103:3000/getPropReminderList",
+        "http://192.168.43.64:3000/getPropReminderList",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
