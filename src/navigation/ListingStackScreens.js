@@ -7,6 +7,7 @@ import PropDetailsFromListingForSell from "../screen/PropDetailsFromListingForSe
 import ListingTopTab from "./ListingTopTab";
 import CommercialRentPropDetails from "../screen/commercial/rent/CommercialRentPropDetails";
 import CommercialSellPropDetails from "../screen/commercial/sell/CommercialSellPropDetails";
+import AddNewPropStackScreens from "./AddNewPropStackScreens";
 
 const Stack = createStackNavigator();
 export const hideTabBarComponents = ["ProductDetails"];
@@ -76,6 +77,22 @@ const ListingStackScreens = () => {
         navigationOptions={{ tabBarVisible: false }}
         options={{
           title: "Property details"
+        }}
+      />
+
+      <Stack.Screen
+        name="Add"
+        component={AddNewPropStackScreens}
+        options={{
+          headerShown: false,
+          tabBarLabel: "",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="view-grid-plus-outline"
+              color={color}
+              size={26}
+            />
+          )
         }}
       />
     </Stack.Navigator>

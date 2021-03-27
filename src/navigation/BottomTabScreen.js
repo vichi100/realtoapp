@@ -52,7 +52,7 @@ const BottomTabScreen = () => {
           )
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Add"
         component={AddNewPropStackScreens}
         options={{
@@ -65,7 +65,7 @@ const BottomTabScreen = () => {
             />
           )
         }}
-      />
+      /> */}
 
       <Tab.Screen
         name="Contact"

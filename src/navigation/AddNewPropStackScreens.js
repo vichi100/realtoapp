@@ -35,11 +35,11 @@ const AddNewPropStackScreens = () => {
         component={AddNewProperty}
         options={{
           title: "Add New Property",
-          headerBackTitleVisible: false,
+          headerBackTitleVisible: false
           // headerShown: false
-          headerLeft: () => {
-            return null;
-          }
+          // headerLeft: () => {
+          //   return null;
+          // }
         }}
       />
       <Stack.Screen

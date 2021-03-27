@@ -12,7 +12,7 @@ import {
 import { connect } from "react-redux";
 import { CheckBox } from "react-native-elements";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import { BottomSheet } from "react-native-btr";
 import { ButtonGroup } from "react-native-elements";
 import { HelperText, useTheme } from "react-native-paper";
@@ -493,6 +493,25 @@ const ListingCommercial = props => {
           </ScrollView>
         </View>
       </BottomSheet>
+      <TouchableOpacity
+        style={{
+          // borderWidth: 1,
+          // borderColor: "rgba(0,0,0,0.2)",
+          alignItems: "center",
+          justifyContent: "center",
+          // width: 40,
+          position: "absolute",
+          bottom: 15,
+          right: 10,
+          // height: 40,
+          backgroundColor: "#f73378",
+          borderRadius: 100
+        }}
+        onPress={() => navigation.navigate("Add")}
+      >
+        <AntDesign name="pluscircleo" size={40} color="#ffffff" />
+        {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
