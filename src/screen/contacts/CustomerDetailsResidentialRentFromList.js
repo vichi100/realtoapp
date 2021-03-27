@@ -137,6 +137,19 @@ const CustomerDetailsResidentialRentFromList = ({ route, navigation }) => {
             </View> */}
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
+                {item.customer_locality.city}
+              </Text>
+              <Text style={[styles.subDetailsTitle]}>City</Text>
+            </View>
+
+            <View style={[styles.subDetails]}>
+              <Text style={[styles.subDetailsValue]}>
+                {item.customer_locality.location_area}
+              </Text>
+              <Text style={[styles.subDetailsTitle]}>Locations</Text>
+            </View>
+            <View style={[styles.subDetails]}>
+              <Text style={[styles.subDetailsValue]}>
                 {item.customer_rent_details.available_from}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Possession</Text>
@@ -147,14 +160,14 @@ const CustomerDetailsResidentialRentFromList = ({ route, navigation }) => {
               </Text>
               <Text style={[styles.subDetailsTitle]}>Preferred Tenant</Text>
             </View>
+          </View>
+          <View style={styles.overviewRightColumn}>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
                 {item.customer_property_details.lift}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Lift</Text>
             </View>
-          </View>
-          <View style={styles.overviewRightColumn}>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
                 {item.customer_property_details.parking_type}

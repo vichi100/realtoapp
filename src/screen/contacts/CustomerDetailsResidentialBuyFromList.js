@@ -115,6 +115,19 @@ const CustomerDetailsResidentialBuyFromList = ({ route, navigation }) => {
             </View> */}
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
+                {item.customer_locality.city}
+              </Text>
+              <Text style={[styles.subDetailsTitle]}>City</Text>
+            </View>
+
+            <View style={[styles.subDetails]}>
+              <Text style={[styles.subDetailsValue]}>
+                {item.customer_locality.location_area}
+              </Text>
+              <Text style={[styles.subDetailsTitle]}>Locations</Text>
+            </View>
+            <View style={[styles.subDetails]}>
+              <Text style={[styles.subDetailsValue]}>
                 {dateFormat(item.customer_buy_details.available_from)}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Possession</Text>
@@ -125,14 +138,14 @@ const CustomerDetailsResidentialBuyFromList = ({ route, navigation }) => {
               </Text>
               <Text style={[styles.subDetailsTitle]}>Maintenance charge</Text>
             </View> */}
+          </View>
+          <View style={styles.overviewRightColumn}>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
                 {item.customer_property_details.lift}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Lift</Text>
             </View>
-          </View>
-          <View style={styles.overviewRightColumn}>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
                 {item.customer_property_details.parking_type}
