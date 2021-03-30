@@ -28,7 +28,7 @@ const ListingTopTab = () => {
           // showIcon: true,
           showLabel: true,
           style: {
-            // backgroundColor: "powderblue",
+            backgroundColor: "rgba(105,105,105, 0.1)",
             // flex: 1,
             flexDirection: "column"
           }
@@ -42,12 +42,25 @@ const ListingTopTab = () => {
         <Tab.Screen
           name="Residential"
           component={ListingResidential}
+          // color={"rgba(50, 195, 77, 0.59)"}
           options={{
             tabBarLabel: () => (
-              <View style={{ flexDirection: "row" }}>
-                <Ionicons name="home-outline" color="#000000" size={24} />
-                <Text style={{ marginLeft: 5, paddingTop: 5 }}>
-                  RESIDENTIAL
+              <View
+                style={{
+                  flexDirection: "row"
+                  // backgroundColor: "rgba(50, 195, 77, 0.59)"
+                }}
+              >
+                <Ionicons name="home-outline" color="#616161" size={24} />
+                <Text
+                  style={{
+                    marginLeft: 5,
+                    paddingTop: 5,
+                    fontSize: 12,
+                    color: "#616161"
+                  }}
+                >
+                  RESIDENTIAL PROPERTY
                 </Text>
               </View>
             )
@@ -64,10 +77,19 @@ const ListingTopTab = () => {
               <View style={{ flexDirection: "row" }}>
                 <MaterialCommunityIcons
                   name="city-variant-outline"
-                  color="#000000"
+                  color="#616161"
                   size={24}
                 />
-                <Text style={{ marginLeft: 5, paddingTop: 5 }}>COMMERCIAL</Text>
+                <Text
+                  style={{
+                    marginLeft: 5,
+                    paddingTop: 5,
+                    fontSize: 12,
+                    color: "#616161"
+                  }}
+                >
+                  COMMERCIAL PROPERTY
+                </Text>
               </View>
             )
             // tabBarIcon: ({ color }) => (

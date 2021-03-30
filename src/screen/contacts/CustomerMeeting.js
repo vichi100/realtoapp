@@ -10,31 +10,33 @@ import {
   KeyboardAvoidingView,
   TouchableHighlight,
   Modal,
-  Keyboard
+  Keyboard,
+  FlatList
 } from "react-native";
 import { connect } from "react-redux";
 import { DatePickerModal, TimePickerModal } from "react-native-paper-dates";
 import { TextInput, Divider } from "react-native-paper";
-import Button from "../components/Button";
+import Button from "../../components/Button";
 import { ButtonGroup } from "react-native-elements";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import Snackbar from "../components/SnackbarComponent";
+import Snackbar from "../../components/SnackbarComponent";
 import axios from "axios";
-import { dateFormat } from "../util/methods";
+import { dateFormat } from "../../util/methods";
 import {
   setUserMobile,
   setUserDetails,
-  setPropReminderList
-} from "../reducers/Action";
-import PropertyReminder from "./PropertyReminder";
+  setPropReminderList,
+  setPropListForMeeting
+} from "../../reducers/Action";
+import PropertyReminder from "../PropertyReminder";
 
 const reminderForArray = ["Call", "Meeting", "Property Visit"];
 const ampmArray = ["AM", "PM"];
 
-const Meeting = props => {
+const CustomerMeeting = props => {
   const { navigation } = props;
-  const item = props.route.params.item; // property item
+  const item = props.route.params.item; // customer item
   const category = props.route.params.category;
   console.log("route.params: " + JSON.stringify(props.route.params));
   const inputRef = useRef(null);
@@ -42,9 +44,11 @@ const Meeting = props => {
   const date = new Date();
   const [newDate, setNewDate] = React.useState("");
   const [newTime, setNewTime] = React.useState("");
-  const [clientName, setClientName] = useState("");
-  const [clientMobile, setClientMobile] = useState("");
-  const [clientId, setClientId] = useState("");
+  const [clientName, setClientName] = useState(item.customer_details.name);
+  const [clientMobile, setClientMobile] = useState(
+    item.customer_details.mobile1
+  );
+
   const [reminderForIndex, setReminderForIndex] = React.useState(-1);
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -53,15 +57,6 @@ const Meeting = props => {
   const [minutes, setMinutes] = useState(null);
   const [ampmIndex, setAMPMIndex] = useState(-1);
   const [propertyIdX, setPropertyIdX] = useState(item.property_id);
-
-  useEffect(() => {
-    console.log("useEffect", props.customerDetailsForMeeting);
-    if (props.customerDetailsForMeeting) {
-      setClientName(props.customerDetailsForMeeting.name);
-      setClientMobile(props.customerDetailsForMeeting.mobile);
-      setClientId(props.customerDetailsForMeeting.customer_id);
-    }
-  }, [props.customerDetailsForMeeting]);
 
   const setModalVisibleTemp = flag => {
     // console.log("setModalVisible: " + flag);
@@ -187,27 +182,21 @@ const Meeting = props => {
 
   const send = async () => {
     console.log("item: " + JSON.stringify(item));
+    const categoryArray = [];
+    props.propListForMeeting.map(x => {
+      categoryArray.push(x.id);
+    });
 
     const reminderDetails = {
-      // user_id: item.agent_id,
-      // category: category,
-      // category_id: item.property_id,
-      // category_type: item.property_type,
-      // reminder_for: reminderForArray[reminderForIndex],
-      // client_name: clientName.trim(),
-      // client_mobile: clientMobile.trim(),
-      // meeting_date: newDate.trim(),
-      // meeting_time: newTime.trim(), // newTime.trim(),
-
       user_id: item.agent_id,
       category: category,
-      category_ids: [item.property_id],
-      category_type: item.property_type,
-      category_for: item.property_for,
+      category_ids: categoryArray,
+      category_type: item.customer_locality.property_type,
+      category_for: item.customer_locality.property_for,
       reminder_for: reminderForArray[reminderForIndex],
       client_name: clientName.trim(),
       client_mobile: clientMobile.trim(),
-      client_id: clientId,
+      client_id: item.customer_id,
       meeting_date: newDate.trim(),
       meeting_time: newTime.trim() // newTime.trim()
     };
@@ -278,6 +267,36 @@ const Meeting = props => {
   //   props.setPropReminderList([]);
   // }, [propertyIdX]);
 
+  const ItemView = ({ item }) => {
+    return (
+      // Single Comes here which will be repeatative for the FlatListItems
+      <View
+        style={{
+          backgroundColor: "#eeeeee",
+          marginTop: 1,
+          flexDirection: "row",
+          justifyContent: "space-between"
+        }}
+      >
+        <Text style={{ padding: 10 }}>{item.name}</Text>
+        <TouchableOpacity onPress={() => remove(item)}>
+          <View style={{ marginTop: 0, backgroundColor: "#ffffff" }}>
+            <View style={{ margin: 9 }}>
+              <AntDesign name="close" color={"#757575"} size={20} />
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const remove = item => {
+    console.log("remove: ", item);
+    const x = props.propListForMeeting.filter(z => z.id !== item.id);
+    console.log("remove: ", x);
+    props.setPropListForMeeting(x);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
@@ -291,7 +310,6 @@ const Meeting = props => {
             <Text style={{ marginTop: 20, marginBottom: 10, fontSize: 14 }}>
               Reminder for ?
             </Text>
-
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
@@ -305,12 +323,62 @@ const Meeting = props => {
                 containerBorderRadius={10}
               />
             </View>
+
+            <TextInput
+              label="Client Name*"
+              disabled={true}
+              value={clientName}
+              onChangeText={text => setClientName(text)}
+              onFocus={() => setIsVisible(false)}
+              style={{ backgroundColor: "#ffffff", marginTop: 8 }}
+              theme={{
+                colors: {
+                  // placeholder: "white",
+                  // text: "white",
+                  primary: "rgba(0,191,255, .9)",
+                  underlineColor: "transparent",
+                  background: "#ffffff"
+                }
+              }}
+            />
+
+            <TextInput
+              label="Client Mobile*"
+              disabled={true}
+              value={clientMobile}
+              onChangeText={text => setClientMobile(text)}
+              onFocus={() => setIsVisible(false)}
+              keyboardType={"numeric"}
+              returnKeyType={"done"}
+              style={{ backgroundColor: "#ffffff", marginTop: 0 }}
+              theme={{
+                colors: {
+                  // placeholder: "white",
+                  // text: "white",
+                  primary: "rgba(0,191,255, .9)",
+                  underlineColor: "transparent",
+                  background: "#ffffff"
+                }
+              }}
+            />
+            {props.propListForMeeting.length > 0 ? (
+              <View style={{ marginBottom: 10 }}>
+                <Text style={{ marginBottom: 5 }}>Property List</Text>
+                <FlatList
+                  data={props.propListForMeeting}
+                  //data defined in constructor
+                  // ItemSeparatorComponent={ItemSeparatorView}
+                  //Item Separator View
+                  renderItem={ItemView}
+                  keyExtractor={(item, index) => index.toString()}
+                />
+              </View>
+            ) : null}
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("CustomerListForMeeting", {
-                  item: item,
-                  property_type: item.property_type,
-                  property_for: item.property_for
+                navigation.navigate("PropertyListForMeeting", {
+                  property_type: item.customer_locality.property_type,
+                  property_for: item.customer_locality.property_for
                 })
               }
             >
@@ -319,52 +387,13 @@ const Meeting = props => {
                 <Text
                   style={{ color: "#80d8ff", paddingLeft: 10, paddingTop: 5 }}
                 >
-                  Add client details for this meeting.
+                  Add {item.customer_locality.property_type} Properties for{" "}
+                  {item.customer_locality.property_for.toLowerCase()}
                 </Text>
               </View>
             </TouchableOpacity>
-            {clientName ? (
-              <View>
-                <TextInput
-                  disabled={true}
-                  label="Client Name*"
-                  value={clientName}
-                  onChangeText={text => setClientName(text)}
-                  onFocus={() => setIsVisible(false)}
-                  style={{ backgroundColor: "#ffffff", marginTop: 8 }}
-                  theme={{
-                    colors: {
-                      // placeholder: "white",
-                      // text: "white",
-                      primary: "rgba(0,191,255, .9)",
-                      underlineColor: "transparent",
-                      background: "#ffffff"
-                    }
-                  }}
-                />
 
-                <TextInput
-                  disabled={true}
-                  label="Client Mobile*"
-                  value={clientMobile}
-                  onChangeText={text => setClientMobile(text)}
-                  onFocus={() => setIsVisible(false)}
-                  keyboardType={"numeric"}
-                  returnKeyType={"done"}
-                  style={{ backgroundColor: "#ffffff", marginTop: 8 }}
-                  theme={{
-                    colors: {
-                      // placeholder: "white",
-                      // text: "white",
-                      primary: "rgba(0,191,255, .9)",
-                      underlineColor: "transparent",
-                      background: "#ffffff"
-                    }
-                  }}
-                />
-              </View>
-            ) : null}
-            <View style={{ flexDirection: "row", marginTop: 25 }}>
+            <View style={{ flexDirection: "row", marginTop: 20 }}>
               <TextInput
                 mode="outlined"
                 style={styles.inputContainerStyle}
@@ -405,6 +434,26 @@ const Meeting = props => {
                 }}
               />
             </View>
+            {/* <TextInput
+              label="Note"
+              // disabled={true}
+              value={clientMobile}
+              onChangeText={text => setClientMobile(text)}
+              onFocus={() => setIsVisible(false)}
+              multiline={true}
+              // keyboardType={"numeric"}
+              returnKeyType={"done"}
+              style={{ backgroundColor: "#ffffff", marginTop: 0, height: 90 }}
+              theme={{
+                colors: {
+                  // placeholder: "white",
+                  // text: "white",
+                  primary: "rgba(0,191,255, .9)",
+                  underlineColor: "transparent",
+                  background: "#ffffff"
+                }
+              }}
+            /> */}
             <View
               style={{
                 marginTop: 20,
@@ -648,17 +697,18 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
   propReminderList: state.AppReducer.propReminderList,
-  customerDetailsForMeeting: state.AppReducer.customerDetailsForMeeting
+  propListForMeeting: state.AppReducer.propListForMeeting
 });
 
 const mapDispatchToProps = {
   setUserMobile,
   setUserDetails,
-  setPropReminderList
+  setPropReminderList,
+  setPropListForMeeting
 };
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Meeting);
+)(CustomerMeeting);
 
 // export default Meeting;

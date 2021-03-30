@@ -7,12 +7,23 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  TextInput
+  TextInput,
+  AsyncStorage
 } from "react-native";
+
 import { connect } from "react-redux";
-import { CheckBox } from "react-native-elements";
+import {
+  setUserMobile,
+  setUserDetails,
+  setPropReminderList
+} from "../reducers/Action";
+import ContactResidentialRentCard from "./contacts/ContactResidentialRentCard";
+import ContactResidentialSellCard from "./contacts/ContactResidentialSellCard";
+
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
+
 import { BottomSheet } from "react-native-btr";
 import { ButtonGroup } from "react-native-elements";
 import { HelperText, useTheme } from "react-native-paper";
@@ -20,113 +31,53 @@ import Button from "../components/Button";
 import { Divider } from "react-native-paper";
 import { SocialIcon } from "react-native-elements";
 import Slider from "../components/Slider";
-import CardRent from "./commercial/rent/Card";
-import CardSell from "./commercial/sell/Card";
 import axios from "axios";
 import SERVER_URL from "../util/constant";
+import { getBottomSpace } from "react-native-iphone-x-helper";
 
-const buildingTypeArray = [
-  "Businesses park ",
-  "Mall",
-  "StandAlone",
-  "Industrial",
-  "Shopping complex"
-];
-
-const dataX = [
-  {
-    id: "10000",
-    property: "commercial",
-    property_type: "shop",
-    furnishing: "full",
-    parking: "private", // private or public
-    parking_for: "car",
-    property_age: "10",
-    floor: "3 / 4",
-    lift: "yes",
-    property_area: "800",
-    possession: "immediate",
-    building_type: "anyone",
-    last_used_for: "shop",
-    rent: "15000",
-    deposit: "90000",
-    location: "Andheri west",
-    address_line1: "Flat 305, ZA Tower",
-    address_line2: "yarri road, versova"
-  },
-  {
-    id: "10000",
-    property: "residential",
-    property_type: "apartment",
-    bhk: "2",
-    washrooms: "2",
-    furnishing: "full",
-    parking: "2",
-    parking_for: "car",
-    property_age: "10",
-    floor: "3 / 4",
-    lift: "yes",
-    property_area: "800",
-    possession: "immediate",
-    preferred_tenant: "anyone",
-    rent: "15000",
-    deposit: "90000",
-    location: "Andheri west",
-    address_line1: "Flat 305, ZA Tower",
-    address_line2: "yarri road, versova"
-  },
-  {
-    id: "10000",
-    property: "residential",
-    property_type: "apartment",
-    bhk: "2",
-    washrooms: "2",
-    furnishing: "full",
-    parking: "2",
-    parking_for: "car",
-    property_age: "10",
-    floor: "3 / 4",
-    lift: "yes",
-    property_area: "800",
-    possession: "immediate",
-    preferred_tenant: "anyone",
-    rent: "15000",
-    deposit: "90000",
-    location: "Andheri west",
-    address_line1: "Flat 305, ZA Tower",
-    address_line2: "yarri road, versova"
-  }
-];
-
-const ListingCommercial = props => {
+CustomerListForMeeting = props => {
   const { navigation } = props;
+  const propertyType = props.route.params.property_type;
+  const propertyFor = props.route.params.property_for;
   const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [index, setIndex] = useState(null);
   const [data, setData] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [visibleSorting, setVisibleSorting] = useState(false);
 
   useEffect(() => {
-    getListing();
-    console.log("commercial Listing useEffect");
-  }, []);
+    if (
+      props.userDetails &&
+      props.userDetails.user_details.works_for[0] !== null
+    ) {
+      getCustomerList();
+    }
+    // console.log("residential Listing useEffect");
+  }, [props.userDetails]);
 
-  const getListing = () => {
-    console.log("props.userDetails4 " + JSON.stringify(props.userDetails));
-    const user = {
-      agent_id: props.userDetails.user_details.works_for[0]
+  const getCustomerList = () => {
+    // const agentDetailsX = getAgentDetails();
+    console.log("props.route.params. " + JSON.stringify(props.route.params));
+
+    console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
+    const queryObj = {
+      agent_id: props.userDetails.user_details.works_for[0],
+      property_type: propertyType,
+      property_for: propertyFor
     };
-
-    axios("http://192.168.43.64:3000/commercialPropertyListings", {
+    console.log(JSON.stringify(queryObj));
+    axios("http://192.168.43.64:3000/getCustomerListForMeeting", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
         Accept: "Application/json"
       },
-      data: user
+      data: queryObj
     }).then(
       response => {
-        // console.log(response.data);
+        console.log("response.data:    ", response.data);
         setData(response.data);
       },
       error => {
@@ -135,94 +86,49 @@ const ListingCommercial = props => {
     );
   };
 
-  const getListingX = async () => {
-    const filter = {
-      agent_id: "123"
-    };
-    fetch(SERVER_URL + "addNewProperty", {
-      method: "get",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
+  const ItemView = ({ item }) => {
+    // console.log(item);
+    if (item.customer_locality.property_type === "Residential") {
+      if (item.customer_locality.property_for === "Rent") {
+        return (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate(
+                "CustomerDetailsResidentialRentFromList",
+                item
+              )
+            }
+          >
+            <ContactResidentialRentCard
+              navigation={navigation}
+              item={item}
+              disableDrawer={true}
+              displayCheckBox={true}
+            />
+          </TouchableOpacity>
+        );
+      } else if (item.customer_locality.property_for === "Buy") {
+        return (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("CustomerDetailsResidentialBuyFromList", item)
+            }
+          >
+            <ContactResidentialSellCard
+              navigation={navigation}
+              item={item}
+              disableDrawer={true}
+              displayCheckBox={true}
+            />
+          </TouchableOpacity>
+        );
       }
-    })
-      .then(response => response.json())
-      .then(json => setData(json.movies))
-      .catch(error => console.error(error))
-      .finally(() => setIndex(0));
+    }
   };
 
   const updateIndex = index => {
     setIndex(index);
   };
-
-  const searchFilterFunction = text => {
-    // Check if searched text is not blank
-    if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource and update FilteredDataSource
-      const newData = masterDataSource.filter(function(item) {
-        // Applying filter for the inserted text in search bar
-        const itemData = item.title
-          ? item.title.toUpperCase()
-          : "".toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilteredDataSource(newData);
-      setSearch(text);
-    } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
-      setFilteredDataSource(masterDataSource);
-      setSearch(text);
-    }
-  };
-
-  const ItemView = ({ item }) => {
-    if (item.property_type === "Commercial") {
-      if (item.property_for === "Rent") {
-        return (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("CommercialRentPropDetails", item)
-            }
-          >
-            <CardRent navigation={navigation} item={item} />
-          </TouchableOpacity>
-        );
-      } else if (item.property_for === "Sell") {
-        return (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("CommercialSellPropDetails", item)
-            }
-          >
-            <CardSell navigation={navigation} item={item} />
-          </TouchableOpacity>
-        );
-      }
-    }
-
-    // console.log("hi");
-  };
-
-  const ItemSeparatorView = () => {
-    return (
-      //Item Separator
-      <View
-        style={{ height: 0.5, width: "100%", backgroundColor: "#C8C8C8" }}
-      />
-    );
-  };
-
-  const navigateTo = () => {
-    navigation.navigate("Add");
-  };
-
-  const [visible, setVisible] = useState(false);
-  const [visibleSorting, setVisibleSorting] = useState(false);
-
   const toggleBottomNavigationView = () => {
     //Toggling the visibility state of the bottom sheet
     setVisible(!visible);
@@ -231,6 +137,10 @@ const ListingCommercial = props => {
   const toggleSortingBottomNavigationView = () => {
     //Toggling the visibility state of the bottom sheet
     setVisibleSorting(!visibleSorting);
+  };
+
+  const navigateTo = () => {
+    navigation.navigate("Add");
   };
 
   return (
@@ -283,14 +193,12 @@ const ListingCommercial = props => {
             textAlign: "center"
           }}
         >
-          <Text style={{ textAlign: "center" }}>
-            You have no property listing
-          </Text>
+          <Text style={{ textAlign: "center" }}>You have no customer</Text>
           <TouchableOpacity onPress={() => navigateTo()}>
             <Text
               style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
             >
-              Add New Property
+              Add New Customer
             </Text>
           </TouchableOpacity>
         </View>
@@ -310,7 +218,6 @@ const ListingCommercial = props => {
           <Text style={{ marginTop: 15, fontSize: 16, fontWeight: "600" }}>
             Filter
           </Text>
-
           <TouchableOpacity
             onPress={() => toggleBottomNavigationView()}
             style={{ position: "absolute", top: 10, right: 10 }}
@@ -328,7 +235,7 @@ const ListingCommercial = props => {
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={updateIndex}
                 selectedIndex={index}
-                buttons={["Rent", "Sell"]}
+                buttons={["RENT", "Sell"]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -336,76 +243,49 @@ const ListingCommercial = props => {
                 containerBorderRadius={10}
               />
             </View>
-
-            <Text style={styles.marginBottom10}>Prop type</Text>
+            {/* <Text style={styles.marginBottom10}>Property type</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={updateIndex}
                 selectedIndex={index}
-                buttons={[
-                  "Shop",
-                  "Office",
-                  "Showroom",
-                  "Godown",
-                  "Restaurant/Cafe"
-                ]}
+                buttons={["Residential", "Commercial", "Any"]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
                 containerStyle={{ borderRadius: 10, width: 350 }}
                 containerBorderRadius={10}
-                vertical={true}
               />
-            </View>
-            <Text style={styles.marginBottom10}>Building type</Text>
+            </View> */}
+            <Text style={styles.marginBottom10}>Home type</Text>
             <View style={styles.propSubSection}>
-              <FlatList
-                data={buildingTypeArray}
-                renderItem={({ item }) => (
-                  <View style={{ flex: 1, flexDirection: "column", margin: 1 }}>
-                    {/* <Text>{item}</Text> */}
-                    <CheckBox
-                      title={item}
-                      checked={false}
-                      onPress={() => onPess()}
-                      containerStyle={{
-                        backgroundColor: "#ffffff",
-                        borderColor: "#ffffff",
-                        margin: 0
-                      }}
-                      textStyle={{
-                        fontSize: 12,
-                        fontWeight: "400"
-                      }}
-                    />
-                  </View>
-                )}
-                //Setting the number of column
-                numColumns={2}
-                keyExtractor={(item, index) => index}
-              />
-              {/* <ButtonGroup
+              <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={updateIndex}
                 selectedIndex={index}
-                buttons={[
-                  "Businesses park ",
-                  "Mall",
-                  "StandAlone",
-                  "Industrial",
-                  "Shopping complex"
-                ]}
+                buttons={["Apartment", "Villa", "Independent House", "Any"]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
                 containerStyle={{ borderRadius: 10, width: 350 }}
                 containerBorderRadius={10}
-              /> */}
+              />
+            </View>
+            <Text style={styles.marginBottom10}>BHK type</Text>
+            <View style={styles.propSubSection}>
+              <ButtonGroup
+                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                onPress={updateIndex}
+                selectedIndex={index}
+                buttons={["1RK", "1BHK", "2BHK", "3BHK", "4BHK", "4+BHK"]}
+                // containerStyle={{ height: 30 }}
+                textStyle={{ textAlign: "center" }}
+                selectedTextStyle={{ color: "#fff" }}
+                containerStyle={{ borderRadius: 10, width: 350 }}
+                containerBorderRadius={10}
+              />
             </View>
             <Text>Rent Range</Text>
-            <Slider />
-            <Text>Buildup area Range</Text>
             <Slider />
             <Text style={styles.marginBottom10}>Availability</Text>
             <View style={styles.propSubSection}>
@@ -421,7 +301,20 @@ const ListingCommercial = props => {
                 containerBorderRadius={10}
               />
             </View>
-
+            <Text style={styles.marginBottom10}>Furnishing</Text>
+            <View style={styles.propSubSection}>
+              <ButtonGroup
+                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                onPress={updateIndex}
+                selectedIndex={index}
+                buttons={["Full", "Semi", "Empty", "Any"]}
+                // containerStyle={{ height: 30 }}
+                textStyle={{ textAlign: "center" }}
+                selectedTextStyle={{ color: "#fff" }}
+                containerStyle={{ borderRadius: 10, width: 350 }}
+                containerBorderRadius={10}
+              />
+            </View>
             <Button
               title="Apply"
               onPress={() => navigation.navigate("AddImages")}
@@ -504,10 +397,10 @@ const ListingCommercial = props => {
           bottom: 15,
           right: 10,
           // height: 40,
-          backgroundColor: "rgba(50, 195, 77, 0.59)",
+          backgroundColor: "#01a699",
           borderRadius: 100
         }}
-        onPress={() => navigation.navigate("Add")}
+        onPress={() => navigation.navigate("AddCustomer")}
       >
         <AntDesign name="pluscircleo" size={40} color="#ffffff" />
         {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
@@ -515,6 +408,21 @@ const ListingCommercial = props => {
     </SafeAreaView>
   );
 };
+
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propReminderList: state.AppReducer.propReminderList
+});
+
+const mapDispatchToProps = {
+  setUserMobile,
+  setUserDetails,
+  setPropReminderList
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CustomerListForMeeting);
 
 const styles = StyleSheet.create({
   container: {
@@ -603,12 +511,3 @@ const styles = StyleSheet.create({
     marginBottom: 10
   }
 });
-
-const mapStateToProps = state => ({
-  userDetails: state.AppReducer.userDetails
-});
-export default connect(
-  mapStateToProps,
-  null
-)(ListingCommercial);
-// export default ListingCommercial;

@@ -47,12 +47,19 @@ const ContactsTopTab = () => {
             tabBarLabel: () => (
               <View style={{ flexDirection: "row" }}>
                 <MaterialCommunityIcons
-                  name="account-outline"
-                  color="#000000"
+                  name="account"
+                  color="#616161"
                   size={24}
                 />
-                <Text style={{ marginLeft: 5, paddingTop: 5 }}>
-                  RESIDENTIAL
+                <Text
+                  style={{
+                    marginLeft: 5,
+                    paddingTop: 5,
+                    color: "#616161",
+                    fontSize: 12
+                  }}
+                >
+                  RESIDENTIAL BUYER
                 </Text>
               </View>
             )
@@ -69,10 +76,19 @@ const ContactsTopTab = () => {
               <View style={{ flexDirection: "row" }}>
                 <MaterialCommunityIcons
                   name="account-tie"
-                  color="#000000"
+                  color="#616161"
                   size={24}
                 />
-                <Text style={{ marginLeft: 5, paddingTop: 5 }}>COMMERCIAL</Text>
+                <Text
+                  style={{
+                    marginLeft: 5,
+                    paddingTop: 5,
+                    color: "#616161",
+                    fontSize: 12
+                  }}
+                >
+                  COMMERCIAL BUYER
+                </Text>
               </View>
             )
             // tabBarIcon: ({ color }) => (

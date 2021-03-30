@@ -18,8 +18,10 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 
 const PropertyReminder = props => {
+  const { navigation } = props;
   const [reminderList, setReminderList] = useState([]);
   useEffect(() => {
+    console.log("props.propReminderList: ", props.propReminderList);
     setReminderList(props.propReminderList);
   }, [props.propReminderList]);
   // useEffect(() => {
@@ -68,35 +70,47 @@ const PropertyReminder = props => {
           // alignItems: "center"
         }}
       >
-        <View style={{ padding: 10, fontSize: 16, paddingTop: 15 }}>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "600",
-              color: "rgba(0,0,0, 0.7)"
-            }}
-          >
-            {item.client_name}
-          </Text>
-          <Text>+91 {item.client_mobile}</Text>
-        </View>
-        <View style={{ flexDirection: "row" }}>
-          <View style={{ padding: 10 }}>
-            <Text>{item.reminder_for}</Text>
-            <Text>{item.meeting_time}</Text>
-            <Text>{item.meeting_date}</Text>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("CustomerMeetingDetails", {
+              item: item,
+              category: "property"
+            })
+          }
+          style={{
+            flexDirection: "row"
+          }}
+        >
+          <View style={{ padding: 10, fontSize: 16, paddingTop: 15 }}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: "600",
+                color: "rgba(0,0,0, 0.7)"
+              }}
+            >
+              {item.client_name}
+            </Text>
+            <Text>+91 {item.client_mobile}</Text>
           </View>
-          <View style={styles.verticalLine} />
-          <TouchableOpacity
-            onPress={() => makeCall(item.client_mobile)}
-            style={{
-              padding: 15,
-              marginTop: 7
-            }}
-          >
-            <Ionicons name="call" color={"#ffffff"} size={26} />
-          </TouchableOpacity>
-        </View>
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ padding: 10 }}>
+              <Text>{item.reminder_for}</Text>
+              <Text>{item.meeting_time}</Text>
+              <Text>{item.meeting_date}</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+        <View style={styles.verticalLine} />
+        <TouchableOpacity
+          onPress={() => makeCall(item.client_mobile)}
+          style={{
+            padding: 15,
+            marginTop: 7
+          }}
+        >
+          <Ionicons name="call" color={"#ffffff"} size={26} />
+        </TouchableOpacity>
       </View>
     ) : item.reminder_for.toLowerCase() === "call".toLowerCase() ? (
       <View
@@ -111,35 +125,47 @@ const PropertyReminder = props => {
           // alignItems: "center"
         }}
       >
-        <View style={{ padding: 10, fontSize: 16, paddingTop: 15 }}>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "600",
-              color: "rgba(0,0,0, 0.7)"
-            }}
-          >
-            {item.client_name}
-          </Text>
-          <Text>+91 {item.client_mobile}</Text>
-        </View>
-        <View style={{ flexDirection: "row" }}>
-          <View style={{ padding: 10 }}>
-            <Text>{item.reminder_for}</Text>
-            <Text>{item.meeting_time}</Text>
-            <Text>{item.meeting_date}</Text>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("CustomerMeetingDetails", {
+              item: item,
+              category: "property"
+            })
+          }
+          style={{
+            flexDirection: "row"
+          }}
+        >
+          <View style={{ padding: 10, fontSize: 16, paddingTop: 15 }}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: "600",
+                color: "rgba(0,0,0, 0.7)"
+              }}
+            >
+              {item.client_name}
+            </Text>
+            <Text>+91 {item.client_mobile}</Text>
           </View>
-          <View style={styles.verticalLine} />
-          <TouchableOpacity
-            onPress={() => makeCall(item.client_mobile)}
-            style={{
-              padding: 15,
-              marginTop: 7
-            }}
-          >
-            <Ionicons name="call" color={"#ffffff"} size={26} />
-          </TouchableOpacity>
-        </View>
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ padding: 10 }}>
+              <Text>{item.reminder_for}</Text>
+              <Text>{item.meeting_time}</Text>
+              <Text>{item.meeting_date}</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+        <View style={styles.verticalLine} />
+        <TouchableOpacity
+          onPress={() => makeCall(item.client_mobile)}
+          style={{
+            padding: 15,
+            marginTop: 7
+          }}
+        >
+          <Ionicons name="call" color={"#ffffff"} size={26} />
+        </TouchableOpacity>
       </View>
     ) : (
       <View
@@ -154,35 +180,47 @@ const PropertyReminder = props => {
           // alignItems: "center"
         }}
       >
-        <View style={{ padding: 10, fontSize: 16, paddingTop: 15 }}>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "600",
-              color: "rgba(0,0,0, 0.7)"
-            }}
-          >
-            {item.client_name}
-          </Text>
-          <Text>+91 {item.client_mobile}</Text>
-        </View>
-        <View style={{ flexDirection: "row" }}>
-          <View style={{ padding: 10 }}>
-            <Text>{item.reminder_for}</Text>
-            <Text>{item.meeting_time}</Text>
-            <Text>{item.meeting_date}</Text>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("CustomerMeetingDetails", {
+              item: item,
+              category: "property"
+            })
+          }
+          style={{
+            flexDirection: "row"
+          }}
+        >
+          <View style={{ padding: 10, fontSize: 16, paddingTop: 15 }}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: "600",
+                color: "rgba(0,0,0, 0.7)"
+              }}
+            >
+              {item.client_name}
+            </Text>
+            <Text>+91 {item.client_mobile}</Text>
           </View>
-          <View style={styles.verticalLine} />
-          <TouchableOpacity
-            onPress={() => makeCall(item.client_mobile)}
-            style={{
-              padding: 15,
-              marginTop: 7
-            }}
-          >
-            <Ionicons name="call" color={"#ffffff"} size={26} />
-          </TouchableOpacity>
-        </View>
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ padding: 10 }}>
+              <Text>{item.reminder_for}</Text>
+              <Text>{item.meeting_time}</Text>
+              <Text>{item.meeting_date}</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+        <View style={styles.verticalLine} />
+        <TouchableOpacity
+          onPress={() => makeCall(item.client_mobile)}
+          style={{
+            padding: 15,
+            marginTop: 7
+          }}
+        >
+          <Ionicons name="call" color={"#ffffff"} size={26} />
+        </TouchableOpacity>
       </View>
     );
   };

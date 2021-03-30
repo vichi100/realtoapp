@@ -13,14 +13,21 @@ import {
   Share,
   Linking
 } from "react-native";
+import { connect } from "react-redux";
+import { CheckBox } from "react-native-elements";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Button from "../components/Button";
 import { ButtonGroup } from "react-native-elements";
-
 import Slideshow from "../components/Slideshow";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { numDifferentiation } from "../util/methods";
+import {
+  setUserMobile,
+  setUserDetails,
+  setPropReminderList,
+  setPropListForMeeting
+} from "../reducers/Action";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -29,17 +36,49 @@ const Sliding_Drawer_Width = 250;
 const width = Dimensions.get("window").width;
 
 const Card = props => {
-  const { navigation, item } = props;
+  const { navigation, item, disableDrawer, displayCheckBox } = props;
   console.log(item.property_id);
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
   const [disabled, setDisabled] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [index, setIndex] = React.useState(null);
+  const [checkBoxList, setCheckBoxList] = useState([]);
 
   let Animation = new Animated.Value(0);
 
   let Sliding_Drawer_Toggle = true;
+
+  const onClickCheckBox = item => {
+    // console.log("onClickCheckBox", JSON.stringify(item));
+    const name =
+      item.property_for +
+      " in " +
+      item.property_address.building_name +
+      ", " +
+      item.property_address.landmark_or_street;
+
+    const obj = {
+      id: item.property_id,
+      name: name
+    };
+
+    if (props.propListForMeeting.some(y => y.id === item.property_id)) {
+      // console.log("remove: ", checkBoxList);
+      const x = props.propListForMeeting.filter(z => z.id !== item.property_id);
+      // setCheckBoxList(x);
+      props.setPropListForMeeting(x);
+    } else {
+      const x = [obj, ...props.propListForMeeting];
+      // console.log("add: X :  ", x);
+      // setCheckBoxList(x);
+      props.setPropListForMeeting(x);
+    }
+    console.log(
+      "setPropListForMeeting: ",
+      JSON.stringify(props.propListForMeeting)
+    );
+  };
 
   const updateIndex = index => {
     setIndex(index);
@@ -116,70 +155,114 @@ const Card = props => {
       <View style={styles.MainContainer}>
         <View
           style={[
-            styles.headerContainer,
-            { backgroundColor: "rgba(245,245,245, 0.8)" }
+            {
+              // backgroundColor: "rgba(245,245,245, 0.8)",
+              flexDirection: "row",
+              justifyContent: "space-between"
+            }
           ]}
         >
-          <Text style={[styles.title]}>
-            Rent In {item.property_address.building_name},{" "}
-            {item.property_address.landmark_or_street}
-          </Text>
-          <Text style={[StyleSheet.subTitle]}>
-            {item.property_address.location_area}, {item.property_address.city}-
-            {item.property_address.pin}
-          </Text>
+          <View style={styles.headerContainer}>
+            <Text style={[styles.title]}>
+              Rent In {item.property_address.building_name},{" "}
+              {item.property_address.landmark_or_street}
+            </Text>
+            <Text style={[StyleSheet.subTitle]}>
+              {item.property_address.location_area},{" "}
+              {item.property_address.city}-{item.property_address.pin}
+            </Text>
+          </View>
+
+          {displayCheckBox ? (
+            <View
+              style={{
+                backgroundColor: "rgba(108, 198, 114, 0.2)",
+                justifyContent: "center"
+              }}
+            >
+              <CheckBox
+                onPress={() => onClickCheckBox(item)}
+                center
+                // title="Select"
+                checked={
+                  props.propListForMeeting.some(s => s.id === item.property_id)
+                    ? true
+                    : false
+                }
+                containerStyle={{
+                  // backgroundColor: "rgba(108, 198, 114, 0.3)",
+                  borderWidth: 0,
+                  margin: 0,
+                  // padding: 30,
+                  borderRadius: 10
+                  // width: 60
+                }}
+              />
+            </View>
+          ) : null}
         </View>
 
-        <Animated.View
-          style={[
-            styles.drawer,
-            { transform: [{ translateX: Animation_Interpolate }] }
-          ]}
-        >
-          <View style={styles.Main_Sliding_Drawer_Container}>
-            {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
-            <TouchableOpacity
-              onPress={ShowSlidingDrawer}
-              style={{ paddingTop: 20 }}
-            >
-              <MaterialCommunityIcons
-                name="chevron-left"
-                color={"#ffffff"}
-                size={30}
-              />
-            </TouchableOpacity>
-            <View style={styles.verticalLine} />
-            <TouchableOpacity
-              // disabled={Sliding_Drawer_Toggle}
-              onPress={() => {
-                setModalVisible(true);
-              }}
-              style={{ padding: 15, backgroundColor: "#e57373" }}
-            >
-              <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
-            </TouchableOpacity>
+        {disableDrawer ? null : (
+          <Animated.View
+            style={[
+              styles.drawer,
+              { transform: [{ translateX: Animation_Interpolate }] }
+            ]}
+          >
+            <View style={styles.Main_Sliding_Drawer_Container}>
+              {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
+              <TouchableOpacity
+                onPress={ShowSlidingDrawer}
+                style={{ paddingTop: 20 }}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  color={"#ffffff"}
+                  size={30}
+                />
+              </TouchableOpacity>
+              <View style={styles.verticalLine} />
+              <TouchableOpacity
+                // disabled={Sliding_Drawer_Toggle}
+                onPress={() => {
+                  setModalVisible(true);
+                }}
+                style={{ padding: 15, backgroundColor: "#e57373" }}
+              >
+                <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => onShare()}
-              style={{ padding: 15, backgroundColor: "#0091ea" }}
-            >
-              <Ionicons name="share-social" color={"#ffffff"} size={30} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Meeting", item)}
-              style={{ padding: 15, backgroundColor: "#ffd600" }}
-            >
-              <Ionicons name="ios-alarm-outline" color={"#ffffff"} size={30} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => makeCall(item.owner_details.mobile1)}
-              style={{ padding: 15, backgroundColor: "#00bfa5" }}
-            >
-              <Ionicons name="call" color={"#ffffff"} size={30} />
-              <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text>
-            </TouchableOpacity>
-          </View>
-        </Animated.View>
+              <TouchableOpacity
+                onPress={() => onShare()}
+                style={{ padding: 15, backgroundColor: "#0091ea" }}
+              >
+                <Ionicons name="share-social" color={"#ffffff"} size={30} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Meeting", {
+                    item: item,
+                    category: "property"
+                  })
+                }
+                style={{ padding: 15, backgroundColor: "#ffd600" }}
+              >
+                <Ionicons
+                  name="ios-alarm-outline"
+                  color={"#ffffff"}
+                  size={30}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => makeCall(item.owner_details.mobile1)}
+                style={{ padding: 15, backgroundColor: "#00bfa5" }}
+              >
+                <Ionicons name="call" color={"#ffffff"} size={30} />
+                <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text>
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+        )}
       </View>
 
       <View
@@ -287,6 +370,23 @@ const Card = props => {
   );
 };
 
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propReminderList: state.AppReducer.propReminderList,
+  propListForMeeting: state.AppReducer.propListForMeeting
+});
+
+const mapDispatchToProps = {
+  setUserMobile,
+  setUserDetails,
+  setPropReminderList,
+  setPropListForMeeting
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Card);
+
 const styles = StyleSheet.create({
   card: {
     flex: 1,
@@ -314,7 +414,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingBottom: 16,
     paddingTop: 16,
-    width: "100%",
+    // width: "100%",
     backgroundColor: "#ffffff"
   },
   title: {
@@ -448,4 +548,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Card;
+// export default Card;

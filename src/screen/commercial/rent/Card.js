@@ -28,7 +28,7 @@ const Sliding_Drawer_Width = 250;
 const width = Dimensions.get("window").width;
 
 const Card = props => {
-  const { navigation, item } = props;
+  const { navigation, item, disableDrawer, displayCheckBox } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
   const [disabled, setDisabled] = useState(false);
@@ -123,56 +123,62 @@ const Card = props => {
           </Text>
         </View>
 
-        <Animated.View
-          style={[
-            styles.drawer,
-            { transform: [{ translateX: Animation_Interpolate }] }
-          ]}
-        >
-          <View style={styles.Main_Sliding_Drawer_Container}>
-            {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
-            <TouchableOpacity
-              onPress={ShowSlidingDrawer}
-              style={{ paddingTop: 20 }}
-            >
-              <MaterialCommunityIcons
-                name="chevron-left"
-                color={"#ffffff"}
-                size={30}
-              />
-            </TouchableOpacity>
-            <View style={styles.verticalLine} />
-            <TouchableOpacity
-              // disabled={Sliding_Drawer_Toggle}
-              onPress={() => {
-                setModalVisible(true);
-              }}
-              style={{ padding: 15, backgroundColor: "#e57373" }}
-            >
-              <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
-            </TouchableOpacity>
+        {disableDrawer ? null : (
+          <Animated.View
+            style={[
+              styles.drawer,
+              { transform: [{ translateX: Animation_Interpolate }] }
+            ]}
+          >
+            <View style={styles.Main_Sliding_Drawer_Container}>
+              {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
+              <TouchableOpacity
+                onPress={ShowSlidingDrawer}
+                style={{ paddingTop: 20 }}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  color={"#ffffff"}
+                  size={30}
+                />
+              </TouchableOpacity>
+              <View style={styles.verticalLine} />
+              <TouchableOpacity
+                // disabled={Sliding_Drawer_Toggle}
+                onPress={() => {
+                  setModalVisible(true);
+                }}
+                style={{ padding: 15, backgroundColor: "#e57373" }}
+              >
+                <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => onShare()}
-              style={{ padding: 15, backgroundColor: "#0091ea" }}
-            >
-              <Ionicons name="share-social" color={"#ffffff"} size={30} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Meeting", item)}
-              style={{ padding: 15, backgroundColor: "#ffd600" }}
-            >
-              <Ionicons name="ios-alarm-outline" color={"#ffffff"} size={30} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => makeCall(item.owner_details.mobile1)}
-              style={{ padding: 15, backgroundColor: "#00bfa5" }}
-            >
-              <Ionicons name="call" color={"#ffffff"} size={30} />
-              <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text>
-            </TouchableOpacity>
-          </View>
-        </Animated.View>
+              <TouchableOpacity
+                onPress={() => onShare()}
+                style={{ padding: 15, backgroundColor: "#0091ea" }}
+              >
+                <Ionicons name="share-social" color={"#ffffff"} size={30} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Meeting", item)}
+                style={{ padding: 15, backgroundColor: "#ffd600" }}
+              >
+                <Ionicons
+                  name="ios-alarm-outline"
+                  color={"#ffffff"}
+                  size={30}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => makeCall(item.owner_details.mobile1)}
+                style={{ padding: 15, backgroundColor: "#00bfa5" }}
+              >
+                <Ionicons name="call" color={"#ffffff"} size={30} />
+                <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text>
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+        )}
       </View>
 
       <View style={[styles.detailsContainer]}>

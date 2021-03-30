@@ -4,7 +4,9 @@ const initialState = {
   employeeList: [],
   userMobileNumber: null,
   userDetails: null,
-  propReminderList: []
+  propReminderList: [],
+  propListForMeeting: [],
+  customerDetailsForMeeting: null
 };
 const AppReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -32,7 +34,23 @@ const AppReducer = (state = initialState, action) => {
         ...state,
         propReminderList: action.payload
       };
+
+    case ACTION_TYPES.SET_PROP_LIST_FOR_MEETING:
+      // console.log("SET_PROP_LIST_FOR_MEETING");
+      return {
+        ...state,
+        propListForMeeting: action.payload
+      };
+
+    case ACTION_TYPES.SET_CUSTOMER_DETAILS_FOR_MEETING:
+      console.log("SET_CUSTOMER_DETAILS_FOR_MEETING");
+      return {
+        ...state,
+        customerDetailsForMeeting: action.payload
+      };
+
     default:
+      console.log("Default");
       return state;
   }
 };

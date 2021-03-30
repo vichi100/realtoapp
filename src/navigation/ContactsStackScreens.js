@@ -2,6 +2,7 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import Listing from "../screen/ListingResidential";
 import Meeting from "../screen/Meeting";
+import CustomerMeeting from "../screen/contacts/CustomerMeeting";
 import PropDetailsFromListing from "../screen/PropDetailsFromListing";
 import PropDetailsFromListingForSell from "../screen/PropDetailsFromListingForSell";
 import ContactsTopTab from "./ContactsTopTab";
@@ -24,6 +25,8 @@ import CustomerDetailsResidentialBuyFromList from "../screen/contacts/CustomerDe
 
 import CustomerDetailsCommercialRentFromList from "../screen/contacts/CustomerDetailsCommercialRentFromList";
 import CustomerDetailsCommercialBuyFromList from "../screen/contacts/CustomerDetailsCommercialBuyFromList";
+import PropertyListForMeeting from "../screen/contacts/PropertyListForMeeting";
+import CustomerMeetingDetails from "../screen/contacts/CustomerMeetingDetails";
 
 const Stack = createStackNavigator();
 export const hideTabBarComponents = ["ProductDetails"];
@@ -57,6 +60,20 @@ const ContactsStackScreens = () => {
       <Stack.Screen
         name="Meeting"
         component={Meeting}
+        options={{ title: "Reminders", tabBarVisible: false }}
+        navigationOptions={{ tabBarVisible: false }}
+      />
+
+      <Stack.Screen
+        name="CustomerMeeting"
+        component={CustomerMeeting}
+        options={{ title: "Reminders", tabBarVisible: false }}
+        navigationOptions={{ tabBarVisible: false }}
+      />
+
+      <Stack.Screen
+        name="PropertyListForMeeting"
+        component={PropertyListForMeeting}
         options={{ title: "Reminders", tabBarVisible: false }}
         navigationOptions={{ tabBarVisible: false }}
       />
@@ -187,6 +204,11 @@ const ContactsStackScreens = () => {
         name="CustomerDetailsCommercialBuyFromList"
         component={CustomerDetailsCommercialBuyFromList}
         options={{ title: "Customer Details" }}
+      />
+      <Stack.Screen
+        name="CustomerMeetingDetails"
+        component={CustomerMeetingDetails}
+        options={{ title: "Meeting Details" }}
       />
     </Stack.Navigator>
   );

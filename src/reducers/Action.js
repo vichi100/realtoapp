@@ -30,3 +30,21 @@ export const setPropReminderList = payload => {
     payload
   };
 };
+
+export const setPropListForMeeting = payload => {
+  // console.log("setPropListForMeeting in action: " + JSON.stringify(payload));
+  return {
+    type: ACTION_TYPES.SET_PROP_LIST_FOR_MEETING,
+    payload
+  };
+};
+
+export const setCustomerDetailsForMeeting = payload => {
+  console.log(
+    "setCustomerDetailsForMeeting in action: " + JSON.stringify(payload)
+  );
+  return {
+    type: ACTION_TYPES.SET_CUSTOMER_DETAILS_FOR_MEETING,
+    payload
+  };
+};

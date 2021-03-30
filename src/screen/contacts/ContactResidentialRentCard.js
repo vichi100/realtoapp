@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -13,11 +13,21 @@ import {
   Share,
   Linking
 } from "react-native";
+import { connect } from "react-redux";
+import { CheckBox } from "react-native-elements";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { ButtonGroup } from "react-native-elements";
 import { Avatar } from "react-native-elements";
 import { numDifferentiation } from "../../util/methods";
+
+import {
+  setUserMobile,
+  setUserDetails,
+  setPropReminderList,
+  setPropListForMeeting,
+  setCustomerDetailsForMeeting
+} from "../../reducers/Action";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -26,8 +36,8 @@ const Sliding_Drawer_Width = 250;
 const width = Dimensions.get("window").width;
 
 const ContactResidentialRentCard = props => {
-  const { navigation, item } = props;
-  console.log(item.property_id);
+  const { navigation, item, disableDrawer, displayCheckBox } = props;
+  console.log("ContactResidentialRentCard :    ", item);
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
   const [disabled, setDisabled] = useState(false);
@@ -37,6 +47,10 @@ const ContactResidentialRentCard = props => {
   let Animation = new Animated.Value(0);
 
   let Sliding_Drawer_Toggle = true;
+
+  useEffect(() => {
+    console.log("useEffect", props.customerDetailsForMeeting);
+  }, [props.customerDetailsForMeeting]);
 
   const updateIndex = index => {
     setIndex(index);
@@ -100,6 +114,17 @@ const ContactResidentialRentCard = props => {
     }
   };
 
+  const onClickCheckBox = item => {
+    console.log("onClickCheckBox", item.customer_id);
+    const customerObj = {
+      name: item.customer_details.name,
+      mobile: item.customer_details.mobile1,
+      customer_id: item.customer_id
+    };
+
+    props.setCustomerDetailsForMeeting(customerObj);
+  };
+
   return (
     <View style={styles.card}>
       <View style={styles.MainContainer}>
@@ -108,7 +133,7 @@ const ContactResidentialRentCard = props => {
             {
               flexDirection: "row",
               alignItems: "flex-start",
-              paddingRight: 16,
+              // paddingRight: 16,
               // paddingLeft: 16,
               // paddingBottom: 16,
               // paddingTop: 16,
@@ -121,12 +146,12 @@ const ContactResidentialRentCard = props => {
           <Avatar
             square
             size={60}
-            title={props.item.name && props.item.name.slice(0, 2)}
+            // title={props.item.name && props.item.name.slice(0, 2)}
             activeOpacity={0.7}
             titleStyle={{ color: "rgba(105,105,105, .9)" }}
-            source={{
-              uri: props.item.photo
-            }}
+            // source={{
+            //   uri: props.item.photo
+            // }}
             avatarStyle={{
               borderWidth: 1,
               borderColor: "rgba(127,255,212, .9)",
@@ -134,67 +159,116 @@ const ContactResidentialRentCard = props => {
               borderStyle: "solid"
             }}
           />
-          <View style={{ paddingLeft: 20, paddingTop: 10 }}>
-            <Text style={[styles.title]}>{item.customer_details.name}</Text>
-            <Text style={[StyleSheet.subTitle]}>
-              {item.customer_details.mobile1}
-            </Text>
-            <Text style={[StyleSheet.subTitle]}>
-              {item.customer_details.address}
-            </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              flex: 1
+            }}
+          >
+            <View style={{ paddingLeft: 20, paddingTop: 10 }}>
+              <Text style={[styles.title]}>{item.customer_details.name}</Text>
+              <Text style={[StyleSheet.subTitle]}>
+                {item.customer_details.mobile1}
+              </Text>
+              <Text style={[StyleSheet.subTitle]}>
+                {item.customer_details.address}
+              </Text>
+            </View>
+
+            {displayCheckBox ? (
+              <View
+                style={{
+                  backgroundColor: "rgba(108, 198, 114, 0.2)",
+                  justifyContent: "center"
+                }}
+              >
+                <CheckBox
+                  onPress={() => onClickCheckBox(item)}
+                  center
+                  // title="Select"
+                  checked={
+                    props.customerDetailsForMeeting &&
+                    props.customerDetailsForMeeting.customer_id ===
+                      item.customer_id
+                      ? true
+                      : false
+                  }
+                  containerStyle={{
+                    // backgroundColor: "rgba(108, 198, 114, 0.3)",
+                    borderWidth: 0,
+                    margin: 0,
+                    // padding: 30,
+                    borderRadius: 10
+                    // width: 60
+                  }}
+                />
+              </View>
+            ) : null}
           </View>
         </View>
 
-        <Animated.View
-          style={[
-            styles.drawer,
-            { transform: [{ translateX: Animation_Interpolate }] }
-          ]}
-        >
-          <View style={styles.Main_Sliding_Drawer_Container}>
-            {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
-            <TouchableOpacity
-              onPress={ShowSlidingDrawer}
-              style={{ paddingTop: 20 }}
-            >
-              <MaterialCommunityIcons
-                name="chevron-left"
-                color={"#ffffff"}
-                size={30}
-              />
-            </TouchableOpacity>
-            <View style={styles.verticalLine} />
-            <TouchableOpacity
-              // disabled={Sliding_Drawer_Toggle}
-              onPress={() => {
-                setModalVisible(true);
-              }}
-              style={{ padding: 15, backgroundColor: "#e57373" }}
-            >
-              <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
-            </TouchableOpacity>
+        {disableDrawer ? null : (
+          <Animated.View
+            style={[
+              styles.drawer,
+              { transform: [{ translateX: Animation_Interpolate }] }
+            ]}
+          >
+            <View style={styles.Main_Sliding_Drawer_Container}>
+              {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
+              <TouchableOpacity
+                onPress={ShowSlidingDrawer}
+                style={{ paddingTop: 20 }}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  color={"#ffffff"}
+                  size={30}
+                />
+              </TouchableOpacity>
+              <View style={styles.verticalLine} />
+              <TouchableOpacity
+                // disabled={Sliding_Drawer_Toggle}
+                onPress={() => {
+                  setModalVisible(true);
+                }}
+                style={{ padding: 15, backgroundColor: "#e57373" }}
+              >
+                <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => onShare()}
-              style={{ padding: 15, backgroundColor: "#0091ea" }}
-            >
-              <Ionicons name="share-social" color={"#ffffff"} size={30} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Meeting", item)}
-              style={{ padding: 15, backgroundColor: "#ffd600" }}
-            >
-              <Ionicons name="ios-alarm-outline" color={"#ffffff"} size={30} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => makeCall(item.owner_details.mobile1)}
-              style={{ padding: 15, backgroundColor: "#00bfa5" }}
-            >
-              <Ionicons name="call" color={"#ffffff"} size={30} />
-              <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text>
-            </TouchableOpacity>
-          </View>
-        </Animated.View>
+              <TouchableOpacity
+                onPress={() => onShare()}
+                style={{ padding: 15, backgroundColor: "#0091ea" }}
+              >
+                <Ionicons name="share-social" color={"#ffffff"} size={30} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("CustomerMeeting", {
+                    item: item,
+                    category: "customer"
+                  })
+                }
+                style={{ padding: 15, backgroundColor: "#ffd600" }}
+              >
+                <Ionicons
+                  name="ios-alarm-outline"
+                  color={"#ffffff"}
+                  size={30}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => makeCall(item.owner_details.mobile1)}
+                style={{ padding: 15, backgroundColor: "#00bfa5" }}
+              >
+                <Ionicons name="call" color={"#ffffff"} size={30} />
+                <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text>
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+        )}
       </View>
 
       <View
@@ -301,6 +375,24 @@ const ContactResidentialRentCard = props => {
     </View>
   );
 };
+
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propReminderList: state.AppReducer.propReminderList,
+  propListForMeeting: state.AppReducer.propListForMeeting,
+  customerDetailsForMeeting: state.AppReducer.customerDetailsForMeeting
+});
+
+const mapDispatchToProps = {
+  setUserMobile,
+  setUserDetails,
+  setPropReminderList,
+  setCustomerDetailsForMeeting
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContactResidentialRentCard);
 
 const styles = StyleSheet.create({
   card: {
@@ -465,5 +557,3 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   }
 });
-
-export default ContactResidentialRentCard;

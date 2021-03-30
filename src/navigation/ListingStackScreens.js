@@ -8,6 +8,8 @@ import ListingTopTab from "./ListingTopTab";
 import CommercialRentPropDetails from "../screen/commercial/rent/CommercialRentPropDetails";
 import CommercialSellPropDetails from "../screen/commercial/sell/CommercialSellPropDetails";
 import AddNewPropStackScreens from "./AddNewPropStackScreens";
+import CustomerMeetingDetails from "../screen/contacts/CustomerMeetingDetails";
+import CustomerListForMeeting from "../screen/CustomerListForMeeting";
 
 const Stack = createStackNavigator();
 export const hideTabBarComponents = ["ProductDetails"];
@@ -94,6 +96,16 @@ const ListingStackScreens = () => {
             />
           )
         }}
+      />
+      <Stack.Screen
+        name="CustomerMeetingDetails"
+        component={CustomerMeetingDetails}
+        options={{ title: "Meeting Details" }}
+      />
+      <Stack.Screen
+        name="CustomerListForMeeting"
+        component={CustomerListForMeeting}
+        options={{ title: "Client List" }}
       />
     </Stack.Navigator>
   );
