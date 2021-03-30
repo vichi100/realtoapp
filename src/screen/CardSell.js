@@ -161,7 +161,12 @@ const Card = props => {
                 <Ionicons name="share-social" color={"#ffffff"} size={30} />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("Meeting", item)}
+                onPress={() =>
+                  navigation.navigate("Meeting", {
+                    item: item,
+                    category: "property"
+                  })
+                }
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
               >
                 <Ionicons

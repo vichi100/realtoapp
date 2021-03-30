@@ -20,7 +20,6 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { ButtonGroup } from "react-native-elements";
 import { Avatar } from "react-native-elements";
 import { numDifferentiation } from "../../util/methods";
-
 import {
   setUserMobile,
   setUserDetails,

@@ -19,6 +19,8 @@ import {
 } from "../reducers/Action";
 import ContactResidentialRentCard from "./contacts/ContactResidentialRentCard";
 import ContactResidentialSellCard from "./contacts/ContactResidentialSellCard";
+import CustomerCommercialRentCard from "./contacts/CustomerCommercialRentCard";
+import CustomerCommercialBuyCard from "./contacts/CustomerCommercialBuyCard";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -115,6 +117,41 @@ CustomerListForMeeting = props => {
             }
           >
             <ContactResidentialSellCard
+              navigation={navigation}
+              item={item}
+              disableDrawer={true}
+              displayCheckBox={true}
+            />
+          </TouchableOpacity>
+        );
+      }
+    } else if (item.customer_locality.property_type === "Commercial") {
+      if (item.customer_locality.property_for === "Rent") {
+        return (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate(
+                "CustomerDetailsResidentialRentFromList",
+                item
+              )
+            }
+          >
+            <CustomerCommercialRentCard
+              navigation={navigation}
+              item={item}
+              disableDrawer={true}
+              displayCheckBox={true}
+            />
+          </TouchableOpacity>
+        );
+      } else if (item.customer_locality.property_for === "Buy") {
+        return (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("CustomerDetailsResidentialBuyFromList", item)
+            }
+          >
+            <CustomerCommercialBuyCard
               navigation={navigation}
               item={item}
               disableDrawer={true}

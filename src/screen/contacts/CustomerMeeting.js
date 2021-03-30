@@ -377,6 +377,7 @@ const CustomerMeeting = props => {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate("PropertyListForMeeting", {
+                  item: item,
                   property_type: item.customer_locality.property_type,
                   property_for: item.customer_locality.property_for
                 })

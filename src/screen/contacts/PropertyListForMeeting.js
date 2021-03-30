@@ -31,72 +31,6 @@ import { getBottomSpace } from "react-native-iphone-x-helper";
 import CardRent from "../commercial/rent/Card";
 import CardSell from "../commercial/sell/Card"; //"../commercial/sell/Card";
 
-const dataX = [
-  {
-    id: "10000",
-    property: "residential",
-    property_type: "apartment",
-    bhk: "2",
-    washrooms: "2",
-    furnishing: "full",
-    parking: "2",
-    parking_for: "car",
-    property_age: "10",
-    floor: "3 / 4",
-    lift: "yes",
-    property_area: "800",
-    possession: "immediate",
-    preferred_tenant: "anyone",
-    rent: "15000",
-    deposit: "90000",
-    location: "Andheri west",
-    address_line1: "Flat 305, ZA Tower",
-    address_line2: "yarri road, versova"
-  },
-  {
-    id: "10000",
-    property: "residential",
-    property_type: "apartment",
-    bhk: "2",
-    washrooms: "2",
-    furnishing: "full",
-    parking: "2",
-    parking_for: "car",
-    property_age: "10",
-    floor: "3 / 4",
-    lift: "yes",
-    property_area: "800",
-    possession: "immediate",
-    preferred_tenant: "anyone",
-    rent: "15000",
-    deposit: "90000",
-    location: "Andheri west",
-    address_line1: "Flat 305, ZA Tower",
-    address_line2: "yarri road, versova"
-  },
-  {
-    id: "10000",
-    property: "residential",
-    property_type: "apartment",
-    bhk: "2",
-    washrooms: "2",
-    furnishing: "full",
-    parking: "2",
-    parking_for: "car",
-    property_age: "10",
-    floor: "3 / 4",
-    lift: "yes",
-    property_area: "800",
-    possession: "immediate",
-    preferred_tenant: "anyone",
-    rent: "15000",
-    deposit: "90000",
-    location: "Andheri west",
-    address_line1: "Flat 305, ZA Tower",
-    address_line2: "yarri road, versova"
-  }
-];
-
 const PropertyListForMeeting = props => {
   const { navigation } = props;
   const propertyType = props.route.params.property_type;
@@ -199,6 +133,7 @@ const PropertyListForMeeting = props => {
               navigation={navigation}
               item={item}
               disableDrawer={true}
+              displayCheckBox={true}
             />
           </TouchableOpacity>
         );
@@ -213,6 +148,7 @@ const PropertyListForMeeting = props => {
               navigation={navigation}
               item={item}
               disableDrawer={true}
+              displayCheckBox={true}
             />
           </TouchableOpacity>
         );
@@ -229,6 +165,7 @@ const PropertyListForMeeting = props => {
               navigation={navigation}
               item={item}
               disableDrawer={true}
+              displayCheckBox={true}
             />
           </TouchableOpacity>
         );
@@ -243,6 +180,7 @@ const PropertyListForMeeting = props => {
               navigation={navigation}
               item={item}
               disableDrawer={true}
+              displayCheckBox={true}
             />
           </TouchableOpacity>
         );
