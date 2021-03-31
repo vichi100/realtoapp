@@ -25,7 +25,9 @@ import { dateFormat } from "../util/methods";
 import {
   setUserMobile,
   setUserDetails,
-  setPropReminderList
+  setPropReminderList,
+  setPropListForMeeting,
+  setCustomerDetailsForMeeting
 } from "../reducers/Action";
 import PropertyReminder from "./PropertyReminder";
 
@@ -53,6 +55,23 @@ const Meeting = props => {
   const [minutes, setMinutes] = useState(null);
   const [ampmIndex, setAMPMIndex] = useState(-1);
   const [propertyIdX, setPropertyIdX] = useState(item.property_id);
+  const clearState = () => {
+    setNewDate("");
+    setNewTime("");
+    setClientName("");
+    setClientMobile("");
+    setReminderForIndex(-1);
+    setHour(null);
+    setMinutes(null);
+    setAMPMIndex(-1);
+    props.setCustomerDetailsForMeeting(null);
+  };
+  useEffect(() => {
+    console.log("useEffect in Meeting propertyIdX:  ", propertyIdX);
+    setClientName("");
+    setClientMobile("");
+    setClientId("");
+  }, []);
 
   useEffect(() => {
     console.log("useEffect", props.customerDetailsForMeeting);
@@ -227,9 +246,11 @@ const Meeting = props => {
             const x = [reminderDetails, ...props.propReminderList];
             props.setPropReminderList(x);
           }
+          clearState();
         },
         error => {
           console.log(error);
+          clearState();
         }
       );
   };
@@ -654,7 +675,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   setUserMobile,
   setUserDetails,
-  setPropReminderList
+  setPropReminderList,
+  setPropListForMeeting,
+  setCustomerDetailsForMeeting
 };
 export default connect(
   mapStateToProps,

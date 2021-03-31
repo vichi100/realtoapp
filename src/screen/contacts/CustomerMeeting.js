@@ -57,6 +57,19 @@ const CustomerMeeting = props => {
   const [minutes, setMinutes] = useState(null);
   const [ampmIndex, setAMPMIndex] = useState(-1);
   const [propertyIdX, setPropertyIdX] = useState(item.property_id);
+  const [visible, setVisible] = React.useState(false);
+
+  const clearState = () =>{
+    setNewDate("");
+    setNewTime("");
+    setClientName("");
+    setClientMobile("");
+    setHour("");
+    setMinutes("");
+    setAMPMIndex(-1);
+    setReminderForIndex(-1);
+    props.setPropListForMeeting([])
+  }
 
   const setModalVisibleTemp = flag => {
     // console.log("setModalVisible: " + flag);
@@ -99,7 +112,7 @@ const CustomerMeeting = props => {
     setIsVisible(false);
   };
 
-  const [visible, setVisible] = React.useState(false);
+
   const onDismiss = React.useCallback(() => {
     // console.log("date");
     setVisible(false);
@@ -216,8 +229,10 @@ const CustomerMeeting = props => {
             const x = [reminderDetails, ...props.propReminderList];
             props.setPropReminderList(x);
           }
+          clearState()
         },
         error => {
+          clearState()
           console.log(error);
         }
       );

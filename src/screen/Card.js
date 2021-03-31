@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -26,7 +26,8 @@ import {
   setUserMobile,
   setUserDetails,
   setPropReminderList,
-  setPropListForMeeting
+  setPropListForMeeting,
+  setCustomerDetailsForMeeting
 } from "../reducers/Action";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
@@ -44,6 +45,11 @@ const Card = props => {
   const [modalVisible, setModalVisible] = useState(false);
   const [index, setIndex] = React.useState(null);
   const [checkBoxList, setCheckBoxList] = useState([]);
+
+  // useEffect(() => {
+  //   console.log("useEffect in meetingx:   ");
+  //   props.setPropListForMeeting([]);
+  // }, []);
 
   let Animation = new Animated.Value(0);
 
@@ -140,6 +146,15 @@ const Card = props => {
     } catch (error) {
       alert(error.message);
     }
+  };
+
+  const onClickMeeting = item => {
+    props.setCustomerDetailsForMeeting(null);
+    props.setPropListForMeeting([]);
+    navigation.navigate("Meeting", {
+      item: item,
+      category: "property"
+    });
   };
 
   return (
@@ -239,12 +254,7 @@ const Card = props => {
                 <Ionicons name="share-social" color={"#ffffff"} size={30} />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Meeting", {
-                    item: item,
-                    category: "property"
-                  })
-                }
+                onPress={() => onClickMeeting(item)}
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
               >
                 <Ionicons
@@ -380,7 +390,8 @@ const mapDispatchToProps = {
   setUserMobile,
   setUserDetails,
   setPropReminderList,
-  setPropListForMeeting
+  setPropListForMeeting,
+  setCustomerDetailsForMeeting
 };
 export default connect(
   mapStateToProps,

@@ -121,7 +121,7 @@ const CustomerMeetingDetails = props => {
                   </View>
                 ))}
               </View>
-            ) : item.category_for === "Rent" ? (
+            ) : item.category_for === "Buy" ? (
               <View>
                 <ContactResidentialSellCard
                   navigation={navigation}
@@ -170,91 +170,105 @@ const CustomerMeetingDetails = props => {
                 ))}
               </View>
             ) : null
-          ) : item.category_for === "Rent" ? (
-            <View>
-              <CustomerCommercialRentCard
-                navigation={navigation}
-                item={customerMeetingDetailsObj.customer_details}
-                disableDrawer={true}
-                displayCheckBox={false}
-              />
-              <View
-                style={{
-                  backgroundColor: "#ffffff",
-                  marginBottom: 1,
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}
-              >
-                <Text style={{ padding: 10 }}>{reminderObj.reminder_for}</Text>
-                <Text style={{ padding: 10 }}>{reminderObj.meeting_date}</Text>
-                <Text style={{ padding: 10 }}>{reminderObj.meeting_time}</Text>
-              </View>
-              <View
-                style={{
-                  backgroundColor: "rgba(0,255,255, 0.1)"
-                  // marginTop: 1
-                }}
-              >
-                <Text style={{ padding: 10, textAlign: "center" }}>
-                  Related properties for this reminder
-                </Text>
-              </View>
-
-              {customerMeetingDetailsObj.property_details.map(item => (
-                <View>
-                  <CardCommercialRent
-                    navigation={navigation}
-                    item={item}
-                    disableDrawer={true}
-                    displayCheckBox={false}
-                  />
+          ) : item.category_type === "Commercial" ? (
+            item.category_for === "Rent" ? (
+              <View>
+                <CustomerCommercialRentCard
+                  navigation={navigation}
+                  item={customerMeetingDetailsObj.customer_details}
+                  disableDrawer={true}
+                  displayCheckBox={false}
+                />
+                <View
+                  style={{
+                    backgroundColor: "#ffffff",
+                    marginBottom: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                  }}
+                >
+                  <Text style={{ padding: 10 }}>
+                    {reminderObj.reminder_for}
+                  </Text>
+                  <Text style={{ padding: 10 }}>
+                    {reminderObj.meeting_date}
+                  </Text>
+                  <Text style={{ padding: 10 }}>
+                    {reminderObj.meeting_time}
+                  </Text>
                 </View>
-              ))}
-            </View>
-          ) : (
-            <View>
-              <CustomerCommercialBuyCard
-                navigation={navigation}
-                item={customerMeetingDetailsObj.customer_details}
-                disableDrawer={true}
-                displayCheckBox={false}
-              />
-              <View
-                style={{
-                  backgroundColor: "#ffffff",
-                  marginBottom: 1,
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}
-              >
-                <Text style={{ padding: 10 }}>{reminderObj.reminder_for}</Text>
-                <Text style={{ padding: 10 }}>{reminderObj.meeting_date}</Text>
-                <Text style={{ padding: 10 }}>{reminderObj.meeting_time}</Text>
-              </View>
-              <View
-                style={{
-                  backgroundColor: "rgba(0,255,255, 0.1)"
-                  // marginTop: 1
-                }}
-              >
-                <Text style={{ padding: 10, textAlign: "center" }}>
-                  Related properties for this reminder
-                </Text>
-              </View>
-
-              {customerMeetingDetailsObj.property_details.map(item => (
-                <View>
-                  <CardCommercialSell
-                    navigation={navigation}
-                    item={item}
-                    disableDrawer={true}
-                    displayCheckBox={false}
-                  />
+                <View
+                  style={{
+                    backgroundColor: "rgba(0,255,255, 0.1)"
+                    // marginTop: 1
+                  }}
+                >
+                  <Text style={{ padding: 10, textAlign: "center" }}>
+                    Related properties for this reminder
+                  </Text>
                 </View>
-              ))}
-            </View>
-          )}
+
+                {customerMeetingDetailsObj.property_details.map(item => (
+                  <View>
+                    <CardCommercialRent
+                      navigation={navigation}
+                      item={item}
+                      disableDrawer={true}
+                      displayCheckBox={false}
+                    />
+                  </View>
+                ))}
+              </View>
+            ) : (
+              <View>
+                <CustomerCommercialBuyCard
+                  navigation={navigation}
+                  item={customerMeetingDetailsObj.customer_details}
+                  disableDrawer={true}
+                  displayCheckBox={false}
+                />
+                <View
+                  style={{
+                    backgroundColor: "#ffffff",
+                    marginBottom: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                  }}
+                >
+                  <Text style={{ padding: 10 }}>
+                    {reminderObj.reminder_for}
+                  </Text>
+                  <Text style={{ padding: 10 }}>
+                    {reminderObj.meeting_date}
+                  </Text>
+                  <Text style={{ padding: 10 }}>
+                    {reminderObj.meeting_time}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    backgroundColor: "rgba(0,255,255, 0.1)"
+                    // marginTop: 1
+                  }}
+                >
+                  <Text style={{ padding: 10, textAlign: "center" }}>
+                    Related properties for this reminder
+                  </Text>
+                </View>
+
+                {customerMeetingDetailsObj.property_details.map(item => (
+                  <View>
+                    <CardCommercialSell
+                      navigation={navigation}
+                      item={item}
+                      disableDrawer={true}
+                      displayCheckBox={false}
+                    />
+                  </View>
+                ))}
+              </View>
+            )
+          ) : null}
         </ScrollView>
       ) : null}
     </SafeAreaView>

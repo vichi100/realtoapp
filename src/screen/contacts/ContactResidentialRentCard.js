@@ -124,6 +124,15 @@ const ContactResidentialRentCard = props => {
     props.setCustomerDetailsForMeeting(customerObj);
   };
 
+  const onClickMeeting = item => {
+    props.setCustomerDetailsForMeeting(null);
+    props.setPropListForMeeting([]);
+    navigation.navigate("CustomerMeeting", {
+      item: item,
+      category: "customer"
+    });
+  };
+
   return (
     <View style={styles.card}>
       <View style={styles.MainContainer}>
@@ -244,12 +253,7 @@ const ContactResidentialRentCard = props => {
                 <Ionicons name="share-social" color={"#ffffff"} size={30} />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("CustomerMeeting", {
-                    item: item,
-                    category: "customer"
-                  })
-                }
+                onPress={() => onClickMeeting(item)}
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
               >
                 <Ionicons
@@ -386,7 +390,8 @@ const mapDispatchToProps = {
   setUserMobile,
   setUserDetails,
   setPropReminderList,
-  setCustomerDetailsForMeeting
+  setCustomerDetailsForMeeting,
+  setPropListForMeeting
 };
 export default connect(
   mapStateToProps,

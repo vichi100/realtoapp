@@ -21,6 +21,15 @@ import { ButtonGroup } from "react-native-elements";
 import Slideshow from "../components/Slideshow";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { numDifferentiation } from "../util/methods";
+import { connect } from "react-redux";
+import { CheckBox } from "react-native-elements";
+import {
+  setUserMobile,
+  setUserDetails,
+  setPropReminderList,
+  setPropListForMeeting,
+  setCustomerDetailsForMeeting
+} from "../reducers/Action";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -100,7 +109,45 @@ const Card = props => {
     outputRange: [Sliding_Drawer_Width - 33, -15]
   });
 
-  // console.log(width);
+  const onClickMeeting = item => {
+    props.setCustomerDetailsForMeeting(null);
+    props.setPropListForMeeting([]);
+    navigation.navigate("Meeting", {
+      item: item,
+      category: "property"
+    });
+  };
+
+  const onClickCheckBox = item => {
+    // console.log("onClickCheckBox", JSON.stringify(item));
+    const name =
+      item.property_for +
+      " in " +
+      item.property_address.building_name +
+      ", " +
+      item.property_address.landmark_or_street;
+
+    const obj = {
+      id: item.property_id,
+      name: name
+    };
+
+    if (props.propListForMeeting.some(y => y.id === item.property_id)) {
+      // console.log("remove: ", checkBoxList);
+      const x = props.propListForMeeting.filter(z => z.id !== item.property_id);
+      // setCheckBoxList(x);
+      props.setPropListForMeeting(x);
+    } else {
+      const x = [obj, ...props.propListForMeeting];
+      // console.log("add: X :  ", x);
+      // setCheckBoxList(x);
+      props.setPropListForMeeting(x);
+    }
+    console.log(
+      "setPropListForMeeting: ",
+      JSON.stringify(props.propListForMeeting)
+    );
+  };
 
   return (
     <View style={styles.card}>
@@ -113,17 +160,54 @@ const Card = props => {
       />
 
       <View style={styles.MainContainer}>
-        <View style={[styles.headerContainer]}>
-          <Text style={[styles.title]}>
-            Sell in {item.property_address.building_name},{" "}
-            {item.property_address.landmark_or_street}
-          </Text>
-          <Text style={[StyleSheet.subTitle]}>
-            {item.property_address.location_area}, {item.property_address.city}-
-            {item.property_address.pin}
-          </Text>
-        </View>
+        <View
+          style={[
+            {
+              // backgroundColor: "rgba(245,245,245, 0.8)",
+              flexDirection: "row",
+              justifyContent: "space-between"
+            }
+          ]}
+        >
+          <View style={styles.headerContainer}>
+            <Text style={[styles.title]}>
+              Rent In {item.property_address.building_name},{" "}
+              {item.property_address.landmark_or_street}
+            </Text>
+            <Text style={[StyleSheet.subTitle]}>
+              {item.property_address.location_area},{" "}
+              {item.property_address.city}-{item.property_address.pin}
+            </Text>
+          </View>
 
+          {displayCheckBox ? (
+            <View
+              style={{
+                backgroundColor: "rgba(108, 198, 114, 0.2)",
+                justifyContent: "center"
+              }}
+            >
+              <CheckBox
+                onPress={() => onClickCheckBox(item)}
+                center
+                // title="Select"
+                checked={
+                  props.propListForMeeting.some(s => s.id === item.property_id)
+                    ? true
+                    : false
+                }
+                containerStyle={{
+                  // backgroundColor: "rgba(108, 198, 114, 0.3)",
+                  borderWidth: 0,
+                  margin: 0,
+                  // padding: 30,
+                  borderRadius: 10
+                  // width: 60
+                }}
+              />
+            </View>
+          ) : null}
+        </View>
         {disableDrawer ? null : (
           <Animated.View
             style={[
@@ -161,12 +245,7 @@ const Card = props => {
                 <Ionicons name="share-social" color={"#ffffff"} size={30} />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Meeting", {
-                    item: item,
-                    category: "property"
-                  })
-                }
+                onPress={() => onClickMeeting(item)}
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
               >
                 <Ionicons
@@ -313,7 +392,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingBottom: 16,
     paddingTop: 16,
-    width: "100%",
+    // width: "100%",
     backgroundColor: "#ffffff"
   },
   title: {
@@ -327,8 +406,11 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     // borderBottomWidth: 1,
-    borderTopColor: "#fff59d",
-    borderTopWidth: 1
+    borderTopColor: "#DCDCDC",
+    borderBottomColor: "#DCDCDC",
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    marginBottom: 3
   },
 
   details: {
@@ -444,4 +526,22 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Card;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propReminderList: state.AppReducer.propReminderList,
+  propListForMeeting: state.AppReducer.propListForMeeting
+});
+
+const mapDispatchToProps = {
+  setUserMobile,
+  setUserDetails,
+  setPropReminderList,
+  setPropListForMeeting,
+  setCustomerDetailsForMeeting
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Card);
+
+// export default Card;
