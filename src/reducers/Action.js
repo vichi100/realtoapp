@@ -88,3 +88,23 @@ export const setCommercialCustomerList = payload => {
     payload
   };
 };
+
+export const setCustomerListForMeeting = payload => {
+  console.log(
+    "setCustomerListForMeeting in action: " + JSON.stringify(payload)
+  );
+  return {
+    type: ACTION_TYPES.SET_CUSTOMER_LIST_FOR_MEETING,
+    payload
+  };
+};
+
+export const setPropertyListingForMeeting = payload => {
+  console.log(
+    "setPropertyListingForMeeting in action: " + JSON.stringify(payload)
+  );
+  return {
+    type: ACTION_TYPES.SET_PROPERTY_LIST_FOR_MEETING,
+    payload
+  };
+};

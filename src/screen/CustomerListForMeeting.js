@@ -15,7 +15,8 @@ import { connect } from "react-redux";
 import {
   setUserMobile,
   setUserDetails,
-  setPropReminderList
+  setPropReminderList,
+  setCustomerListForMeeting
 } from "../reducers/Action";
 import ContactResidentialRentCard from "./contacts/ContactResidentialRentCard";
 import ContactResidentialSellCard from "./contacts/ContactResidentialSellCard";
@@ -70,7 +71,7 @@ CustomerListForMeeting = props => {
       property_for: propertyFor
     };
     console.log(JSON.stringify(queryObj));
-    axios("http://172.20.10.2:3000/getCustomerListForMeeting", {
+    axios("http://192.168.43.64:3000/getCustomerListForMeeting", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -79,8 +80,9 @@ CustomerListForMeeting = props => {
       data: queryObj
     }).then(
       response => {
-        console.log("response.data:    ", response.data);
+        console.log("getCustomerList response.data:    ", response.data);
         setData(response.data);
+        props.setCustomerListForMeeting(response.data);
       },
       error => {
         console.log(error);
@@ -180,6 +182,32 @@ CustomerListForMeeting = props => {
     navigation.navigate("Add");
   };
 
+  const searchFilterFunction = text => {
+    // Check if searched text is not blank
+    if (text) {
+      // Inserted text is not blank
+      // Filter the masterDataSource and update FilteredDataSource
+      const newData = props.customerListForMeeting.filter(function(item) {
+        // Applying filter for the inserted text in search bar
+        const itemData =
+          item.customer_details.name +
+          item.customer_details.address +
+          item.customer_details.mobile1 +
+          item.customer_locality.location_area;
+
+        const textData = text.toUpperCase();
+        return itemData.toUpperCase().indexOf(textData) > -1;
+      });
+      setData(newData);
+      setSearch(text);
+    } else {
+      // Inserted text is blank
+      // Update FilteredDataSource with masterDataSource
+      setData(props.customerListForMeeting);
+      setSearch(text);
+    }
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.searchBarContainer}>
@@ -188,7 +216,7 @@ CustomerListForMeeting = props => {
           onChangeText={text => searchFilterFunction(text)}
           value={search}
           underlineColorAndroid="transparent"
-          placeholder="Search Here"
+          placeholder="Search by name, location"
         />
       </View>
       {data.length > 0 ? (
@@ -448,13 +476,15 @@ CustomerListForMeeting = props => {
 
 const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
-  propReminderList: state.AppReducer.propReminderList
+  propReminderList: state.AppReducer.propReminderList,
+  customerListForMeeting: state.AppReducer.customerListForMeeting
 });
 
 const mapDispatchToProps = {
   setUserMobile,
   setUserDetails,
-  setPropReminderList
+  setPropReminderList,
+  setCustomerListForMeeting
 };
 export default connect(
   mapStateToProps,

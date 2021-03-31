@@ -57,7 +57,7 @@ const ProfileForm = props => {
     updateUserProfile(profileDetails);
   };
   const updateUserProfile = profileDetails => {
-    axios("http://172.20.10.2:3000/updateUserProfile", {
+    axios("http://192.168.43.64:3000/updateUserProfile", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

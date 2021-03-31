@@ -215,7 +215,7 @@ const CustomerMeeting = props => {
     };
     axios
       .post(
-        "http://172.20.10.2:3000/addNewReminder",
+        "http://192.168.43.64:3000/addNewReminder",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -245,7 +245,7 @@ const CustomerMeeting = props => {
     };
     axios
       .post(
-        "http://172.20.10.2:3000/getPropReminderList",
+        "http://192.168.43.64:3000/getPropReminderList",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })

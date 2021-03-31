@@ -30,6 +30,7 @@ import { getBottomSpace } from "react-native-iphone-x-helper";
 
 import CardRent from "../commercial/rent/Card";
 import CardSell from "../commercial/sell/Card"; //"../commercial/sell/Card";
+import { setPropertyListingForMeeting } from "../../reducers/Action";
 
 const PropertyListForMeeting = props => {
   const { navigation } = props;
@@ -75,7 +76,7 @@ const PropertyListForMeeting = props => {
       property_for: propertyFor
     };
     console.log(JSON.stringify(user));
-    axios("http://172.20.10.2:3000/getPropertyListingForMeeting", {
+    axios("http://192.168.43.64:3000/getPropertyListingForMeeting", {
       // getPropertyListingForMeeting
       method: "post",
       headers: {
@@ -87,6 +88,7 @@ const PropertyListForMeeting = props => {
       response => {
         // console.log(response.data);
         setData(response.data);
+        props.setPropertyListingForMeeting(response.data);
       },
       error => {
         console.log(error);
@@ -103,20 +105,24 @@ const PropertyListForMeeting = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = masterDataSource.filter(function(item) {
+      const newData = props.propertyListingForMeeting.filter(function(item) {
         // Applying filter for the inserted text in search bar
-        const itemData = item.title
-          ? item.title.toUpperCase()
-          : "".toUpperCase();
+        const itemData =
+          item.property_address.building_name +
+          item.property_address.landmark_or_street +
+          item.property_address.location_area +
+          item.owner_details.name +
+          item.owner_details.mobile1;
+
         const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
+        return itemData.toUpperCase().indexOf(textData) > -1;
       });
-      setFilteredDataSource(newData);
+      setData(newData);
       setSearch(text);
     } else {
       // Inserted text is blank
       // Update FilteredDataSource with masterDataSource
-      setFilteredDataSource(masterDataSource);
+      setData(props.propertyListingForMeeting);
       setSearch(text);
     }
   };
@@ -222,7 +228,7 @@ const PropertyListForMeeting = props => {
           onChangeText={text => searchFilterFunction(text)}
           value={search}
           underlineColorAndroid="transparent"
-          placeholder="Search Here"
+          placeholder="Search by property address, owner"
         />
       </View>
       {data.length > 0 ? (
@@ -571,11 +577,15 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  userDetails: state.AppReducer.userDetails
+  userDetails: state.AppReducer.userDetails,
+  propertyListingForMeeting: state.AppReducer.propertyListingForMeeting
 });
+const mapDispatchToProps = {
+  setPropertyListingForMeeting
+};
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(PropertyListForMeeting);
 
 // export default ListingResidential;
