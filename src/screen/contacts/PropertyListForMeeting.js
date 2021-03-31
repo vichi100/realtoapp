@@ -75,7 +75,7 @@ const PropertyListForMeeting = props => {
       property_for: propertyFor
     };
     console.log(JSON.stringify(user));
-    axios("http://192.168.43.64:3000/getPropertyListingForMeeting", {
+    axios("http://172.20.10.2:3000/getPropertyListingForMeeting", {
       // getPropertyListingForMeeting
       method: "post",
       headers: {
@@ -470,7 +470,7 @@ const PropertyListForMeeting = props => {
           bottom: 15,
           right: 10,
           // height: 40,
-          backgroundColor: "#f73378",
+          backgroundColor: "rgba(50, 195, 77, 0.59)",
           borderRadius: 100
         }}
         onPress={() => navigation.navigate("Add")}

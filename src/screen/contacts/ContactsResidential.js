@@ -27,6 +27,7 @@ import ContactResidentialSellCard from "./ContactResidentialSellCard";
 import axios from "axios";
 import SERVER_URL from "../../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
+import { setResidentialCustomerList } from "../../reducers/Action";
 
 const dataX = [
   {
@@ -134,7 +135,7 @@ const ContactsResidential = props => {
       agent_id: props.userDetails.user_details.works_for[0]
     };
     console.log(JSON.stringify(user));
-    axios("http://192.168.43.64:3000/residentialCustomerList", {
+    axios("http://172.20.10.2:3000/residentialCustomerList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -145,28 +146,12 @@ const ContactsResidential = props => {
       response => {
         console.log(response.data);
         setData(response.data);
+        props.setResidentialCustomerList(response.data);
       },
       error => {
         console.log(error);
       }
     );
-  };
-
-  const getListingX = async () => {
-    const filter = {
-      agent_id: "123"
-    };
-    fetch(SERVER_URL + "addNewProperty", {
-      method: "get",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => response.json())
-      .then(json => setData(json.movies))
-      .catch(error => console.error(error))
-      .finally(() => setIndex(0));
   };
 
   const updateIndex = index => {
@@ -178,20 +163,23 @@ const ContactsResidential = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = masterDataSource.filter(function(item) {
+      const newData = props.residentialCustomerList.filter(function(item) {
         // Applying filter for the inserted text in search bar
-        const itemData = item.title
-          ? item.title.toUpperCase()
-          : "".toUpperCase();
+        const itemData =
+          item.customer_details.name +
+          item.customer_details.address +
+          item.customer_details.mobile1 +
+          item.customer_locality.location_area;
+
         const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
+        return itemData.toUpperCase().indexOf(textData) > -1;
       });
-      setFilteredDataSource(newData);
+      setData(newData);
       setSearch(text);
     } else {
       // Inserted text is blank
       // Update FilteredDataSource with masterDataSource
-      setFilteredDataSource(masterDataSource);
+      setData(props.residentialCustomerList);
       setSearch(text);
     }
   };
@@ -260,7 +248,7 @@ const ContactsResidential = props => {
           onChangeText={text => searchFilterFunction(text)}
           value={search}
           underlineColorAndroid="transparent"
-          placeholder="Search Here"
+          placeholder="Search by name, location"
         />
       </View>
       {data.length > 0 ? (
@@ -609,11 +597,15 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  userDetails: state.AppReducer.userDetails
+  userDetails: state.AppReducer.userDetails,
+  residentialCustomerList: state.AppReducer.residentialCustomerList
 });
+const mapDispatchToProps = {
+  setResidentialCustomerList
+};
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(ContactsResidential);
 
 // export default ListingResidential;

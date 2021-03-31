@@ -48,3 +48,43 @@ export const setCustomerDetailsForMeeting = payload => {
     payload
   };
 };
+
+export const setResidentialPropertyList = payload => {
+  console.log(
+    "setResidentialPropertyList in action: " + JSON.stringify(payload)
+  );
+  return {
+    type: ACTION_TYPES.SET_RESIDENTIAL_PROPERTY_LIST,
+    payload
+  };
+};
+
+export const setCommercialPropertyList = payload => {
+  console.log(
+    "setCommercialPropertyList in action: " + JSON.stringify(payload)
+  );
+  return {
+    type: ACTION_TYPES.SET_COMMERCIAL_PROPERTY_LIST,
+    payload
+  };
+};
+
+export const setResidentialCustomerList = payload => {
+  console.log(
+    "setResidentialCustomerList in action: " + JSON.stringify(payload)
+  );
+  return {
+    type: ACTION_TYPES.SET_RESIDENTIAL_CUSTOMER_LIST,
+    payload
+  };
+};
+
+export const setCommercialCustomerList = payload => {
+  console.log(
+    "setCommercialCustomerList in action: " + JSON.stringify(payload)
+  );
+  return {
+    type: ACTION_TYPES.SET_COMMERCIAL_CUSTOMER_LIST,
+    payload
+  };
+};

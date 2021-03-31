@@ -26,6 +26,7 @@ import CustomerCommercialBuyCard from "./CustomerCommercialBuyCard";
 import axios from "axios";
 import SERVER_URL from "../../util/constant";
 import Slider from "../../components/Slider";
+import { setCommercialCustomerList } from "../../reducers/Action";
 
 const buildingTypeArray = [
   "Businesses park ",
@@ -33,71 +34,6 @@ const buildingTypeArray = [
   "StandAlone",
   "Industrial",
   "Shopping complex"
-];
-
-const dataX = [
-  {
-    id: "10000",
-    property: "commercial",
-    property_type: "shop",
-    furnishing: "full",
-    parking: "private", // private or public
-    parking_for: "car",
-    property_age: "10",
-    floor: "3 / 4",
-    lift: "yes",
-    property_area: "800",
-    possession: "immediate",
-    building_type: "anyone",
-    last_used_for: "shop",
-    rent: "15000",
-    deposit: "90000",
-    location: "Andheri west",
-    address_line1: "Flat 305, ZA Tower",
-    address_line2: "yarri road, versova"
-  },
-  {
-    id: "10000",
-    property: "residential",
-    property_type: "apartment",
-    bhk: "2",
-    washrooms: "2",
-    furnishing: "full",
-    parking: "2",
-    parking_for: "car",
-    property_age: "10",
-    floor: "3 / 4",
-    lift: "yes",
-    property_area: "800",
-    possession: "immediate",
-    preferred_tenant: "anyone",
-    rent: "15000",
-    deposit: "90000",
-    location: "Andheri west",
-    address_line1: "Flat 305, ZA Tower",
-    address_line2: "yarri road, versova"
-  },
-  {
-    id: "10000",
-    property: "residential",
-    property_type: "apartment",
-    bhk: "2",
-    washrooms: "2",
-    furnishing: "full",
-    parking: "2",
-    parking_for: "car",
-    property_age: "10",
-    floor: "3 / 4",
-    lift: "yes",
-    property_area: "800",
-    possession: "immediate",
-    preferred_tenant: "anyone",
-    rent: "15000",
-    deposit: "90000",
-    location: "Andheri west",
-    address_line1: "Flat 305, ZA Tower",
-    address_line2: "yarri road, versova"
-  }
 ];
 
 const CustomersCommercial = props => {
@@ -119,7 +55,7 @@ const CustomersCommercial = props => {
       agent_id: props.userDetails.user_details.works_for[0]
     };
 
-    axios("http://192.168.43.64:3000/commercialCustomerList", {
+    axios("http://172.20.10.2:3000/commercialCustomerList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -128,30 +64,14 @@ const CustomersCommercial = props => {
       data: user
     }).then(
       response => {
-        console.log(response.data);
+        // console.log(response.data);
+        props.setCommercialCustomerList(response.data);
         setData(response.data);
       },
       error => {
         console.log(error);
       }
     );
-  };
-
-  const getListingX = async () => {
-    const filter = {
-      agent_id: "123"
-    };
-    fetch(SERVER_URL + "addNewProperty", {
-      method: "get",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => response.json())
-      .then(json => setData(json.movies))
-      .catch(error => console.error(error))
-      .finally(() => setIndex(0));
   };
 
   const updateIndex = index => {
@@ -163,20 +83,23 @@ const CustomersCommercial = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = masterDataSource.filter(function(item) {
+      const newData = props.commercialCustomerList.filter(function(item) {
         // Applying filter for the inserted text in search bar
-        const itemData = item.title
-          ? item.title.toUpperCase()
-          : "".toUpperCase();
+        const itemData =
+          item.customer_details.name +
+          item.customer_details.address +
+          item.customer_details.mobile1 +
+          item.customer_locality.location_area;
+
         const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
+        return itemData.toUpperCase().indexOf(textData) > -1;
       });
-      setFilteredDataSource(newData);
+      setData(newData);
       setSearch(text);
     } else {
       // Inserted text is blank
       // Update FilteredDataSource with masterDataSource
-      setFilteredDataSource(masterDataSource);
+      setData(props.commercialCustomerList);
       setSearch(text);
     }
   };
@@ -607,10 +530,14 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  userDetails: state.AppReducer.userDetails
+  userDetails: state.AppReducer.userDetails,
+  commercialCustomerList: state.AppReducer.commercialCustomerList
 });
+const mapDispatchToProps = {
+  setCommercialCustomerList
+};
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(CustomersCommercial);
 // export default ListingCommercial;

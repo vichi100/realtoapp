@@ -70,7 +70,7 @@ CustomerListForMeeting = props => {
       property_for: propertyFor
     };
     console.log(JSON.stringify(queryObj));
-    axios("http://192.168.43.64:3000/getCustomerListForMeeting", {
+    axios("http://172.20.10.2:3000/getCustomerListForMeeting", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

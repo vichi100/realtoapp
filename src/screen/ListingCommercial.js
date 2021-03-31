@@ -24,6 +24,7 @@ import CardRent from "./commercial/rent/Card";
 import CardSell from "./commercial/sell/Card";
 import axios from "axios";
 import SERVER_URL from "../util/constant";
+import { setCommercialPropertyList } from "../reducers/Action";
 
 const buildingTypeArray = [
   "Businesses park ",
@@ -117,7 +118,7 @@ const ListingCommercial = props => {
       agent_id: props.userDetails.user_details.works_for[0]
     };
 
-    axios("http://192.168.43.64:3000/commercialPropertyListings", {
+    axios("http://172.20.10.2:3000/commercialPropertyListings", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -128,28 +129,12 @@ const ListingCommercial = props => {
       response => {
         // console.log(response.data);
         setData(response.data);
+        props.setCommercialPropertyList(response.data);
       },
       error => {
         console.log(error);
       }
     );
-  };
-
-  const getListingX = async () => {
-    const filter = {
-      agent_id: "123"
-    };
-    fetch(SERVER_URL + "addNewProperty", {
-      method: "get",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => response.json())
-      .then(json => setData(json.movies))
-      .catch(error => console.error(error))
-      .finally(() => setIndex(0));
   };
 
   const updateIndex = index => {
@@ -161,20 +146,24 @@ const ListingCommercial = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = masterDataSource.filter(function(item) {
+      const newData = props.commercialPropertyList.filter(function(item) {
         // Applying filter for the inserted text in search bar
-        const itemData = item.title
-          ? item.title.toUpperCase()
-          : "".toUpperCase();
+        const itemData =
+          item.property_address.building_name +
+          item.property_address.landmark_or_street +
+          item.property_address.location_area +
+          item.owner_details.name +
+          item.owner_details.mobile1;
+
         const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
+        return itemData.toUpperCase().indexOf(textData) > -1;
       });
-      setFilteredDataSource(newData);
+      setData(newData);
       setSearch(text);
     } else {
       // Inserted text is blank
       // Update FilteredDataSource with masterDataSource
-      setFilteredDataSource(masterDataSource);
+      setData(props.commercialPropertyList);
       setSearch(text);
     }
   };
@@ -241,7 +230,7 @@ const ListingCommercial = props => {
           onChangeText={text => searchFilterFunction(text)}
           value={search}
           underlineColorAndroid="transparent"
-          placeholder="Search Here"
+          placeholder="Search by property address, owner"
         />
       </View>
       {data.length > 0 ? (
@@ -605,10 +594,14 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  userDetails: state.AppReducer.userDetails
+  userDetails: state.AppReducer.userDetails,
+  commercialPropertyList: state.AppReducer.commercialPropertyList
 });
+const mapDispatchToProps = {
+  setCommercialPropertyList
+};
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(ListingCommercial);
 // export default ListingCommercial;

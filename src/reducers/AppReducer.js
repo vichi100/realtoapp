@@ -6,7 +6,11 @@ const initialState = {
   userDetails: null,
   propReminderList: [],
   propListForMeeting: [],
-  customerDetailsForMeeting: null
+  customerDetailsForMeeting: null,
+  residentialPropertyList: [],
+  commercialPropertyList: [],
+  residentialCustomerList: [],
+  commercialCustomerList: []
 };
 const AppReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -43,10 +47,38 @@ const AppReducer = (state = initialState, action) => {
       };
 
     case ACTION_TYPES.SET_CUSTOMER_DETAILS_FOR_MEETING:
-      console.log("SET_CUSTOMER_DETAILS_FOR_MEETING");
+      // console.log("SET_CUSTOMER_DETAILS_FOR_MEETING");
       return {
         ...state,
         customerDetailsForMeeting: action.payload
+      };
+
+    case ACTION_TYPES.SET_RESIDENTIAL_PROPERTY_LIST:
+      console.log("SET_RESIDENTIAL_PROPERTY_LIST");
+      return {
+        ...state,
+        residentialPropertyList: action.payload
+      };
+
+    case ACTION_TYPES.SET_COMMERCIAL_PROPERTY_LIST:
+      console.log("SET_COMMERCIAL_PROPERTY_LIST");
+      return {
+        ...state,
+        commercialPropertyList: action.payload
+      };
+
+    case ACTION_TYPES.SET_RESIDENTIAL_CUSTOMER_LIST:
+      console.log("SET_RESIDENTIAL_CUSTOMER_LIST");
+      return {
+        ...state,
+        residentialCustomerList: action.payload
+      };
+
+    case ACTION_TYPES.SET_COMMERCIAL_CUSTOMER_LIST:
+      console.log("SET_COMMERCIAL_CUSTOMER_LIST");
+      return {
+        ...state,
+        commercialCustomerList: action.payload
       };
 
     default:
