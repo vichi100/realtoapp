@@ -78,7 +78,9 @@ const PropertyReminder = props => {
             })
           }
           style={{
-            flexDirection: "row"
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "80%"
           }}
         >
           <View style={{ padding: 10, fontSize: 16, paddingTop: 15 }}>
@@ -93,7 +95,7 @@ const PropertyReminder = props => {
             </Text>
             <Text>+91 {item.client_mobile}</Text>
           </View>
-          <View style={{ flexDirection: "row" }}>
+          <View>
             <View style={{ padding: 10 }}>
               <Text>{item.reminder_for}</Text>
               <Text>{item.meeting_time}</Text>
@@ -106,7 +108,8 @@ const PropertyReminder = props => {
           onPress={() => makeCall(item.client_mobile)}
           style={{
             padding: 15,
-            marginTop: 7
+            marginTop: 7,
+            paddingRight: 20
           }}
         >
           <Ionicons name="call" color={"#ffffff"} size={26} />
@@ -133,7 +136,9 @@ const PropertyReminder = props => {
             })
           }
           style={{
-            flexDirection: "row"
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "80%"
           }}
         >
           <View style={{ padding: 10, fontSize: 16, paddingTop: 15 }}>
@@ -148,7 +153,7 @@ const PropertyReminder = props => {
             </Text>
             <Text>+91 {item.client_mobile}</Text>
           </View>
-          <View style={{ flexDirection: "row" }}>
+          <View>
             <View style={{ padding: 10 }}>
               <Text>{item.reminder_for}</Text>
               <Text>{item.meeting_time}</Text>
@@ -161,7 +166,8 @@ const PropertyReminder = props => {
           onPress={() => makeCall(item.client_mobile)}
           style={{
             padding: 15,
-            marginTop: 7
+            marginTop: 7,
+            paddingRight: 20
           }}
         >
           <Ionicons name="call" color={"#ffffff"} size={26} />
@@ -188,7 +194,9 @@ const PropertyReminder = props => {
             })
           }
           style={{
-            flexDirection: "row"
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "80%"
           }}
         >
           <View style={{ padding: 10, fontSize: 16, paddingTop: 15 }}>
@@ -203,7 +211,7 @@ const PropertyReminder = props => {
             </Text>
             <Text>+91 {item.client_mobile}</Text>
           </View>
-          <View style={{ flexDirection: "row" }}>
+          <View>
             <View style={{ padding: 10 }}>
               <Text>{item.reminder_for}</Text>
               <Text>{item.meeting_time}</Text>
@@ -216,7 +224,8 @@ const PropertyReminder = props => {
           onPress={() => makeCall(item.client_mobile)}
           style={{
             padding: 15,
-            marginTop: 7
+            marginTop: 7,
+            paddingRight: 20
           }}
         >
           <Ionicons name="call" color={"#ffffff"} size={26} />

@@ -12,9 +12,10 @@ import HomeStackNav from "./HomeStackNav";
 import AddNewPropStackScreens from "./AddNewPropStackScreens";
 import ListingStackScreens from "./ListingStackScreens";
 import ContactsStackScreens from "./ContactsStackScreens";
-import Notification from "../screen/Notification";
+// import Notification from "../screen/Notification";
+import NotificationStackScreens from "./NotificationStackScreens";
 import ProfileStackScreens from "./ProfileStackScreens";
-import NotificationTopTab from "./NotificationTopTab";
+// import NotificationTopTab from "./NotificationTopTab";
 
 const BottomTabScreen = () => {
   const Tab = createMaterialBottomTabNavigator();
@@ -79,8 +80,8 @@ const BottomTabScreen = () => {
       />
 
       <Tab.Screen
-        name="Notification"
-        component={NotificationTopTab}
+        name="NotificationStackScreens"
+        component={NotificationStackScreens}
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ color }) => (

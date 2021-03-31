@@ -140,7 +140,10 @@ const CustomerCommercialRentCard = props => {
           <Avatar
             square
             size={60}
-            // title={props.item.name && props.item.name.slice(0, 2)}
+            title={
+              item.customer_details.name &&
+              item.customer_details.name.slice(0, 1)
+            }
             activeOpacity={0.7}
             titleStyle={{ color: "rgba(105,105,105, .9)" }}
             // source={{
