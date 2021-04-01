@@ -12,7 +12,8 @@ const initialState = {
   residentialCustomerList: [],
   commercialCustomerList: [],
   customerListForMeeting: [],
-  propertyListingForMeeting: []
+  propertyListingForMeeting: [],
+  propertyType: "Residential"
 };
 const AppReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -94,6 +95,13 @@ const AppReducer = (state = initialState, action) => {
       return {
         ...state,
         propertyListingForMeeting: action.payload
+      };
+
+    case ACTION_TYPES.SET_PROPERTY_TYPE:
+      console.log("SET_PROPERTY_TYPE");
+      return {
+        ...state,
+        propertyType: action.payload
       };
 
     default:

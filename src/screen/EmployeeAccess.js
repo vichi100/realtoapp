@@ -47,7 +47,7 @@ const EmployeeAccess = props => {
       agent_id: props.userDetails.user_details.works_for[0],
       employee_id: empIdToBeRemoved
     };
-    axios("http://192.168.43.64:3000/removeEmployee", {
+    axios("http://172.20.10.2:3000/removeEmployee", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -76,7 +76,7 @@ const EmployeeAccess = props => {
       employee_id: employeeId,
       access_rights: isEditEnabled ? "read" : "edit"
     };
-    axios("http://192.168.43.64:3000/updateEmployeeEditRights", {
+    axios("http://172.20.10.2:3000/updateEmployeeEditRights", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

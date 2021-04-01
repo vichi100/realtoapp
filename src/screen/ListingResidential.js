@@ -28,80 +28,135 @@ import axios from "axios";
 import SERVER_URL from "../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import { setResidentialPropertyList } from "../reducers/Action";
+import { addDays } from "../util/methods";
+import Snackbar from "../components/SnackbarComponent";
 
-const dataX = [
-  {
-    id: "10000",
-    property: "residential",
-    property_type: "apartment",
-    bhk: "2",
-    washrooms: "2",
-    furnishing: "full",
-    parking: "2",
-    parking_for: "car",
-    property_age: "10",
-    floor: "3 / 4",
-    lift: "yes",
-    property_area: "800",
-    possession: "immediate",
-    preferred_tenant: "anyone",
-    rent: "15000",
-    deposit: "90000",
-    location: "Andheri west",
-    address_line1: "Flat 305, ZA Tower",
-    address_line2: "yarri road, versova"
-  },
-  {
-    id: "10000",
-    property: "residential",
-    property_type: "apartment",
-    bhk: "2",
-    washrooms: "2",
-    furnishing: "full",
-    parking: "2",
-    parking_for: "car",
-    property_age: "10",
-    floor: "3 / 4",
-    lift: "yes",
-    property_area: "800",
-    possession: "immediate",
-    preferred_tenant: "anyone",
-    rent: "15000",
-    deposit: "90000",
-    location: "Andheri west",
-    address_line1: "Flat 305, ZA Tower",
-    address_line2: "yarri road, versova"
-  },
-  {
-    id: "10000",
-    property: "residential",
-    property_type: "apartment",
-    bhk: "2",
-    washrooms: "2",
-    furnishing: "full",
-    parking: "2",
-    parking_for: "car",
-    property_age: "10",
-    floor: "3 / 4",
-    lift: "yes",
-    property_area: "800",
-    possession: "immediate",
-    preferred_tenant: "anyone",
-    rent: "15000",
-    deposit: "90000",
-    location: "Andheri west",
-    address_line1: "Flat 305, ZA Tower",
-    address_line2: "yarri road, versova"
-  }
-];
+// Dynamic query
+// https://stackoverflow.com/questions/29831164/how-to-filter-in-mongodb-dynamically#:~:text=answer%20was%20accepted%E2%80%A6-,var%20fName%3D%22John%22%2C%20fCountry%3D%22US%22,fName%7D)%3B%20%7D%20if%20(fCountry%20!%3D%3D
+
+const lookingForArray = ["Rent", "Sell"];
+const homeTypeArray = ["Apartment", "Villa", "Independent House"];
+const bhkTypeArray = ["1RK", "1BHK", "2BHK", "3BHK", "4BHK", "4+BHK"];
+const availabilityArray = ["Immediate", "15 Days", "30 Days", "30+ Days"];
+const furnishingStatusArray = ["Full", "Semi", "Empty"];
 
 const ListingResidential = props => {
   const { navigation } = props;
+  const [isVisible, setIsVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [search, setSearch] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [visibleSorting, setVisibleSorting] = useState(false);
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [index, setIndex] = useState(null);
   const [data, setData] = useState([]);
+  const [lookingForIndex, setLookingForIndex] = useState(-1);
+  const [homeTypeIndex, setHomeTypeIndex] = useState(-1);
+  const [bhkTypeIndex, setBHKTypeIndex] = useState(-1);
+  const [availabilityIndex, setAvailabilityIndex] = useState(-1);
+  const [furnishingIndex, setFurnishingIndex] = useState(-1);
+
+  const resetFilter = () => {
+    setLookingForIndex(-1);
+    setHomeTypeIndex(-1);
+    setBHKTypeIndex(-1);
+    setAvailabilityIndex(-1);
+    setFurnishingIndex(-1);
+    setData(props.residentialPropertyList);
+    setVisible(false);
+  };
+
+  const onFilter = () => {
+    console.log("onFilter:     ", props.residentialPropertyList);
+    if (lookingForIndex === -1) {
+      setErrorMessage("Looking for is missing in filter");
+      setIsVisible(true);
+      return;
+    }
+    let filterList = props.residentialPropertyList;
+    if (lookingForIndex > -1) {
+      filterList = filterList.filter(
+        item => item.property_for === lookingForArray[lookingForIndex]
+      );
+    }
+    if (homeTypeIndex > -1) {
+      filterList = filterList.filter(
+        item =>
+          item.property_details.house_type === homeTypeArray[homeTypeIndex]
+      );
+    }
+    if (bhkTypeIndex > -1) {
+      filterList = filterList.filter(
+        item => item.property_details.bhk_type === bhkTypeArray[bhkTypeIndex]
+      );
+    }
+
+    if (availabilityIndex > -1) {
+      const oneDay = 24 * 60 * 60 * 1000;
+      let possessionDate = new Date();
+      const today = new Date();
+      if (availabilityArray[availabilityIndex] === "Immediate") {
+        possessionDate = addDays(today, 7); //new Date(today.getTime() + 15*24*60*60*1000)
+        filterList = filterList.filter(
+          item => possessionDate > new Date(item.rent_details.available_from)
+        );
+        console.log(
+          "possessionDate: ",
+          new Date(filterList[0].rent_details.available_from)
+        );
+      } else if (availabilityArray[availabilityIndex] === "15 Days") {
+        possessionDate = addDays(today, 15);
+        filterList = filterList.filter(
+          item => possessionDate > new Date(item.rent_details.available_from)
+        );
+      } else if (availabilityArray[availabilityIndex] === "30 Days") {
+        possessionDate = addDays(today, 30);
+        filterList = filterList.filter(
+          item => possessionDate > new Date(item.rent_details.available_from)
+        );
+      } else if (availabilityArray[availabilityIndex] === "30+ Days") {
+        possessionDate = addDays(today, 30);
+        filterList = filterList.filter(
+          item => new Date(item.rent_details.available_from) > possessionDate
+        );
+      }
+    }
+
+    if (furnishingIndex > -1) {
+      filterList = filterList.filter(
+        item =>
+          item.property_details.furnishing_status ===
+          furnishingStatusArray[furnishingIndex]
+      );
+    }
+    setData(filterList);
+    setVisible(false);
+  };
+
+  const dismissSnackBar = () => {
+    setIsVisible(false);
+  };
+  const selectFurnishingIndex = index => {
+    setFurnishingIndex(index);
+  };
+
+  const selectAvailabilityIndex = index => {
+    setAvailabilityIndex(index);
+  };
+
+  const selectBHKTypeIndex = index => {
+    setBHKTypeIndex(index);
+  };
+
+  const selectHomeTypeIndex = index => {
+    setHomeTypeIndex(index);
+  };
+
+  const selectLookingForIndex = index => {
+    setLookingForIndex(index);
+    setIsVisible(false);
+  };
 
   useEffect(() => {
     // console.log(
@@ -117,17 +172,6 @@ const ListingResidential = props => {
     console.log("residential Listing useEffect");
   }, [props.userDetails]);
 
-  // const getAgentDetails = async () => {
-  //   // AsyncStorage.setItem("agent_details", JSON.stringify(agentDetails));
-  //   const agentDetailsStr = await AsyncStorage.getItem("user_details");
-  //   console.log(agentDetailsStr);
-  //   if (agentDetailsStr !== null) {
-  //     return JSON.parse(agentDetailsStr);
-  //   } else {
-  //     return null;
-  //   }
-  // };
-
   const getListing = () => {
     // const agentDetailsX = getAgentDetails();
     console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
@@ -135,7 +179,7 @@ const ListingResidential = props => {
       agent_id: props.userDetails.user_details.works_for[0]
     };
     console.log(JSON.stringify(user));
-    axios("http://192.168.43.64:3000/residentialPropertyListings", {
+    axios("http://172.20.10.2:3000/residentialPropertyListings", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -218,9 +262,6 @@ const ListingResidential = props => {
       />
     );
   };
-
-  const [visible, setVisible] = useState(false);
-  const [visibleSorting, setVisibleSorting] = useState(false);
 
   const toggleBottomNavigationView = () => {
     //Toggling the visibility state of the bottom sheet
@@ -314,7 +355,7 @@ const ListingResidential = props => {
             Filter
           </Text>
           <TouchableOpacity
-            onPress={() => toggleBottomNavigationView()}
+            onPress={() => resetFilter()}
             style={{ position: "absolute", top: 10, right: 10 }}
           >
             <MaterialCommunityIcons
@@ -328,9 +369,9 @@ const ListingResidential = props => {
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["RENT", "Sell"]}
+                onPress={selectLookingForIndex}
+                selectedIndex={lookingForIndex}
+                buttons={lookingForArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -356,9 +397,9 @@ const ListingResidential = props => {
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Apartment", "Villa", "Independent House", "Any"]}
+                onPress={selectHomeTypeIndex}
+                selectedIndex={homeTypeIndex}
+                buttons={homeTypeArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -370,9 +411,9 @@ const ListingResidential = props => {
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["1RK", "1BHK", "2BHK", "3BHK", "4BHK", "4+BHK"]}
+                onPress={selectBHKTypeIndex}
+                selectedIndex={bhkTypeIndex}
+                buttons={bhkTypeArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -386,9 +427,9 @@ const ListingResidential = props => {
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Imidiate", "15 Days", "30 Days", "30+ Days"]}
+                onPress={selectAvailabilityIndex}
+                selectedIndex={availabilityIndex}
+                buttons={availabilityArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -400,9 +441,9 @@ const ListingResidential = props => {
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Full", "Semi", "Empty", "Any"]}
+                onPress={selectFurnishingIndex}
+                selectedIndex={furnishingIndex}
+                buttons={furnishingStatusArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -410,10 +451,7 @@ const ListingResidential = props => {
                 containerBorderRadius={10}
               />
             </View>
-            <Button
-              title="Apply"
-              onPress={() => navigation.navigate("AddImages")}
-            />
+            <Button title="Apply" onPress={() => onFilter()} />
           </ScrollView>
         </View>
       </BottomSheet>
@@ -500,6 +538,13 @@ const ListingResidential = props => {
         <AntDesign name="pluscircleo" size={40} color="#ffffff" />
         {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
       </TouchableOpacity>
+      <Snackbar
+        visible={isVisible}
+        textMessage={errorMessage}
+        position={"top"}
+        actionHandler={() => dismissSnackBar()}
+        actionText="OK"
+      />
     </SafeAreaView>
   );
 };

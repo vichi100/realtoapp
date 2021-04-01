@@ -252,7 +252,7 @@ function Detail(props) {
               selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
               onPress={updateIndex}
               selectedIndex={index}
-              buttons={["Imidiate", "15 Days", "30 Days", "30+ Days"]}
+              buttons={["Immediate", "15 Days", "30 Days", "30+ Days"]}
               // containerStyle={{ height: 30 }}
               textStyle={{ textAlign: "center" }}
               selectedTextStyle={{ color: "#fff" }}

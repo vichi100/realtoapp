@@ -19,6 +19,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../components/SnackbarComponent";
+import { setPropertyType } from "../reducers/Action";
 
 const options = [
   {
@@ -45,11 +46,12 @@ const AddNewProperty = props => {
   const [isVisible, setIsVisible] = useState(false);
 
   const onSelectPropType = item => {
-    // console.log(item);
+    console.log(item);
     if (selectedPropType && selectedPropType.key === item.key) {
       setSelectedPropType(null);
     } else {
       setSelectedPropType(item);
+      props.setPropertyType(item.key);
     }
     setIsVisible(false);
   };
@@ -266,8 +268,11 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails
 });
+const mapDispatchToProps = {
+  setPropertyType
+};
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(AddNewProperty);
 // export default AddNewProperty;

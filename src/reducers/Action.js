@@ -108,3 +108,11 @@ export const setPropertyListingForMeeting = payload => {
     payload
   };
 };
+
+export const setPropertyType = payload => {
+  console.log("setPropertyType in action: " + JSON.stringify(payload));
+  return {
+    type: ACTION_TYPES.SET_PROPERTY_TYPE,
+    payload
+  };
+};

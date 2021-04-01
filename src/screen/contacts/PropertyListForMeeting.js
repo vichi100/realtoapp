@@ -76,7 +76,7 @@ const PropertyListForMeeting = props => {
       property_for: propertyFor
     };
     console.log(JSON.stringify(user));
-    axios("http://192.168.43.64:3000/getPropertyListingForMeeting", {
+    axios("http://172.20.10.2:3000/getPropertyListingForMeeting", {
       // getPropertyListingForMeeting
       method: "post",
       headers: {
@@ -372,7 +372,7 @@ const PropertyListForMeeting = props => {
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={updateIndex}
                 selectedIndex={index}
-                buttons={["Imidiate", "15 Days", "30 Days", "30+ Days"]}
+                buttons={["Immediate", "15 Days", "30 Days", "30+ Days"]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}

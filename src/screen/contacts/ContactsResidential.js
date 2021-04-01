@@ -135,7 +135,7 @@ const ContactsResidential = props => {
       agent_id: props.userDetails.user_details.works_for[0]
     };
     console.log(JSON.stringify(user));
-    axios("http://192.168.43.64:3000/residentialCustomerList", {
+    axios("http://172.20.10.2:3000/residentialCustomerList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -392,7 +392,7 @@ const ContactsResidential = props => {
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={updateIndex}
                 selectedIndex={index}
-                buttons={["Imidiate", "15 Days", "30 Days", "30+ Days"]}
+                buttons={["Immediate", "15 Days", "30 Days", "30+ Days"]} 
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}

@@ -93,7 +93,7 @@ const Profile = props => {
     const agent = {
       agent_id: props.userDetails.user_details.id
     };
-    axios("http://192.168.43.64:3000/deleteAgentAccount", {
+    axios("http://172.20.10.2:3000/deleteAgentAccount", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

@@ -14,3 +14,8 @@ export const dateFormat = date => {
   // console.log(date.slice(0, 16));
   return date.slice(0, 16).trim();
 };
+
+export const addDays = (theDate, days) => {
+    return new Date(theDate.getTime() + days*24*60*60*1000);
+}
+

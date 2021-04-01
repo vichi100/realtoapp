@@ -11,7 +11,6 @@ import {
   Keyboard,
   AsyncStorage
 } from "react-native";
-import { connect } from "react-redux";
 import { DatePickerModal } from "react-native-paper-dates";
 import { ButtonGroup } from "react-native-elements";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
@@ -28,7 +27,7 @@ const RentDetailsForm = props => {
   const date = new Date();
   const [newDate, setNewDate] = React.useState("");
 
-  // const [propertyDetailsX, setPropertyDetailsX] = useState({});
+  const [propertyDetailsX, setPropertyDetailsX] = useState({});
   const [expectedRent, setExpectedRent] = useState("");
   const [expectedDeposit, setExpectedDeposit] = useState("");
   const [isVisible, setIsVisible] = useState(false);
@@ -37,14 +36,14 @@ const RentDetailsForm = props => {
   const [nonvegAllowedIndex, setNonvegAllowedIndex] = useState(-1);
   const [visible, setVisible] = React.useState(false);
 
-  // useEffect(() => {
-  //   init();
-  // }, [propertyDetailsX]);
+  useEffect(() => {
+    init();
+  }, [propertyDetailsX]);
 
-  // const init = async () => {
-  //   const property = JSON.parse(await AsyncStorage.getItem("property"));
-  //   setPropertyDetailsX(property);
-  // };
+  const init = async () => {
+    const property = JSON.parse(await AsyncStorage.getItem("property"));
+    setPropertyDetailsX(property);
+  };
 
   const dismissSnackBar = () => {
     setIsVisible(false);
@@ -55,16 +54,25 @@ const RentDetailsForm = props => {
     setIsVisible(false);
   }, [setVisible]);
 
+  // const onChange = React.useCallback(({ date }) => {
+  //   setVisible(false);
+  //   setIsVisible(false);
+  //   // const x = date.toString().split("00:00");
+  //   setNewDate(
+  //     date
+  //       .toString()
+  //       .slice(0, 16)
+  //       .trim()
+  //   );
+  //   setNewDate(date.toString());
+  //   // console.log({ date });
+  // }, []);
+
   const onChange = React.useCallback(({ date }) => {
     setVisible(false);
     setIsVisible(false);
-    // const x = date.toString().split("00:00");
-    setNewDate(
-      date
-        .toString()
-        .slice(0, 16)
-        .trim()
-    );
+    const x = date.toString().split("00:00");
+    setNewDate(x[0].toString().trim());
     // setNewDate(date.toString());
     // console.log({ date });
   }, []);
@@ -93,16 +101,16 @@ const RentDetailsForm = props => {
       setIsVisible(true);
       return;
     } else if (
-      props.propertyType &&
-      props.propertyType === "Residential" &&
+      propertyDetailsX &&
+      propertyDetailsX.property_type === "Residential" &&
       preferredTenantsIndex === -1
     ) {
       setErrorMessage("Preferred tenants is missing");
       setIsVisible(true);
       return;
     } else if (
-      props.propertyType &&
-      props.propertyType === "Residential" &&
+      propertyDetailsX &&
+      propertyDetailsX.property_type === "Residential" &&
       nonvegAllowedIndex === -1
     ) {
       setErrorMessage("Nonveg allowed is missing");
@@ -190,23 +198,24 @@ const RentDetailsForm = props => {
             <TextInput
               mode="outlined"
               style={styles.inputContainerStyle}
-              label="Available From *"
-              placeholder="Available From *"
+              label="Date*"
+              placeholder="Date*"
               value={newDate}
               // onChangeText={newDate => setNewDate(newDate)}
               onFocus={() => setVisible(true)}
+              style={{ width: "50%" }}
               theme={{
                 colors: {
                   // placeholder: "white",
                   // text: "white",
-
                   primary: "rgba(0,191,255, .9)",
                   underlineColor: "transparent",
-                  backgroundColor: "rgba(245,245,245, 0.2)"
+                  background: "#ffffff"
                 }
               }}
             />
-            {props.propertyType && props.propertyType === "Residential" ? (
+            {propertyDetailsX &&
+            propertyDetailsX.property_type === "Residential" ? (
               <View>
                 <Text>Preferred Tenants*</Text>
                 <View style={styles.propSubSection}>
@@ -248,7 +257,7 @@ const RentDetailsForm = props => {
           onDismiss={onDismiss}
           date={date}
           onConfirm={onChange}
-          saveLabel="Ok" // optional
+          saveLabel="OK" // optional
           label="Select date" // optional
           animationType="slide" // optional, default is 'slide' on ios/android and 'none' on web
           locale={"en"} // optional, default is automically detected by your system
@@ -288,14 +297,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = state => ({
-  userDetails: state.AppReducer.userDetails,
-  propertyType: state.AppReducer.propertyType
-});
-// const mapDispatchToProps = {
-//   setPropertyType
-// };
-export default connect(
-  mapStateToProps,
-  null
-)(RentDetailsForm);
+export default RentDetailsForm;
