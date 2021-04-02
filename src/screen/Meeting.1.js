@@ -35,7 +35,7 @@ const Meeting = ({ route, navigation }) => {
   // const { navigation } = props;
   const item = route.params;
   const inputRef = useRef(null);
-  // console.log(item);
+  // // console.log(item);
   const date = new Date();
   const [newDate, setNewDate] = React.useState("");
   const [newTime, setNewTime] = React.useState("");
@@ -51,11 +51,11 @@ const Meeting = ({ route, navigation }) => {
   const [ampmIndex, setAMPMIndex] = useState(-1);
 
   const setModalVisibleTemp = flag => {
-    console.log("setModalVisible: " + flag);
+    // console.log("setModalVisible: " + flag);
     setModalVisible(flag);
   };
   const setModalVisibleTemp1 = flag => {
-    console.log("setModalVisible1: " + flag);
+    // console.log("setModalVisible1: " + flag);
     setModalVisible(flag);
     inputRef.current.blur();
   };
@@ -93,7 +93,7 @@ const Meeting = ({ route, navigation }) => {
 
   const [visible, setVisible] = React.useState(false);
   const onDismiss = React.useCallback(() => {
-    // console.log("date");
+    // // console.log("date");
     setVisible(false);
     setIsVisible(false);
   }, [setVisible]);
@@ -105,8 +105,8 @@ const Meeting = ({ route, navigation }) => {
     // setNewDate(x[0]);
     const x = dateFormat(date.toString());
     setNewDate(x);
-    // console.log(new Date(date).getDay());
-    // console.log(date.toString());
+    // // console.log(new Date(date).getDay());
+    // // console.log(date.toString());
   }, []);
 
   const [timeVisible, setTimeVisible] = React.useState(false);
@@ -119,19 +119,19 @@ const Meeting = ({ route, navigation }) => {
     ({ hours, minutes }) => {
       setTimeVisible(false);
       // setIsVisible(false);
-      console.log({ hours, minutes });
+      // console.log({ hours, minutes });
       setNewTime(hours + ":" + minutes);
     },
     [setTimeVisible]
   );
 
   const selectAMPMIndex = index => {
-    console.log(index);
+    // console.log(index);
     setAMPMIndex(index);
   };
 
   const onApply = () => {
-    console.log();
+    // console.log();
     if (ampmIndex === -1) {
       setErrorMessage("AM / PM is missing");
       setIsVisible(true);
@@ -173,8 +173,8 @@ const Meeting = ({ route, navigation }) => {
   };
 
   const send = async () => {
-    // console.log("newDate: " + newDate);
-    console.log(item);
+    // // console.log("newDate: " + newDate);
+    // console.log(item);
     const reminderDetails = {
       user_id: item.agent_id,
       property_id: item.property_id,
@@ -195,11 +195,11 @@ const Meeting = ({ route, navigation }) => {
       )
       .then(
         response => {
-          console.log(response.data);
+          // console.log(response.data);
           // navigation.navigate("CardDetails");
         },
         error => {
-          console.log(error);
+          // console.log(error);
         }
       );
   };
@@ -218,7 +218,7 @@ const Meeting = ({ route, navigation }) => {
       )
       .then(
         response => {
-          console.log(response.data);
+          // console.log(response.data);
           // navigation.navigate("CardDetails");
           if (response.data && response.data.length > 0) {
             const x = [...props.propReminderList, ...response.data];
@@ -226,7 +226,7 @@ const Meeting = ({ route, navigation }) => {
           }
         },
         error => {
-          console.log(error);
+          // console.log(error);
         }
       );
   };

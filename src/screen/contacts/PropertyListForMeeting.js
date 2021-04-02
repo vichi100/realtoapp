@@ -43,7 +43,7 @@ const PropertyListForMeeting = props => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    // console.log(
+    // // console.log(
     //   "props.userDetail33 " +
     //     JSON.stringify(props.userDetails.user_details.works_for[0])
     // );
@@ -53,13 +53,13 @@ const PropertyListForMeeting = props => {
     ) {
       getListing();
     }
-    console.log("residential Listing useEffect");
+    // console.log("residential Listing useEffect");
   }, [props.userDetails]);
 
   // const getAgentDetails = async () => {
   //   // AsyncStorage.setItem("agent_details", JSON.stringify(agentDetails));
   //   const agentDetailsStr = await AsyncStorage.getItem("user_details");
-  //   console.log(agentDetailsStr);
+  //   // console.log(agentDetailsStr);
   //   if (agentDetailsStr !== null) {
   //     return JSON.parse(agentDetailsStr);
   //   } else {
@@ -69,13 +69,13 @@ const PropertyListForMeeting = props => {
 
   const getListing = () => {
     // const agentDetailsX = getAgentDetails();
-    console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
+    // console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
     const user = {
       agent_id: props.userDetails.user_details.works_for[0],
       property_type: propertyType,
       property_for: propertyFor
     };
-    console.log(JSON.stringify(user));
+    // console.log(JSON.stringify(user));
     axios("http://172.20.10.2:3000/getPropertyListingForMeeting", {
       // getPropertyListingForMeeting
       method: "post",
@@ -86,12 +86,12 @@ const PropertyListForMeeting = props => {
       data: user
     }).then(
       response => {
-        // console.log(response.data);
+        // // console.log(response.data);
         setData(response.data);
         props.setPropertyListingForMeeting(response.data);
       },
       error => {
-        console.log(error);
+        // console.log(error);
       }
     );
   };
@@ -128,7 +128,7 @@ const PropertyListForMeeting = props => {
   };
 
   const ItemView = ({ item }) => {
-    // console.log(item);
+    // // console.log(item);
     if (item.property_type === "Residential") {
       if (item.property_for === "Rent") {
         return (

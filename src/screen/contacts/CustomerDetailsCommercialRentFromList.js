@@ -6,7 +6,7 @@ import { Avatar } from "react-native-elements";
 const CustomerDetailsCommercialRentFromList = ({ route, navigation }) => {
   // const { navigation } = props;
   const item = route.params;
-  // console.log(item);
+  // // console.log(item);
   return (
     <ScrollView style={[styles.container]}>
       <View

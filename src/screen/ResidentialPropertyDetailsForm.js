@@ -117,9 +117,9 @@ const ResidentialPropertyDetailsForm = props => {
     };
 
     property["property_details"] = property_details;
-    // console.log(property);
+    // // console.log(property);
     AsyncStorage.setItem("property", JSON.stringify(property));
-    console.log(JSON.stringify(property));
+    // console.log(JSON.stringify(property));
     if (propertyFor.toLowerCase() === "Rent".toLowerCase()) {
       navigation.navigate("RentDetailsForm");
     } else if (propertyFor.toLowerCase() === "Sell".toLowerCase()) {

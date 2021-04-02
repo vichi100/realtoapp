@@ -6,7 +6,7 @@ import { numDifferentiation, dateFormat } from "../util/methods";
 const PropDetailsFromListingForSell = ({ route, navigation }) => {
   // const { navigation } = props;
   const item = route.params;
-  console.log(item);
+  // console.log(item);
   return (
     <ScrollView style={[styles.container]}>
       <View style={[styles.headerContainer]}>

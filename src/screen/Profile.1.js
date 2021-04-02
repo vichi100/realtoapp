@@ -28,9 +28,9 @@ const Profile = () => {
 
     try {
       //   const ShareResponse = await Share.open(shareOptions);
-      //   console.log(JSON.stringify(ShareResponse));
+      //   // console.log(JSON.stringify(ShareResponse));
     } catch (error) {
-      console.log("Error => ", error);
+      // console.log("Error => ", error);
     }
   };
 

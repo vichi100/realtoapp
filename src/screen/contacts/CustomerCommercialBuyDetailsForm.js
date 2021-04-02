@@ -48,7 +48,7 @@ const CustomerCommercialBuyDetailsForm = props => {
     const x = date.toString().split("00:00");
     setNewDate(x[0].toString().trim());
     // setNewDate(date.toString());
-    // console.log({ date });
+    // // console.log({ date });
   }, []);
 
   const selectNegotiableIndex = index => {
@@ -78,7 +78,7 @@ const CustomerCommercialBuyDetailsForm = props => {
     };
     const customer = JSON.parse(await AsyncStorage.getItem("customer"));
     customer["customer_buy_details"] = customer_buy_details;
-    // console.log(property);
+    // // console.log(property);
     AsyncStorage.setItem("customer", JSON.stringify(customer));
 
     navigation.navigate("AddNewCustomerCommercialBuyFinalDetails");

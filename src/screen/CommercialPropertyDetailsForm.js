@@ -114,9 +114,9 @@ const PropertyDetails = props => {
     };
 
     property["property_details"] = property_details;
-    // console.log(property);
+    // // console.log(property);
     AsyncStorage.setItem("property", JSON.stringify(property));
-    // console.log(property);
+    // // console.log(property);
     if (propertyFor.toLowerCase() === "Rent".toLowerCase()) {
       navigation.navigate("RentDetailsForm");
     } else if (propertyFor.toLowerCase() === "Sell".toLowerCase()) {
@@ -147,12 +147,12 @@ const PropertyDetails = props => {
   };
 
   const onIdealForSelect = index => {
-    // console.log(index);
+    // // console.log(index);
     const temp = [...idealForArray];
-    // console.log(temp[index]);
+    // // console.log(temp[index]);
     const tempChecked = temp[index].checked;
     temp[index].checked = !tempChecked;
-    // console.log(temp);
+    // // console.log(temp);
     setIdealForArray(temp);
     if (!tempChecked === true) {
       idealForSelectArray.push(temp[index].name);

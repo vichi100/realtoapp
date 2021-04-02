@@ -31,12 +31,12 @@ const CustomerMeetingDetails = props => {
     null
   );
   useEffect(() => {
-    console.log("item useEffect:     ", item);
+    // console.log("item useEffect:     ", item);
     getCustomerAndMeetingDetails();
   }, [reminderObj]);
 
   const getCustomerAndMeetingDetails = () => {
-    console.log("reminderObj:     ", reminderObj);
+    // console.log("reminderObj:     ", reminderObj);
     const queryObj = {
       client_id: reminderObj.client_id,
       category_ids: reminderObj.category_ids,
@@ -54,14 +54,14 @@ const CustomerMeetingDetails = props => {
       )
       .then(
         response => {
-          console.log("response.data:    ", response.data);
+          // console.log("response.data:    ", response.data);
           // navigation.navigate("CardDetails");
           if (response.data !== "fail") {
             setCustomerMeetingDetailsObj(response.data);
           }
         },
         error => {
-          console.log(error);
+          // console.log(error);
         }
       );
   };

@@ -11,7 +11,7 @@ export const numDifferentiation = value => {
 };
 
 export const dateFormat = date => {
-  // console.log(date.slice(0, 16));
+  // // console.log(date.slice(0, 16));
   return date.slice(0, 16).trim();
 };
 

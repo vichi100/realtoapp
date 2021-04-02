@@ -153,7 +153,7 @@ const App = () => {
         initialValues={{ email: "", password: "" }}
         onSubmit={(values, actions) => {
           alert(JSON.stringify(values));
-          console.log(JSON.stringify(values));
+          // console.log(JSON.stringify(values));
           setTimeout(() => {
             actions.setSubmitting(false);
           }, 1000);

@@ -48,7 +48,7 @@ const SellDetails = props => {
     const x = date.toString().split("00:00");
     setNewDate(x[0].toString().trim());
     // setNewDate(date.toString());
-    // console.log({ date });
+    // // console.log({ date });
   }, []);
 
   const selectNegotiableIndex = index => {
@@ -83,7 +83,7 @@ const SellDetails = props => {
     };
     const property = JSON.parse(await AsyncStorage.getItem("property"));
     property["sell_details"] = sell_details;
-    // console.log(property);
+    // // console.log(property);
     AsyncStorage.setItem("property", JSON.stringify(property));
 
     navigation.navigate("AddImages");

@@ -69,7 +69,7 @@ class PhotoGrid extends Component {
 
     const secondViewWidth = direction === "column" ? width : width * ratio;
     const secondViewHeight = direction === "column" ? height * ratio : height;
-    // console.log(this.state)
+    // // console.log(this.state)
     return source.length ? (
       <View
         style={[{ flexDirection: direction, width, height }, this.props.styles]}

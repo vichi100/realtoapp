@@ -46,11 +46,11 @@ const CustomersCommercial = props => {
 
   useEffect(() => {
     getListing();
-    console.log("commercial Listing useEffect");
+    // console.log("commercial Listing useEffect");
   }, []);
 
   const getListing = () => {
-    console.log("props.userDetails4 " + JSON.stringify(props.userDetails));
+    // console.log("props.userDetails4 " + JSON.stringify(props.userDetails));
     const user = {
       agent_id: props.userDetails.user_details.works_for[0]
     };
@@ -64,12 +64,12 @@ const CustomersCommercial = props => {
       data: user
     }).then(
       response => {
-        // console.log(response.data);
+        // // console.log(response.data);
         props.setCommercialCustomerList(response.data);
         setData(response.data);
       },
       error => {
-        console.log(error);
+        // console.log(error);
       }
     );
   };
@@ -129,7 +129,7 @@ const CustomersCommercial = props => {
       }
     }
 
-    // console.log("hi");
+    // // console.log("hi");
   };
 
   const ItemSeparatorView = () => {

@@ -65,7 +65,7 @@ const RentDetailsForm = props => {
   //       .trim()
   //   );
   //   setNewDate(date.toString());
-  //   // console.log({ date });
+  //   // // console.log({ date });
   // }, []);
 
   const onChange = React.useCallback(({ date }) => {
@@ -74,7 +74,7 @@ const RentDetailsForm = props => {
     const x = date.toString().split("00:00");
     setNewDate(x[0].toString().trim());
     // setNewDate(date.toString());
-    // console.log({ date });
+    // // console.log({ date });
   }, []);
 
   const selectedPreferredTenantsIndex = index => {
@@ -129,7 +129,7 @@ const RentDetailsForm = props => {
     property["rent_details"] = rent_details;
 
     AsyncStorage.setItem("property", JSON.stringify(property));
-    console.log(JSON.stringify(property));
+    // console.log(JSON.stringify(property));
 
     navigation.navigate("AddImages");
   };

@@ -44,7 +44,7 @@ const CustomerCommercialRentDetailsForm = props => {
 
   const init = async () => {
     const customer = JSON.parse(await AsyncStorage.getItem("customer"));
-    console.log("ContactRentDetailsForm customer: " + JSON.stringify(customer));
+    // console.log("ContactRentDetailsForm customer: " + JSON.stringify(customer));
     setCustomerDetailsX(customer);
   };
 
@@ -68,7 +68,7 @@ const CustomerCommercialRentDetailsForm = props => {
         .trim()
     );
     // setNewDate(date.toString());
-    // console.log({ date });
+    // // console.log({ date });
   }, []);
 
   const selectedPreferredTenantsIndex = index => {
@@ -123,7 +123,7 @@ const CustomerCommercialRentDetailsForm = props => {
     customer["customer_rent_details"] = customer_rent_details;
 
     AsyncStorage.setItem("customer", JSON.stringify(customer));
-    console.log(JSON.stringify(customer));
+    // console.log(JSON.stringify(customer));
 
     navigation.navigate("AddNewCustomerCommercialRentFinalDetails");
   };

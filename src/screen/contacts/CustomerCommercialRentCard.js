@@ -79,7 +79,7 @@ const CustomerCommercialRentCard = props => {
   };
 
   const ShowSlidingDrawer = () => {
-    // console.log(Sliding_Drawer_Toggle);
+    // // console.log(Sliding_Drawer_Toggle);
     if (Sliding_Drawer_Toggle === true) {
       Animated.timing(Animation, {
         toValue: 1,
@@ -109,7 +109,7 @@ const CustomerCommercialRentCard = props => {
   });
 
   const onClickCheckBox = item => {
-    console.log("onClickCheckBox", item.customer_id);
+    // console.log("onClickCheckBox", item.customer_id);
     const customerObj = {
       name: item.customer_details.name,
       mobile: item.customer_details.mobile1,

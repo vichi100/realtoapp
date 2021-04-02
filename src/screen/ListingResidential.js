@@ -22,13 +22,14 @@ import Button from "../components/Button";
 import { Divider } from "react-native-paper";
 import { SocialIcon } from "react-native-elements";
 import Slider from "../components/Slider";
+import SliderX from "../components/SliderX";
 import CardResidentialRent from "./Card";
 import CardResidentialSell from "./CardSell";
 import axios from "axios";
 import SERVER_URL from "../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import { setResidentialPropertyList } from "../reducers/Action";
-import { addDays } from "../util/methods";
+import { addDays, numDifferentiation } from "../util/methods";
 import Snackbar from "../components/SnackbarComponent";
 
 // Dynamic query
@@ -56,6 +57,10 @@ const ListingResidential = props => {
   const [bhkTypeIndex, setBHKTypeIndex] = useState(-1);
   const [availabilityIndex, setAvailabilityIndex] = useState(-1);
   const [furnishingIndex, setFurnishingIndex] = useState(-1);
+  const [minRent, setMinRent] = useState(5000);
+  const [maxRent, setMaxRent] = useState(500000);
+  const [minSell, setMinSell] = useState(1000000);
+  const [maxSell, setMaxSell] = useState(100000000);
 
   const resetFilter = () => {
     setLookingForIndex(-1);
@@ -65,6 +70,10 @@ const ListingResidential = props => {
     setFurnishingIndex(-1);
     setData(props.residentialPropertyList);
     setVisible(false);
+    setMinRent(5000);
+    setMaxRent(500000);
+    setMinSell(1000000);
+    setMaxSell(100000000);
   };
 
   const onFilter = () => {
@@ -101,10 +110,10 @@ const ListingResidential = props => {
         filterList = filterList.filter(
           item => possessionDate > new Date(item.rent_details.available_from)
         );
-        console.log(
-          "possessionDate: ",
-          new Date(filterList[0].rent_details.available_from)
-        );
+        // console.log(
+        //   "possessionDate: ",
+        //   new Date(filterList[0].rent_details.available_from)
+        // );
       } else if (availabilityArray[availabilityIndex] === "15 Days") {
         possessionDate = addDays(today, 15);
         filterList = filterList.filter(
@@ -130,6 +139,37 @@ const ListingResidential = props => {
           furnishingStatusArray[furnishingIndex]
       );
     }
+    // // console.log("rent", minRent);
+    // // console.log("rent", maxRent);
+    // if (minRent > 5000 || maxRent < 500000) {
+    //   // // console.log("rent");
+    //   filterList = filterList.filter(
+    //     item =>
+    //       item.rent_details.expected_rent >= minRent &&
+    //       item.rent_details.expected_rent <= maxRent
+    //   );
+    // }
+
+    if (lookingForIndex === 0) {
+      if (minRent > 5000 || maxRent < 500000) {
+        // console.log("rent");
+        filterList = filterList.filter(
+          item =>
+            item.rent_details.expected_rent >= minRent &&
+            item.rent_details.expected_rent <= maxRent
+        );
+      }
+    } else if (lookingForIndex === 1) {
+      if (minSell > 1000000 || maxSell < 100000000) {
+        // console.log("rent");
+        filterList = filterList.filter(
+          item =>
+            item.sell_details.expected_sell_price >= minRent &&
+            item.sell_details.expected_sell_price <= maxRent
+        );
+      }
+    }
+
     setData(filterList);
     setVisible(false);
   };
@@ -159,7 +199,7 @@ const ListingResidential = props => {
   };
 
   useEffect(() => {
-    // console.log(
+    // // console.log(
     //   "props.userDetail33 " +
     //     JSON.stringify(props.userDetails.user_details.works_for[0])
     // );
@@ -169,16 +209,16 @@ const ListingResidential = props => {
     ) {
       getListing();
     }
-    console.log("residential Listing useEffect");
+    // console.log("residential Listing useEffect");
   }, [props.userDetails]);
 
   const getListing = () => {
     // const agentDetailsX = getAgentDetails();
-    console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
+    // console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
     const user = {
       agent_id: props.userDetails.user_details.works_for[0]
     };
-    console.log(JSON.stringify(user));
+    // // console.log(JSON.stringify(user));
     axios("http://172.20.10.2:3000/residentialPropertyListings", {
       method: "post",
       headers: {
@@ -188,12 +228,12 @@ const ListingResidential = props => {
       data: user
     }).then(
       response => {
-        console.log("response.data:      ", response.data);
+        // console.log("response.data:      ", response.data);
         setData(response.data);
         props.setResidentialPropertyList(response.data);
       },
       error => {
-        console.log(error);
+        // console.log(error);
       }
     );
   };
@@ -230,7 +270,7 @@ const ListingResidential = props => {
   };
 
   const ItemView = ({ item }) => {
-    // console.log(item);
+    // // console.log(item);
     if (item.property_type === "Residential") {
       if (item.property_for === "Rent") {
         return (
@@ -275,6 +315,20 @@ const ListingResidential = props => {
 
   const navigateTo = () => {
     navigation.navigate("Add");
+  };
+
+  const setMultiSliderValue = values => {
+    // // console.log("slider value min: ", values[0]);
+    // // console.log("slider value max: ", values[1]);
+    setMinRent(values[0]);
+    setMaxRent(values[1]);
+  };
+
+  const setSellRange = values => {
+    // console.log("slider value min: ", values[0]);
+    // console.log("slider value max: ", values[1]);
+    setMinSell(values[0]);
+    setMaxSell(values[1]);
   };
 
   return (
@@ -421,8 +475,75 @@ const ListingResidential = props => {
                 containerBorderRadius={10}
               />
             </View>
-            <Text>Rent Range</Text>
-            <Slider />
+            {/* <Text>Rent Range</Text>
+            <Slider
+              min={5000}
+              max={500000}
+              step={5000}
+              onSlide={values => setMultiSliderValue(values)}
+            /> */}
+            {lookingForIndex === -1 ? null : lookingForIndex === 0 ? (
+              <View>
+                <Text>Rent Range</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginTop: 10
+                  }}
+                >
+                  <View>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
+                      {numDifferentiation(minRent)}
+                    </Text>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Min</Text>
+                  </View>
+                  <View>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
+                      {numDifferentiation(maxRent)}
+                    </Text>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Max</Text>
+                  </View>
+                </View>
+
+                <Slider
+                  min={5000}
+                  max={500000}
+                  step={5000}
+                  onSlide={values => setRentRange(values)}
+                />
+              </View>
+            ) : (
+              <View>
+                <Text>Sell Price Range</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginTop: 10
+                  }}
+                >
+                  <View>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
+                      {numDifferentiation(minSell)}
+                    </Text>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Min</Text>
+                  </View>
+                  <View>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
+                      {numDifferentiation(maxSell)}
+                    </Text>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Max</Text>
+                  </View>
+                </View>
+                <SliderX
+                  min={minSell}
+                  max={maxSell}
+                  step={500000}
+                  onSlide={values => setSellRange(values)}
+                />
+              </View>
+            )}
             <Text style={styles.marginBottom10}>Availability</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup

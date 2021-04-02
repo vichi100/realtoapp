@@ -56,7 +56,7 @@ const EmployeeAccess = props => {
       data: user
     }).then(
       response => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data === "success") {
           const x = props.employeeList.filter(function(el) {
             return el.id !== empIdToBeRemoved;
@@ -66,7 +66,7 @@ const EmployeeAccess = props => {
         // setData(response.data);
       },
       error => {
-        console.log(error);
+        // console.log(error);
       }
     );
   };
@@ -85,13 +85,13 @@ const EmployeeAccess = props => {
       data: user
     }).then(
       response => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data === "success") {
           setIsEditEnabled(!isEditEnabled);
         }
       },
       error => {
-        console.log(error);
+        // console.log(error);
       }
     );
   };

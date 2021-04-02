@@ -43,7 +43,7 @@ const AddNewPropFinalDetails = props => {
       var today = new Date();
       const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
       const diffDays = Math.round((today - new Date(t)) / oneDay);
-      // console.log(diffDays);
+      // // console.log(diffDays);
       if (diffDays >= 0) {
         setPossessionDate("Immediately");
       } else {
@@ -55,7 +55,7 @@ const AddNewPropFinalDetails = props => {
   const getPropFinalDetails = async () => {
     const property = JSON.parse(await AsyncStorage.getItem("property"));
     setPropertyFinalDetails(property);
-    console.log(property);
+    // console.log(property);
   };
 
   const convert = str => {
@@ -70,10 +70,10 @@ const AddNewPropFinalDetails = props => {
   };
 
   const send = async () => {
-    console.log(await AsyncStorage.getItem("property"));
-    console.log(
-      "propertyFinalDetails: " + JSON.stringify(propertyFinalDetails)
-    );
+    // console.log(await AsyncStorage.getItem("property"));
+    // // console.log(
+    //   "propertyFinalDetails: " + JSON.stringify(propertyFinalDetails)
+    // );
     axios
       .post(
         "http://172.20.10.2:3000/addNewResidentialRentProperty",
@@ -84,7 +84,7 @@ const AddNewPropFinalDetails = props => {
       )
       .then(
         async response => {
-          console.log(response.data);
+          // console.log(response.data);
           if (response.data.property_id !== null) {
             await AsyncStorage.removeItem("property");
             navigation.navigate("Listing");
@@ -95,7 +95,7 @@ const AddNewPropFinalDetails = props => {
           }
         },
         error => {
-          console.log(error);
+          // console.log(error);
         }
       );
   };

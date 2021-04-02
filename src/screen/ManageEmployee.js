@@ -72,7 +72,7 @@ const ManageEmployee = props => {
       data: user
     }).then(
       response => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data) {
           const empObj = {
             id: response.data,
@@ -85,7 +85,7 @@ const ManageEmployee = props => {
         }
       },
       error => {
-        console.log(error);
+        // console.log(error);
       }
     );
   };
@@ -95,7 +95,7 @@ const ManageEmployee = props => {
   }, []);
 
   const getEmployeeList = () => {
-    console.log("user_id: " + JSON.stringify(props.userDetails));
+    // console.log("user_id: " + JSON.stringify(props.userDetails));
     const user = { user_id: props.userDetails.user_details.id };
     axios("http://172.20.10.2:3000/getEmployeeList", {
       method: "post",
@@ -106,11 +106,11 @@ const ManageEmployee = props => {
       data: user
     }).then(
       response => {
-        console.log("emp list: " + JSON.stringify(response.data));
+        // console.log("emp list: " + JSON.stringify(response.data));
         props.setEmployeeList(response.data);
       },
       error => {
-        console.log(error);
+        // console.log(error);
       }
     );
   };

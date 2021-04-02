@@ -31,9 +31,9 @@ const LocalityDetailsForm = props => {
   };
 
   useEffect(() => {
-    console.log("useEffect");
+    // console.log("useEffect");
     // const property = await AsyncStorage.getItem("property");
-    // console.log(property);
+    // // console.log(property);
   }, []);
 
   const onSubmit = async () => {
@@ -60,7 +60,7 @@ const LocalityDetailsForm = props => {
     }
     const property = JSON.parse(await AsyncStorage.getItem("property"));
     const propertyType = property.property_type;
-    // console.log(property);
+    // // console.log(property);
 
     const property_address = {
       city: city.trim(),
@@ -72,9 +72,9 @@ const LocalityDetailsForm = props => {
     };
 
     property["property_address"] = property_address;
-    // console.log(property_address);
+    // // console.log(property_address);
     AsyncStorage.setItem("property", JSON.stringify(property));
-    console.log(JSON.stringify(property));
+    // console.log(JSON.stringify(property));
     if (propertyType.toLowerCase() === "Residential".toLowerCase()) {
       navigation.navigate("ResidentialPropertyDetailsForm");
     } else {

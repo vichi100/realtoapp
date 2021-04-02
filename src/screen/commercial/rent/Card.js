@@ -78,7 +78,7 @@ const Card = props => {
   };
 
   const ShowSlidingDrawer = () => {
-    // console.log(Sliding_Drawer_Toggle);
+    // // console.log(Sliding_Drawer_Toggle);
     if (Sliding_Drawer_Toggle === true) {
       Animated.timing(Animation, {
         toValue: 1,
@@ -108,7 +108,7 @@ const Card = props => {
   });
 
   const onClickCheckBox = item => {
-    // console.log("onClickCheckBox", JSON.stringify(item));
+    // // console.log("onClickCheckBox", JSON.stringify(item));
     const name =
       item.property_for +
       " in " +
@@ -122,20 +122,20 @@ const Card = props => {
     };
 
     if (props.propListForMeeting.some(y => y.id === item.property_id)) {
-      // console.log("remove: ", checkBoxList);
+      // // console.log("remove: ", checkBoxList);
       const x = props.propListForMeeting.filter(z => z.id !== item.property_id);
       // setCheckBoxList(x);
       props.setPropListForMeeting(x);
     } else {
       const x = [obj, ...props.propListForMeeting];
-      // console.log("add: X :  ", x);
+      // // console.log("add: X :  ", x);
       // setCheckBoxList(x);
       props.setPropListForMeeting(x);
     }
-    console.log(
-      "setPropListForMeeting: ",
-      JSON.stringify(props.propListForMeeting)
-    );
+    // console.log(
+    //   "setPropListForMeeting: ",
+    //   JSON.stringify(props.propListForMeeting)
+    // );
   };
 
   return (

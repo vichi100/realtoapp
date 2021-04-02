@@ -62,12 +62,12 @@ const Home = props => {
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    console.log("home1: " + JSON.stringify(props.userDetails));
+    // console.log("home1: " + JSON.stringify(props.userDetails));
     if (
       props.userDetails.user_details.user_status === "suspend" &&
       props.userDetails.user_details.user_type === "agent"
     ) {
-      console.log("home2");
+      // console.log("home2");
       setModalVisible(true);
     }
     // else if (props.userDetails.user_details.user_status === "suspend" &&
@@ -98,7 +98,7 @@ const Home = props => {
         }
       },
       error => {
-        console.log(error);
+        // console.log(error);
       }
     );
   };
@@ -117,7 +117,7 @@ const Home = props => {
     }).then(
       response => {
         if (response.data === "success") {
-          console.log("1: " + JSON.stringify(props.userDetails.user_details));
+          // console.log("1: " + JSON.stringify(props.userDetails.user_details));
           props.userDetails.user_details["user_status"] = "active";
 
           setModalVisible(!modalVisible);
@@ -126,14 +126,14 @@ const Home = props => {
         }
       },
       error => {
-        console.log(error);
+        // console.log(error);
       }
     );
   };
 
   const updateAsyncStorageData = async () => {
     const userDetailsDataX = await AsyncStorage.getItem("user_details");
-    console.log("userDetailsDataX: " + userDetailsDataX);
+    // console.log("userDetailsDataX: " + userDetailsDataX);
     const userDetailsData = JSON.parse(userDetailsDataX);
     userDetailsData.user_details["user_status"] = "active";
     AsyncStorage.setItem("user_details", JSON.stringify(userDetailsData));

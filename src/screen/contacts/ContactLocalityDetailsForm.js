@@ -41,7 +41,7 @@ const ContactLocalityDetailsForm = props => {
   const [selectedPropType, setSelectedPropType] = useState(null);
 
   const onSelectPropType = item => {
-    // console.log(item);
+    // // console.log(item);
     if (selectedPropType && selectedPropType.key === item.key) {
       setSelectedPropType(null);
     } else {
@@ -51,8 +51,8 @@ const ContactLocalityDetailsForm = props => {
   };
 
   const selectPropertyForIndex = index => {
-    // console.log(index);
-    // console.log(propertyForArray[index]);
+    // // console.log(index);
+    // // console.log(propertyForArray[index]);
     setPropertyForIndex(index);
     setIsVisible(false);
   };
@@ -62,9 +62,9 @@ const ContactLocalityDetailsForm = props => {
   };
 
   useEffect(() => {
-    console.log("useEffect");
+    // console.log("useEffect");
     // const property = await AsyncStorage.getItem("property");
-    // console.log(property);
+    // // console.log(property);
   }, []);
 
   const onSubmit = async () => {
@@ -88,7 +88,7 @@ const ContactLocalityDetailsForm = props => {
 
     const customer = JSON.parse(await AsyncStorage.getItem("customer"));
     // const propertyType = property.property_type;
-    // console.log(property);
+    // // console.log(property);
 
     const customer_locality = {
       city: city.trim(),
@@ -99,10 +99,10 @@ const ContactLocalityDetailsForm = props => {
     };
 
     customer["customer_locality"] = customer_locality;
-    // console.log(property_address);
+    // // console.log(property_address);
     const propertyType = selectedPropType.key;
     AsyncStorage.setItem("customer", JSON.stringify(customer));
-    console.log(JSON.stringify(customer));
+    // console.log(JSON.stringify(customer));
     if (propertyType.toLowerCase() === "Residential".toLowerCase()) {
       navigation.navigate("ContactResidentialPropertyDetailsForm");
     } else {

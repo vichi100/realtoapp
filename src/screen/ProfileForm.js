@@ -44,7 +44,7 @@ const ProfileForm = props => {
       setIsVisible(true);
       return;
     }
-    // console.log("0");
+    // // console.log("0");
     const profileDetails = {
       user_id: props.userDetails.user_details.id,
       name: name.trim(),
@@ -52,7 +52,7 @@ const ProfileForm = props => {
       city: city.trim(),
       email: email.trim()
     };
-    // console.log(property);
+    // // console.log(property);
 
     updateUserProfile(profileDetails);
   };
@@ -68,7 +68,7 @@ const ProfileForm = props => {
       response => {
         if (response.data === "success") {
           // AsyncStorage.setItem("property", JSON.stringify(property));
-          console.log("1: " + JSON.stringify(props.userDetails.user_details));
+          // console.log("1: " + JSON.stringify(props.userDetails.user_details));
           props.userDetails.user_details["name"] = profileDetails.name;
           props.userDetails.user_details["city"] = profileDetails.city;
           props.userDetails.user_details["company_name"] =
@@ -81,20 +81,20 @@ const ProfileForm = props => {
         }
       },
       error => {
-        console.log(error);
+        // console.log(error);
       }
     );
   };
 
   const updateAsyncStorageData = async profileDetails => {
     const userDetailsDataX = await AsyncStorage.getItem("user_details");
-    console.log("userDetailsDataX: " + userDetailsDataX);
+    // console.log("userDetailsDataX: " + userDetailsDataX);
     const userDetailsData = JSON.parse(userDetailsDataX);
     userDetailsData.user_details["name"] = profileDetails.name;
     userDetailsData.user_details["city"] = profileDetails.city;
     userDetailsData.user_details["company_name"] = profileDetails.company;
     userDetailsData.user_details["email"] = profileDetails.email;
-    console.log("userDetailsDataX2: " + JSON.stringify(userDetailsData));
+    // console.log("userDetailsDataX2: " + JSON.stringify(userDetailsData));
     AsyncStorage.setItem("user_details", JSON.stringify(userDetailsData));
   };
 

@@ -37,12 +37,12 @@ const Reminder = props => {
       )
       .then(
         response => {
-          console.log("getReminderList:   ", response.data);
+          // console.log("getReminderList:   ", response.data);
           setReminderList(response.data);
           // navigation.navigate("CardDetails");
         },
         error => {
-          console.log(error);
+          // console.log(error);
         }
       );
   }, []);

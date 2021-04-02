@@ -38,7 +38,7 @@ const width = Dimensions.get("window").width;
 
 const Card = props => {
   const { navigation, item, disableDrawer, displayCheckBox } = props;
-  console.log(item.property_id);
+  // console.log(item.property_id);
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
   const [disabled, setDisabled] = useState(false);
@@ -47,7 +47,7 @@ const Card = props => {
   const [checkBoxList, setCheckBoxList] = useState([]);
 
   // useEffect(() => {
-  //   console.log("useEffect in meetingx:   ");
+  //   // console.log("useEffect in meetingx:   ");
   //   props.setPropListForMeeting([]);
   // }, []);
 
@@ -56,7 +56,7 @@ const Card = props => {
   let Sliding_Drawer_Toggle = true;
 
   const onClickCheckBox = item => {
-    // console.log("onClickCheckBox", JSON.stringify(item));
+    // // console.log("onClickCheckBox", JSON.stringify(item));
     const name =
       item.property_for +
       " in " +
@@ -70,20 +70,20 @@ const Card = props => {
     };
 
     if (props.propListForMeeting.some(y => y.id === item.property_id)) {
-      // console.log("remove: ", checkBoxList);
+      // // console.log("remove: ", checkBoxList);
       const x = props.propListForMeeting.filter(z => z.id !== item.property_id);
       // setCheckBoxList(x);
       props.setPropListForMeeting(x);
     } else {
       const x = [obj, ...props.propListForMeeting];
-      // console.log("add: X :  ", x);
+      // // console.log("add: X :  ", x);
       // setCheckBoxList(x);
       props.setPropListForMeeting(x);
     }
-    console.log(
-      "setPropListForMeeting: ",
-      JSON.stringify(props.propListForMeeting)
-    );
+    // console.log(
+    //   "setPropListForMeeting: ",
+    //   JSON.stringify(props.propListForMeeting)
+    // );
   };
 
   const updateIndex = index => {
@@ -91,7 +91,7 @@ const Card = props => {
   };
 
   const ShowSlidingDrawer = () => {
-    // console.log(Sliding_Drawer_Toggle);
+    // // console.log(Sliding_Drawer_Toggle);
     if (Sliding_Drawer_Toggle === true) {
       Animated.timing(Animation, {
         toValue: 1,
@@ -120,7 +120,7 @@ const Card = props => {
     outputRange: [Sliding_Drawer_Width - 33, -15]
   });
 
-  // console.log(width);
+  // // console.log(width);
 
   const makeCall = mobile => {
     const url = "tel://" + mobile;

@@ -41,7 +41,7 @@ const AddImages = props => {
       quality: 1
     });
 
-    console.log(result);
+    // console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);
@@ -56,7 +56,7 @@ const AddImages = props => {
     property["image_urls"] = imageArray;
 
     AsyncStorage.setItem("property", JSON.stringify(property));
-    console.log(JSON.stringify(property));
+    // console.log(JSON.stringify(property));
     if (property.property_type.toLowerCase() === "Residential".toLowerCase()) {
       if (property.property_for.toLowerCase() === "Rent".toLowerCase()) {
         navigation.navigate("AddNewPropFinalDetails");

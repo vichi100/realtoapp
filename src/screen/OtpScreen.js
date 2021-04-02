@@ -22,11 +22,11 @@ const OtpScreen = props => {
   const [otp, setOTP] = useState("");
 
   const getOtp = otp => {
-    console.log(otp);
+    // console.log(otp);
     setOTP(otp);
   };
   const onSubmit = () => {
-    console.log("onSubmit");
+    // console.log("onSubmit");
     const userObj = {
       user_mobile: props.userMobileNumber
     };
@@ -40,7 +40,7 @@ const OtpScreen = props => {
       )
       .then(
         response => {
-          console.log(response.data);
+          // console.log(response.data);
           // check response data here is 3 possibilty
           // 1) a first time install app n logging as agent.
           // 2) a first time install app n logging as employee.
@@ -52,13 +52,13 @@ const OtpScreen = props => {
           });
         },
         error => {
-          console.log(error);
+          // console.log(error);
         }
       );
   };
 
   const save = async userData => {
-    console.log("userData: " + JSON.stringify(userData));
+    // console.log("userData: " + JSON.stringify(userData));
     // const userDetails = {
     //   user_id: userData.user_details.id,
     //   user_type: userData.user_details.user_type, // agent, employee

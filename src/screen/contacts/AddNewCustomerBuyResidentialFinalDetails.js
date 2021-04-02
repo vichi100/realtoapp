@@ -40,7 +40,7 @@ const AddNewCustomerBuyResidentialFinalDetails = props => {
       var today = new Date();
       const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
       const diffDays = Math.round((today - new Date(t)) / oneDay);
-      // console.log(diffDays);
+      // // console.log(diffDays);
       if (diffDays >= 0) {
         setPossessionDate("Immediately");
       } else {
@@ -52,7 +52,7 @@ const AddNewCustomerBuyResidentialFinalDetails = props => {
   const getPropFinalDetails = async () => {
     const customer = JSON.parse(await AsyncStorage.getItem("customer"));
     setCustomerFinalDetails(customer);
-    console.log(customer);
+    // console.log(customer);
   };
 
   const convert = str => {
@@ -63,7 +63,7 @@ const AddNewCustomerBuyResidentialFinalDetails = props => {
   };
 
   const send = async () => {
-    console.log(await AsyncStorage.getItem("customer"));
+    // console.log(await AsyncStorage.getItem("customer"));
     axios
       .post(
         "http://172.20.10.2:3000/addNewResidentialCustomer",
@@ -74,7 +74,7 @@ const AddNewCustomerBuyResidentialFinalDetails = props => {
       )
       .then(
         async response => {
-          console.log(response.data);
+          // console.log(response.data);
           if (response.data.customer_id !== null) {
             await AsyncStorage.removeItem("customer");
             navigation.navigate("Contacts");
@@ -85,7 +85,7 @@ const AddNewCustomerBuyResidentialFinalDetails = props => {
           }
         },
         error => {
-          console.log(error);
+          // console.log(error);
         }
       );
   };

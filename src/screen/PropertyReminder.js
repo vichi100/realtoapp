@@ -21,7 +21,7 @@ const PropertyReminder = props => {
   const { navigation } = props;
   const [reminderList, setReminderList] = useState([]);
   useEffect(() => {
-    console.log("props.propReminderList: ", props.propReminderList);
+    // console.log("props.propReminderList: ", props.propReminderList);
     setReminderList(props.propReminderList);
   }, [props.propReminderList]);
   // useEffect(() => {
@@ -41,12 +41,12 @@ const PropertyReminder = props => {
   //     )
   //     .then(
   //       response => {
-  //         console.log(response.data);
+  //         // console.log(response.data);
   //         setReminderList(response.data);
   //         // navigation.navigate("CardDetails");
   //       },
   //       error => {
-  //         console.log(error);
+  //         // console.log(error);
   //       }
   //     );
   // }, []);

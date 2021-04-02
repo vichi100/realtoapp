@@ -57,20 +57,20 @@ CustomerListForMeeting = props => {
     ) {
       getCustomerList();
     }
-    // console.log("residential Listing useEffect");
+    // // console.log("residential Listing useEffect");
   }, [props.userDetails]);
 
   const getCustomerList = () => {
     // const agentDetailsX = getAgentDetails();
-    console.log("props.route.params. " + JSON.stringify(props.route.params));
+    // console.log("props.route.params. " + JSON.stringify(props.route.params));
 
-    console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
+    // console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
     const queryObj = {
       agent_id: props.userDetails.user_details.works_for[0],
       property_type: propertyType,
       property_for: propertyFor
     };
-    console.log(JSON.stringify(queryObj));
+    // console.log(JSON.stringify(queryObj));
     axios("http://172.20.10.2:3000/getCustomerListForMeeting", {
       method: "post",
       headers: {
@@ -80,18 +80,18 @@ CustomerListForMeeting = props => {
       data: queryObj
     }).then(
       response => {
-        console.log("getCustomerList response.data:    ", response.data);
+        // console.log("getCustomerList response.data:    ", response.data);
         setData(response.data);
         props.setCustomerListForMeeting(response.data);
       },
       error => {
-        console.log(error);
+        // console.log(error);
       }
     );
   };
 
   const ItemView = ({ item }) => {
-    // console.log(item);
+    // // console.log(item);
     if (item.customer_locality.property_type === "Residential") {
       if (item.customer_locality.property_for === "Rent") {
         return (

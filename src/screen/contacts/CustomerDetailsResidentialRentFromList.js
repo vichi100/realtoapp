@@ -14,7 +14,7 @@ import Feather from "react-native-vector-icons/Feather";
 const CustomerDetailsResidentialRentFromList = ({ route, navigation }) => {
   // const { navigation } = props;
   const item = route.params;
-  // console.log(item);
+  // // console.log(item);
   return (
     <ScrollView style={[styles.container]}>
       <View

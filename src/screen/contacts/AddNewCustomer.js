@@ -45,7 +45,7 @@ const AddNewCustomer = props => {
   const [isVisible, setIsVisible] = useState(false);
 
   const onSelectPropType = item => {
-    // console.log(item);
+    // // console.log(item);
     if (selectedPropType && selectedPropType.key === item.key) {
       setSelectedPropType(null);
     } else {
@@ -55,8 +55,8 @@ const AddNewCustomer = props => {
   };
 
   const selectPropertyForIndex = index => {
-    // console.log(index);
-    // console.log(propertyForArray[index]);
+    // // console.log(index);
+    // // console.log(propertyForArray[index]);
     setPropertyForIndex(index);
     setIsVisible(false);
   };
@@ -66,7 +66,7 @@ const AddNewCustomer = props => {
   };
 
   const onSubmit = () => {
-    console.log("-1");
+    // console.log("-1");
     // if (selectedPropType === null) {
     //   setErrorMessage("Select Property type missing");
     //   setIsVisible(true);
@@ -85,7 +85,7 @@ const AddNewCustomer = props => {
       setIsVisible(true);
       return;
     }
-    console.log("props.userDetails: " + JSON.stringify(props.userDetails));
+    // console.log("props.userDetails: " + JSON.stringify(props.userDetails));
     const customer = {
       agent_id: props.userDetails.user_details.works_for[0],
       // property_type: selectedPropType.key,
@@ -98,9 +98,9 @@ const AddNewCustomer = props => {
         address: ownerAddress.trim()
       }
     };
-    console.log(customer);
+    // console.log(customer);
     AsyncStorage.setItem("customer", JSON.stringify(customer));
-    // console.log("1");
+    // // console.log("1");
     navigation.navigate("ContactLocalityDetailsForm");
   };
 

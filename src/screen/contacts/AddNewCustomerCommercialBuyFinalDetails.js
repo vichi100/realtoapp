@@ -36,7 +36,7 @@ const AddNewCustomerCommercialBuyFinalDetails = props => {
   //     var today = new Date();
   //     const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
   //     const diffDays = Math.round((today - new Date(t)) / oneDay);
-  //     // console.log(diffDays);
+  //     // // console.log(diffDays);
   //     if (diffDays >= 0) {
   //       setPossessionDate("Immediately");
   //     } else {
@@ -48,7 +48,7 @@ const AddNewCustomerCommercialBuyFinalDetails = props => {
   const getPropFinalDetails = async () => {
     const customer = JSON.parse(await AsyncStorage.getItem("customer"));
     setCustomerFinalDetails(customer);
-    console.log(customer);
+    // console.log(customer);
   };
 
   const convert = str => {
@@ -59,7 +59,7 @@ const AddNewCustomerCommercialBuyFinalDetails = props => {
   };
 
   const send = async () => {
-    console.log(await AsyncStorage.getItem("property"));
+    // console.log(await AsyncStorage.getItem("property"));
     axios
       .post(
         "http://172.20.10.2:3000/addNewCommercialCustomer",
@@ -70,12 +70,12 @@ const AddNewCustomerCommercialBuyFinalDetails = props => {
       )
       .then(
         async response => {
-          // console.log("vichi: " + response.data.customer_id);
+          // // console.log("vichi: " + response.data.customer_id);
           if (response.data.customer_id !== null) {
-            // console.log("inside");
+            // // console.log("inside");
             await AsyncStorage.removeItem("customer");
             navigation.navigate("Contacts");
-            // console.log("inside");
+            // // console.log("inside");
           } else {
             setErrorMessage(
               "Error: Seems there is some network issue, please try later"
@@ -83,7 +83,7 @@ const AddNewCustomerCommercialBuyFinalDetails = props => {
           }
         },
         error => {
-          console.log(error);
+          // console.log(error);
         }
       );
   };

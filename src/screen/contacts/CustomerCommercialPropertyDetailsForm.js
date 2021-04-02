@@ -98,9 +98,9 @@ const CustomerCommercialPropertyDetailsForm = props => {
     };
 
     customer["customer_property_details"] = customer_property_details;
-    // console.log(property);
+    // // console.log(property);
     AsyncStorage.setItem("customer", JSON.stringify(customer));
-    // console.log(property);
+    // // console.log(property);
     if (propertyFor.toLowerCase() === "Rent".toLowerCase()) {
       navigation.navigate("CustomerCommercialRentDetailsForm");
     } else if (propertyFor.toLowerCase() === "Buy".toLowerCase()) {
@@ -131,12 +131,12 @@ const CustomerCommercialPropertyDetailsForm = props => {
   };
 
   const onIdealForSelect = index => {
-    // console.log(index);
+    // // console.log(index);
     const temp = [...idealForArray];
-    // console.log(temp[index]);
+    // // console.log(temp[index]);
     const tempChecked = temp[index].checked;
     temp[index].checked = !tempChecked;
-    // console.log(temp);
+    // // console.log(temp);
     setIdealForArray(temp);
     if (!tempChecked === true) {
       idealForSelectArray.push(temp[index].name);

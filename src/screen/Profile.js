@@ -41,7 +41,7 @@ const Profile = props => {
   const [modalVisible, setModalVisible] = useState(false);
 
   // useEffect(() => {
-  //   console.log(JSON.stringify(props.userDetails));
+  //   // console.log(JSON.stringify(props.userDetails));
   // }, [props.userDetails]);
 
   const makeCall = async () => {
@@ -83,9 +83,9 @@ const Profile = props => {
 
     try {
       //   const ShareResponse = await Share.open(shareOptions);
-      //   console.log(JSON.stringify(ShareResponse));
+      //   // console.log(JSON.stringify(ShareResponse));
     } catch (error) {
-      console.log("Error => ", error);
+      // console.log("Error => ", error);
     }
   };
 
@@ -103,7 +103,7 @@ const Profile = props => {
     }).then(
       response => {
         if (response.data === "success") {
-          console.log("1: " + JSON.stringify(props.userDetails.user_details));
+          // console.log("1: " + JSON.stringify(props.userDetails.user_details));
           props.userDetails.user_details["user_status"] = "suspend";
 
           setModalVisible(!modalVisible);
@@ -112,14 +112,14 @@ const Profile = props => {
         }
       },
       error => {
-        console.log(error);
+        // console.log(error);
       }
     );
   };
 
   const updateAsyncStorageData = async () => {
     const userDetailsDataX = await AsyncStorage.getItem("user_details");
-    console.log("userDetailsDataX: " + userDetailsDataX);
+    // console.log("userDetailsDataX: " + userDetailsDataX);
     const userDetailsData = JSON.parse(userDetailsDataX);
     userDetailsData.user_details["user_status"] = "suspend";
     AsyncStorage.setItem("user_details", JSON.stringify(userDetailsData));

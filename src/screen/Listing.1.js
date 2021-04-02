@@ -70,7 +70,7 @@ const data = [
 
 function Detail(props) {
   const ItemView = ({ item }) => {
-    console.log("hi");
+    // console.log("hi");
     return (
       // Single Comes here which will be repeatative for the FlatListItems
 

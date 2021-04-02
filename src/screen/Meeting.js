@@ -38,9 +38,9 @@ const Meeting = props => {
   const { navigation } = props;
   const item = props.route.params.item; // property item
   const category = props.route.params.category;
-  console.log("route.params: " + JSON.stringify(props.route.params));
+  // console.log("route.params: " + JSON.stringify(props.route.params));
   const inputRef = useRef(null);
-  // console.log(item);
+  // // console.log(item);
   const date = new Date();
   const [newDate, setNewDate] = React.useState("");
   const [newTime, setNewTime] = React.useState("");
@@ -67,14 +67,14 @@ const Meeting = props => {
     props.setCustomerDetailsForMeeting(null);
   };
   useEffect(() => {
-    console.log("useEffect in Meeting propertyIdX:  ", propertyIdX);
+    // console.log("useEffect in Meeting propertyIdX:  ", propertyIdX);
     setClientName("");
     setClientMobile("");
     setClientId("");
   }, []);
 
   useEffect(() => {
-    console.log("useEffect", props.customerDetailsForMeeting);
+    // console.log("useEffect", props.customerDetailsForMeeting);
     if (props.customerDetailsForMeeting) {
       setClientName(props.customerDetailsForMeeting.name);
       setClientMobile(props.customerDetailsForMeeting.mobile);
@@ -83,11 +83,11 @@ const Meeting = props => {
   }, [props.customerDetailsForMeeting]);
 
   const setModalVisibleTemp = flag => {
-    // console.log("setModalVisible: " + flag);
+    // // console.log("setModalVisible: " + flag);
     setModalVisible(flag);
   };
   const setModalVisibleTemp1 = flag => {
-    // console.log("setModalVisible1: " + flag);
+    // // console.log("setModalVisible1: " + flag);
     setModalVisible(flag);
     inputRef.current.blur();
   };
@@ -125,7 +125,7 @@ const Meeting = props => {
 
   const [visible, setVisible] = React.useState(false);
   const onDismiss = React.useCallback(() => {
-    // console.log("date");
+    // // console.log("date");
     setVisible(false);
     setIsVisible(false);
   }, [setVisible]);
@@ -137,8 +137,8 @@ const Meeting = props => {
     // setNewDate(x[0]);
     const x = dateFormat(date.toString());
     setNewDate(x);
-    // console.log(new Date(date).getDay());
-    // console.log(date.toString());
+    // // console.log(new Date(date).getDay());
+    // // console.log(date.toString());
   }, []);
 
   const [timeVisible, setTimeVisible] = React.useState(false);
@@ -151,19 +151,19 @@ const Meeting = props => {
     ({ hours, minutes }) => {
       setTimeVisible(false);
       // setIsVisible(false);
-      console.log({ hours, minutes });
+      // console.log({ hours, minutes });
       setNewTime(hours + ":" + minutes);
     },
     [setTimeVisible]
   );
 
   const selectAMPMIndex = index => {
-    console.log(index);
+    // console.log(index);
     setAMPMIndex(index);
   };
 
   const onApply = () => {
-    console.log();
+    // console.log();
     if (ampmIndex === -1) {
       setErrorMessage("AM / PM is missing");
       setIsVisible(true);
@@ -205,7 +205,7 @@ const Meeting = props => {
   };
 
   const send = async () => {
-    console.log("item: " + JSON.stringify(item));
+    // console.log("item: " + JSON.stringify(item));
 
     const reminderDetails = {
       // user_id: item.agent_id,
@@ -240,7 +240,7 @@ const Meeting = props => {
       )
       .then(
         response => {
-          console.log("response.data ", response.data);
+          // console.log("response.data ", response.data);
           // navigation.navigate("CardDetails");
           if (response.data !== "fail") {
             const x = [reminderDetails, ...props.propReminderList];
@@ -249,14 +249,14 @@ const Meeting = props => {
           clearState();
         },
         error => {
-          console.log(error);
+          // console.log(error);
           clearState();
         }
       );
   };
 
   const getPropReminders = () => {
-    console.log("item getPropReminders: " + propertyIdX);
+    // console.log("item getPropReminders: " + propertyIdX);
     const propertyId = {
       property_id: propertyIdX
     };
@@ -270,32 +270,32 @@ const Meeting = props => {
       )
       .then(
         response => {
-          console.log("response.data.length: " + response.data.length);
+          // console.log("response.data.length: " + response.data.length);
           // navigation.navigate("CardDetails");
           if (response.data && response.data.length > 0) {
             // const x = [...props.propReminderList, ...response.data];
-            // console.log("X: " + x);
+            // // console.log("X: " + x);
             props.setPropReminderList(response.data);
           } else {
             props.setPropReminderList([]);
           }
         },
         error => {
-          console.log(error);
+          // console.log(error);
         }
       );
   };
 
   useEffect(() => {
-    console.log("useEffect called: " + props.propReminderList.length);
+    // console.log("useEffect called: " + props.propReminderList.length);
     // if (props.propReminderList.length === 0) {
-    console.log("getPropReminders called");
+    // console.log("getPropReminders called");
     getPropReminders();
     // }
   }, [propertyIdX]);
 
   // useEffect(() => {
-  //   console.log("propertyIdX: " + propertyIdX);
+  //   // console.log("propertyIdX: " + propertyIdX);
   //   props.setPropReminderList([]);
   // }, [propertyIdX]);
 

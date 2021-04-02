@@ -36,7 +36,7 @@ const width = Dimensions.get("window").width;
 
 const ContactResidentialRentCard = props => {
   const { navigation, item, disableDrawer, displayCheckBox } = props;
-  console.log("ContactResidentialRentCard :    ", item);
+  // console.log("ContactResidentialRentCard :    ", item);
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
   const [disabled, setDisabled] = useState(false);
@@ -48,7 +48,7 @@ const ContactResidentialRentCard = props => {
   let Sliding_Drawer_Toggle = true;
 
   useEffect(() => {
-    console.log("useEffect", props.customerDetailsForMeeting);
+    // console.log("useEffect", props.customerDetailsForMeeting);
   }, [props.customerDetailsForMeeting]);
 
   const updateIndex = index => {
@@ -56,7 +56,7 @@ const ContactResidentialRentCard = props => {
   };
 
   const ShowSlidingDrawer = () => {
-    // console.log(Sliding_Drawer_Toggle);
+    // // console.log(Sliding_Drawer_Toggle);
     if (Sliding_Drawer_Toggle === true) {
       Animated.timing(Animation, {
         toValue: 1,
@@ -85,7 +85,7 @@ const ContactResidentialRentCard = props => {
     outputRange: [Sliding_Drawer_Width - 33, -15]
   });
 
-  // console.log(width);
+  // // console.log(width);
 
   const makeCall = mobile => {
     const url = "tel://" + mobile;
@@ -114,7 +114,7 @@ const ContactResidentialRentCard = props => {
   };
 
   const onClickCheckBox = item => {
-    console.log("onClickCheckBox", item.customer_id);
+    // console.log("onClickCheckBox", item.customer_id);
     const customerObj = {
       name: item.customer_details.name,
       mobile: item.customer_details.mobile1,
