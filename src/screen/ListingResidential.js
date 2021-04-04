@@ -74,6 +74,7 @@ const ListingResidential = props => {
     setLookingForIndexSortBy(-1);
     setSortByRentIndex(-1);
     setSortByAvailabilityIndex(-1);
+    setSortByPostedDateIndex(-1);
     setData(props.residentialPropertyList);
   };
 
@@ -83,7 +84,9 @@ const ListingResidential = props => {
       setIsVisible(true);
       return;
     }
-    setSortByAvailabilityIndex(index);
+    setSortByPostedDateIndex(index);
+    setSortByRentIndex(-1);
+    setSortByAvailabilityIndex(-1);
     setVisibleSorting(false);
     let filterList = props.residentialPropertyList;
     if (lookingForIndexSortBy === 0) {
@@ -131,6 +134,8 @@ const ListingResidential = props => {
       return;
     }
     setSortByAvailabilityIndex(index);
+    setSortByRentIndex(-1);
+    setSortByPostedDateIndex(-1);
     setVisibleSorting(false);
     let filterList = props.residentialPropertyList;
     if (lookingForIndexSortBy === 0) {
@@ -180,6 +185,8 @@ const ListingResidential = props => {
       return;
     }
     setSortByRentIndex(index);
+    setSortByAvailabilityIndex(-1);
+    setSortByPostedDateIndex(-1);
     setVisibleSorting(false);
     let filterList = props.residentialPropertyList;
     if (lookingForIndexSortBy === 0) {
@@ -746,6 +753,7 @@ const ListingResidential = props => {
       </BottomSheet>
 
       {/* Bottom sheet for sorting */}
+
       <BottomSheet
         visible={visibleSorting}
         //setting the visibility state of the bottom shee
@@ -838,6 +846,7 @@ const ListingResidential = props => {
           />
         </View>
       </BottomSheet>
+
       <TouchableOpacity
         style={{
           // borderWidth: 1,
