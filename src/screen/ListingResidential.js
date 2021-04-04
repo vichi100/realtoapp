@@ -40,6 +40,10 @@ const homeTypeArray = ["Apartment", "Villa", "Independent House"];
 const bhkTypeArray = ["1RK", "1BHK", "2BHK", "3BHK", "4BHK", "4+BHK"];
 const availabilityArray = ["Immediate", "15 Days", "30 Days", "30+ Days"];
 const furnishingStatusArray = ["Full", "Semi", "Empty"];
+const lookingForArraySortBy = ["Rent", "Sell"];
+const sortByRentArray = ["Lowest First", "Highest First"];
+const sortByAvailabilityArray = ["Earliest First", "Oldest First"];
+const sortByPostedDateArray = ["Recent First", "Oldest Fist"];
 
 const ListingResidential = props => {
   const { navigation } = props;
@@ -61,6 +65,165 @@ const ListingResidential = props => {
   const [maxRent, setMaxRent] = useState(500000);
   const [minSell, setMinSell] = useState(1000000);
   const [maxSell, setMaxSell] = useState(100000000);
+  const [sortByRentIndex, setSortByRentIndex] = useState(-1);
+  const [sortByAvailabilityIndex, setSortByAvailabilityIndex] = useState(-1);
+  const [sortByPostedDateIndex, setSortByPostedDateIndex] = useState(-1);
+  const [lookingForIndexSortBy, setLookingForIndexSortBy] = useState(-1);
+
+  const resetSortBy = () => {
+    setLookingForIndexSortBy(-1);
+    setSortByRentIndex(-1);
+    setSortByAvailabilityIndex(-1);
+    setData(props.residentialPropertyList);
+  };
+
+  const sortByPostedDate = index => {
+    if (lookingForIndexSortBy === -1) {
+      setErrorMessage("Looking for is missing in filter");
+      setIsVisible(true);
+      return;
+    }
+    setSortByAvailabilityIndex(index);
+    setVisibleSorting(false);
+    let filterList = props.residentialPropertyList;
+    if (lookingForIndexSortBy === 0) {
+      filterList = filterList.filter(item => item.property_for === "Rent");
+      if (sortByPostedDateArray[index] === "Recent First") {
+        filterList.sort((a, b) => {
+          return (
+            new Date(a.create_date_time).getTime() -
+            new Date(b.create_date_time).getTime()
+          );
+        });
+      } else if (sortByPostedDateArray[index] === "Oldest Fist") {
+        filterList.sort(
+          (a, b) =>
+            new Date(b.create_date_time).getTime() -
+            new Date(a.create_date_time).getTime()
+        );
+      }
+      setData(filterList);
+    } else if (lookingForIndexSortBy === 1) {
+      filterList = filterList.filter(item => item.property_for === "Sell");
+      if (sortByPostedDateArray[index] === "Recent First") {
+        filterList.sort((a, b) => {
+          // console.log("a", a);
+          return (
+            new Date(a.create_date_time).getTime() -
+            new Date(b.create_date_time).getTime()
+          );
+        });
+      } else if (sortByPostedDateArray[index] === "Oldest Fist") {
+        filterList.sort(
+          (a, b) =>
+            new Date(b.create_date_time).getTime() -
+            new Date(a.create_date_time).getTime()
+        );
+      }
+      setData(filterList);
+    }
+  };
+
+  const sortByAvailability = index => {
+    if (lookingForIndexSortBy === -1) {
+      setErrorMessage("Looking for is missing in filter");
+      setIsVisible(true);
+      return;
+    }
+    setSortByAvailabilityIndex(index);
+    setVisibleSorting(false);
+    let filterList = props.residentialPropertyList;
+    if (lookingForIndexSortBy === 0) {
+      filterList = filterList.filter(item => item.property_for === "Rent");
+      if (sortByAvailabilityArray[index] === "Earliest First") {
+        filterList.sort((a, b) => {
+          // console.log("a", a);
+          return (
+            new Date(a.rent_details.available_from).getTime() -
+            new Date(b.rent_details.available_from).getTime()
+          );
+        });
+      } else if (sortByAvailabilityArray[index] === "Oldest First") {
+        filterList.sort(
+          (a, b) =>
+            new Date(b.rent_details.available_from).getTime() -
+            new Date(a.rent_details.available_from).getTime()
+        );
+      }
+      setData(filterList);
+    } else if (lookingForIndexSortBy === 1) {
+      filterList = filterList.filter(item => item.property_for === "Sell");
+      if (sortByAvailabilityArray[index] === "Earliest First") {
+        filterList.sort((a, b) => {
+          // console.log("a", a);
+          return (
+            new Date(a.rent_details.available_from).getTime() -
+            new Date(b.rent_details.available_from).getTime()
+          );
+        });
+      } else if (sortByAvailabilityArray[index] === "Oldest First") {
+        filterList.sort(
+          (a, b) =>
+            new Date(b.rent_details.available_from).getTime() -
+            new Date(a.rent_details.available_from).getTime()
+        );
+      }
+      setData(filterList);
+    }
+  };
+
+  const sortByRent = index => {
+    console.log("onFilter:     ", props.residentialPropertyList);
+    if (lookingForIndexSortBy === -1) {
+      setErrorMessage("Looking for is missing in filter");
+      setIsVisible(true);
+      return;
+    }
+    setSortByRentIndex(index);
+    setVisibleSorting(false);
+    let filterList = props.residentialPropertyList;
+    if (lookingForIndexSortBy === 0) {
+      filterList = filterList.filter(item => item.property_for === "Rent");
+      // const x = filterList;
+      console.log("filterList:   ", filterList);
+      if (sortByRentArray[index] === "Lowest First") {
+        filterList.sort((a, b) => {
+          // console.log("a", a);
+          return (
+            parseFloat(a.rent_details.expected_rent) -
+            parseFloat(b.rent_details.expected_rent)
+          );
+        });
+      } else if (sortByRentArray[index] === "Highest First") {
+        filterList.sort(
+          (a, b) =>
+            parseFloat(b.rent_details.expected_rent) -
+            parseFloat(a.rent_details.expected_rent)
+        );
+      }
+      setData(filterList);
+    } else if (lookingForIndexSortBy === 1) {
+      filterList = filterList.filter(item => item.property_for === "Sell");
+      // const x = filterList;
+      // console.log("filterList:   ", filterList);
+      if (sortByRentArray[index] === "Lowest First") {
+        filterList.sort((a, b) => {
+          // console.log("a", a);
+          return (
+            parseFloat(a.sell_details.expected_sell_price) -
+            parseFloat(b.sell_details.expected_sell_price)
+          );
+        });
+      } else if (sortByRentArray[index] === "Highest First") {
+        filterList.sort(
+          (a, b) =>
+            parseFloat(b.sell_details.expected_sell_price) -
+            parseFloat(a.sell_details.expected_sell_price)
+        );
+      }
+      setData(filterList);
+    }
+  };
 
   const resetFilter = () => {
     setLookingForIndex(-1);
@@ -198,6 +361,11 @@ const ListingResidential = props => {
     setIsVisible(false);
   };
 
+  const selectLookingForIndexSortBy = index => {
+    setLookingForIndexSortBy(index);
+    setIsVisible(false);
+  };
+
   useEffect(() => {
     // // console.log(
     //   "props.userDetail33 " +
@@ -317,7 +485,7 @@ const ListingResidential = props => {
     navigation.navigate("Add");
   };
 
-  const setMultiSliderValue = values => {
+  const setRentRange = values => {
     // // console.log("slider value min: ", values[0]);
     // // console.log("slider value max: ", values[1]);
     setMinRent(values[0]);
@@ -592,15 +760,38 @@ const ListingResidential = props => {
           <Text style={{ marginTop: 15, fontSize: 16, fontWeight: "600" }}>
             Sort By
           </Text>
-
-          <ScrollView style={{ marginTop: 10, marginBottom: 20 }}>
+          <TouchableOpacity
+            onPress={() => resetSortBy()}
+            style={{ position: "absolute", top: 10, right: 10 }}
+          >
+            <MaterialCommunityIcons
+              name="restart"
+              color={"#000000"}
+              size={30}
+            />
+          </TouchableOpacity>
+          <ScrollView style={{ marginTop: 15, marginBottom: 20 }}>
+            <Text style={styles.marginBottom10}>Looking For</Text>
+            <View style={styles.propSubSection}>
+              <ButtonGroup
+                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                onPress={selectLookingForIndexSortBy}
+                selectedIndex={lookingForIndexSortBy}
+                buttons={lookingForArraySortBy}
+                // containerStyle={{ height: 30 }}
+                textStyle={{ textAlign: "center" }}
+                selectedTextStyle={{ color: "#fff" }}
+                containerStyle={{ borderRadius: 10, width: 350 }}
+                containerBorderRadius={10}
+              />
+            </View>
             <Text style={styles.marginBottom10}>Rent</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Lowest First", "Highest First"]}
+                onPress={sortByRent}
+                selectedIndex={sortByRentIndex}
+                buttons={sortByRentArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -612,9 +803,9 @@ const ListingResidential = props => {
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Earliest First", "Oldest First"]}
+                onPress={sortByAvailability}
+                selectedIndex={sortByAvailabilityIndex}
+                buttons={sortByAvailabilityArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -627,9 +818,9 @@ const ListingResidential = props => {
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Recent First", "Oldest Fist"]}
+                onPress={sortByPostedDate}
+                selectedIndex={sortByPostedDateIndex}
+                buttons={sortByPostedDateArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -638,6 +829,13 @@ const ListingResidential = props => {
               />
             </View>
           </ScrollView>
+          <Snackbar
+            visible={isVisible}
+            textMessage={errorMessage}
+            position={"top"}
+            actionHandler={() => dismissSnackBar()}
+            actionText="OK"
+          />
         </View>
       </BottomSheet>
       <TouchableOpacity
@@ -659,13 +857,6 @@ const ListingResidential = props => {
         <AntDesign name="pluscircleo" size={40} color="#ffffff" />
         {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
       </TouchableOpacity>
-      <Snackbar
-        visible={isVisible}
-        textMessage={errorMessage}
-        position={"top"}
-        actionHandler={() => dismissSnackBar()}
-        actionText="OK"
-      />
     </SafeAreaView>
   );
 };

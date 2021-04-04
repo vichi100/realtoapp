@@ -26,7 +26,10 @@ import CustomerCommercialBuyCard from "./CustomerCommercialBuyCard";
 import axios from "axios";
 import SERVER_URL from "../../util/constant";
 import Slider from "../../components/Slider";
+import SliderX from "../../components/SliderX";
 import { setCommercialCustomerList } from "../../reducers/Action";
+import { addDays, numDifferentiation } from "../../util/methods";
+import Snackbar from "../../components/SnackbarComponent";
 
 const buildingTypeArray = [
   "Businesses park ",
@@ -36,6 +39,24 @@ const buildingTypeArray = [
   "Shopping complex"
 ];
 
+const lookingForArray = ["Rent", "Buy"];
+const propertyTypeArray = [
+  "Shop",
+  "Office",
+  "Showroom",
+  "Godown",
+  "Restaurant/Cafe"
+];
+const availabilityArray = ["Immediate", "15 Days", "30 Days", "30+ Days"];
+
+// const buildingTypeArray = [
+//   "Businesses park ",
+//   "Mall",
+//   "StandAlone",
+//   "Industrial",
+//   "Shopping complex"
+// ];
+
 const CustomersCommercial = props => {
   const { navigation } = props;
   const [search, setSearch] = useState("");
@@ -43,6 +64,180 @@ const CustomersCommercial = props => {
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [index, setIndex] = useState(null);
   const [data, setData] = useState([]);
+
+  const [lookingForIndex, setLookingForIndex] = useState(-1);
+  const [propertyTypeIndex, setPropertyTypeIndex] = useState(-1);
+  const [checkBoxSelectArray, setCheckBoxSelectArray] = useState([]);
+  const [availabilityIndex, setAvailabilityIndex] = useState(-1);
+  const [minRent, setMinRent] = useState(5000);
+  const [maxRent, setMaxRent] = useState(500000);
+  const [minSell, setMinSell] = useState(1000000);
+  const [maxSell, setMaxSell] = useState(100000000);
+  const [minBuildupArea, setMinBuildupArea] = useState(50);
+  const [maxBuildupArea, setMaxBuildupArea] = useState(15000);
+
+  const resetFilter = () => {
+    setLookingForIndex(-1);
+    setPropertyTypeIndex(-1);
+    setCheckBoxSelectArray([]);
+    setAvailabilityIndex(-1);
+    setMinRent(5000);
+    setMaxRent(500000);
+    setMinSell(1000000);
+    setMaxSell(100000000);
+    setMinBuildupArea(50);
+    setMaxBuildupArea(15000);
+    setVisible(false);
+  };
+
+  const onFilter = () => {
+    console.log("onFilter:     ", props.commercialCustomerList);
+    if (lookingForIndex === -1) {
+      setErrorMessage("Looking for is missing in filter");
+      setIsVisible(true);
+      return;
+    }
+    let filterList = props.commercialCustomerList;
+    if (lookingForIndex > -1) {
+      filterList = filterList.filter(
+        item =>
+          item.customer_locality.property_for ===
+          lookingForArray[lookingForIndex]
+      );
+    }
+
+    if (propertyTypeIndex > -1) {
+      filterList = filterList.filter(item => {
+        const all = [item.customer_property_details.property_used_for];
+        return all.indexOf(propertyTypeArray[propertyTypeIndex]) > -1;
+      });
+    }
+
+    if (checkBoxSelectArray.length > 0) {
+      // console.log(checkBoxSelectArray);
+      // console.log(
+      //   checkBoxSelectArray.indexOf(
+      //     filterList[0].property_details.building_type
+      //   )
+      // );
+
+      filterList = filterList.filter(
+        item =>
+          checkBoxSelectArray.indexOf(
+            item.customer_property_details.building_type
+          ) > -1
+      );
+    }
+
+    if (lookingForIndex === 0) {
+      if (minRent > 5000 || maxRent < 500000) {
+        // console.log("rent");
+        filterList = filterList.filter(
+          item =>
+            item.customer_rent_details.expected_rent >= minRent &&
+            item.customer_rent_details.expected_rent <= maxRent
+        );
+      }
+    } else if (lookingForIndex === 1) {
+      if (minSell > 1000000 || maxSell < 100000000) {
+        // console.log("rent");
+        filterList = filterList.filter(
+          item =>
+            item.customer_buy_details.expected_buy_price >= minSell &&
+            item.customer_buy_details.expected_buy_price <= maxSell
+        );
+      }
+    }
+
+    // if (minBuildupArea > 5000 || maxBuildupArea < 500000) {
+    //   // console.log("rent");
+    //   filterList = filterList.filter(
+    //     item =>
+    //       item.property_details.property_size >= minBuildupArea &&
+    //       item.property_details.property_size <= maxBuildupArea
+    //   );
+    // }
+
+    if (availabilityIndex > -1) {
+      const oneDay = 24 * 60 * 60 * 1000;
+      let possessionDate = new Date();
+      const today = new Date();
+      if (availabilityArray[availabilityIndex] === "Immediate") {
+        possessionDate = addDays(today, 7); //new Date(today.getTime() + 15*24*60*60*1000)
+        filterList = filterList.filter(
+          item => possessionDate > new Date(item.rent_details.available_from)
+        );
+        console.log(
+          "possessionDate: ",
+          new Date(filterList[0].rent_details.available_from)
+        );
+      } else if (availabilityArray[availabilityIndex] === "15 Days") {
+        possessionDate = addDays(today, 15);
+        filterList = filterList.filter(
+          item => possessionDate > new Date(item.rent_details.available_from)
+        );
+      } else if (availabilityArray[availabilityIndex] === "30 Days") {
+        possessionDate = addDays(today, 30);
+        filterList = filterList.filter(
+          item => possessionDate > new Date(item.rent_details.available_from)
+        );
+      } else if (availabilityArray[availabilityIndex] === "30+ Days") {
+        possessionDate = addDays(today, 30);
+        filterList = filterList.filter(
+          item => new Date(item.rent_details.available_from) > possessionDate
+        );
+      }
+    }
+    setData(filterList);
+    setVisible(false);
+  };
+
+  const dismissSnackBar = () => {
+    setIsVisible(false);
+  };
+
+  const setBuildupAreaRange = values => {
+    // console.log("slider value min: ", values[0]);
+    // console.log("slider value max: ", values[1]);
+    setMinBuildupArea(values[0]);
+    setMaxBuildupArea(values[1]);
+  };
+
+  const setRentRange = values => {
+    // console.log("slider value min: ", values[0]);
+    // console.log("slider value max: ", values[1]);
+    setMinRent(values[0]);
+    setMaxRent(values[1]);
+  };
+
+  const setSellRange = values => {
+    // console.log("slider value min: ", values[0]);
+    // console.log("slider value max: ", values[1]);
+    setMinSell(values[0]);
+    setMaxSell(values[1]);
+  };
+  const selectLookingForIndex = index => {
+    setLookingForIndex(index);
+  };
+
+  const selectPropertyTypeIndex = index => {
+    setPropertyTypeIndex(index);
+  };
+
+  const onCheckBoxSelect = item => {
+    console.log(item);
+    if (checkBoxSelectArray.indexOf(item) > -1) {
+      const x = checkBoxSelectArray.filter(z => z !== item);
+      setCheckBoxSelectArray(x);
+    } else {
+      const x = [item, ...checkBoxSelectArray];
+      setCheckBoxSelectArray(x);
+    }
+  };
+
+  const selectAvailabilityIndex = index => {
+    setAvailabilityIndex(index);
+  };
 
   useEffect(() => {
     getListing();
@@ -237,7 +432,7 @@ const CustomersCommercial = props => {
           </Text>
 
           <TouchableOpacity
-            onPress={() => toggleBottomNavigationView()}
+            onPress={() => resetFilter()}
             style={{ position: "absolute", top: 10, right: 10 }}
           >
             <MaterialCommunityIcons
@@ -251,9 +446,9 @@ const CustomersCommercial = props => {
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Rent", "Sell"]}
+                onPress={selectLookingForIndex}
+                selectedIndex={lookingForIndex}
+                buttons={lookingForArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -266,15 +461,9 @@ const CustomersCommercial = props => {
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={[
-                  "Shop",
-                  "Office",
-                  "Showroom",
-                  "Godown",
-                  "Restaurant/Cafe"
-                ]}
+                onPress={selectPropertyTypeIndex}
+                selectedIndex={propertyTypeIndex}
+                buttons={propertyTypeArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -292,8 +481,8 @@ const CustomersCommercial = props => {
                     {/* <Text>{item}</Text> */}
                     <CheckBox
                       title={item}
-                      checked={false}
-                      onPress={() => onPess()}
+                      checked={checkBoxSelectArray.indexOf(item) > -1}
+                      onPress={() => onCheckBoxSelect(item)}
                       containerStyle={{
                         backgroundColor: "#ffffff",
                         borderColor: "#ffffff",
@@ -328,17 +517,82 @@ const CustomersCommercial = props => {
                 containerBorderRadius={10}
               /> */}
             </View>
-            <Text>Rent Range</Text>
-            <Slider />
-            <Text>Buildup area Range</Text>
-            <Slider />
+            {lookingForIndex === -1 ? null : lookingForIndex === 0 ? (
+              <View>
+                <Text>Rent Range</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginTop: 10
+                  }}
+                >
+                  <View>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
+                      {numDifferentiation(minRent)}
+                    </Text>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Min</Text>
+                  </View>
+                  <View>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
+                      {numDifferentiation(maxRent)}
+                    </Text>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Max</Text>
+                  </View>
+                </View>
+
+                <Slider
+                  min={15000}
+                  max={1000000}
+                  step={5000}
+                  onSlide={values => setRentRange(values)}
+                />
+              </View>
+            ) : (
+              <View>
+                <Text>Buy Price Range</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginTop: 10
+                  }}
+                >
+                  <View>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
+                      {numDifferentiation(minSell)}
+                    </Text>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Min</Text>
+                  </View>
+                  <View>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
+                      {numDifferentiation(maxSell)}
+                    </Text>
+                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Max</Text>
+                  </View>
+                </View>
+                <SliderX
+                  min={minSell}
+                  max={maxSell}
+                  step={500000}
+                  onSlide={values => setSellRange(values)}
+                />
+              </View>
+            )}
+            {/* <Text>Buildup area Range</Text>
+            <Slider
+              min={50}
+              max={10000}
+              step={50}
+              onSlide={values => setBuildupAreaRange(values)}
+            /> */}
             <Text style={styles.marginBottom10}>Availability</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Immediate", "15 Days", "30 Days", "30+ Days"]}
+                onPress={selectAvailabilityIndex}
+                selectedIndex={availabilityIndex}
+                buttons={availabilityArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -347,10 +601,7 @@ const CustomersCommercial = props => {
               />
             </View>
 
-            <Button
-              title="Apply"
-              onPress={() => navigation.navigate("AddImages")}
-            />
+            <Button title="Apply" onPress={() => onFilter()} />
           </ScrollView>
         </View>
       </BottomSheet>
