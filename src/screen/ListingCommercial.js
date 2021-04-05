@@ -240,6 +240,9 @@ const ListingCommercial = props => {
 
   const selectLookingForIndexSortBy = index => {
     setLookingForIndexSortBy(index);
+    setSortByRentIndex(-1);
+    setSortByAvailabilityIndex(-1);
+    setSortByPostedDateIndex(-1);
     setIsVisible(false);
   };
 
@@ -384,6 +387,7 @@ const ListingCommercial = props => {
   };
   const selectLookingForIndex = index => {
     setLookingForIndex(index);
+    setIsVisible(false);
   };
 
   const selectPropertyTypeIndex = index => {
@@ -609,7 +613,7 @@ const ListingCommercial = props => {
               size={30}
             />
           </TouchableOpacity>
-          <ScrollView style={{ marginTop: 10, marginBottom: 20 }}>
+          <ScrollView style={{ marginTop: 20, marginBottom: 20 }}>
             <Text style={styles.marginBottom10}>Looking For</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup
@@ -771,6 +775,13 @@ const ListingCommercial = props => {
 
             <Button title="Apply" onPress={() => onFilter()} />
           </ScrollView>
+          <Snackbar
+            visible={isVisible}
+            textMessage={errorMessage}
+            position={"top"}
+            actionHandler={() => dismissSnackBar()}
+            actionText="OK"
+          />
         </View>
       </BottomSheet>
 
@@ -887,13 +898,6 @@ const ListingCommercial = props => {
         <AntDesign name="pluscircleo" size={40} color="#ffffff" />
         {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
       </TouchableOpacity>
-      <Snackbar
-        visible={isVisible}
-        textMessage={errorMessage}
-        position={"top"}
-        actionHandler={() => dismissSnackBar()}
-        actionText="OK"
-      />
     </SafeAreaView>
   );
 };

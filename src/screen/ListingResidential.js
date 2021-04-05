@@ -370,6 +370,9 @@ const ListingResidential = props => {
 
   const selectLookingForIndexSortBy = index => {
     setLookingForIndexSortBy(index);
+    setSortByRentIndex(-1);
+    setSortByAvailabilityIndex(-1);
+    setSortByPostedDateIndex(-1);
     setIsVisible(false);
   };
 
@@ -593,7 +596,7 @@ const ListingResidential = props => {
               size={30}
             />
           </TouchableOpacity>
-          <ScrollView style={{ marginTop: 10, marginBottom: 20 }}>
+          <ScrollView style={{ marginTop: 20, marginBottom: 20 }}>
             <Text style={styles.marginBottom10}>Looking For</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup
@@ -749,6 +752,13 @@ const ListingResidential = props => {
             </View>
             <Button title="Apply" onPress={() => onFilter()} />
           </ScrollView>
+          <Snackbar
+            visible={isVisible}
+            textMessage={errorMessage}
+            position={"top"}
+            actionHandler={() => dismissSnackBar()}
+            actionText="OK"
+          />
         </View>
       </BottomSheet>
 

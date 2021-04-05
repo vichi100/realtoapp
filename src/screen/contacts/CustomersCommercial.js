@@ -57,9 +57,15 @@ const availabilityArray = ["Immediate", "15 Days", "30 Days", "30+ Days"];
 //   "Shopping complex"
 // ];
 
+const sortByNameArray = ["A First", "Z First"];
+const lookingForArraySortBy = ["Rent", "Buy"];
+const sortByPostedDateArray = ["Recent First", "Oldest Fist"];
+
 const CustomersCommercial = props => {
   const { navigation } = props;
   const [search, setSearch] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [index, setIndex] = useState(null);
@@ -75,6 +81,123 @@ const CustomersCommercial = props => {
   const [maxSell, setMaxSell] = useState(100000000);
   const [minBuildupArea, setMinBuildupArea] = useState(50);
   const [maxBuildupArea, setMaxBuildupArea] = useState(15000);
+  //sorting
+  const [sortByNameIndex, setSortByNameIndex] = useState(-1);
+  const [sortByPostedDateIndex, setSortByPostedDateIndex] = useState(-1);
+  const [lookingForIndexSortBy, setLookingForIndexSortBy] = useState(-1);
+
+  const resetSortBy = () => {
+    setLookingForIndexSortBy(-1);
+    setSortByNameIndex(-1);
+    setSortByPostedDateIndex(-1);
+    setData(props.commercialCustomerList);
+  };
+
+  const sortByPostedDate = index => {
+    console.log("sortByName", props.commercialCustomerList);
+    if (lookingForIndexSortBy === -1) {
+      setErrorMessage("Looking for is missing in filter");
+      setIsVisible(true);
+      return;
+    }
+    setSortByPostedDateIndex(index);
+    setSortByNameIndex(-1);
+    setVisibleSorting(false);
+    let filterList = props.commercialCustomerList;
+    console.log("lookingForIndexSortBy: ", lookingForIndexSortBy);
+    if (lookingForIndexSortBy === 0) {
+      filterList = filterList.filter(
+        item => item.customer_locality.property_for === "Rent"
+      );
+      if (sortByPostedDateArray[index] === "Recent First") {
+        filterList.sort((a, b) => {
+          return (
+            new Date(a.create_date_time).getTime() -
+            new Date(b.create_date_time).getTime()
+          );
+        });
+      } else if (sortByPostedDateArray[index] === "Oldest Fist") {
+        filterList.sort(
+          (a, b) =>
+            new Date(b.create_date_time).getTime() -
+            new Date(a.create_date_time).getTime()
+        );
+      }
+      setData(filterList);
+    } else if (lookingForIndexSortBy === 1) {
+      filterList = filterList.filter(
+        item => item.customer_locality.property_for === "Buy"
+      );
+      if (sortByPostedDateArray[index] === "Recent First") {
+        filterList.sort((a, b) => {
+          // console.log("a", a);
+          return (
+            new Date(a.create_date_time).getTime() -
+            new Date(b.create_date_time).getTime()
+          );
+        });
+      } else if (sortByPostedDateArray[index] === "Oldest Fist") {
+        filterList.sort(
+          (a, b) =>
+            new Date(b.create_date_time).getTime() -
+            new Date(a.create_date_time).getTime()
+        );
+      }
+      setData(filterList);
+    }
+  };
+
+  const sortByName = index => {
+    console.log("sortByName", props.commercialCustomerList);
+    if (lookingForIndexSortBy === -1) {
+      setErrorMessage("Looking for is missing in filter");
+      setIsVisible(true);
+      return;
+    }
+    setSortByPostedDateIndex(-1);
+    setSortByNameIndex(index);
+    setVisibleSorting(false);
+    let filterList = props.commercialCustomerList;
+    console.log("lookingForIndexSortBy: ", lookingForIndexSortBy);
+    if (lookingForIndexSortBy === 0) {
+      filterList = filterList.filter(
+        item => item.customer_locality.property_for === "Rent"
+      );
+      console.log("lookingForIndexSortBy: ", sortByNameArray[index]);
+      if (sortByNameArray[index] === "A First") {
+        filterList.sort((a, b) => {
+          return a.customer_details.name.localeCompare(b.customer_details.name);
+        });
+      } else if (sortByNameArray[index] === "Z Fist") {
+        filterList.sort((a, b) => {
+          return b.customer_details.name.localeCompare(a.customer_details.name);
+        });
+      }
+      setData(filterList);
+    } else if (lookingForIndexSortBy === 1) {
+      filterList = filterList.filter(
+        item => item.customer_locality.property_for === "Buy"
+      );
+      if (sortByNameArray[index] === "A First") {
+        filterList.sort((a, b) => {
+          // console.log("a", a);
+          return a.customer_details.name.localeCompare(b.customer_details.name);
+        });
+      } else if (sortByNameArray[index] === "Z Fist") {
+        filterList.sort((a, b) =>
+          b.customer_details.name.localeCompare(a.customer_details.name)
+        );
+      }
+      setData(filterList);
+    }
+  };
+
+  const selectLookingForIndexSortBy = index => {
+    setLookingForIndexSortBy(index);
+    setSortByNameIndex(-1);
+    setSortByPostedDateIndex(-1);
+    setIsVisible(false);
+  };
 
   const resetFilter = () => {
     setLookingForIndex(-1);
@@ -218,6 +341,7 @@ const CustomersCommercial = props => {
   };
   const selectLookingForIndex = index => {
     setLookingForIndex(index);
+    setIsVisible(false);
   };
 
   const selectPropertyTypeIndex = index => {
@@ -441,7 +565,7 @@ const CustomersCommercial = props => {
               size={30}
             />
           </TouchableOpacity>
-          <ScrollView style={{ marginTop: 10, marginBottom: 20 }}>
+          <ScrollView style={{ marginTop: 20, marginBottom: 20 }}>
             <Text style={styles.marginBottom10}>Looking For</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup
@@ -603,6 +727,13 @@ const CustomersCommercial = props => {
 
             <Button title="Apply" onPress={() => onFilter()} />
           </ScrollView>
+          <Snackbar
+            visible={isVisible}
+            textMessage={errorMessage}
+            position={"top"}
+            actionHandler={() => dismissSnackBar()}
+            actionText="OK"
+          />
         </View>
       </BottomSheet>
 
@@ -621,15 +752,25 @@ const CustomersCommercial = props => {
           <Text style={{ marginTop: 15, fontSize: 16, fontWeight: "600" }}>
             Sort By
           </Text>
+          <TouchableOpacity
+            onPress={() => resetSortBy()}
+            style={{ position: "absolute", top: 10, right: 10 }}
+          >
+            <MaterialCommunityIcons
+              name="restart"
+              color={"#000000"}
+              size={30}
+            />
+          </TouchableOpacity>
 
           <ScrollView style={{ marginTop: 10, marginBottom: 20 }}>
-            <Text style={styles.marginBottom10}>Rent</Text>
+            <Text style={styles.marginBottom10}>Customer Looking For</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Lowest First", "Highest First"]}
+                onPress={selectLookingForIndexSortBy}
+                selectedIndex={lookingForIndexSortBy}
+                buttons={lookingForArraySortBy}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -637,7 +778,21 @@ const CustomersCommercial = props => {
                 containerBorderRadius={10}
               />
             </View>
-            <Text style={styles.marginBottom10}>Availability</Text>
+            <Text style={styles.marginBottom10}>Name</Text>
+            <View style={styles.propSubSection}>
+              <ButtonGroup
+                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                onPress={sortByName}
+                selectedIndex={sortByNameIndex}
+                buttons={sortByNameArray}
+                // containerStyle={{ height: 30 }}
+                textStyle={{ textAlign: "center" }}
+                selectedTextStyle={{ color: "#fff" }}
+                containerStyle={{ borderRadius: 10, width: 350 }}
+                containerBorderRadius={10}
+              />
+            </View>
+            {/* <Text style={styles.marginBottom10}>Availability</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
@@ -650,15 +805,15 @@ const CustomersCommercial = props => {
                 containerStyle={{ borderRadius: 10, width: 350 }}
                 containerBorderRadius={10}
               />
-            </View>
+            </View> */}
 
             <Text style={styles.marginBottom10}>Posted date</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Recent First", "Oldest Fist"]}
+                onPress={sortByPostedDate}
+                selectedIndex={sortByPostedDateIndex}
+                buttons={sortByPostedDateArray}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
@@ -667,6 +822,13 @@ const CustomersCommercial = props => {
               />
             </View>
           </ScrollView>
+          <Snackbar
+            visible={isVisible}
+            textMessage={errorMessage}
+            position={"top"}
+            actionHandler={() => dismissSnackBar()}
+            actionText="OK"
+          />
         </View>
       </BottomSheet>
       <TouchableOpacity
