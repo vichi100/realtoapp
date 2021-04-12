@@ -125,7 +125,12 @@ const Message = props => {
               style={{ flexDirection: "row", justifyContent: "flex-start" }}
             >
               <Text
-                style={{ textAlign: "right", color: "#424242", fontSize: 12 }}
+                style={{
+                  textAlign: "right",
+                  color: "#424242",
+                  fontSize: 12,
+                  marginTop: 5
+                }}
               >
                 {new Date(item.create_date_time).toDateString()}
               </Text>
