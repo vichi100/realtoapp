@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import { StyleSheet, View, Image, Text, ScrollView } from "react-native";
 import { numDifferentiation, dateFormat } from "../../util/methods";
 import { Avatar } from "react-native-elements";
+import { connect } from "react-redux";
 
-const CustomerDetailsCommercialRentFromList = ({ route, navigation }) => {
+const CustomerDetailsCommercialRentFromList = props => {
   // const { navigation } = props;
-  const item = route.params;
+  // const item = route.params;
+  const item = props.anyItemDetails;
   // // console.log(item);
   return (
     <ScrollView style={[styles.container]}>
@@ -296,4 +298,14 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CustomerDetailsCommercialRentFromList;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  anyItemDetails: state.AppReducer.anyItemDetails
+});
+// const mapDispatchToProps = {
+//   setCommercialCustomerList
+// };
+export default connect(
+  mapStateToProps,
+  null
+)(CustomerDetailsCommercialRentFromList);

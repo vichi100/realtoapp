@@ -116,3 +116,19 @@ export const setPropertyType = payload => {
     payload
   };
 };
+
+export const setGlobalSearchResult = payload => {
+  // console.log("setPropertyType in action: " + JSON.stringify(payload));
+  return {
+    type: ACTION_TYPES.SET_GLOBAL_SEARCH_RESULT,
+    payload
+  };
+};
+
+export const setAnyItemDetails = payload => {
+  // console.log("setPropertyType in action: " + JSON.stringify(payload));
+  return {
+    type: ACTION_TYPES.SET_ANY_ITEM_DETAILS,
+    payload
+  };
+};

@@ -10,11 +10,13 @@ import {
 import Slideshow from "../components/Slideshow";
 import { numDifferentiation } from "../util/methods";
 import Feather from "react-native-vector-icons/Feather";
+import { connect } from "react-redux";
 
-const PropDetailsFromListing = ({ route, navigation }) => {
+const PropDetailsFromListing = props => {
   // const { navigation } = props;
-  const item = route.params;
-  // // console.log(item);
+  // const item = route.params;
+  const item = props.anyItemDetails;
+  // console.log("item:  ", item);
   return (
     <ScrollView style={[styles.container]}>
       <View style={[styles.headerContainer]}>
@@ -285,4 +287,11 @@ const styles = StyleSheet.create({
   }
 });
 
-export default PropDetailsFromListing;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  anyItemDetails: state.AppReducer.anyItemDetails
+});
+export default connect(
+  mapStateToProps,
+  null
+)(PropDetailsFromListing);

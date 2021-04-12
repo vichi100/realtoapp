@@ -27,7 +27,10 @@ import axios from "axios";
 import SERVER_URL from "../../util/constant";
 import Slider from "../../components/Slider";
 import SliderX from "../../components/SliderX";
-import { setCommercialCustomerList } from "../../reducers/Action";
+import {
+  setCommercialCustomerList,
+  setAnyItemDetails
+} from "../../reducers/Action";
 import { addDays, numDifferentiation } from "../../util/methods";
 import Snackbar from "../../components/SnackbarComponent";
 
@@ -423,25 +426,26 @@ const CustomersCommercial = props => {
     }
   };
 
+  const navigateToDetails = (item, propertyFor) => {
+    props.setAnyItemDetails(item);
+    if (propertyFor === "Rent") {
+      navigation.navigate("CustomerDetailsCommercialRentFromList", item);
+    } else if (propertyFor === "Buy") {
+      navigation.navigate("CustomerDetailsCommercialBuyFromList", item);
+    }
+  };
+
   const ItemView = ({ item }) => {
     if (item.customer_locality.property_type === "Commercial") {
       if (item.customer_locality.property_for === "Rent") {
         return (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("CustomerDetailsCommercialRentFromList", item)
-            }
-          >
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
             <CustomerCommercialRentCard navigation={navigation} item={item} />
           </TouchableOpacity>
         );
       } else if (item.customer_locality.property_for === "Buy") {
         return (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("CustomerDetailsCommercialBuyFromList", item)
-            }
-          >
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Buy")}>
             <CustomerCommercialBuyCard navigation={navigation} item={item} />
           </TouchableOpacity>
         );
@@ -947,7 +951,8 @@ const mapStateToProps = state => ({
   commercialCustomerList: state.AppReducer.commercialCustomerList
 });
 const mapDispatchToProps = {
-  setCommercialCustomerList
+  setCommercialCustomerList,
+  setAnyItemDetails
 };
 export default connect(
   mapStateToProps,

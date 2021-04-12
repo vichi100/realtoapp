@@ -25,7 +25,10 @@ import CardRent from "./commercial/rent/Card";
 import CardSell from "./commercial/sell/Card";
 import axios from "axios";
 import SERVER_URL from "../util/constant";
-import { setCommercialPropertyList } from "../reducers/Action";
+import {
+  setCommercialPropertyList,
+  setAnyItemDetails
+} from "../reducers/Action";
 import { addDays, numDifferentiation } from "../util/methods";
 import Snackbar from "../components/SnackbarComponent";
 
@@ -439,10 +442,6 @@ const ListingCommercial = props => {
     );
   };
 
-  const updateIndex = index => {
-    setIndex(index);
-  };
-
   const searchFilterFunction = text => {
     // Check if searched text is not blank
     if (text) {
@@ -470,25 +469,26 @@ const ListingCommercial = props => {
     }
   };
 
+  const navigateToDetails = (item, propertyFor) => {
+    props.setAnyItemDetails(item);
+    if (propertyFor === "Rent") {
+      navigation.navigate("CommercialRentPropDetails", item);
+    } else if (propertyFor === "Sell") {
+      navigation.navigate("CommercialSellPropDetails", item);
+    }
+  };
+
   const ItemView = ({ item }) => {
     if (item.property_type === "Commercial") {
       if (item.property_for === "Rent") {
         return (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("CommercialRentPropDetails", item)
-            }
-          >
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
             <CardRent navigation={navigation} item={item} />
           </TouchableOpacity>
         );
       } else if (item.property_for === "Sell") {
         return (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("CommercialSellPropDetails", item)
-            }
-          >
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
             <CardSell navigation={navigation} item={item} />
           </TouchableOpacity>
         );
@@ -532,7 +532,7 @@ const ListingCommercial = props => {
           onChangeText={text => searchFilterFunction(text)}
           value={search}
           underlineColorAndroid="transparent"
-          placeholder="Search by property address, owner"
+          placeholder="My property | Search by property address, owner"
         />
       </View>
       {data.length > 0 ? (
@@ -995,7 +995,8 @@ const mapStateToProps = state => ({
   commercialPropertyList: state.AppReducer.commercialPropertyList
 });
 const mapDispatchToProps = {
-  setCommercialPropertyList
+  setCommercialPropertyList,
+  setAnyItemDetails
 };
 export default connect(
   mapStateToProps,

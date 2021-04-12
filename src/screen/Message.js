@@ -1,0 +1,189 @@
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  KeyboardAvoidingView,
+  Keyboard,
+  style,
+  FlatList,
+  Linking
+} from "react-native";
+import { connect } from "react-redux";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import axios from "axios";
+import { setAnyItemDetails } from "../reducers/Action";
+
+const Message = props => {
+  const { navigation } = props;
+  const [messageList, setMessageList] = useState([]);
+  const [subjectDetails, setSubjectDetails] = useState(null);
+  useEffect(() => {
+    getMessagesList();
+  }, []);
+
+  const getMessagesList = () => {
+    console.log("agent_id: ", props.userDetails.user_details);
+    const agentId = {
+      agent_id: props.userDetails.user_details.works_for[0]
+    };
+    axios
+      .post(
+        "http://172.20.10.2:3000/getMessagesList",
+        // SERVER_URL + "/addNewResidentialRentProperty",
+        // await AsyncStorage.getItem("property")
+        // JSON.stringify({ vichi: "vchi" })
+        agentId
+      )
+      .then(
+        response => {
+          console.log("getReminderList:   ", response.data);
+          setMessageList(response.data);
+          // navigation.navigate("CardDetails");
+        },
+        error => {
+          // console.log(error);
+        }
+      );
+  };
+
+  const getSubjectDetails = item => {
+    // subject is property or customer
+    //   console.log("item: ", item);
+    //   const agentId = {
+    //       agent_id: props.userDetails.user_details.works_for[0]
+    //   };
+    axios
+      .post(
+        "http://172.20.10.2:3000/getSubjectDetails",
+        // SERVER_URL + "/addNewResidentialRentProperty",
+        // await AsyncStorage.getItem("property")
+        // JSON.stringify({ vichi: "vchi" })
+        item.subject
+      )
+      .then(
+        response => {
+          //   console.log("getSubjectDetails:   ", response.data);
+          props.setAnyItemDetails(response.data);
+          navigation.navigate("MessageDetails", {
+            item: item
+          });
+          //   setSubjectDetails(response.data);
+          // navigation.navigate("CardDetails");
+        },
+        error => {
+          // console.log(error);
+        }
+      );
+  };
+
+  const onMessageDetails = item => {
+    // console.log("item:  ", item);
+    getSubjectDetails(item);
+  };
+
+  const ItemView = ({ item }) => {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          flex: 1,
+          justifyContent: "space-between",
+          backgroundColor: "rgba(218, 223, 225, .5)",
+          //   backgroundColor: "#ffffff",
+          borderRadius: 5,
+          marginTop: 2
+          // alignContent: "center"
+          // alignItems: "center"
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => onMessageDetails(item)}
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "80%"
+          }}
+        >
+          <View style={{ padding: 10, fontSize: 16, paddingTop: 15 }}>
+            <Text
+              style={{
+                fontSize: 15,
+                // fontWeight: "600",
+                color: "#424242"
+              }}
+            >
+              I have customer for your {item.subject.location_area},
+              {item.subject.city} property. Please call me on +91{" "}
+              {item.sender_details.mobile} - {item.subject.name}
+            </Text>
+            <View
+              style={{ flexDirection: "row", justifyContent: "flex-start" }}
+            >
+              <Text
+                style={{ textAlign: "right", color: "#424242", fontSize: 12 }}
+              >
+                {new Date(item.create_date_time).toDateString()}
+              </Text>
+            </View>
+          </View>
+          {/* <View>
+            <View style={{ padding: 10 }}>
+              <Text>time</Text>
+              <Text>date</Text>
+              <Text>{item.meeting_date}</Text>
+            </View>
+          </View> */}
+        </TouchableOpacity>
+        {/* <View style={styles.verticalLine} /> */}
+        <TouchableOpacity
+          onPress={() => makeCall(item.client_mobile)}
+          style={{
+            padding: 15,
+            marginTop: 7,
+            paddingRight: 20
+          }}
+        >
+          <Ionicons name="call" color={"#29b6f6"} size={26} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+      {/* <ScrollView> */}
+      <FlatList
+        data={messageList}
+        //data defined in constructor
+        //   ItemSeparatorComponent={ItemSeparatorView}
+        //Item Separator View
+        renderItem={ItemView}
+        keyExtractor={(item, index) => index.toString()}
+      />
+      {/* </ScrollView> */}
+    </SafeAreaView>
+  );
+};
+
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails
+});
+const mapDispatchToProps = {
+  setAnyItemDetails
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Message);
+
+const styles = StyleSheet.create({
+  verticalLine: {
+    height: "100%",
+    width: 2,
+    backgroundColor: "#ffffff"
+  }
+});

@@ -5,6 +5,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 import Meeting from "../screen/Meeting";
 import Reminder from "../screen/Reminder";
+import Message from "../screen/Message";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -21,8 +22,9 @@ const NotificationTopTab = () => {
         />
       </View> */}
       <Tab.Navigator>
-        <Tab.Screen name="General" component={Reminder} />
+        <Tab.Screen name="Message" component={Message} />
         <Tab.Screen name="Reminders" component={Reminder} />
+        <Tab.Screen name="General" component={Reminder} />
       </Tab.Navigator>
     </SafeAreaView>
   );

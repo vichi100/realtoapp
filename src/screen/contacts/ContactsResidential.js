@@ -28,7 +28,10 @@ import ContactResidentialSellCard from "./ContactResidentialSellCard";
 import axios from "axios";
 import SERVER_URL from "../../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
-import { setResidentialCustomerList } from "../../reducers/Action";
+import {
+  setResidentialCustomerList,
+  setAnyItemDetails
+} from "../../reducers/Action";
 import { addDays, numDifferentiation } from "../../util/methods";
 import Snackbar from "../../components/SnackbarComponent";
 
@@ -374,10 +377,6 @@ const ContactsResidential = props => {
     );
   };
 
-  const updateIndex = index => {
-    setIndex(index);
-  };
-
   const searchFilterFunction = text => {
     // Check if searched text is not blank
     if (text) {
@@ -404,29 +403,27 @@ const ContactsResidential = props => {
     }
   };
 
+  const navigateToDetails = (item, propertyFor) => {
+    props.setAnyItemDetails(item);
+    if (propertyFor === "Rent") {
+      navigation.navigate("CustomerDetailsResidentialRentFromList", item);
+    } else if (propertyFor === "Buy") {
+      navigation.navigate("CustomerDetailsResidentialBuyFromList", item);
+    }
+  };
+
   const ItemView = ({ item }) => {
     // // console.log(item);
     if (item.customer_locality.property_type === "Residential") {
       if (item.customer_locality.property_for === "Rent") {
         return (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate(
-                "CustomerDetailsResidentialRentFromList",
-                item
-              )
-            }
-          >
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
             <ContactResidentialRentCard navigation={navigation} item={item} />
           </TouchableOpacity>
         );
       } else if (item.customer_locality.property_for === "Buy") {
         return (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("CustomerDetailsResidentialBuyFromList", item)
-            }
-          >
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Buy")}>
             <ContactResidentialSellCard navigation={navigation} item={item} />
           </TouchableOpacity>
         );
@@ -943,7 +940,8 @@ const mapStateToProps = state => ({
   residentialCustomerList: state.AppReducer.residentialCustomerList
 });
 const mapDispatchToProps = {
-  setResidentialCustomerList
+  setResidentialCustomerList,
+  setAnyItemDetails
 };
 export default connect(
   mapStateToProps,

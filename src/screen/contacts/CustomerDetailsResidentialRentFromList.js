@@ -10,10 +10,12 @@ import {
 import { Avatar } from "react-native-elements";
 import { numDifferentiation } from "../../util/methods";
 import Feather from "react-native-vector-icons/Feather";
+import { connect } from "react-redux";
 
-const CustomerDetailsResidentialRentFromList = ({ route, navigation }) => {
+const CustomerDetailsResidentialRentFromList = props => {
   // const { navigation } = props;
-  const item = route.params;
+  // const item = route.params;
+  const item = props.anyItemDetails;
   // // console.log(item);
   return (
     <ScrollView style={[styles.container]}>
@@ -318,4 +320,14 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CustomerDetailsResidentialRentFromList;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  anyItemDetails: state.AppReducer.anyItemDetails
+});
+// const mapDispatchToProps = {
+//   setCommercialCustomerList
+// };
+export default connect(
+  mapStateToProps,
+  null
+)(CustomerDetailsResidentialRentFromList);

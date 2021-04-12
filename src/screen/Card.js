@@ -11,11 +11,14 @@ import {
   TouchableHighlight,
   Dimensions,
   Share,
-  Linking
+  Linking,
+  TextInput
 } from "react-native";
 import { connect } from "react-redux";
 import { CheckBox } from "react-native-elements";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import axios from "axios";
+import Feather from "react-native-vector-icons/Feather";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Button from "../components/Button";
 import { ButtonGroup } from "react-native-elements";
@@ -35,9 +38,25 @@ import {
 
 const Sliding_Drawer_Width = 250;
 const width = Dimensions.get("window").width;
+const options = [
+  {
+    key: "Residential",
+    text: "Residential"
+  },
+  {
+    key: "Commercial",
+    text: "Commercial"
+  }
+];
 
 const Card = props => {
-  const { navigation, item, disableDrawer, displayCheckBox } = props;
+  const {
+    navigation,
+    item,
+    disableDrawer,
+    displayCheckBox,
+    displayChat
+  } = props;
   // console.log(item.property_id);
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -45,6 +64,16 @@ const Card = props => {
   const [modalVisible, setModalVisible] = useState(false);
   const [index, setIndex] = React.useState(null);
   const [checkBoxList, setCheckBoxList] = useState([]);
+  const [chatModalVisible, setChatModalVisible] = useState(false);
+  // const [text, onChangeText] = React.useState("I have customer for this property. Please call me.");
+  const [message, setMessage] = React.useState(
+    "I have customer for this property. Please call me. "
+  );
+
+  const onChangeText = text => {
+    console.log(text);
+    setMessage(text);
+  };
 
   // useEffect(() => {
   //   // console.log("useEffect in meetingx:   ");
@@ -54,6 +83,69 @@ const Card = props => {
   let Animation = new Animated.Value(0);
 
   let Sliding_Drawer_Toggle = true;
+
+  const onChat = () => {
+    setChatModalVisible(true);
+  };
+
+  const sendMessage = () => {
+    console.log("userDetails: ", props.userDetails);
+    console.log("Property details: ", item);
+    const sender_details = {
+      id: props.userDetails.user_details.id,
+      name: props.userDetails.user_details.name,
+      mobile: props.userDetails.user_details.mobile,
+      city: props.userDetails.user_details.city,
+      company_name: props.userDetails.user_details.company_name
+    };
+    const receiver_details = {
+      id: item.agent_id
+    };
+    const subject = {
+      subject_id: item.property_id, // property_id or buyer_id
+      subject_category: "property", // property, customer
+      subject_type: item.property_type, // commercial, residential
+      subject_for: item.property_for, // buy, sell, rent
+      city: item.property_address.city,
+      location_area: item.property_address.location_area
+    };
+    // const propertyDetails={
+    //   property_id:"",
+    //   property_type:"",
+    //   property_for:"",
+    //   "building_name": "Parag mention",
+    //   "city": "Mumbai",
+    //   "flat_number": "B203",
+    //   "landmark_or_street": "Versova",
+    //   "location_area": "Andheri west",
+    // }
+    const messageDetails = {
+      // agent_id: props.userDetails.user_details.works_for[0]
+      sender_details: sender_details,
+      receiver_details: receiver_details,
+      subject: subject,
+      message: message
+    };
+
+    axios("http://172.20.10.2:3000/sendMessage", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: messageDetails
+    }).then(
+      response => {
+        console.log(response.data);
+        props.setCommercialCustomerList(response.data);
+        setData(response.data);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+    setChatModalVisible(false);
+  };
 
   const onClickCheckBox = item => {
     // // console.log("onClickCheckBox", JSON.stringify(item));
@@ -215,6 +307,22 @@ const Card = props => {
               />
             </View>
           ) : null}
+          {displayChat ? (
+            <TouchableOpacity
+              onPress={() => onChat(item)}
+              style={{ paddingTop: 15 }}
+            >
+              <View
+                style={{
+                  // backgroundColor: "rgba(108, 198, 114, 0.2)",
+                  justifyContent: "center",
+                  marginRight: 15
+                }}
+              >
+                <AntDesign name="message1" color={"#86b9d4"} size={30} />
+              </View>
+            </TouchableOpacity>
+          ) : null}
         </View>
 
         {disableDrawer ? null : (
@@ -375,7 +483,70 @@ const Card = props => {
           </View>
         </View>
       </Modal>
+
       {/* close property modal  */}
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={chatModalVisible}
+        onRequestClose={() => {
+          setChatModalVisible(false);
+        }}
+      >
+        <View style={styles.centeredView1}>
+          <View style={styles.modalView}>
+            <Text style={{ color: "616161", fontSize: 16 }}>
+              Enter your message
+            </Text>
+            <TextInput
+              style={{
+                height: 90,
+                width: "95%",
+                margin: 12,
+                borderWidth: 1,
+                borderColor: "rgba(191, 191, 191, 1)",
+                padding: 7,
+                color: "#616161"
+              }}
+              multiline
+              numberOfLines={10}
+              onChangeText={onChangeText}
+              value={message}
+              placeholder={message}
+              // keyboardType="numeric"
+            />
+
+            <View
+              style={{
+                position: "absolute",
+                flexDirection: "row",
+                right: 0,
+                bottom: 0,
+                marginTop: 20,
+                marginBottom: 20,
+                padding: 20
+                // justifyContent: "flex-end"
+              }}
+            >
+              <TouchableHighlight
+                style={{ ...styles.cancelButton }}
+                onPress={() => {
+                  setChatModalVisible(!chatModalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Cancel</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={{ ...styles.applyButton }}
+                onPress={() => sendMessage()}
+              >
+                <Text style={styles.textStyle}>Send</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };

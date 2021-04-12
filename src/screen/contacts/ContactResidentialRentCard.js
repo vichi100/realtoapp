@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 import { CheckBox } from "react-native-elements";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import { ButtonGroup } from "react-native-elements";
 import { Avatar } from "react-native-elements";
 import { numDifferentiation } from "../../util/methods";
@@ -35,7 +36,13 @@ const Sliding_Drawer_Width = 250;
 const width = Dimensions.get("window").width;
 
 const ContactResidentialRentCard = props => {
-  const { navigation, item, disableDrawer, displayCheckBox } = props;
+  const {
+    navigation,
+    item,
+    disableDrawer,
+    displayCheckBox,
+    displayChat
+  } = props;
   // console.log("ContactResidentialRentCard :    ", item);
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -215,6 +222,22 @@ const ContactResidentialRentCard = props => {
                   }}
                 />
               </View>
+            ) : null}
+            {displayChat ? (
+              <TouchableOpacity
+                onPress={() => onChat(item)}
+                style={{ paddingTop: 15 }}
+              >
+                <View
+                  style={{
+                    // backgroundColor: "rgba(108, 198, 114, 0.2)",
+                    justifyContent: "center",
+                    marginRight: 15
+                  }}
+                >
+                  <AntDesign name="message1" color={"#86b9d4"} size={30} />
+                </View>
+              </TouchableOpacity>
             ) : null}
           </View>
         </View>

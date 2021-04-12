@@ -13,7 +13,9 @@ const initialState = {
   commercialCustomerList: [],
   customerListForMeeting: [],
   propertyListingForMeeting: [],
-  propertyType: "Residential"
+  propertyType: "Residential",
+  globalSearchResult: [],
+  anyItemDetails: null
 };
 const AppReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -102,6 +104,20 @@ const AppReducer = (state = initialState, action) => {
       return {
         ...state,
         propertyType: action.payload
+      };
+
+    case ACTION_TYPES.SET_GLOBAL_SEARCH_RESULT:
+      // console.log("SET_PROPERTY_TYPE");
+      return {
+        ...state,
+        globalSearchResult: action.payload
+      };
+
+    case ACTION_TYPES.SET_ANY_ITEM_DETAILS:
+      // console.log("SET_PROPERTY_TYPE");
+      return {
+        ...state,
+        anyItemDetails: action.payload
       };
 
     default:

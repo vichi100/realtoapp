@@ -38,7 +38,7 @@ const Sliding_Drawer_Width = 250;
 const width = Dimensions.get("window").width;
 
 const Card = props => {
-  const { navigation, item, disableDrawer, displayCheckBox } = props;
+  const { navigation, item, disableDrawer, displayCheckBox, displayChat } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
   const [disabled, setDisabled] = useState(false);
@@ -171,7 +171,7 @@ const Card = props => {
         >
           <View style={styles.headerContainer}>
             <Text style={[styles.title]}>
-              Rent In {item.property_address.building_name},{" "}
+              Sell In {item.property_address.building_name},{" "}
               {item.property_address.landmark_or_street}
             </Text>
             <Text style={[StyleSheet.subTitle]}>
@@ -206,6 +206,22 @@ const Card = props => {
                 }}
               />
             </View>
+          ) : null}
+          {displayChat ? (
+            <TouchableOpacity
+              onPress={() => onChat(item)}
+              style={{ paddingTop: 15 }}
+            >
+              <View
+                style={{
+                  // backgroundColor: "rgba(108, 198, 114, 0.2)",
+                  justifyContent: "center",
+                  marginRight: 15
+                }}
+              >
+                <AntDesign name="message1" color={"#86b9d4"} size={30} />
+              </View>
+            </TouchableOpacity>
           ) : null}
         </View>
         {disableDrawer ? null : (

@@ -18,22 +18,19 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { BottomSheet } from "react-native-btr";
 import { ButtonGroup } from "react-native-elements";
 import { HelperText, useTheme } from "react-native-paper";
-import Button from "../components/Button";
+import Button from "../../components/Button";
 import { Divider } from "react-native-paper";
 import { SocialIcon } from "react-native-elements";
-import Slider from "../components/Slider";
-import SliderX from "../components/SliderX";
-import CardResidentialRent from "./Card";
-import CardResidentialSell from "./CardSell";
+import Slider from "../../components/Slider";
+import SliderX from "../../components/SliderX";
+import CardResidentialRent from "../Card"; //"./Card";
+import CardResidentialSell from "../CardSell";
 import axios from "axios";
-import SERVER_URL from "../util/constant";
+// import SERVER_URL from "../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
-import {
-  setResidentialPropertyList,
-  setAnyItemDetails
-} from "../reducers/Action";
-import { addDays, numDifferentiation } from "../util/methods";
-import Snackbar from "../components/SnackbarComponent";
+import { setResidentialPropertyList } from "../../reducers/Action";
+import { addDays, numDifferentiation } from "../../util/methods";
+import Snackbar from "../../components/SnackbarComponent";
 
 // Dynamic query
 // https://stackoverflow.com/questions/29831164/how-to-filter-in-mongodb-dynamically#:~:text=answer%20was%20accepted%E2%80%A6-,var%20fName%3D%22John%22%2C%20fCountry%3D%22US%22,fName%7D)%3B%20%7D%20if%20(fCountry%20!%3D%3D
@@ -48,7 +45,7 @@ const sortByRentArray = ["Lowest First", "Highest First"];
 const sortByAvailabilityArray = ["Earliest First", "Oldest First"];
 const sortByPostedDateArray = ["Recent First", "Oldest Fist"];
 
-const ListingResidential = props => {
+const GlobalResidentialPropertySearchResult = props => {
   const { navigation } = props;
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -380,18 +377,16 @@ const ListingResidential = props => {
   };
 
   useEffect(() => {
-    // // console.log(
-    //   "props.userDetail33 " +
-    //     JSON.stringify(props.userDetails.user_details.works_for[0])
+    // console.log(
+    //   "props.globalSearchResult ",
+    //   JSON.stringify(props.globalSearchResult)
     // );
-    if (
-      props.userDetails &&
-      props.userDetails.user_details.works_for[0] !== null
-    ) {
-      getListing();
+
+    if (data.length === 0) {
+      setData(props.globalSearchResult);
     }
     // console.log("residential Listing useEffect");
-  }, [props.userDetails]);
+  }, [props.globalSearchResult]);
 
   const getListing = () => {
     // const agentDetailsX = getAgentDetails();
@@ -400,7 +395,7 @@ const ListingResidential = props => {
       agent_id: props.userDetails.user_details.works_for[0]
     };
     // // console.log(JSON.stringify(user));
-    axios("http://172.20.10.2:3000/residentialPropertyListings", {
+    axios("http://172.20.10.2:3000/getAllGlobalListingByLocations", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -409,14 +404,18 @@ const ListingResidential = props => {
       data: user
     }).then(
       response => {
-        // console.log("response.data:      ", response.data);
+        console.log("response.data:      ", response.data);
         setData(response.data);
         props.setResidentialPropertyList(response.data);
       },
       error => {
-        // console.log(error);
+        console.log(error);
       }
     );
+  };
+
+  const updateIndex = index => {
+    setIndex(index);
   };
 
   const searchFilterFunction = text => {
@@ -446,28 +445,35 @@ const ListingResidential = props => {
     }
   };
 
-  const navigateToDetails = (item, propertyFor) => {
-    props.setAnyItemDetails(item);
-    if (propertyFor === "Rent") {
-      navigation.navigate("PropDetailsFromListing", item);
-    } else if (propertyFor === "Sell") {
-      navigation.navigate("PropDetailsFromListingForSell", item);
-    }
-  };
-
   const ItemView = ({ item }) => {
     // // console.log(item);
     if (item.property_type === "Residential") {
       if (item.property_for === "Rent") {
         return (
-          <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <CardResidentialRent navigation={navigation} item={item} />
+          <TouchableOpacity
+            onPress={() => navigation.navigate("PropDetailsFromListing", item)}
+          >
+            <CardResidentialRent
+              navigation={navigation}
+              item={item}
+              disableDrawer={true}
+              displayChat={true}
+            />
           </TouchableOpacity>
         );
       } else if (item.property_for === "Sell") {
         return (
-          <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
-            <CardResidentialSell navigation={navigation} item={item} />
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("PropDetailsFromListingForSell", item)
+            }
+          >
+            <CardResidentialSell
+              navigation={navigation}
+              item={item}
+              disableDrawer={true}
+              displayChat={true}
+            />
           </TouchableOpacity>
         );
       }
@@ -513,15 +519,26 @@ const ListingResidential = props => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.searchBarContainer}>
-        <TextInput
-          style={styles.textInputStyle}
-          onChangeText={text => searchFilterFunction(text)}
-          value={search}
-          underlineColorAndroid="transparent"
-          placeholder="My property | Search by property address, owner"
-        />
+      <View>
+        <View style={{ flexDirection: "row" }}>
+          <TextInput
+            style={styles.textInputStyle}
+            onChangeText={text => searchFilterFunction(text)}
+            value={search}
+            underlineColorAndroid="transparent"
+            placeholder="Global | Search by property location"
+            onFocus={() => navigation.navigate("GlobalSearch")}
+          />
+          <View style={{ position: "absolute", right: 5, paddingTop: 10 }}>
+            <MaterialCommunityIcons
+              name="search-web"
+              color={"#86b9d4"}
+              size={26}
+            />
+          </View>
+        </View>
       </View>
+
       {data.length > 0 ? (
         <View style={styles.container}>
           <FlatList
@@ -859,7 +876,7 @@ const ListingResidential = props => {
         </View>
       </BottomSheet>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={{
           // borderWidth: 1,
           // borderColor: "rgba(0,0,0,0.2)",
@@ -876,8 +893,7 @@ const ListingResidential = props => {
         onPress={() => navigation.navigate("Add")}
       >
         <AntDesign name="pluscircleo" size={40} color="#ffffff" />
-        {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </SafeAreaView>
   );
 };
@@ -972,15 +988,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
-  residentialPropertyList: state.AppReducer.residentialPropertyList
+  residentialPropertyList: state.AppReducer.residentialPropertyList,
+  globalSearchResult: state.AppReducer.globalSearchResult
 });
 const mapDispatchToProps = {
-  setResidentialPropertyList,
-  setAnyItemDetails
+  setResidentialPropertyList
 };
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ListingResidential);
+)(GlobalResidentialPropertySearchResult);
 
 // export default ListingResidential;

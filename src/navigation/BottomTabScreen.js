@@ -9,6 +9,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 
 // import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
 import HomeStackNav from "./HomeStackNav";
+import GlobalSearchStackNav from "./GlobalSearchStackNav";
 import AddNewPropStackScreens from "./AddNewPropStackScreens";
 import ListingStackScreens from "./ListingStackScreens";
 import ContactsStackScreens from "./ContactsStackScreens";
@@ -35,6 +36,16 @@ const BottomTabScreen = () => {
           tabBarLabel: "",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
+          )
+        }}
+      />
+      <Tab.Screen
+        name="GlobalSearchStackNav"
+        component={GlobalSearchStackNav}
+        options={{
+          tabBarLabel: "",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="web" color={color} size={26} />
           )
         }}
       />
