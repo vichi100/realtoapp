@@ -820,7 +820,7 @@ const GlobalResidentialContactsSearchResult = props => {
           />
         </View>
       </BottomSheet>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={{
           // borderWidth: 1,
           // borderColor: "rgba(0,0,0,0.2)",
@@ -837,8 +837,8 @@ const GlobalResidentialContactsSearchResult = props => {
         onPress={() => navigation.navigate("AddCustomer")}
       >
         <AntDesign name="pluscircleo" size={40} color="#ffffff" />
-        {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
-      </TouchableOpacity>
+
+      </TouchableOpacity> */}
       {/* <Snackbar
         visible={isVisible}
         textMessage={errorMessage}

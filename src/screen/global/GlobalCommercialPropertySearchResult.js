@@ -480,7 +480,13 @@ const GlobalCommercialPropertySearchResult = props => {
               navigation.navigate("CommercialRentPropDetails", item)
             }
           >
-            <CardRent navigation={navigation} item={item} displayChat={true} disableDrawer={true} displayCheckBox={false} />
+            <CardRent
+              navigation={navigation}
+              item={item}
+              displayChat={true}
+              disableDrawer={true}
+              displayCheckBox={false}
+            />
           </TouchableOpacity>
         );
       } else if (item.property_for === "Sell") {
@@ -490,7 +496,13 @@ const GlobalCommercialPropertySearchResult = props => {
               navigation.navigate("CommercialSellPropDetails", item)
             }
           >
-            <CardSell navigation={navigation} item={item} displayChat={true} disableDrawer={true} displayCheckBox={false}/>
+            <CardSell
+              navigation={navigation}
+              item={item}
+              displayChat={true}
+              disableDrawer={true}
+              displayCheckBox={false}
+            />
           </TouchableOpacity>
         );
       }
@@ -881,7 +893,7 @@ const GlobalCommercialPropertySearchResult = props => {
         </View>
       </BottomSheet>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={{
           // borderWidth: 1,
           // borderColor: "rgba(0,0,0,0.2)",
@@ -898,8 +910,7 @@ const GlobalCommercialPropertySearchResult = props => {
         onPress={() => navigation.navigate("Add")}
       >
         <AntDesign name="pluscircleo" size={40} color="#ffffff" />
-        {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
-      </TouchableOpacity>
+        </TouchableOpacity> */}
     </SafeAreaView>
   );
 };

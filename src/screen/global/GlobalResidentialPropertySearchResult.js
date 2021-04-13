@@ -414,10 +414,6 @@ const GlobalResidentialPropertySearchResult = props => {
     );
   };
 
-  const updateIndex = index => {
-    setIndex(index);
-  };
-
   const searchFilterFunction = text => {
     // Check if searched text is not blank
     if (text) {

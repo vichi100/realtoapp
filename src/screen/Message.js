@@ -53,7 +53,7 @@ const Message = props => {
 
   const getSubjectDetails = item => {
     // subject is property or customer
-    //   console.log("item: ", item);
+    console.log("item: ", item);
     //   const agentId = {
     //       agent_id: props.userDetails.user_details.works_for[0]
     //   };
@@ -67,7 +67,7 @@ const Message = props => {
       )
       .then(
         response => {
-          //   console.log("getSubjectDetails:   ", response.data);
+          console.log("getSubjectDetails:   ", response.data);
           props.setAnyItemDetails(response.data);
           navigation.navigate("MessageDetails", {
             item: item
@@ -110,17 +110,31 @@ const Message = props => {
           }}
         >
           <View style={{ padding: 10, fontSize: 16, paddingTop: 15 }}>
-            <Text
-              style={{
-                fontSize: 15,
-                // fontWeight: "600",
-                color: "#424242"
-              }}
-            >
-              I have customer for your {item.subject.location_area},
-              {item.subject.city} property. Please call me on +91{" "}
-              {item.sender_details.mobile} - {item.subject.name}
-            </Text>
+            {item.subject.subject_category === "property" ? (
+              <Text
+                style={{
+                  fontSize: 15,
+                  // fontWeight: "600",
+                  color: "#424242"
+                }}
+              >
+                I have customer for your {item.subject.location_area},
+                {item.subject.city} property. Please call me on +91{" "}
+                {item.sender_details.mobile} - {item.subject.name}
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  fontSize: 15,
+                  // fontWeight: "600",
+                  color: "#424242"
+                }}
+              >
+                I have property in {item.subject.location_area},
+                {item.subject.city} for your customer. Please call me on +91{" "}
+                {item.sender_details.mobile} - {item.subject.name}
+              </Text>
+            )}
             <View
               style={{ flexDirection: "row", justifyContent: "flex-start" }}
             >
@@ -136,15 +150,8 @@ const Message = props => {
               </Text>
             </View>
           </View>
-          {/* <View>
-            <View style={{ padding: 10 }}>
-              <Text>time</Text>
-              <Text>date</Text>
-              <Text>{item.meeting_date}</Text>
-            </View>
-          </View> */}
         </TouchableOpacity>
-        {/* <View style={styles.verticalLine} /> */}
+
         <TouchableOpacity
           onPress={() => makeCall(item.client_mobile)}
           style={{

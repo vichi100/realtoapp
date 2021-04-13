@@ -11,7 +11,8 @@ import {
   TouchableHighlight,
   Dimensions,
   Share,
-  Linking
+  Linking,
+  TextInput
 } from "react-native";
 import { connect } from "react-redux";
 import { CheckBox } from "react-native-elements";
@@ -28,6 +29,7 @@ import {
   setPropListForMeeting,
   setCustomerDetailsForMeeting
 } from "../../reducers/Action";
+import axios from "axios";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -45,13 +47,75 @@ const ContactResidentialSellCard = props => {
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
+  let Animation = new Animated.Value(0);
+  let Sliding_Drawer_Toggle = true;
   const [disabled, setDisabled] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [index, setIndex] = React.useState(null);
+  const [chatModalVisible, setChatModalVisible] = useState(false);
+  // const [text, onChangeText] = React.useState("I have customer for this property. Please call me.");
+  const [message, setMessage] = React.useState(
+    "I have property for this customer. Please call me. "
+  );
 
-  let Animation = new Animated.Value(0);
+  const onChangeText = text => {
+    console.log(text);
+    setMessage(text);
+  };
 
-  let Sliding_Drawer_Toggle = true;
+  const onChat = () => {
+    setChatModalVisible(true);
+  };
+
+  const sendMessage = () => {
+    console.log("userDetails: ", props.userDetails);
+    console.log("customer details: ", item);
+    const sender_details = {
+      id: props.userDetails.user_details.id,
+      name: props.userDetails.user_details.name,
+      mobile: props.userDetails.user_details.mobile,
+      city: props.userDetails.user_details.city,
+      company_name: props.userDetails.user_details.company_name
+    };
+    const receiver_details = {
+      id: item.agent_id
+    };
+    const subject = {
+      subject_id: item.customer_id, // property_id or buyer_id
+      subject_category: "customer", // property, customer
+      subject_type: item.customer_locality.property_type, // commercial, residential
+      subject_for: item.customer_locality.property_for, // buy, sell, rent
+      city: item.customer_locality.city,
+      location_area: item.customer_locality.location_area
+    };
+
+    const messageDetails = {
+      // agent_id: props.userDetails.user_details.works_for[0]
+      sender_details: sender_details,
+      receiver_details: receiver_details,
+      subject: subject,
+      message: message
+    };
+
+    axios("http://172.20.10.2:3000/sendMessage", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: messageDetails
+    }).then(
+      response => {
+        console.log(response.data);
+        // props.setCommercialCustomerList(response.data);
+        // setData(response.data);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+    setChatModalVisible(false);
+  };
 
   const updateIndex = index => {
     setIndex(index);
@@ -388,6 +452,69 @@ const ContactResidentialSellCard = props => {
                 }}
               >
                 <Text style={styles.textStyle}>Apply</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* message modal  */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={chatModalVisible}
+        onRequestClose={() => {
+          setChatModalVisible(false);
+        }}
+      >
+        <View style={styles.centeredView1}>
+          <View style={styles.modalView}>
+            <Text style={{ color: "616161", fontSize: 16 }}>
+              Enter your message
+            </Text>
+            <TextInput
+              style={{
+                height: 90,
+                width: "95%",
+                margin: 12,
+                borderWidth: 1,
+                borderColor: "rgba(191, 191, 191, 1)",
+                padding: 7,
+                color: "#616161"
+              }}
+              multiline
+              numberOfLines={10}
+              onChangeText={onChangeText}
+              value={message}
+              placeholder={message}
+              // keyboardType="numeric"
+            />
+
+            <View
+              style={{
+                position: "absolute",
+                flexDirection: "row",
+                right: 0,
+                bottom: 0,
+                marginTop: 20,
+                marginBottom: 20,
+                padding: 20
+                // justifyContent: "flex-end"
+              }}
+            >
+              <TouchableHighlight
+                style={{ ...styles.cancelButton }}
+                onPress={() => {
+                  setChatModalVisible(!chatModalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Cancel</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={{ ...styles.applyButton }}
+                onPress={() => sendMessage()}
+              >
+                <Text style={styles.textStyle}>Send</Text>
               </TouchableHighlight>
             </View>
           </View>

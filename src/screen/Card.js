@@ -109,16 +109,7 @@ const Card = props => {
       city: item.property_address.city,
       location_area: item.property_address.location_area
     };
-    // const propertyDetails={
-    //   property_id:"",
-    //   property_type:"",
-    //   property_for:"",
-    //   "building_name": "Parag mention",
-    //   "city": "Mumbai",
-    //   "flat_number": "B203",
-    //   "landmark_or_street": "Versova",
-    //   "location_area": "Andheri west",
-    // }
+
     const messageDetails = {
       // agent_id: props.userDetails.user_details.works_for[0]
       sender_details: sender_details,

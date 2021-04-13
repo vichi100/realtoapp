@@ -17,6 +17,13 @@ import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 import PropDetailsFromListing from "./PropDetailsFromListing";
+import PropDetailsFromListingForSell from "./PropDetailsFromListingForSell";
+import CommercialRentPropDetails from "./commercial/rent/CommercialRentPropDetails";
+import CommercialSellPropDetails from "./commercial/sell/CommercialSellPropDetails";
+import CustomerDetailsResidentialRentFromList from "./contacts/CustomerDetailsResidentialRentFromList";
+import CustomerDetailsResidentialBuyFromList from "./contacts/CustomerDetailsResidentialBuyFromList";
+import CustomerDetailsCommercialRentFromList from "./contacts/CustomerDetailsCommercialRentFromList";
+import CustomerDetailsCommercialBuyFromList from "./contacts/CustomerDetailsCommercialBuyFromList";
 
 const MessageDetails = props => {
   const item = props.route.params.item;
@@ -52,8 +59,35 @@ const MessageDetails = props => {
               </Text>
             </View>
           </View>
-
-          <PropDetailsFromListing />
+          {item.subject.subject_category === "property" ? (
+            item.subject.subject_type === "Residential" ? (
+              item.subject.subject_for === "Rent" ? (
+                <PropDetailsFromListing />
+              ) : (
+                <PropDetailsFromListingForSell />
+              )
+            ) : item.subject.subject_type === "Commercial" ? (
+              item.subject.subject_for === "Rent" ? (
+                <CommercialRentPropDetails />
+              ) : (
+                <CommercialSellPropDetails />
+              )
+            ) : null
+          ) : item.subject.subject_category === "customer" ? (
+            item.subject.subject_type === "Residential" ? (
+              item.subject.subject_for === "Rent" ? (
+                <CustomerDetailsResidentialRentFromList />
+              ) : (
+                <CustomerDetailsResidentialBuyFromList />
+              )
+            ) : item.subject.subject_type === "Commercial" ? (
+              item.subject.subject_for === "Rent" ? (
+                <CustomerDetailsCommercialRentFromList />
+              ) : (
+                <CustomerDetailsCommercialBuyFromList />
+              )
+            ) : null
+          ) : null}
         </View>
       </ScrollView>
     </SafeAreaView>
