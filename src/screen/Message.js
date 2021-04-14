@@ -22,6 +22,13 @@ const Message = props => {
   const { navigation } = props;
   const [messageList, setMessageList] = useState([]);
   const [subjectDetails, setSubjectDetails] = useState(null);
+
+  const makeCall = item => {
+    console.log("item make call:  ", item.sender_details.mobile);
+    const url = "tel://" + item.sender_details.mobile;
+    Linking.openURL(url);
+  };
+
   useEffect(() => {
     getMessagesList();
   }, []);
@@ -93,7 +100,10 @@ const Message = props => {
           flexDirection: "row",
           flex: 1,
           justifyContent: "space-between",
-          backgroundColor: "rgba(218, 223, 225, .5)",
+          // backgroundColor: "rgba(218, 223, 225, .5)",
+          // backgroundColor: "rgba(238, 213, 183, .6)",
+          backgroundColor: "rgba(176, 196, 222, .3)",
+
           //   backgroundColor: "#ffffff",
           borderRadius: 5,
           marginTop: 2
@@ -153,7 +163,7 @@ const Message = props => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => makeCall(item.client_mobile)}
+          onPress={() => makeCall(item)}
           style={{
             padding: 15,
             marginTop: 7,
