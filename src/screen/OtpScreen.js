@@ -16,6 +16,7 @@ import Counter from "./Counter";
 import Button from "../components/Button";
 import axios from "axios";
 import { setUserDetails } from "../reducers/Action";
+import {SERVER_URL} from "../util/constant";
 
 const OtpScreen = props => {
   const { navigation } = props;
@@ -32,7 +33,7 @@ const OtpScreen = props => {
     };
     axios
       .post(
-        "http://192.168.0.100:3000/checkLoginRole",
+        SERVER_URL+"/checkLoginRole",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })

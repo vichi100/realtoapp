@@ -28,6 +28,7 @@ import {
   setPropReminderList
 } from "../reducers/Action";
 import axios from "axios";
+import {SERVER_URL} from "../util/constant";
 
 // import Share from "react-native-share";
 
@@ -93,7 +94,7 @@ const Profile = props => {
     const agent = {
       agent_id: props.userDetails.user_details.id
     };
-    axios("http://192.168.0.100:3000/deleteAgentAccount", {
+    axios(SERVER_URL+"/deleteAgentAccount", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

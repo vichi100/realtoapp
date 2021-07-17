@@ -10,7 +10,7 @@ import {
 import Slideshow from "../components/Slideshow";
 import Button from "../components/Button";
 import axios from "axios";
-import SERVER_URL from "../util/constant";
+import {SERVER_URL} from "../util/constant";
 import { numDifferentiation, dateFormat } from "../util/methods";
 
 const AddNewPropCommercialSellFinalDetails = props => {
@@ -64,7 +64,7 @@ const AddNewPropCommercialSellFinalDetails = props => {
     // console.log(await AsyncStorage.getItem("property"));
     axios
       .post(
-        "http://192.168.0.100:3000/addNewCommercialProperty",
+        SERVER_URL+"/addNewCommercialProperty",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })

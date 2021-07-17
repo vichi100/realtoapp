@@ -26,7 +26,7 @@ import SliderX from "../../components/SliderX";
 import CardResidentialRent from "../Card"; //"./Card";
 import CardResidentialSell from "../CardSell";
 import axios from "axios";
-// import SERVER_URL from "../util/constant";
+import {SERVER_URL} from "../../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import { setResidentialPropertyList } from "../../reducers/Action";
 import { addDays, numDifferentiation } from "../../util/methods";
@@ -395,7 +395,7 @@ const GlobalResidentialPropertySearchResult = props => {
       agent_id: props.userDetails.user_details.works_for[0]
     };
     // // console.log(JSON.stringify(user));
-    axios("http://192.168.0.100:3000/getAllGlobalListingByLocations", {
+    axios(SERVER_URL+"/getAllGlobalListingByLocations", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

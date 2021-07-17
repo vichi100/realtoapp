@@ -23,6 +23,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Snackbar from "../../components/SnackbarComponent";
 import axios from "axios";
 import { dateFormat } from "../../util/methods";
+import {SERVER_URL} from "../../util/constant";
 import {
   setUserMobile,
   setUserDetails,
@@ -215,7 +216,7 @@ const CustomerMeeting = props => {
     };
     axios
       .post(
-        "http://192.168.0.100:3000/addNewReminder",
+        SERVER_URL+"/addNewReminder",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -245,7 +246,7 @@ const CustomerMeeting = props => {
     };
     axios
       .post(
-        "http://192.168.0.100:3000/getPropReminderList",
+        SERVER_URL+"/getPropReminderList",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })

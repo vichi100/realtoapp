@@ -26,7 +26,7 @@ import SliderX from "../components/SliderX";
 import CardResidentialRent from "./Card";
 import CardResidentialSell from "./CardSell";
 import axios from "axios";
-import SERVER_URL from "../util/constant";
+import {SERVER_URL} from "../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import {
   setResidentialPropertyList,
@@ -400,7 +400,7 @@ const ListingResidential = props => {
       agent_id: props.userDetails.user_details.works_for[0]
     };
     // // console.log(JSON.stringify(user));
-    axios("http://192.168.0.100:3000/residentialPropertyListings", {
+    axios(SERVER_URL+"/residentialPropertyListings", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

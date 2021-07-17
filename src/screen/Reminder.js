@@ -16,6 +16,7 @@ import {
 import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
+import {SERVER_URL} from "../util/constant";
 
 const Reminder = props => {
   const { navigation } = props;
@@ -29,7 +30,7 @@ const Reminder = props => {
     };
     axios
       .post(
-        "http://192.168.0.100:3000/getReminderList",
+        SERVER_URL+"/getReminderList",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })

@@ -23,6 +23,7 @@ import { Avatar } from "react-native-elements";
 import axios from "axios";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { numDifferentiation } from "../../util/methods";
+import {SERVER_URL} from "../../util/constant";
 import {
   setUserMobile,
   setUserDetails,
@@ -97,7 +98,7 @@ const CustomerCommercialRentCard = props => {
       message: message
     };
 
-    axios("http://192.168.0.100:3000/sendMessage", {
+    axios(SERVER_URL+"/sendMessage", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

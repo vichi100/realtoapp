@@ -22,6 +22,7 @@ import EmployeeList from "./EmployeeList";
 import axios from "axios";
 import { setEmployeeList } from "../reducers/Action";
 import { connect } from "react-redux";
+import {SERVER_URL} from "../util/constant";
 
 const ManageEmployee = props => {
   const { navigation } = props;
@@ -63,7 +64,7 @@ const ManageEmployee = props => {
       mobile: employeeMobile.trim(),
       access_rights: isEditEnabled ? "edit" : "read"
     };
-    axios("http://192.168.0.100:3000/addEmployee", {
+    axios(SERVER_URL+"/addEmployee", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -97,7 +98,7 @@ const ManageEmployee = props => {
   const getEmployeeList = () => {
     // console.log("user_id: " + JSON.stringify(props.userDetails));
     const user = { user_id: props.userDetails.user_details.id };
-    axios("http://192.168.0.100:3000/getEmployeeList", {
+    axios(SERVER_URL+"/getEmployeeList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

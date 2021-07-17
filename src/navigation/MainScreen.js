@@ -6,8 +6,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
 // import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
-import Login from "../screen/Login";
-import OtpScreen from "../screen/OtpScreen";
+import Login from "../screen/login/Login";
+import OtpScreen from "../screen/login/OtpScreen";
 import BottomTabScreen from "./BottomTabScreen";
 import ProfileForm from "../screen/ProfileForm";
 

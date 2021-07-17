@@ -29,6 +29,7 @@ import {
   setPropReminderList,
   setPropListForMeeting
 } from "../../../reducers/Action";
+import {SERVER_URL}  from "../../../util/constant";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -98,7 +99,7 @@ const Card = props => {
       message: message
     };
 
-    axios("http://192.168.0.100:3000/sendMessage", {
+    axios(SERVER_URL+"/sendMessage", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

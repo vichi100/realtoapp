@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Button from "../../components/Button";
 import axios from "axios";
-import SERVER_URL from "../../util/constant";
+import {SERVER_URL} from "../../util/constant";
 import { numDifferentiation } from "../../util/methods";
 import { Avatar } from "react-native-elements";
 
@@ -78,7 +78,7 @@ const AddNewCustomerRentResidentialFinalDetails = props => {
     // );
     axios
       .post(
-        "http://192.168.0.100:3000/addNewResidentialCustomer",
+        SERVER_URL+"/addNewResidentialCustomer",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })

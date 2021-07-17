@@ -30,6 +30,7 @@ import {
   setCustomerDetailsForMeeting
 } from "../reducers/Action";
 import PropertyReminder from "./PropertyReminder";
+import {SERVER_URL} from "../util/constant";
 
 const reminderForArray = ["Call", "Meeting", "Property Visit"];
 const ampmArray = ["AM", "PM"];
@@ -232,7 +233,7 @@ const Meeting = props => {
     };
     axios
       .post(
-        "http://192.168.0.100:3000/addNewReminder",
+        SERVER_URL+"/addNewReminder",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -262,7 +263,7 @@ const Meeting = props => {
     };
     axios
       .post(
-        "http://192.168.0.100:3000/getPropReminderList",
+        SERVER_URL+"/getPropReminderList",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })

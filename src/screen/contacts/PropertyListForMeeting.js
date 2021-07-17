@@ -25,7 +25,7 @@ import Slider from "../../components/Slider";
 import CardResidentialRent from "../Card";
 import CardResidentialSell from "../CardSell";
 import axios from "axios";
-import SERVER_URL from "../../util/constant";
+import {SERVER_URL} from "../../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 
 import CardRent from "../commercial/rent/Card";
@@ -76,7 +76,7 @@ const PropertyListForMeeting = props => {
       property_for: propertyFor
     };
     // console.log(JSON.stringify(user));
-    axios("http://192.168.0.100:3000/getPropertyListingForMeeting", {
+    axios(SERVER_URL+"/getPropertyListingForMeeting", {
       // getPropertyListingForMeeting
       method: "post",
       headers: {

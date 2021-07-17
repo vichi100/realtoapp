@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 import { setAnyItemDetails } from "../reducers/Action";
+import {SERVER_URL} from "../util/constant";
 
 const Message = props => {
   const { navigation } = props;
@@ -40,7 +41,7 @@ const Message = props => {
     };
     axios
       .post(
-        "http://192.168.0.100:3000/getMessagesList",
+        SERVER_URL+"/getMessagesList",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -66,7 +67,7 @@ const Message = props => {
     //   };
     axios
       .post(
-        "http://192.168.0.100:3000/getSubjectDetails",
+        SERVER_URL+"/getSubjectDetails",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })

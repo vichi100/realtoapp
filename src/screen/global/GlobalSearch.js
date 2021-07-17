@@ -17,7 +17,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { ButtonGroup } from "react-native-elements";
 import Button from "../../components/Button";
 import axios from "axios";
-// import SERVER_URL from "../util/constant";
+import {SERVER_URL} from "../../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import {
   setResidentialPropertyList,
@@ -70,7 +70,7 @@ const GlobalSearch = props => {
       propertyTypeIndex: propertyTypeIndex
     };
     // // console.log(JSON.stringify(user));
-    axios("http://192.168.0.100:3000/getAllGlobalListingByLocations", {
+    axios(SERVER_URL+"/getAllGlobalListingByLocations", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

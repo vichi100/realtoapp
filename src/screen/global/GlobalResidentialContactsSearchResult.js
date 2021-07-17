@@ -26,7 +26,7 @@ import SliderX from "../../components/SliderX";
 import ContactResidentialRentCard from "../contacts/ContactResidentialRentCard";
 import ContactResidentialSellCard from "../contacts/ContactResidentialSellCard";
 import axios from "axios";
-import SERVER_URL from "../../util/constant";
+import {SERVER_URL} from "../../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import { setResidentialCustomerList } from "../../reducers/Action";
 import { addDays, numDifferentiation } from "../../util/methods";
@@ -345,7 +345,7 @@ const GlobalResidentialContactsSearchResult = props => {
       agent_id: props.userDetails.user_details.works_for[0]
     };
     // console.log(JSON.stringify(user));
-    axios("http://192.168.0.100:3000/residentialCustomerList", {
+    axios(SERVER_URL+"/residentialCustomerList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

@@ -24,7 +24,7 @@ import SliderX from "../../components/SliderX";
 import CardRent from "../commercial/rent/Card";
 import CardSell from "../commercial/sell/Card";
 import axios from "axios";
-import SERVER_URL from "../../util/constant";
+import {SERVER_URL} from "../../util/constant";
 import { setCommercialPropertyList } from "../../reducers/Action";
 import { addDays, numDifferentiation } from "../../util/methods";
 import Snackbar from "../../components/SnackbarComponent";
@@ -421,7 +421,7 @@ const GlobalCommercialPropertySearchResult = props => {
       agent_id: props.userDetails.user_details.works_for[0]
     };
 
-    axios("http://192.168.0.100:3000/commercialPropertyListings", {
+    axios(SERVER_URL+"/commercialPropertyListings", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

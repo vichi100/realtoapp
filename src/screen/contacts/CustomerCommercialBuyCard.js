@@ -21,6 +21,7 @@ import { Avatar } from "react-native-elements";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { CheckBox } from "react-native-elements";
 import { numDifferentiation } from "../../util/methods";
+import {SERVER_URL} from "../../util/constant";
 import { connect } from "react-redux";
 import {
   setUserMobile,
@@ -97,7 +98,7 @@ const CustomerCommercialBuyCard = props => {
       message: message
     };
 
-    axios("http://192.168.0.100:3000/sendMessage", {
+    axios(SERVER_URL+"/sendMessage", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

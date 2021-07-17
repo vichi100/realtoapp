@@ -35,7 +35,7 @@ import { Divider } from "react-native-paper";
 import { SocialIcon } from "react-native-elements";
 import Slider from "../components/Slider";
 import axios from "axios";
-import SERVER_URL from "../util/constant";
+import {SERVER_URL} from "../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 
 CustomerListForMeeting = props => {
@@ -71,7 +71,7 @@ CustomerListForMeeting = props => {
       property_for: propertyFor
     };
     // console.log(JSON.stringify(queryObj));
-    axios("http://192.168.0.100:3000/getCustomerListForMeeting", {
+    axios(SERVER_URL+"/getCustomerListForMeeting", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

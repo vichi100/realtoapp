@@ -24,7 +24,7 @@ import { SocialIcon } from "react-native-elements";
 import CustomerCommercialRentCard from "../contacts/CustomerCommercialRentCard";
 import CustomerCommercialBuyCard from "../contacts/CustomerCommercialBuyCard";
 import axios from "axios";
-import SERVER_URL from "../../util/constant";
+import {SERVER_URL} from "../../util/constant";
 import Slider from "../../components/Slider";
 import SliderX from "../../components/SliderX";
 import { setCommercialCustomerList } from "../../reducers/Action";
@@ -373,7 +373,7 @@ const GlobalCommercialCustomersSearchResult = props => {
       agent_id: props.userDetails.user_details.works_for[0]
     };
 
-    axios("http://192.168.0.100:3000/commercialCustomerList", {
+    axios(SERVER_URL+"/commercialCustomerList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

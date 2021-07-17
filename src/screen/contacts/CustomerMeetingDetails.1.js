@@ -46,7 +46,7 @@ const CustomerMeetingDetails = props => {
     };
     axios
       .post(
-        "http://192.168.0.100:3000/getCustomerAndMeetingDetails",
+        SERVER_URL+"/getCustomerAndMeetingDetails",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })

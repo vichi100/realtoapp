@@ -16,6 +16,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Snackbar from "../components/SnackbarComponent";
 import { setUserDetails } from "../reducers/Action";
 import { connect } from "react-redux";
+import {SERVER_URL} from "../util/constant";
 
 import axios from "axios";
 
@@ -57,7 +58,7 @@ const ProfileForm = props => {
     updateUserProfile(profileDetails);
   };
   const updateUserProfile = profileDetails => {
-    axios("http://192.168.0.100:3000/updateUserProfile", {
+    axios(SERVER_URL+"/updateUserProfile", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

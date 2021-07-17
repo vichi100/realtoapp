@@ -15,6 +15,7 @@ import {
 import { setUserDetails, setPropReminderList } from "../reducers/Action";
 import axios from "axios";
 import { connect } from "react-redux";
+import {SERVER_URL} from "../util/constant";
 
 // rezar
 // rezo
@@ -76,7 +77,7 @@ const Home = props => {
     const agent = {
       agent_id: props.userDetails.user_details.works_for[0]
     };
-    axios("http://192.168.0.100:3000/getTotalListingSummary", {
+    axios(SERVER_URL+"/getTotalListingSummary", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -98,7 +99,7 @@ const Home = props => {
     const agent = {
       agent_id: props.userDetails.user_details.id
     };
-    axios("http://192.168.0.100:3000/reactivateAccount", {
+    axios(SERVER_URL+"/reactivateAccount", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
