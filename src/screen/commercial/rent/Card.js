@@ -98,7 +98,7 @@ const Card = props => {
       message: message
     };
 
-    axios("http://172.20.10.2:3000/sendMessage", {
+    axios("http://192.168.0.100:3000/sendMessage", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

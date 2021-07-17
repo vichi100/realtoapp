@@ -70,7 +70,7 @@ const GlobalSearch = props => {
       propertyTypeIndex: propertyTypeIndex
     };
     // // console.log(JSON.stringify(user));
-    axios("http://172.20.10.2:3000/getAllGlobalListingByLocations", {
+    axios("http://192.168.0.100:3000/getAllGlobalListingByLocations", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

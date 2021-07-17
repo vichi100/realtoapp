@@ -400,7 +400,7 @@ const ListingResidential = props => {
       agent_id: props.userDetails.user_details.works_for[0]
     };
     // // console.log(JSON.stringify(user));
-    axios("http://172.20.10.2:3000/residentialPropertyListings", {
+    axios("http://192.168.0.100:3000/residentialPropertyListings", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

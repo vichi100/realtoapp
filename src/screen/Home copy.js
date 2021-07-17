@@ -11,7 +11,16 @@ import {
   Modal,
   TouchableHighlight
 } from "react-native";
-
+import {
+  VictoryBar,
+  VictoryChart,
+  VictoryTheme,
+  VictoryGroup,
+  VictoryLabel,
+  VictoryLegend,
+  VictoryContainer,
+  VictoryAxis
+} from "victory-native";
 import { setUserDetails, setPropReminderList } from "../reducers/Action";
 import axios from "axios";
 import { connect } from "react-redux";
@@ -183,6 +192,81 @@ const Home = props => {
 
           
 
+          <VictoryChart
+            // height={chartHeight}
+            // width={chartWidth}
+            containerComponent={<VictoryContainer responsive={true} />}
+            // minDomain={{ y: 0 }}
+            // domainPadding={{ y: 1 }}
+          >
+            <VictoryGroup offset={20}>
+              <VictoryBar
+                horizontal
+                data={rent}
+                // barRatio={0.8}
+                // barWidth={({ index }) => index * 2 + 8}
+                x="quarter"
+                y="earnings"
+                labels={({ datum }) => datum.earnings}
+                // style={{
+                //   data: {
+                //     fill: "#00b0ff"
+                //   }
+                // }}
+                offsetY={20}
+                // padding={{ top: 50, bottom: 60 }}
+                style={{
+                  data: { fill: "#00b0ff" }
+                  // parent: { border: "1px solid #ccc" }
+                }}
+                // labelComponent={<VictoryLabel dy={30} />}
+              />
+              {/* <VictoryAxis
+            // tickValues specifies both the number of ticks and where
+            // they are placed on the axis
+            dependentAxis
+            style={{
+              tickLabels: { fontSize: 15, padding: 15, width: 60 }
+            }}
+            tickValues={[1, 2, 3, 4]}
+            tickFormat={["Yes", "No", "Probably", "Never"]}
+          /> */}
+              <VictoryBar
+                data={sell}
+                // barWidth={({ index }) => index * 2 + 8}
+                x="quarter"
+                y="earnings"
+                labels={({ datum }) => datum.earnings}
+                style={{
+                  data: {
+                    fill: "#d500f9"
+                  }
+                }}
+              />
+            </VictoryGroup>
+
+            <VictoryLegend
+              x={200}
+              y={20}
+              // title="Legend"
+              centerTitle
+              orientation="horizontal"
+              // gutter={10}
+              style={{
+                // border: { stroke: "black" },
+                // title: { fontSize: 20 },
+                margin: 30
+              }}
+              data={[
+                // { name: "Rent", symbol: { fill: "tomato", type: "star" } },
+                { name: "Rent", symbol: { fill: "#00b0ff" } },
+                { name: "Sell", symbol: { fill: "#d500f9" } }
+              ]}
+            />
+          </VictoryChart>
+          
+          
+          
           <Text
             style={{
               fontSize: 16,
@@ -194,7 +278,57 @@ const Home = props => {
             Listing Summary / Months
           </Text>
 
+{/*           
 
+          <VictoryChart
+            // height={chartHeight}
+            // width={chartWidth}
+            containerComponent={<VictoryContainer responsive={true} />}
+          >
+            <VictoryGroup offset={20}>
+              <VictoryBar
+                horizontal
+                data={winDealData}
+                x="quarter"
+                y="earnings"
+                labels={({ datum }) => datum.earnings}
+                style={{
+                  data: {
+                    fill: "#6fbf73"
+                  }
+                }}
+                // labelComponent={<VictoryLabel dy={30} />}
+              />
+              <VictoryBar
+                data={lostDealData}
+                x="quarter"
+                y="earnings"
+                labels={({ datum }) => datum.earnings}
+                style={{
+                  data: {
+                    fill: "#ff9100"
+                  }
+                }}
+              />
+            </VictoryGroup>
+
+            <VictoryLegend
+              x={200}
+              y={4}
+              // title="Legend"
+              centerTitle
+              orientation="horizontal"
+              gutter={20}
+              // style={{ border: { stroke: "black" }, title: { fontSize: 20 } }}
+              data={[
+                // { name: "One", symbol: { fill: "tomato", type: "star" } },
+                { name: "Won", symbol: { fill: "#6fbf73" } },
+                { name: "Lost", symbol: { fill: "#ff9100" } }
+              ]}
+            />
+          </VictoryChart>
+          
+           */}
           
           <Text
             style={{

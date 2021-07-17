@@ -40,7 +40,7 @@ const Message = props => {
     };
     axios
       .post(
-        "http://172.20.10.2:3000/getMessagesList",
+        "http://192.168.0.100:3000/getMessagesList",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -66,7 +66,7 @@ const Message = props => {
     //   };
     axios
       .post(
-        "http://172.20.10.2:3000/getSubjectDetails",
+        "http://192.168.0.100:3000/getSubjectDetails",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })

@@ -76,7 +76,7 @@ const PropertyListForMeeting = props => {
       property_for: propertyFor
     };
     // console.log(JSON.stringify(user));
-    axios("http://172.20.10.2:3000/getPropertyListingForMeeting", {
+    axios("http://192.168.0.100:3000/getPropertyListingForMeeting", {
       // getPropertyListingForMeeting
       method: "post",
       headers: {

@@ -9,7 +9,8 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
-  AsyncStorage
+  AsyncStorage,
+  ImageBackground
 } from "react-native";
 import OtpInputs from "./OtpInputs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -39,7 +40,7 @@ const Login = props => {
   const getUserDetails = async () => {
     // AsyncStorage.setItem("agent_details", JSON.stringify(agentDetails));
 
-    // AsyncStorage.clear();
+    AsyncStorage.clear();
     // userDetailsStr: { "user_details": { "user_type": "agent", "id": "15476a82-997a-4bef-bf1b-b1236f6c177e", "expo_token": null, "name": null, "company_name": null, "mobile": "9833097595", "address": null, "city": null, "access_rights": "all", "works_for": ["15476a82-997a-4bef-bf1b-b1236f6c177e"] } }
 
     const userDetailsStr = await AsyncStorage.getItem("user_details");
@@ -60,19 +61,15 @@ const Login = props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-      <ScrollView
-      // contentContainerStyle={{
-      //   flexGrow: 1,
-      //   justifyContent: "center",
-      //   alignItems: "center"
-      // }}
-      >
+    
+     
+        <ImageBackground source={require("../../assets/images/rbg.jpeg")} resizeMode="cover" style={{flex: 1,
+    }}>
         <View
           style={{
             flex: 1,
             // width: "100%",
-            marginTop: "30%",
+            marginTop: "20%",
             marginLeft: 30,
             marginRight: 30,
             justifyContent: "center",
@@ -83,18 +80,18 @@ const Login = props => {
             style={{ width: 200, height: 200 }}
             source={require("../../assets/images/logo.png")}
           />
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row" , marginTop: 70}}>
             <TextInput
               style={{
                 borderWidth: 1, // size/width of the border
                 borderColor: "lightgrey", // color of the border
-                backgroundColor: "lightgrey",
+                // backgroundColor: "lightgrey",
                 paddingLeft: 10,
                 width: 60,
                 height: 45,
                 // borderRadius: 5
-                color: "#000000",
-                fontSize: 16
+                color: "#ffffff",
+                fontSize: 20
               }}
               // placeholder="+91"
               value="+91"
@@ -106,11 +103,14 @@ const Login = props => {
                 paddingLeft: 10,
                 width: "80%",
                 height: 45,
+                color: "#ffffff",
+                // fontWeight: "800",
                 // borderRadius: 5
-                fontSize: 16
+                fontSize: 20
               }}
               onChangeText={text => setMobileNumber(text)}
               placeholder="Mobile"
+              textAlign={'center'}
             />
           </View>
 
@@ -144,8 +144,8 @@ const Login = props => {
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
-      <TouchableOpacity
+        
+        <TouchableOpacity
         style={{
           position: "absolute",
           bottom: 10,
@@ -156,12 +156,15 @@ const Login = props => {
         onPress={() => onSkip()}
       >
         <Text
-        // style={{ position: "absolute", bottom: 20, right: 20, margin: 20 }}
+        style={{ color: "#fff" }}
         >
           Skip
         </Text>
       </TouchableOpacity>
-    </SafeAreaView>
+        </ImageBackground>
+     
+      
+    
   );
 };
 

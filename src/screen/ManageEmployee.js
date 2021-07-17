@@ -63,7 +63,7 @@ const ManageEmployee = props => {
       mobile: employeeMobile.trim(),
       access_rights: isEditEnabled ? "edit" : "read"
     };
-    axios("http://172.20.10.2:3000/addEmployee", {
+    axios("http://192.168.0.100:3000/addEmployee", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -97,7 +97,7 @@ const ManageEmployee = props => {
   const getEmployeeList = () => {
     // console.log("user_id: " + JSON.stringify(props.userDetails));
     const user = { user_id: props.userDetails.user_details.id };
-    axios("http://172.20.10.2:3000/getEmployeeList", {
+    axios("http://192.168.0.100:3000/getEmployeeList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

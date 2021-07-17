@@ -377,7 +377,7 @@ const CustomersCommercial = props => {
       agent_id: props.userDetails.user_details.works_for[0]
     };
 
-    axios("http://172.20.10.2:3000/commercialCustomerList", {
+    axios("http://192.168.0.100:3000/commercialCustomerList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

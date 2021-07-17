@@ -78,7 +78,7 @@ const AddNewCustomerRentResidentialFinalDetails = props => {
     // );
     axios
       .post(
-        "http://172.20.10.2:3000/addNewResidentialCustomer",
+        "http://192.168.0.100:3000/addNewResidentialCustomer",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
