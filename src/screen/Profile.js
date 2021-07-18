@@ -92,7 +92,7 @@ const Profile = props => {
 
   const deleteAgentAccount = () => {
     const agent = {
-      agent_id: props.userDetails.user_details.id
+      agent_id: props.userDetails.id
     };
     axios(SERVER_URL+"/deleteAgentAccount", {
       method: "post",
@@ -104,8 +104,8 @@ const Profile = props => {
     }).then(
       response => {
         if (response.data === "success") {
-          // console.log("1: " + JSON.stringify(props.userDetails.user_details));
-          props.userDetails.user_details["user_status"] = "suspend";
+          // console.log("1: " + JSON.stringify(props.userDetails));
+          props.userDetails["user_status"] = "suspend";
 
           setModalVisible(!modalVisible);
           updateAsyncStorageData();
@@ -146,15 +146,15 @@ const Profile = props => {
                 }
               ]}
             >
-              {props.userDetails.user_details &&
-              props.userDetails.user_details.name
-                ? props.userDetails.user_details.name
+              {props.userDetails &&
+              props.userDetails.name
+                ? props.userDetails.name
                 : "Guest"}
             </Title>
             <Caption style={styles.caption}>
-              {props.userDetails.user_details &&
-              props.userDetails.user_details.company_name
-                ? props.userDetails.user_details.company_name
+              {props.userDetails &&
+              props.userDetails.company_name
+                ? props.userDetails.company_name
                 : "Company"}
             </Caption>
           </View>
@@ -165,9 +165,9 @@ const Profile = props => {
         <View style={styles.row}>
           <Icon name="map-marker-radius" color="#777777" size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>
-            {props.userDetails.user_details &&
-            props.userDetails.user_details.city
-              ? props.userDetails.user_details.city
+            {props.userDetails &&
+            props.userDetails.city
+              ? props.userDetails.city
               : "Guest City"}
           </Text>
         </View>
@@ -175,8 +175,8 @@ const Profile = props => {
           <Icon name="phone" color="#777777" size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>
             +91{" "}
-            {" " + props.userDetails.user_details &&
-              props.userDetails.user_details.mobile}
+            {" " + props.userDetails &&
+              props.userDetails.mobile}
           </Text>
         </View>
         {/* <View style={styles.row}>
@@ -186,8 +186,8 @@ const Profile = props => {
           </Text>
         </View> */}
       </View>
-      {props.userDetails.user_details &&
-      props.userDetails.user_details.user_type === "agent" ? (
+      {props.userDetails &&
+      props.userDetails.user_type === "agent" ? (
         <View
           style={{
             flexDirection: "row",
@@ -207,8 +207,8 @@ const Profile = props => {
         </View>
       ) : null}
 
-      {props.userDetails.user_details &&
-      props.userDetails.user_details.user_type === "agent" ? (
+      {props.userDetails &&
+      props.userDetails.user_type === "agent" ? (
         <View style={[{ flexDirection: "column", marginTop: 20 }]}>
           <View
             style={{

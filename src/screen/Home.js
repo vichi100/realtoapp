@@ -54,16 +54,16 @@ const Home = props => {
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    // console.log("home1: " + JSON.stringify(props.userDetails));
+    console.log("home1: " + JSON.stringify(props.userDetails));
     if (
-      props.userDetails.user_details.user_status === "suspend" &&
-      props.userDetails.user_details.user_type === "agent"
+      props.userDetails.user_status === "suspend" && 
+      props.userDetails.user_type === "agent"
     ) {
       // console.log("home2");
       setModalVisible(true);
     }
-    // else if (props.userDetails.user_details.user_status === "suspend" &&
-    //   props.userDetails.user_details.user_type === "agent"){
+    // else if (props.userDetails.user_status === "suspend" &&
+    //   props.userDetails.user_type === "agent"){
 
     // }
     // navigation.navigate("Login");
@@ -75,7 +75,7 @@ const Home = props => {
 
   const getTotalListingSummary = () => {
     const agent = {
-      agent_id: props.userDetails.user_details.works_for[0]
+      agent_id: props.userDetails.works_for[0]
     };
     axios(SERVER_URL+"/getTotalListingSummary", {
       method: "post",
@@ -97,7 +97,7 @@ const Home = props => {
 
   const reactivateAccount = () => {
     const agent = {
-      agent_id: props.userDetails.user_details.id
+      agent_id: props.userDetails.id
     };
     axios(SERVER_URL+"/reactivateAccount", {
       method: "post",
@@ -109,8 +109,8 @@ const Home = props => {
     }).then(
       response => {
         if (response.data === "success") {
-          // console.log("1: " + JSON.stringify(props.userDetails.user_details));
-          props.userDetails.user_details["user_status"] = "active";
+          // console.log("1: " + JSON.stringify(props.userDetails));
+          props.userDetails["user_status"] = "active";
 
           setModalVisible(!modalVisible);
           updateAsyncStorageData();

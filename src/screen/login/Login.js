@@ -12,7 +12,6 @@ import {
   AsyncStorage,
   ImageBackground
 } from "react-native";
-// import OtpInputs from "./OtpInputs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Left } from "native-base";
@@ -24,6 +23,12 @@ const Login = props => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [otp, setOTP] = useState("");
   const [userDetails, setUserDetails] = useState(null);
+
+  const setMobileNumberX = (text)=>{
+    setMobileNumber(text)
+  }
+
+  
   useEffect(() => {
     // console.log("Login");
     // const userDetails = getUserDetails().then(// console.log(userDetails));
@@ -90,8 +95,8 @@ const Login = props => {
                 width: 60,
                 height: 45,
                 // borderRadius: 5
-                color: "#ffffff",
-                fontSize: 20
+                color: "#DCDCDC",
+                fontSize: 18
               }}
               // placeholder="+91"
               value="+91"
@@ -106,13 +111,16 @@ const Login = props => {
                 color: "#ffffff",
                 // fontWeight: "800",
                 // borderRadius: 5
-                fontSize: 20
+                fontSize: 16
               }}
-              onChangeText={text => setMobileNumber(text)}
-              placeholder="Mobile"
+              onChangeText={text => setMobileNumberX(text)}
+              placeholder="Enter Mobile Number"
               textAlign={'center'}
-			  keyboardType={'numeric'}
-				returnKeyType={'done'}
+              keyboardType={'numeric'}
+              returnKeyType={'done'}
+              placeholderTextColor={'#DCDCDC'}
+              placeholderStyle={{fontSize: 16}}
+              // value={mobileNumber.length === 0 ? "+91-": mobileNumber}
             />
           </View>
 

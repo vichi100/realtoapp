@@ -53,7 +53,7 @@ CustomerListForMeeting = props => {
   useEffect(() => {
     if (
       props.userDetails &&
-      props.userDetails.user_details.works_for[0] !== null
+      props.userDetails.works_for[0] !== null
     ) {
       getCustomerList();
     }
@@ -66,7 +66,7 @@ CustomerListForMeeting = props => {
 
     // console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
     const queryObj = {
-      agent_id: props.userDetails.user_details.works_for[0],
+      agent_id: props.userDetails.works_for[0],
       property_type: propertyType,
       property_for: propertyFor
     };

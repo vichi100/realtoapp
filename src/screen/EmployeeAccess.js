@@ -45,7 +45,7 @@ const EmployeeAccess = props => {
 
   const removeEmployee = empIdToBeRemoved => {
     const user = {
-      agent_id: props.userDetails.user_details.works_for[0],
+      agent_id: props.userDetails.works_for[0],
       employee_id: empIdToBeRemoved
     };
     axios(SERVER_URL+"/removeEmployee", {
@@ -97,7 +97,7 @@ const EmployeeAccess = props => {
     );
   };
 
-  return props.userDetails.user_details.id === props.item.id ? null : (
+  return props.userDetails.id === props.item.id ? null : (
     <View
       style={{
         flex: 1,

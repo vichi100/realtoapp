@@ -55,11 +55,12 @@ const ContactsTopTab = () => {
                   style={{
                     marginLeft: 5,
                     paddingTop: 5,
+                    marginRight: 5,
                     color: "#616161",
                     fontSize: 12
                   }}
                 >
-                  RESIDENTIAL BUYER
+                  RESIDENTIAL CUSTOMER
                 </Text>
               </View>
             )
@@ -82,12 +83,13 @@ const ContactsTopTab = () => {
                 <Text
                   style={{
                     marginLeft: 5,
+                    marginRight: 5,
                     paddingTop: 5,
                     color: "#616161",
                     fontSize: 12
                   }}
                 >
-                  COMMERCIAL BUYER
+                  COMMERCIAL CUSTOMER
                 </Text>
               </View>
             )

@@ -19,7 +19,7 @@ import axios from 'axios';
 import { setUserDetails } from '../../reducers/Action';
 import OTPTextView from './OTPTextView';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
-import { SERVER_MOVIE_API_URL, SERVER_USER_API_URL } from '../utils/constants';
+import { SERVER_URL } from '../../util/constant';
 
 const OtpScreen = (props) => {
 	const { navigation } = props;
@@ -30,12 +30,12 @@ const OtpScreen = (props) => {
 	useEffect(() => {
 		setLoading(true);
 		const otpX = Math.floor(Math.random() * 900000) + 100000;
-		const mobileX = props.countryCode + props.userMobile;
+		const mobileX = props.userMobileNumber;
 		generateOTP(otpX, mobileX);
 	}, []);
 
 	const resendOTP = () => {
-		const mobileX = props.countryCode + props.userMobile;
+		const mobileX = props.countryCode + props.userMobileNumber;
 		generateOTP(otp, mobileX);
 	};
 
@@ -48,7 +48,7 @@ const OtpScreen = (props) => {
 		};
 		axios
 			.post(
-				SERVER_USER_API_URL + '/generateOTP',
+				SERVER_URL + '/generateOTP',
 				// SERVER_MOVIE_API_URL + "/addNewResidentialRentProperty",
 				// await AsyncStorage.getItem("property")
 				// JSON.stringify({ vichi: "vchi" })
@@ -72,7 +72,7 @@ const OtpScreen = (props) => {
 		}
 	};
 	const onSubmit = () => {
-		const mobileX = props.countryCode + props.userMobile;
+		const mobileX = props.countryCode + props.userMobileNumber;
 		console.log('onSubmit: ', mobileX);
 		const userObj = {
 			mobile: mobileX,
@@ -81,7 +81,7 @@ const OtpScreen = (props) => {
 		};
 		axios
 			.post(
-				SERVER_USER_API_URL + '/getUserDetails',
+				SERVER_URL + '/getUserDetails',
 				// SERVER_MOVIE_API_URL + "/addNewResidentialRentProperty",
 				// await AsyncStorage.getItem("property")
 				// JSON.stringify({ vichi: "vchi" })
@@ -123,7 +123,7 @@ const OtpScreen = (props) => {
 			{/* <ActivityIndicator animating size="large" /> */}
 		</View>
 	) : (
-		<SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
+		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 			<ScrollView>
 				<View
 					style={{
@@ -133,9 +133,9 @@ const OtpScreen = (props) => {
 						alignItems: 'center'
 					}}
 				>
-					<Text style={{ color: '#F5F5F5', fontSize: 18, fontWeight: '500' }}>OTP sent to mobile</Text>
-					<Text style={{ color: '#F5F5F5', fontSize: 16, fontWeight: '500', marginTop: 10 }}>
-						{props.countryCode + ' ' + props.userMobile}
+					<Text style={{ color: '#000000', fontSize: 18, fontWeight: '500' }}>OTP sent to mobile</Text>
+					<Text style={{ color: '#696969', fontSize: 16, fontWeight: '500', marginTop: 10 }}>
+						{props.countryCode + ' ' + props.userMobileNumber}
 					</Text>
 				</View>
 				<View
@@ -171,11 +171,12 @@ const OtpScreen = (props) => {
 							width: 40,
 							height: 40,
 							borderWidth: 0.9,
-							borderColor: '#fff',
+							borderColor: '#000',
 							borderRadius: 5,
-							fontSize: 18
+							fontSize: 18,
+							color: "#000"
 						}}
-						codeInputHighlightStyle={{ borderColor: '#03DAC6' }}
+						codeInputHighlightStyle={{ borderColor: '#000' }}
 						onCodeFilled={(code) => {
 							console.log(`Code is ${code}, you are good to go!`);
 							handleSubmit(code);
@@ -195,7 +196,7 @@ const OtpScreen = (props) => {
 			</ScrollView>
 			<View style={{ position: 'absolute', bottom: 15, right: 15 }}>
 				<TouchableOpacity onPress={() => onSkip()}>
-					<Text style={{ color: '#fff' }}>{'Skip >>'}</Text>
+					<Text style={{ color: '#000000' }}>{'Skip >>'}</Text>
 				</TouchableOpacity>
 			</View>
 		</SafeAreaView>
@@ -203,7 +204,7 @@ const OtpScreen = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-	userMobile: state.AppReducer.userMobile,
+	userMobileNumber: state.AppReducer.userMobileNumber,
 	country: state.AppReducer.country,
 	countryCode: state.AppReducer.countryCode
 });

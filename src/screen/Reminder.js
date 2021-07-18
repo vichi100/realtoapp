@@ -26,7 +26,7 @@ const Reminder = props => {
       return;
     }
     const agentId = {
-      agent_id: props.userDetails.user_details.works_for[0]
+      agent_id: props.userDetails.works_for[0]
     };
     axios
       .post(

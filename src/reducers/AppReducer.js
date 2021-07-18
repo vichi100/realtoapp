@@ -4,6 +4,7 @@ const initialState = {
   employeeList: [],
   userMobileNumber: null,
   userDetails: null,
+  countryCode: "+91",
   propReminderList: [],
   propListForMeeting: [],
   customerDetailsForMeeting: null,

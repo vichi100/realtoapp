@@ -329,11 +329,11 @@ const ContactsResidential = props => {
   useEffect(() => {
     // // console.log(
     //   "props.userDetail33 " +
-    //     JSON.stringify(props.userDetails.user_details.works_for[0])
+    //     JSON.stringify(props.userDetails.works_for[0])
     // );
     if (
       props.userDetails &&
-      props.userDetails.user_details.works_for[0] !== null
+      props.userDetails.works_for[0] !== null
     ) {
       getListing();
     }
@@ -355,7 +355,7 @@ const ContactsResidential = props => {
     // const agentDetailsX = getAgentDetails();
     // console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
     const user = {
-      agent_id: props.userDetails.user_details.works_for[0]
+      agent_id: props.userDetails.works_for[0]
     };
     // console.log(JSON.stringify(user));
     axios(SERVER_URL+"/residentialCustomerList", {

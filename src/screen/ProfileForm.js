@@ -47,7 +47,7 @@ const ProfileForm = props => {
     }
     // // console.log("0");
     const profileDetails = {
-      user_id: props.userDetails.user_details.id,
+      user_id: props.userDetails.id,
       name: name.trim(),
       company: company.trim(),
       city: city.trim(),
@@ -69,12 +69,12 @@ const ProfileForm = props => {
       response => {
         if (response.data === "success") {
           // AsyncStorage.setItem("property", JSON.stringify(property));
-          // console.log("1: " + JSON.stringify(props.userDetails.user_details));
-          props.userDetails.user_details["name"] = profileDetails.name;
-          props.userDetails.user_details["city"] = profileDetails.city;
-          props.userDetails.user_details["company_name"] =
+          // console.log("1: " + JSON.stringify(props.userDetails));
+          props.userDetails["name"] = profileDetails.name;
+          props.userDetails["city"] = profileDetails.city;
+          props.userDetails["company_name"] =
             profileDetails.company;
-          props.userDetails.user_details["email"] = profileDetails.email;
+          props.userDetails["email"] = profileDetails.email;
           props.setUserDetails({ ...props.userDetails });
 
           updateAsyncStorageData(profileDetails);

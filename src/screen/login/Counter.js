@@ -1,6 +1,6 @@
 import React from 'react';
-import { Switch, StyleSheet, View, Button, Text, ScrollView } from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import { Switch, StyleSheet, View, Button, Text, ScrollView , TouchableOpacity} from 'react-native';
+// import { TouchableHighlight } from 'react-native-gesture-handler';
 
 class Counter extends React.Component {
 	constructor() {
@@ -40,12 +40,12 @@ class Counter extends React.Component {
 					alignItem: 'center'
 				}}
 			>
-				<Text style={{ color: '#fff', fontSize: 16, fontWeight: '500' }}>Resend OTP in </Text>
-				<Text style={{ color: '#fff', fontSize: 16, fontWeight: '500' }}> {this.state.count}</Text>
-				<Text style={{ color: '#fff', fontSize: 16, fontWeight: '500' }}>s</Text>
+				<Text style={{ color: '#696969', fontSize: 16, fontWeight: '500' }}>Resend OTP in </Text>
+				<Text style={{ color: '#696969', fontSize: 16, fontWeight: '500' }}> {this.state.count}</Text>
+				<Text style={{ color: '#696969', fontSize: 16, fontWeight: '500' }}>s</Text>
 			</View>
 		) : (
-			<TouchableHighlight onPress={() => this.resend()}>
+			<TouchableOpacity onPress={() => this.resend()}>
 				<View
 					style={{
 						flexDirection: 'row',
@@ -54,9 +54,9 @@ class Counter extends React.Component {
 						alignItem: 'center'
 					}}
 				>
-					<Text style={{ color: '#00BFFF' }}>Resend OTP</Text>
+					<Text style={{ color: '#6495ED' }}>Resend OTP</Text>
 				</View>
-			</TouchableHighlight>
+			</TouchableOpacity>
 		);
 	}
 }

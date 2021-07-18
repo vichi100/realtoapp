@@ -88,7 +88,7 @@ const AddNewProperty = props => {
     }
     // console.log("props.userDetails: " + JSON.stringify(props.userDetails));
     const property = {
-      agent_id: props.userDetails.user_details.works_for[0],
+      agent_id: props.userDetails.works_for[0],
       property_type: selectedPropType.key,
       property_for: propertyForArray[propertyForIndex],
       property_status: "open",

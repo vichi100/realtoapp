@@ -72,11 +72,11 @@ const ContactResidentialSellCard = props => {
     console.log("userDetails: ", props.userDetails);
     console.log("customer details: ", item);
     const sender_details = {
-      id: props.userDetails.user_details.id,
-      name: props.userDetails.user_details.name,
-      mobile: props.userDetails.user_details.mobile,
-      city: props.userDetails.user_details.city,
-      company_name: props.userDetails.user_details.company_name
+      id: props.userDetails.id,
+      name: props.userDetails.name,
+      mobile: props.userDetails.mobile,
+      city: props.userDetails.city,
+      company_name: props.userDetails.company_name
     };
     const receiver_details = {
       id: item.agent_id
@@ -91,7 +91,7 @@ const ContactResidentialSellCard = props => {
     };
 
     const messageDetails = {
-      // agent_id: props.userDetails.user_details.works_for[0]
+      // agent_id: props.userDetails.works_for[0]
       sender_details: sender_details,
       receiver_details: receiver_details,
       subject: subject,

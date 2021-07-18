@@ -29,7 +29,7 @@ const PropertyReminder = props => {
   //     return;
   //   }
   //   const agentId = {
-  //     agent_id: props.userDetails.user_details.works_for
+  //     agent_id: props.userDetails.works_for
   //   };
   //   axios
   //     .post(

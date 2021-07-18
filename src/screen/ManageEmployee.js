@@ -56,10 +56,10 @@ const ManageEmployee = props => {
       return;
     }
     const user = {
-      user_id: props.userDetails.user_details.works_for[0],
-      company_name: props.userDetails.user_details.company_name,
-      address: props.userDetails.user_details.address,
-      city: props.userDetails.user_details.city,
+      user_id: props.userDetails.works_for[0],
+      company_name: props.userDetails.company_name,
+      address: props.userDetails.address,
+      city: props.userDetails.city,
       name: employeeName.trim(),
       mobile: employeeMobile.trim(),
       access_rights: isEditEnabled ? "edit" : "read"
@@ -97,7 +97,7 @@ const ManageEmployee = props => {
 
   const getEmployeeList = () => {
     // console.log("user_id: " + JSON.stringify(props.userDetails));
-    const user = { user_id: props.userDetails.user_details.id };
+    const user = { user_id: props.userDetails.id };
     axios(SERVER_URL+"/getEmployeeList", {
       method: "post",
       headers: {
