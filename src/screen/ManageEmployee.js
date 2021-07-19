@@ -47,11 +47,11 @@ const ManageEmployee = props => {
 
   const onSubmit = () => {
     if (employeeName.trim() === "") {
-      setErrorMessage("Client name is missing");
+      setErrorMessage("Employee name is missing");
       setIsVisible(true);
       return;
     } else if (employeeMobile.trim() === "") {
-      setErrorMessage("Client mobile is missing");
+      setErrorMessage("Employee mobile is missing");
       setIsVisible(true);
       return;
     }
