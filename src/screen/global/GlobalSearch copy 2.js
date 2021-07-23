@@ -17,7 +17,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { ButtonGroup } from "react-native-elements";
 import Button from "../../components/Button";
 import axios from "axios";
-import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/constant";
+import {SERVER_URL, GOOGLE_SEARCH_PLACES_API_KEY} from "../../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import {
   setResidentialPropertyList,
@@ -76,7 +76,7 @@ const GlobalSearch = props => {
       propertyTypeIndex: propertyTypeIndex
     };
     // // console.log(JSON.stringify(user));
-    axios(SERVER_URL + "/getAllGlobalListingByLocations", {
+    axios(SERVER_URL+"/getAllGlobalListingByLocations", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -142,8 +142,8 @@ const GlobalSearch = props => {
       });
   };
 
-  const onSelectPlace = (item) => {
-    console.log("selected place: ", JSON.stringify(item.description))
+  const onSelectPlace = (item) =>{
+    console.log("selected place: ",JSON.stringify(item.description))
     setSearchKeyword(item.description);
     setIsShowingResults(false)
     // this.setState({
@@ -159,98 +159,82 @@ const GlobalSearch = props => {
         flex: 1
       }}
     >
-      {/* <ScrollView> */}
-      <View style={{ marginLeft: 30, marginRight: 30, backgroundColor: "#f2eeeb" }}>
-        <MaterialTabs
-          items={["Property", "Customer"]}
-          selectedIndex={selectedTab}
-          onChange={onTabSelect}
-          barColor="#ffffff"
-          textStyle={{ color: "#636466" }}
-          indicatorColor="rgba(137, 196, 244, 1)"
-          activeTextColor="white"
-        />
-      </View>
-      <View style={{ backgroundColor: "#f2eeeb" }}>
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <ButtonGroup
-            selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-            onPress={selectPropertyType}
-            selectedIndex={propertyTypeIndex}
-            buttons={propertyTypeArray}
-            // containerStyle={{ height: 30 }}
-            textStyle={{ textAlign: "center" }}
-            selectedTextStyle={{ color: "#fff" }}
-            containerStyle={{ borderRadius: 10, width: 350 }}
-            containerBorderRadius={0}
-          />
-        </View>
-      </View>
-      <Text
+      <View
         style={{
-          marginBottom: 10,
-          color: "#636466",
-          marginTop: 20,
-          textAlign: "center"
+          flex: 1,
+          backgroundColor: "#ffffff",
+          justifyContent: "center"
         }}
       >
-        {message}
-      </Text>
-
-
-      <View style={{
-        flex: 1,
-        margin: 5,
-        // backgroundColor: "#A9A9A9"
-      }}>
-        <GooglePlacesAutocomplete
-          placeholder="Search by area"
-          query={{
-            key: GOOGLE_PLACES_API_KEY,
-            language: 'en', // language of the results
-            components: 'country:in',
-            // types: '(cities)'
-          }}
-          isRowScrollable={true}
-          onPress={(data, details) => console.log(data, details)}
-          styles={{
-            textInputContainer: {
-              // backgroundColor: 'grey',
-              // borderLeftWidth: 4,
-              // borderRightWidth: 4,
-              // height: 70
-            },
-            textInput: {
-              height: 38,
-              color: '#000000',
-              fontSize: 16,
-              borderColor: "#C0C0C0",
-              borderLeftWidth: 1,
-              borderRightWidth: 1,
-              borderBottomWidth: 1,
-              borderTopWidth: 1
-            },
-            predefinedPlacesDescription: {
-              color: '#1faadb',
-            },
-          }}
-
-        // this in only required for use on the web. See https://git.io/JflFv more for details.
-        />
-        <View style={{ marginTop: 10, marginLeft: 20, marginRight: 20 }}>
-          <Button title="SEARCH" onPress={() => onSubmit()} />
+        <View style={{ marginLeft: 30, marginRight: 30 }}>
+          <MaterialTabs
+            items={["Property", "Customer"]}
+            selectedIndex={selectedTab}
+            onChange={onTabSelect}
+            barColor="#ffffff"
+            textStyle={{ color: "#636466" }}
+            indicatorColor="rgba(137, 196, 244, 1)"
+            activeTextColor="white"
+          />
         </View>
 
-      </View>
-      {/* </ScrollView> */}
-      <Snackbar
-        visible={isVisible}
-        textMessage={errorMessage}
-        position={"top"}
-        actionHandler={() => dismissSnackBar()}
-        actionText="OK"
-      />
+        <View style={{ backgroundColor: "#f2eeeb", marginBottom: "50%" }}>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <ButtonGroup
+              selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+              onPress={selectPropertyType}
+              selectedIndex={propertyTypeIndex}
+              buttons={propertyTypeArray}
+              // containerStyle={{ height: 30 }}
+              textStyle={{ textAlign: "center" }}
+              selectedTextStyle={{ color: "#fff" }}
+              containerStyle={{ borderRadius: 10, width: 350 }}
+              containerBorderRadius={0}
+            />
+          </View>
+          <Text
+            style={{
+              marginBottom: 10,
+              color: "#636466",
+              marginTop: 20,
+              textAlign: "center"
+            }}
+          >
+            {message}
+          </Text>
 
+          {/* <View
+            style={{
+              // flexDirection: "row",
+              margin: 3
+            }}
+          > */}
+            <GooglePlacesAutocomplete
+      placeholder='Search'
+      onPress={(data, details = null) => {
+        // 'details' is provided when fetchDetails = true
+        console.log(data, details);
+      }}
+      query={{
+        key: GOOGLE_SEARCH_PLACES_API_KEY,
+        language: 'en',
+        components: 'country:in',
+      }}
+    />
+            
+          {/* </View> */}
+          {/* <View style={{ marginTop: 40, marginLeft: 20, marginRight: 20 }}>
+            <Button title="SEARCH" onPress={() => onSubmit()} />
+          </View> */}
+        </View>
+        <Snackbar
+          visible={isVisible}
+          textMessage={errorMessage}
+          position={"top"}
+          actionHandler={() => dismissSnackBar()}
+          actionText="OK"
+        />
+      </View>
     </SafeAreaView>
   );
 };

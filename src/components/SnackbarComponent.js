@@ -72,7 +72,8 @@ class SnackbarComponent extends Component {
               style={[
                 this.props.messageStyle,
                 styles.textMessage,
-                { color: this.props.messageColor }
+                { color: this.props.messageColor },
+                { marginTop: 15 }
               ]}
             >
               {this.props.textMessage}
@@ -84,7 +85,8 @@ class SnackbarComponent extends Component {
                 style={[
                   this.props.actionStyle,
                   styles.actionText,
-                  { color: this.props.accentColor }
+                  { color: this.props.accentColor },
+                  { marginTop: 15 }
                 ]}
               >
                 {this.props.actionText.toUpperCase()}

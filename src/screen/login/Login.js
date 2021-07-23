@@ -24,11 +24,11 @@ const Login = props => {
   const [otp, setOTP] = useState("");
   const [userDetails, setUserDetails] = useState(null);
 
-  const setMobileNumberX = (text)=>{
+  const setMobileNumberX = (text) => {
     setMobileNumber(text)
   }
 
-  
+
   useEffect(() => {
     // console.log("Login");
     // const userDetails = getUserDetails().then(// console.log(userDetails));
@@ -45,7 +45,7 @@ const Login = props => {
   const getUserDetails = async () => {
     // AsyncStorage.setItem("agent_details", JSON.stringify(agentDetails));
 
-    AsyncStorage.clear();
+    // AsyncStorage.clear();
     // userDetailsStr: { "user_details": { "user_type": "agent", "id": "15476a82-997a-4bef-bf1b-b1236f6c177e", "expo_token": null, "name": null, "company_name": null, "mobile": "9833097595", "address": null, "city": null, "access_rights": "all", "works_for": ["15476a82-997a-4bef-bf1b-b1236f6c177e"] } }
 
     const userDetailsStr = await AsyncStorage.getItem("user_details");
@@ -67,95 +67,96 @@ const Login = props => {
 
   return (
     // ../../assets/images/rbg.jpeg
-     
-        <ImageBackground source={require("../../../assets/images/rbg.jpeg")} resizeMode="cover" style={{flex: 1,
+
+    <ImageBackground source={require("../../../assets/images/rbg.jpeg")} resizeMode="cover" style={{
+      flex: 1,
     }}>
+      <View
+        style={{
+          flex: 1,
+          // width: "100%",
+          marginTop: "20%",
+          marginLeft: 30,
+          marginRight: 30,
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <Image
+          style={{ width: 200, height: 200 }}
+          source={require("../../../assets/images/logo.png")}
+        />
+        <View style={{ flexDirection: "row", marginTop: 70 }}>
+          <TextInput
+            style={{
+              borderWidth: 1, // size/width of the border
+              borderColor: "lightgrey", // color of the border
+              // backgroundColor: "lightgrey",
+              paddingLeft: 10,
+              width: 60,
+              height: 45,
+              // borderRadius: 5
+              color: "#DCDCDC",
+              fontSize: 18
+            }}
+            // placeholder="+91"
+            value="+91"
+          />
+          <TextInput
+            style={{
+              borderWidth: 1, // size/width of the border
+              borderColor: "lightgrey", // color of the border
+              paddingLeft: 10,
+              width: "80%",
+              height: 45,
+              color: "#ffffff",
+              // fontWeight: "800",
+              // borderRadius: 5
+              fontSize: 16
+            }}
+            onChangeText={text => setMobileNumberX(text)}
+            placeholder="Enter Mobile Number"
+            textAlign={'center'}
+            keyboardType={'numeric'}
+            returnKeyType={'done'}
+            placeholderTextColor={'#DCDCDC'}
+            placeholderStyle={{ fontSize: 16 }}
+          // value={mobileNumber.length === 0 ? "+91-": mobileNumber}
+          />
+        </View>
+
         <View
           style={{
             flex: 1,
-            // width: "100%",
-            marginTop: "20%",
-            marginLeft: 30,
-            marginRight: 30,
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            width: "100%",
+            marginTop: 20
           }}
         >
-          <Image
-            style={{ width: 200, height: 200 }}
-            source={require("../../../assets/images/logo.png")}
-          />
-          <View style={{ flexDirection: "row" , marginTop: 70}}>
-            <TextInput
-              style={{
-                borderWidth: 1, // size/width of the border
-                borderColor: "lightgrey", // color of the border
-                // backgroundColor: "lightgrey",
-                paddingLeft: 10,
-                width: 60,
-                height: 45,
-                // borderRadius: 5
-                color: "#DCDCDC",
-                fontSize: 18
-              }}
-              // placeholder="+91"
-              value="+91"
-            />
-            <TextInput
-              style={{
-                borderWidth: 1, // size/width of the border
-                borderColor: "lightgrey", // color of the border
-                paddingLeft: 10,
-                width: "80%",
-                height: 45,
-                color: "#ffffff",
-                // fontWeight: "800",
-                // borderRadius: 5
-                fontSize: 16
-              }}
-              onChangeText={text => setMobileNumberX(text)}
-              placeholder="Enter Mobile Number"
-              textAlign={'center'}
-              keyboardType={'numeric'}
-              returnKeyType={'done'}
-              placeholderTextColor={'#DCDCDC'}
-              placeholderStyle={{fontSize: 16}}
-              // value={mobileNumber.length === 0 ? "+91-": mobileNumber}
-            />
-          </View>
-
-          <View
+          <TouchableOpacity
+            onPress={() => onNext()}
             style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              marginTop: 20
+              padding: 5,
+              // width: 200,
+              justifyContent: "flex-end",
+              flexDirection: "row",
+              // backgroundColor: "rgba(60,179,113, .9)",
+              left: 0
             }}
           >
-            <TouchableOpacity
-              onPress={() => onNext()}
-              style={{
-                padding: 5,
-                // width: 200,
-                justifyContent: "flex-end",
-                flexDirection: "row",
-                // backgroundColor: "rgba(60,179,113, .9)",
-                left: 0
-              }}
-            >
-              {/* <Text style={{ padding: 5, textAlign: "center" }}>NEXT</Text> */}
-              <Ionicons
-                name="caret-forward-circle"
-                color={"#000000"}
-                size={50}
-                color={"rgba(60,179,113, .9)"}
-              />
-            </TouchableOpacity>
-          </View>
+            {/* <Text style={{ padding: 5, textAlign: "center" }}>NEXT</Text> */}
+            <Ionicons
+              name="caret-forward-circle"
+              color={"#000000"}
+              size={50}
+              color={"rgba(60,179,113, .9)"}
+            />
+          </TouchableOpacity>
         </View>
-        
-        <TouchableOpacity
+      </View>
+
+      <TouchableOpacity
         style={{
           position: "absolute",
           bottom: 10,
@@ -166,15 +167,15 @@ const Login = props => {
         onPress={() => onSkip()}
       >
         <Text
-        style={{ color: "#fff" }}
+          style={{ color: "#fff" }}
         >
           Skip
         </Text>
       </TouchableOpacity>
-        </ImageBackground>
-     
-      
-    
+    </ImageBackground>
+
+
+
   );
 };
 
