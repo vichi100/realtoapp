@@ -17,6 +17,8 @@ import RadioButton from "../../components/RadioButtons";
 import { ButtonGroup } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../../components/SnackbarComponent";
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/constant";
 
 const options = [
   {
@@ -116,7 +118,7 @@ const ContactLocalityDetailsForm = props => {
     >
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
         <ScrollView style={styles.container}>
-        <Text>Enter city and locations where customer wants the property</Text> 
+          <Text>Enter city and locations where customer wants the property</Text>
           <TextInput
             label="City*"
             placeholder="Enter city where customer wants property"
@@ -134,7 +136,53 @@ const ContactLocalityDetailsForm = props => {
               }
             }}
           />
-          <TextInput
+          <View style={{ marginTop: 20 }} />
+          <GooglePlacesAutocomplete
+            placeholder="Area / Location"
+            minLength={2}
+            query={{
+              key: GOOGLE_PLACES_API_KEY,
+              language: 'en', // language of the results
+              components: 'country:in',
+              // types: '(cities)'
+              // types: ["address","cities", "locality", "sublocality"],
+              // types: ["establishment"],
+              // fields: ["formatted_address", "geometry", "name"],
+              // fields: ["address_components"],
+              // types: ["cities", "locality", "sublocality",]
+            }}
+            // currentLocation={true}
+            isRowScrollable={true}
+            fetchDetails={true}
+            onPress={(data, details) => onSelectPlace(data, details)}
+            styles={{
+              textInputContainer: {
+                // backgroundColor: 'grey',
+                color: '#000000',
+                // backgroundColor: 'grey',
+                // borderLeftWidth: 4,
+                // borderRightWidth: 4,
+                // height: 70
+              },
+              textInput: {
+                height: 45,
+                color: '#000000',
+                fontSize: 16,
+                borderColor: "#C0C0C0",
+                backgroundColor: "rgba(245,245,245, 0.2)",
+                // borderLeftWidth: 1,
+                // borderRightWidth: 1,
+                borderBottomWidth: 1,
+                // borderTopWidth: 1
+              },
+              predefinedPlacesDescription: {
+                color: '#1faadb',
+              },
+            }}
+          // this in only required for use on the web. See https://git.io/JflFv more for details.
+          />
+
+          {/* <TextInput
             label="Area / Location*"
             placeholder="Add locations where customer wants property"
             value={area}
@@ -150,7 +198,7 @@ const ContactLocalityDetailsForm = props => {
                 background: "#ffffff"
               }
             }}
-          />
+          /> */}
 
           <View style={styles.header}>
             <Text>Select Property Type</Text>

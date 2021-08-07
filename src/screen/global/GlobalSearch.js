@@ -142,10 +142,11 @@ const GlobalSearch = props => {
       });
   };
 
-  const onSelectPlace = (item) => {
-    console.log("selected place: ", JSON.stringify(item.description))
-    setSearchKeyword(item.description);
-    setIsShowingResults(false)
+  const onSelectPlace = (data, details) => {
+    console.log("details: ", JSON.stringify(details))
+    console.log("data: ", JSON.stringify(data))
+    // setSearchKeyword(item.description);
+    // setIsShowingResults(false)
     // this.setState({
     //   searchKeyword: item.description,
     //   isShowingResults: false,
@@ -210,9 +211,16 @@ const GlobalSearch = props => {
             language: 'en', // language of the results
             components: 'country:in',
             // types: '(cities)'
+            // types: ["address","cities", "locality", "sublocality"],
+            // types: ["establishment"],
+            // fields: ["formatted_address", "geometry", "name"],
+            // fields: ["address_components"],
+            // types: ["cities", "locality", "sublocality",]
           }}
+          currentLocation={true}
           isRowScrollable={true}
-          onPress={(data, details) => console.log(data, details)}
+          fetchDetails={true}
+          onPress={(data, details) => onSelectPlace(data, details)}
           styles={{
             textInputContainer: {
               // backgroundColor: 'grey',
