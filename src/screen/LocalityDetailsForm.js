@@ -85,12 +85,23 @@ const LocalityDetailsForm = props => {
     }
   };
 
+  const onSelectPlace = (data, details) => {
+    console.log("details: ", JSON.stringify(details))
+    console.log("data: ", JSON.stringify(data))
+    // setSearchKeyword(item.description);
+    // setIsShowingResults(false)
+    // this.setState({
+    //   searchKeyword: item.description,
+    //   isShowingResults: false,
+    // })
+  }
+
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
     >
-      <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
-        <ScrollView style={styles.container}>
+      <KeyboardAwareScrollView onPress={Keyboard.dismiss} keyboardShouldPersistTaps="handled">
+        <ScrollView style={styles.container} keyboardShouldPersistTaps={'always'} listViewDisplayed={false}>
           <TextInput
             label="City*"
             value={city}
