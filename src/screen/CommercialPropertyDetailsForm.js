@@ -20,6 +20,8 @@ import { TextInput, HelperText, useTheme } from "react-native-paper";
 import Button from "../components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../components/SnackbarComponent";
+import { setPropertyDetails } from "../reducers/Action";
+import { connect } from "react-redux";
 
 const propertyTypeArray = [
   "Shop",
@@ -100,7 +102,8 @@ const PropertyDetails = props => {
       setIsVisible(true);
       return;
     }
-    const property = JSON.parse(await AsyncStorage.getItem("property"));
+    // const property = JSON.parse(await AsyncStorage.getItem("property"));
+    const property = props.propertyDetails;
     const propertyFor = property.property_for;
 
     const property_details = {
@@ -115,7 +118,8 @@ const PropertyDetails = props => {
 
     property["property_details"] = property_details;
     // // console.log(property);
-    AsyncStorage.setItem("property", JSON.stringify(property));
+    // AsyncStorage.setItem("property", JSON.stringify(property));
+    props.setPropertyDetails(property);
     // // console.log(property);
     if (propertyFor.toLowerCase() === "Rent".toLowerCase()) {
       navigation.navigate("RentDetailsForm");
@@ -335,4 +339,18 @@ const styles = StyleSheet.create({
   }
 });
 
-export default PropertyDetails;
+
+const mapStateToProps = state => ({
+  propertyDetails: state.AppReducer.propertyDetails,
+  userDetails: state.AppReducer.userDetails
+});
+const mapDispatchToProps = {
+  setPropertyDetails
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PropertyDetails);
+
+// export default PropertyDetails;

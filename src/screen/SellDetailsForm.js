@@ -18,6 +18,8 @@ import Button from "../components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../components/SnackbarComponent";
 import { numDifferentiation } from "../util/methods";
+import { connect } from "react-redux";
+import { setPropertyDetails } from "../reducers/Action";
 
 const negotiableArray = ["Yes", "No"];
 
@@ -81,10 +83,12 @@ const SellDetails = props => {
       available_from: newDate.trim(),
       negotiable: negotiableArray[negotiableIndex]
     };
-    const property = JSON.parse(await AsyncStorage.getItem("property"));
+    // const property = JSON.parse(await AsyncStorage.getItem("property"));
+    const property = props.propertyDetails;
     property["sell_details"] = sell_details;
     // // console.log(property);
-    AsyncStorage.setItem("property", JSON.stringify(property));
+    // AsyncStorage.setItem("property", JSON.stringify(property));
+    props.setPropertyDetails(property)
 
     navigation.navigate("AddImages");
   };
@@ -115,7 +119,7 @@ const SellDetails = props => {
                 expectedSellPrice.trim() === ""
                   ? "Expected Sell Price*"
                   : numDifferentiation(expectedSellPrice) +
-                    " Expected Sell Price"
+                  " Expected Sell Price"
               }
               placeholder="Expected Sell Price*"
               value={expectedSellPrice}
@@ -141,7 +145,7 @@ const SellDetails = props => {
                 maintenanceCharge.trim() === ""
                   ? "Maintenance Charge/Month*"
                   : numDifferentiation(maintenanceCharge) +
-                    " Maintenance Charge/Month"
+                  " Maintenance Charge/Month"
               }
               placeholder="Maintenance Charge"
               value={maintenanceCharge}
@@ -242,4 +246,17 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SellDetails;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propertyType: state.AppReducer.propertyType,
+  propertyDetails: state.AppReducer.propertyDetails,
+});
+const mapDispatchToProps = {
+  setPropertyDetails
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SellDetails);
+
+// export default SellDetails;

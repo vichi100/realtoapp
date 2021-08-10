@@ -11,7 +11,7 @@ import {
   Keyboard,
   AsyncStorage
 } from "react-native";
-import { connect } from "react-redux";
+
 import { DatePickerModal } from "react-native-paper-dates";
 import { ButtonGroup } from "react-native-elements";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
@@ -19,6 +19,8 @@ import Button from "../components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../components/SnackbarComponent";
 import { numDifferentiation } from "../util/methods";
+import { connect } from "react-redux";
+import { setPropertyDetails } from "../reducers/Action";
 
 const preferredTenantsArray = ["Family", "Bachelors", "Any"];
 const nonvegAllowedArray = ["Yes", "No"];
@@ -117,10 +119,12 @@ const RentDetailsForm = props => {
       preferred_tenants: preferredTenantsArray[preferredTenantsIndex],
       non_veg_allowed: nonvegAllowedArray[nonvegAllowedIndex]
     };
-    const property = JSON.parse(await AsyncStorage.getItem("property"));
+    // const property = JSON.parse(await AsyncStorage.getItem("property"));
+    const property = props.propertyDetails;
     property["rent_details"] = rent_details;
 
-    AsyncStorage.setItem("property", JSON.stringify(property));
+    // AsyncStorage.setItem("property", JSON.stringify(property));
+    props.setPropertyDetails(property);
     // console.log(JSON.stringify(property));
 
     navigation.navigate("AddImages");
@@ -290,12 +294,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
-  propertyType: state.AppReducer.propertyType
+  propertyType: state.AppReducer.propertyType,
+  propertyDetails: state.AppReducer.propertyDetails,
 });
-// const mapDispatchToProps = {
-//   setPropertyType
-// };
+const mapDispatchToProps = {
+  setPropertyDetails
+};
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(RentDetailsForm);

@@ -14,7 +14,7 @@ import { Avatar } from "react-native-elements";
 import { setEmployeeList } from "../reducers/Action";
 import { connect } from "react-redux";
 import axios from "axios";
-import {SERVER_URL} from "../util/constant";
+import { SERVER_URL } from "../util/constant";
 
 const EmployeeAccess = props => {
   const [isReadEnabled, setIsReadEnabled] = useState(false);
@@ -48,7 +48,7 @@ const EmployeeAccess = props => {
       agent_id: props.userDetails.works_for[0],
       employee_id: empIdToBeRemoved
     };
-    axios(SERVER_URL+"/removeEmployee", {
+    axios(SERVER_URL + "/removeEmployee", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -59,7 +59,7 @@ const EmployeeAccess = props => {
       response => {
         // console.log(response.data);
         if (response.data === "success") {
-          const x = props.employeeList.filter(function(el) {
+          const x = props.employeeList.filter(function (el) {
             return el.id !== empIdToBeRemoved;
           });
           props.setEmployeeList([...x]);
@@ -77,7 +77,7 @@ const EmployeeAccess = props => {
       employee_id: employeeId,
       access_rights: isEditEnabled ? "read" : "edit"
     };
-    axios(SERVER_URL+"/updateEmployeeEditRights", {
+    axios(SERVER_URL + "/updateEmployeeEditRights", {
       method: "post",
       headers: {
         "Content-type": "Application/json",

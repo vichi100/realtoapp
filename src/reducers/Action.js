@@ -132,3 +132,13 @@ export const setAnyItemDetails = payload => {
     payload
   };
 };
+
+export const setPropertyDetails = payload => {
+  // console.log("setPropertyType in action: " + JSON.stringify(payload));
+  return {
+    type: ACTION_TYPES.SET_PROPERTY_DETAILS,
+    payload
+  };
+};
+
+

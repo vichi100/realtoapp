@@ -10,9 +10,11 @@ import {
 import Slideshow from "../components/Slideshow";
 import Button from "../components/Button";
 import axios from "axios";
-import {SERVER_URL} from "../util/constant";
+import { SERVER_URL } from "../util/constant";
 import { numDifferentiation } from "../util/methods";
 import Snackbar from "../components/SnackbarComponent";
+import { setPropertyDetails } from "../reducers/Action";
+import { connect } from "react-redux";
 
 const AddNewPropFinalDetails = props => {
   const { navigation } = props;
@@ -53,7 +55,8 @@ const AddNewPropFinalDetails = props => {
   }, [propertyFinalDetails]);
 
   const getPropFinalDetails = async () => {
-    const property = JSON.parse(await AsyncStorage.getItem("property"));
+    // const property = JSON.parse(await AsyncStorage.getItem("property"));
+    const property = props.propertyDetails;
     setPropertyFinalDetails(property);
     // console.log(property);
   };
@@ -76,7 +79,7 @@ const AddNewPropFinalDetails = props => {
     // );
     axios
       .post(
-        SERVER_URL+"/addNewResidentialRentProperty",
+        SERVER_URL + "/addNewResidentialRentProperty",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -86,7 +89,8 @@ const AddNewPropFinalDetails = props => {
         async response => {
           // console.log(response.data);
           if (response.data.property_id !== null) {
-            await AsyncStorage.removeItem("property");
+            // await AsyncStorage.removeItem("property");
+            props.setPropertyDetails(null);
             navigation.navigate("Listing");
           } else {
             setErrorMessage(
@@ -106,13 +110,12 @@ const AddNewPropFinalDetails = props => {
         <Text style={[styles.title]}>
           {propertyFinalDetails.property_address.flat_number},
           {propertyFinalDetails.property_address.building_name},
-          {propertyFinalDetails.property_address.location_area}
+
           {/* 2 BHK For Rent In Anant Villa, Koregaon Park */}
         </Text>
         <Text style={[StyleSheet.subTitle]}>
           {propertyFinalDetails.property_address.landmark_or_street},
-          {propertyFinalDetails.property_address.city},
-          {propertyFinalDetails.property_address.pin}
+          {propertyFinalDetails.property_address.location_area.formatted_address}
           {/* Meera Nagar, Near Marvel Exotica */}
         </Text>
       </View>
@@ -372,4 +375,20 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddNewPropFinalDetails;
+
+const mapStateToProps = state => ({
+  propertyDetails: state.AppReducer.propertyDetails,
+  userDetails: state.AppReducer.userDetails
+});
+const mapDispatchToProps = {
+  setPropertyDetails
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddNewPropFinalDetails);
+
+
+
+// export default AddNewPropFinalDetails;

@@ -18,6 +18,9 @@ import { TextInput, HelperText, useTheme } from "react-native-paper";
 import Button from "../components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../components/SnackbarComponent";
+import { setPropertyDetails } from "../reducers/Action";
+import { connect } from "react-redux";
+
 
 const houseTypeArray = ["Apartment", "Villa", "Independent House"];
 const bhkArray = ["1RK", "1BHK", "2BHK", "3BHK", "4+BHK"];
@@ -99,7 +102,8 @@ const ResidentialPropertyDetailsForm = props => {
       setIsVisible(true);
       return;
     }
-    const property = JSON.parse(await AsyncStorage.getItem("property"));
+    // const property = JSON.parse(await AsyncStorage.getItem("property"));
+    const property = props.propertyDetails;
     const propertyFor = property.property_for;
 
     const property_details = {
@@ -118,7 +122,8 @@ const ResidentialPropertyDetailsForm = props => {
 
     property["property_details"] = property_details;
     // // console.log(property);
-    AsyncStorage.setItem("property", JSON.stringify(property));
+    // AsyncStorage.setItem("property", JSON.stringify(property));
+    props.setPropertyDetails(property);
     // console.log(JSON.stringify(property));
     if (propertyFor.toLowerCase() === "Rent".toLowerCase()) {
       navigation.navigate("RentDetailsForm");
@@ -331,15 +336,15 @@ const ResidentialPropertyDetailsForm = props => {
                   selectedTextStyle={{ color: "#fff" }}
                   containerStyle={{ borderRadius: 10, width: 100 }}
                   containerBorderRadius={10}
-                  // theme={{
-                  //   colors: {
-                  //     // placeholder: "white",
-                  //     // text: "white",
-                  //     primary: "rgba(0,191,255, .9)",
-                  //     underlineColor: "transparent",
-                  //     background: "#ffffff"
-                  //   }
-                  // }}
+                // theme={{
+                //   colors: {
+                //     // placeholder: "white",
+                //     // text: "white",
+                //     primary: "rgba(0,191,255, .9)",
+                //     underlineColor: "transparent",
+                //     background: "#ffffff"
+                //   }
+                // }}
                 />
               </View>
             </View>
@@ -406,4 +411,17 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ResidentialPropertyDetailsForm;
+const mapStateToProps = state => ({
+  propertyDetails: state.AppReducer.propertyDetails,
+  userDetails: state.AppReducer.userDetails
+});
+const mapDispatchToProps = {
+  setPropertyDetails
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ResidentialPropertyDetailsForm);
+
+// export default ResidentialPropertyDetailsForm;

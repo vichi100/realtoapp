@@ -19,7 +19,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../components/SnackbarComponent";
-import { setPropertyType } from "../reducers/Action";
+import { setPropertyType, setPropertyDetails } from "../reducers/Action";
 
 const options = [
   {
@@ -100,8 +100,9 @@ const AddNewProperty = props => {
       }
     };
     // console.log(property);
-    AsyncStorage.setItem("property", JSON.stringify(property));
+    // AsyncStorage.setItem("property", JSON.stringify(property));
     // // console.log("1");
+    props.setPropertyDetails(property);
     navigation.navigate("LocalityDetailsForm");
   };
 
@@ -266,10 +267,12 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  userDetails: state.AppReducer.userDetails
+  userDetails: state.AppReducer.userDetails,
+  propertyDetails: state.AppReducer.propertyDetails,
 });
 const mapDispatchToProps = {
-  setPropertyType
+  setPropertyType,
+  setPropertyDetails
 };
 export default connect(
   mapStateToProps,

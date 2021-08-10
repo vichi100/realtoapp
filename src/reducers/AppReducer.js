@@ -16,7 +16,8 @@ const initialState = {
   propertyListingForMeeting: [],
   propertyType: "Residential",
   globalSearchResult: [],
-  anyItemDetails: null
+  anyItemDetails: null,
+  propertyDetails: null
 };
 const AppReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -119,6 +120,13 @@ const AppReducer = (state = initialState, action) => {
       return {
         ...state,
         anyItemDetails: action.payload
+      };
+
+    case ACTION_TYPES.SET_PROPERTY_DETAILS:
+      // console.log("SET_PROPERTY_DETAILS");
+      return {
+        ...state,
+        propertyDetails: action.payload
       };
 
     default:

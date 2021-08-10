@@ -17,8 +17,7 @@ const CommercialRentPropDetails = props => {
           {item.property_address.landmark_or_street}
         </Text>
         <Text style={[StyleSheet.subTitle]}>
-          {item.property_address.location_area}, {item.property_address.city}-
-          {item.property_address.pin}
+          {item.property_address.formatted_address}
         </Text>
       </View>
       {/* <Image

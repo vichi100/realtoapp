@@ -15,6 +15,8 @@ import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import PhotoGrid from "../components/PhotoGrid";
 import Button from "../components/Button";
+import { connect } from "react-redux";
+import { setPropertyDetails } from "../reducers/Action";
 
 const AddImages = props => {
   const { navigation } = props;
@@ -52,10 +54,12 @@ const AddImages = props => {
   };
 
   const onSubmit = async () => {
-    const property = JSON.parse(await AsyncStorage.getItem("property"));
+    // const property = JSON.parse(await AsyncStorage.getItem("property"));
+    const property = props.propertyDetails;
     property["image_urls"] = imageArray;
 
-    AsyncStorage.setItem("property", JSON.stringify(property));
+    // AsyncStorage.setItem("property", JSON.stringify(property));
+    props.setPropertyDetails(property)
     // console.log(JSON.stringify(property));
     if (property.property_type.toLowerCase() === "Residential".toLowerCase()) {
       if (property.property_for.toLowerCase() === "Rent".toLowerCase()) {
@@ -111,4 +115,17 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddImages;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propertyType: state.AppReducer.propertyType,
+  propertyDetails: state.AppReducer.propertyDetails,
+});
+const mapDispatchToProps = {
+  setPropertyDetails
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddImages);
+
+// export default AddImages;

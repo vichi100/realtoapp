@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -9,7 +9,8 @@ import {
   SafeAreaView,
   ScrollView,
   Keyboard,
-  AsyncStorage
+  AsyncStorage,
+  FlatList
 } from "react-native";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
 import Button from "../../components/Button";
@@ -34,13 +35,17 @@ const options = [
 const propertyForArray = ["Rent", "Buy"];
 
 const ContactLocalityDetailsForm = props => {
+  const ref = useRef();
   const { navigation } = props;
   const [city, setCity] = useState("");
   const [area, setArea] = useState("");
+  const [address, setAddress] = useState(null);
+  const [gLocation, setGLocation] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [propertyForIndex, setPropertyForIndex] = useState(-1);
   const [selectedPropType, setSelectedPropType] = useState(null);
+  const [SelectedLocationArray, setSelectedLocationArray] = useState([])
 
   const onSelectPropType = item => {
     // // console.log(item);
@@ -74,7 +79,7 @@ const ContactLocalityDetailsForm = props => {
       setErrorMessage("City is missing");
       setIsVisible(true);
       return;
-    } else if (area.trim() === "") {
+    } else if (gLocation === null) {
       setErrorMessage("Area is missing");
       setIsVisible(true);
       return;
@@ -112,12 +117,48 @@ const ContactLocalityDetailsForm = props => {
     }
   };
 
+  const onSelectPlace = (data, details) => {
+    console.log("details: ", JSON.stringify(details.geometry.location))
+    // console.log("data: ", JSON.stringify(dataX))
+    const tempArray = []
+    const gLocation = {
+      location: {
+        type: "Point",
+        coordinates: [details.geometry.location.lng, details.geometry.location.lat]
+      },
+      main_text: data.structured_formatting.main_text
+    }
+
+    // tempArray.push(gLocation);
+    setSelectedLocationArray([...SelectedLocationArray, gLocation])
+
+    setGLocation(gLocation);
+    ref.current?.setAddressText('');
+  }
+
+  const removeLocation = (loc) => {
+    console.log("remove", JSON.stringify(loc))
+    const arr = SelectedLocationArray.filter(item => item.main_text !== loc.main_text);
+    setSelectedLocationArray(arr)
+  }
+
+  const renderSelectedLocation = ({ item }) => {
+    console.log(JSON.stringify(item));
+    return (
+      <TouchableOpacity onPress={() => removeLocation(item)} style={{ backgroundColor: "#66CDAA", width: 100, borderRadius: 20, marginLeft: 10 }}>
+        <Text numberOfLines={1} style={{ margin: 10, width: 70, overflow: "hidden" }}>{item.main_text}</Text>
+        <Text style={{ color: "red", position: "absolute", right: 10, top: 8, marginLeft: 10, fontSize: 16 }}>x</Text>
+      </TouchableOpacity>
+    )
+
+  }
+
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
     >
-      <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
-        <ScrollView style={styles.container}>
+      <KeyboardAwareScrollView onPress={Keyboard.dismiss} keyboardShouldPersistTaps="handled">
+        <ScrollView style={styles.container} keyboardShouldPersistTaps={'always'} listViewDisplayed={false}>
           <Text>Enter city and locations where customer wants the property</Text>
           <TextInput
             label="City*"
@@ -138,8 +179,10 @@ const ContactLocalityDetailsForm = props => {
           />
           <View style={{ marginTop: 20 }} />
           <GooglePlacesAutocomplete
-            placeholder="Area / Location"
+            ref={ref}
+            placeholder="Add multiple locations"
             minLength={2}
+            setAddressText={address}
             query={{
               key: GOOGLE_PLACES_API_KEY,
               language: 'en', // language of the results
@@ -180,6 +223,14 @@ const ContactLocalityDetailsForm = props => {
               },
             }}
           // this in only required for use on the web. See https://git.io/JflFv more for details.
+          />
+          <View style={{ marginTop: 5 }} />
+          <FlatList
+            horizontal
+            style={{ flex: 1 }}
+            data={SelectedLocationArray}
+            renderItem={(item) => renderSelectedLocation(item)}
+            keyExtractor={(item, index) => index.toString()}
           />
 
           {/* <TextInput

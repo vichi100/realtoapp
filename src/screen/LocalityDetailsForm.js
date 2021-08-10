@@ -17,12 +17,14 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Snackbar from "../components/SnackbarComponent";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../util/constant";
+import { connect } from "react-redux";
+import { setPropertyType, setPropertyDetails } from "../reducers/Action";
 
 
 const LocalityDetailsForm = props => {
   const { navigation } = props;
   const [city, setCity] = useState("");
-  const [area, setArea] = useState("");
+  const [gLocation, setGLocation] = useState(null);
   const [flatNumber, setFlatNumber] = useState("");
   const [buildingName, setBuildingName] = useState("");
   const [landmark, setLandmark] = useState("");
@@ -44,7 +46,7 @@ const LocalityDetailsForm = props => {
       setErrorMessage("City is missing");
       setIsVisible(true);
       return;
-    } else if (area.trim() === "") {
+    } else if (gLocation === null) {
       setErrorMessage("Area is missing");
       setIsVisible(true);
       return;
@@ -61,13 +63,14 @@ const LocalityDetailsForm = props => {
       setIsVisible(true);
       return;
     }
-    const property = JSON.parse(await AsyncStorage.getItem("property"));
+    // const property = JSON.parse(await AsyncStorage.getItem("property"));
+    const property = props.propertyDetails
     const propertyType = property.property_type;
-    // // console.log(property);
+    console.log("gLocation: ", gLocation);
 
     const property_address = {
       city: city.trim(),
-      location_area: area.trim(),
+      location_area: gLocation,
       flat_number: flatNumber.trim(),
       building_name: buildingName.trim(),
       landmark_or_street: landmark.trim(),
@@ -76,7 +79,8 @@ const LocalityDetailsForm = props => {
 
     property["property_address"] = property_address;
     // // console.log(property_address);
-    AsyncStorage.setItem("property", JSON.stringify(property));
+    // AsyncStorage.setItem("property", JSON.stringify(property));
+    props.setPropertyDetails(property);
     // console.log(JSON.stringify(property));
     if (propertyType.toLowerCase() === "Residential".toLowerCase()) {
       navigation.navigate("ResidentialPropertyDetailsForm");
@@ -86,14 +90,19 @@ const LocalityDetailsForm = props => {
   };
 
   const onSelectPlace = (data, details) => {
-    console.log("details: ", JSON.stringify(details))
-    console.log("data: ", JSON.stringify(data))
-    // setSearchKeyword(item.description);
-    // setIsShowingResults(false)
-    // this.setState({
-    //   searchKeyword: item.description,
-    //   isShowingResults: false,
-    // })
+    console.log("details: ", JSON.stringify(details.geometry.location))
+    // console.log("data: ", JSON.stringify(dataX))
+
+    const gLocation = {
+      location: {
+        type: "Point",
+        coordinates: [details.geometry.location.lng, details.geometry.location.lat]
+      },
+      main_text: data.structured_formatting.main_text,
+      formatted_address: details.formatted_address,
+    }
+
+    setGLocation(gLocation);
   }
 
   return (
@@ -254,4 +263,18 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LocalityDetailsForm;
+
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propertyDetails: state.AppReducer.propertyDetails,
+});
+const mapDispatchToProps = {
+  setPropertyType,
+  setPropertyDetails
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LocalityDetailsForm);
+
+// export default LocalityDetailsForm;

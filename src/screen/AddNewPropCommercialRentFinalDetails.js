@@ -10,8 +10,11 @@ import {
 import Slideshow from "../components/Slideshow";
 import Button from "../components/Button";
 import axios from "axios";
-import {SERVER_URL} from "../util/constant";
+import { SERVER_URL } from "../util/constant";
 import { numDifferentiation, dateFormat } from "../util/methods";
+import { connect } from "react-redux";
+import { setPropertyDetails } from "../reducers/Action";
+
 
 const AddNewPropCommercialRentFinalDetails = props => {
   const { navigation } = props;
@@ -48,7 +51,8 @@ const AddNewPropCommercialRentFinalDetails = props => {
   // }, [propertyFinalDetails]);
 
   const getPropFinalDetails = async () => {
-    const property = JSON.parse(await AsyncStorage.getItem("property"));
+    // const property = JSON.parse(await AsyncStorage.getItem("property"));
+    const property = props.propertyDetails
     setPropertyFinalDetails(property);
     // console.log(property);
   };
@@ -64,7 +68,7 @@ const AddNewPropCommercialRentFinalDetails = props => {
     // console.log(await AsyncStorage.getItem("property"));
     axios
       .post(
-        SERVER_URL+"/addNewCommercialProperty",
+        SERVER_URL + "/addNewCommercialProperty",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -74,7 +78,8 @@ const AddNewPropCommercialRentFinalDetails = props => {
         async response => {
           // console.log(response.data);
           if (response.data.property_id !== null) {
-            await AsyncStorage.removeItem("property");
+            // await AsyncStorage.removeItem("property");
+            props.setPropertyDetails(null);
             navigation.navigate("Listing");
           } else {
             setErrorMessage(
@@ -93,13 +98,14 @@ const AddNewPropCommercialRentFinalDetails = props => {
         <Text style={[styles.title]}>
           {propertyFinalDetails.property_address.flat_number},
           {propertyFinalDetails.property_address.building_name},
-          {propertyFinalDetails.property_address.location_area}
+
           {/* 2 BHK For Rent In Anant Villa, Koregaon Park */}
         </Text>
         <Text style={[StyleSheet.subTitle]}>
           {propertyFinalDetails.property_address.landmark_or_street},
-          {propertyFinalDetails.property_address.city},
-          {propertyFinalDetails.property_address.pin}
+          {propertyFinalDetails.property_address.location_area.formatted_address}
+          {/* {propertyFinalDetails.property_address.city},
+          {propertyFinalDetails.property_address.pin} */}
           {/* Meera Nagar, Near Marvel Exotica */}
         </Text>
       </View>
@@ -347,4 +353,17 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddNewPropCommercialRentFinalDetails;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propertyType: state.AppReducer.propertyType,
+  propertyDetails: state.AppReducer.propertyDetails,
+});
+const mapDispatchToProps = {
+  setPropertyDetails
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddNewPropCommercialRentFinalDetails);
+
+// export default AddNewPropCommercialRentFinalDetails;
