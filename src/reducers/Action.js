@@ -141,4 +141,13 @@ export const setPropertyDetails = payload => {
   };
 };
 
+export const setCustomerDetails = payload => {
+  // console.log("setPropertyType in action: " + JSON.stringify(payload));
+  return {
+    type: ACTION_TYPES.SET_CUSTOMER_DETAILS,
+    payload
+  };
+};
+
+
 

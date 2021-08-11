@@ -10,15 +10,20 @@ import {
 import Slideshow from "../../components/Slideshow";
 import Button from "../../components/Button";
 import axios from "axios";
-import {SERVER_URL} from "../../util/constant";
+import { SERVER_URL } from "../../util/constant";
 import { numDifferentiation } from "../../util/methods";
 import { Avatar } from "react-native-elements";
+import { connect } from "react-redux";
+import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
+
+
 
 const AddNewCustomerBuyResidentialFinalDetails = props => {
   const { navigation } = props;
   const [customerFinalDetails, setCustomerFinalDetails] = useState(null);
   const [bhk, setBHK] = useState(null);
   const [possessionDate, setPossessionDate] = useState(null);
+  const [location, setLocation] = useState([])
 
   useEffect(() => {
     getPropFinalDetails();
@@ -50,8 +55,15 @@ const AddNewCustomerBuyResidentialFinalDetails = props => {
   }, [customerFinalDetails]);
 
   const getPropFinalDetails = async () => {
-    const customer = JSON.parse(await AsyncStorage.getItem("customer"));
+    const customer = props.customerDetails
+    console.log(JSON.stringify(customer));
     setCustomerFinalDetails(customer);
+    const locX = []
+    customer.customer_locality.location_area.map(item => {
+      console.log(item.main_text);
+      locX.push(item.main_text)
+    })
+    setLocation(locX)
     // console.log(customer);
   };
 
@@ -66,7 +78,7 @@ const AddNewCustomerBuyResidentialFinalDetails = props => {
     // console.log(await AsyncStorage.getItem("customer"));
     axios
       .post(
-        SERVER_URL+"/addNewResidentialCustomer",
+        SERVER_URL + "/addNewResidentialCustomer",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -76,7 +88,8 @@ const AddNewCustomerBuyResidentialFinalDetails = props => {
         async response => {
           // console.log(response.data);
           if (response.data.customer_id !== null) {
-            await AsyncStorage.removeItem("customer");
+            // await AsyncStorage.removeItem("customer");
+            props.setCustomerDetails(null);
             navigation.navigate("Contacts");
           } else {
             setErrorMessage(
@@ -198,9 +211,9 @@ const AddNewCustomerBuyResidentialFinalDetails = props => {
               </Text>
               <Text style={[styles.subDetailsTitle]}>City</Text>
             </View>
-            <View style={[styles.subDetails]}>
+            <View style={{ paddingBottom: 20, width: "80%" }}>
               <Text style={[styles.subDetailsValue]}>
-                {customerFinalDetails.customer_locality.location_area}
+                {location.join(', ')}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Locations</Text>
             </View>
@@ -384,4 +397,19 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddNewCustomerBuyResidentialFinalDetails;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propertyDetails: state.AppReducer.propertyDetails,
+  customerDetails: state.AppReducer.customerDetails
+});
+const mapDispatchToProps = {
+  setPropertyType,
+  setPropertyDetails,
+  setCustomerDetails,
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddNewCustomerBuyResidentialFinalDetails);
+
+// export default AddNewCustomerBuyResidentialFinalDetails;

@@ -4,6 +4,7 @@ const initialState = {
   employeeList: [],
   userMobileNumber: null,
   userDetails: null,
+  customerDetails: null,
   countryCode: "+91",
   propReminderList: [],
   propListForMeeting: [],
@@ -128,6 +129,14 @@ const AppReducer = (state = initialState, action) => {
         ...state,
         propertyDetails: action.payload
       };
+
+    case ACTION_TYPES.SET_CUSTOMER_DETAILS:
+      // console.log("SET_PROPERTY_DETAILS");
+      return {
+        ...state,
+        customerDetails: action.payload
+      };
+
 
     default:
       // console.log("Default");

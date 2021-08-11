@@ -9,13 +9,18 @@ import {
 } from "react-native";
 import Button from "../../components/Button";
 import axios from "axios";
-import {SERVER_URL} from "../../util/constant";
+import { SERVER_URL } from "../../util/constant";
 import { numDifferentiation, dateFormat } from "../../util/methods";
 import { Avatar } from "react-native-elements";
+import { connect } from "react-redux";
+import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
+
+
 
 const AddNewCustomerCommercialRentFinalDetails = props => {
   const { navigation } = props;
   const [customerFinalDetails, setCustomerFinalDetails] = useState(null);
+  const [location, setLocation] = useState([])
 
   useEffect(() => {
     getPropFinalDetails();
@@ -45,9 +50,16 @@ const AddNewCustomerCommercialRentFinalDetails = props => {
   //   }
   // }, [propertyFinalDetails]);
 
-  const getPropFinalDetails = async () => {
-    const customer = JSON.parse(await AsyncStorage.getItem("customer"));
+  const getPropFinalDetails = () => {
+    const customer = props.customerDetails
+    console.log(JSON.stringify(customer));
     setCustomerFinalDetails(customer);
+    const locX = []
+    customer.customer_locality.location_area.map(item => {
+      console.log(item.main_text);
+      locX.push(item.main_text)
+    })
+    setLocation(locX)
     // console.log(customer);
   };
 
@@ -62,7 +74,7 @@ const AddNewCustomerCommercialRentFinalDetails = props => {
     // console.log(await AsyncStorage.getItem("property"));
     axios
       .post(
-        SERVER_URL+"/addNewCommercialCustomer",
+        SERVER_URL + "/addNewCommercialCustomer",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -73,7 +85,8 @@ const AddNewCustomerCommercialRentFinalDetails = props => {
           // // console.log("vichi: " + response.data.customer_id);
           if (response.data.customer_id !== null) {
             // // console.log("inside");
-            await AsyncStorage.removeItem("customer");
+            // await AsyncStorage.removeItem("customer");
+            props.setCustomerDetails(null);
             navigation.navigate("Contacts");
             // // console.log("inside");
           } else {
@@ -191,11 +204,11 @@ const AddNewCustomerCommercialRentFinalDetails = props => {
               </Text>
               <Text style={[styles.subDetailsTitle]}>City</Text>
             </View>
-            <View style={[styles.subDetails]}>
+            <View style={{ paddingBottom: 20, width: "80%" }}>
               <Text style={[styles.subDetailsValue]}>
-                {customerFinalDetails.customer_locality.location_area}
+                {location.join(', ')}
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Location</Text>
+              <Text style={[styles.subDetailsTitle]}>Locations</Text>
             </View>
 
             <View style={[styles.subDetails]}>
@@ -385,4 +398,19 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddNewCustomerCommercialRentFinalDetails;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propertyDetails: state.AppReducer.propertyDetails,
+  customerDetails: state.AppReducer.customerDetails
+});
+const mapDispatchToProps = {
+  setPropertyType,
+  setPropertyDetails,
+  setCustomerDetails,
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddNewCustomerCommercialRentFinalDetails);
+
+// export default AddNewCustomerCommercialRentFinalDetails;

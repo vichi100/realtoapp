@@ -11,7 +11,6 @@ import {
   AsyncStorage
 } from "react-native";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
-import { connect } from "react-redux";
 import RadioButton from "../../components/RadioButtons";
 import { ButtonGroup } from "react-native-elements";
 import Button from "../../components/Button";
@@ -19,6 +18,10 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../../components/SnackbarComponent";
+import { connect } from "react-redux";
+import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
+
+
 
 const options = [
   {
@@ -99,7 +102,8 @@ const AddNewCustomer = props => {
       }
     };
     // console.log(customer);
-    AsyncStorage.setItem("customer", JSON.stringify(customer));
+    // AsyncStorage.setItem("customer", JSON.stringify(customer));
+    props.setCustomerDetails(customer);
     // // console.log("1");
     navigation.navigate("ContactLocalityDetailsForm");
   };
@@ -269,11 +273,26 @@ const styles = StyleSheet.create({
   // },
 });
 
+// const mapStateToProps = state => ({
+//   userDetails: state.AppReducer.userDetails
+// });
+// export default connect(
+//   mapStateToProps,
+//   null
+// )(AddNewCustomer);
+
 const mapStateToProps = state => ({
-  userDetails: state.AppReducer.userDetails
+  userDetails: state.AppReducer.userDetails,
+  propertyDetails: state.AppReducer.propertyDetails,
+  customerDetails: state.AppReducer.customerDetails
 });
+const mapDispatchToProps = {
+  setPropertyType,
+  setPropertyDetails,
+  setCustomerDetails,
+};
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(AddNewCustomer);
-// export default AddNewProperty;
+

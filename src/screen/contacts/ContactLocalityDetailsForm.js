@@ -20,6 +20,9 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Snackbar from "../../components/SnackbarComponent";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/constant";
+import { connect } from "react-redux";
+import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
+
 
 const options = [
   {
@@ -99,7 +102,7 @@ const ContactLocalityDetailsForm = props => {
 
     const customer_locality = {
       city: city.trim(),
-      location_area: area.trim(),
+      location_area: SelectedLocationArray,
       property_type: selectedPropType.key,
       property_for: propertyForArray[propertyForIndex],
       pin: "123"
@@ -108,7 +111,8 @@ const ContactLocalityDetailsForm = props => {
     customer["customer_locality"] = customer_locality;
     // // console.log(property_address);
     const propertyType = selectedPropType.key;
-    AsyncStorage.setItem("customer", JSON.stringify(customer));
+    // AsyncStorage.setItem("customer", JSON.stringify(customer));
+    props.setCustomerDetails(customer);
     // console.log(JSON.stringify(customer));
     if (propertyType.toLowerCase() === "Residential".toLowerCase()) {
       navigation.navigate("ContactResidentialPropertyDetailsForm");
@@ -322,4 +326,18 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ContactLocalityDetailsForm;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propertyDetails: state.AppReducer.propertyDetails,
+});
+const mapDispatchToProps = {
+  setPropertyType,
+  setPropertyDetails,
+  setCustomerDetails,
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContactLocalityDetailsForm);
+
+// export default ContactLocalityDetailsForm;

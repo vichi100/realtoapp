@@ -18,6 +18,9 @@ import Button from "../../components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../../components/SnackbarComponent";
 import { numDifferentiation } from "../../util/methods";
+import { connect } from "react-redux";
+import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
+
 
 const preferredTenantsArray = ["Family", "Bachelors", "Any"];
 const nonvegAllowedArray = ["Veg", "Non-Veg"];
@@ -119,10 +122,13 @@ const CustomerCommercialRentDetailsForm = props => {
       preferred_tenants: preferredTenantsArray[preferredTenantsIndex],
       non_veg_allowed: nonvegAllowedArray[nonvegAllowedIndex]
     };
-    const customer = JSON.parse(await AsyncStorage.getItem("customer"));
+    // const customer = JSON.parse(await AsyncStorage.getItem("customer"));
+    const customer = props.customerDetails;
+
     customer["customer_rent_details"] = customer_rent_details;
 
-    AsyncStorage.setItem("customer", JSON.stringify(customer));
+    // AsyncStorage.setItem("customer", JSON.stringify(customer));
+    props.setCustomerDetails(customer)
     // console.log(JSON.stringify(customer));
 
     navigation.navigate("AddNewCustomerCommercialRentFinalDetails");
@@ -209,7 +215,7 @@ const CustomerCommercialRentDetailsForm = props => {
               }}
             />
             {customerDetailsX &&
-            customerDetailsX.customer_locality.property_type ===
+              customerDetailsX.customer_locality.property_type ===
               "Residential" ? (
               <View>
                 <Text>Type of Tenants*</Text>
@@ -292,4 +298,19 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CustomerCommercialRentDetailsForm;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propertyDetails: state.AppReducer.propertyDetails,
+  customerDetails: state.AppReducer.customerDetails
+});
+const mapDispatchToProps = {
+  setPropertyType,
+  setPropertyDetails,
+  setCustomerDetails,
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CustomerCommercialRentDetailsForm);
+
+// export default CustomerCommercialRentDetailsForm;

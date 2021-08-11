@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 import { StyleSheet, View, Image, Text, ScrollView } from "react-native";
 import { numDifferentiation, dateFormat } from "../../util/methods";
 import { Avatar } from "react-native-elements";
@@ -8,6 +8,22 @@ const CustomerDetailsCommercialRentFromList = props => {
   // const { navigation } = props;
   // const item = route.params;
   const item = props.anyItemDetails;
+
+  const [location, setLocation] = useState([])
+
+  useEffect(() => {
+    // setItem(props.anyItemDetails);
+
+    const locX = []
+    props.anyItemDetails.customer_locality.location_area.map(item => {
+      console.log(item.main_text);
+      locX.push(item.main_text)
+    })
+    setLocation(locX)
+
+  }, props.anyItemDetails)
+
+
   // // console.log(item);
   return (
     <ScrollView style={[styles.container]}>
@@ -116,9 +132,9 @@ const CustomerDetailsCommercialRentFromList = props => {
               <Text style={[styles.subDetailsTitle]}>City</Text>
             </View>
 
-            <View style={[styles.subDetails]}>
+            <View style={{ paddingBottom: 20, width: "80%" }}>
               <Text style={[styles.subDetailsValue]}>
-                {item.customer_locality.location_area}
+                {location.join(', ')}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Locations</Text>
             </View>

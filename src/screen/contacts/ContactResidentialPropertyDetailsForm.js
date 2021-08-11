@@ -18,6 +18,11 @@ import { TextInput, HelperText, useTheme } from "react-native-paper";
 import Button from "../../components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../../components/SnackbarComponent";
+import { connect } from "react-redux";
+import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
+
+
+
 
 const houseTypeArray = ["Apartment", "Villa", "Independent House"];
 const bhkArray = ["1RK", "1BHK", "2BHK", "3BHK", "4+BHK"];
@@ -71,7 +76,8 @@ const ContactResidentialPropertyDetailsForm = props => {
       setIsVisible(true);
       return;
     }
-    const customer = JSON.parse(await AsyncStorage.getItem("customer"));
+    // const customer = JSON.parse(await AsyncStorage.getItem("customer"));
+    const customer = props.customerDetails
     const propertyFor = customer.customer_locality.property_for;
 
     const customer_property_details = {
@@ -86,6 +92,7 @@ const ContactResidentialPropertyDetailsForm = props => {
     customer["customer_property_details"] = customer_property_details;
     // // console.log(property);
     AsyncStorage.setItem("customer", JSON.stringify(customer));
+    props.setCustomerDetails(customer);
     // console.log(JSON.stringify(customer));
     if (propertyFor.toLowerCase() === "Rent".toLowerCase()) {
       navigation.navigate("ContactRentDetailsForm");
@@ -199,15 +206,15 @@ const ContactResidentialPropertyDetailsForm = props => {
                 selectedTextStyle={{ color: "#fff" }}
                 containerStyle={{ borderRadius: 10, width: 100 }}
                 containerBorderRadius={10}
-                // theme={{
-                //   colors: {
-                //     // placeholder: "white",
-                //     // text: "white",
-                //     primary: "rgba(0,191,255, .9)",
-                //     underlineColor: "transparent",
-                //     background: "#ffffff"
-                //   }
-                // }}
+              // theme={{
+              //   colors: {
+              //     // placeholder: "white",
+              //     // text: "white",
+              //     primary: "rgba(0,191,255, .9)",
+              //     underlineColor: "transparent",
+              //     background: "#ffffff"
+              //   }
+              // }}
               />
             </View>
 
@@ -251,4 +258,19 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ContactResidentialPropertyDetailsForm;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propertyDetails: state.AppReducer.propertyDetails,
+  customerDetails: state.AppReducer.customerDetails
+});
+const mapDispatchToProps = {
+  setPropertyType,
+  setPropertyDetails,
+  setCustomerDetails,
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContactResidentialPropertyDetailsForm);
+
+// export default ContactResidentialPropertyDetailsForm;

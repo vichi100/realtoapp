@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -17,6 +17,22 @@ const CustomerDetailsResidentialRentFromList = props => {
   // const item = route.params;
   const item = props.anyItemDetails;
   // // console.log(item);
+
+  // const [item, setItem] = useState(null);
+  const [location, setLocation] = useState([])
+
+  useEffect(() => {
+    // setItem(props.anyItemDetails);
+
+    const locX = []
+    props.anyItemDetails.customer_locality.location_area.map(item => {
+      console.log(item.main_text);
+      locX.push(item.main_text)
+    })
+    setLocation(locX)
+
+  }, props.anyItemDetails)
+
   return (
     <ScrollView style={[styles.container]}>
       <View
@@ -144,9 +160,9 @@ const CustomerDetailsResidentialRentFromList = props => {
               <Text style={[styles.subDetailsTitle]}>City</Text>
             </View>
 
-            <View style={[styles.subDetails]}>
+            <View style={{ paddingBottom: 20, width: "80%" }}>
               <Text style={[styles.subDetailsValue]}>
-                {item.customer_locality.location_area}
+                {location.join(', ')}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Locations</Text>
             </View>

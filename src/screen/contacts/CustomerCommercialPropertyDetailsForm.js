@@ -20,6 +20,9 @@ import { TextInput, HelperText, useTheme } from "react-native-paper";
 import Button from "../../components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../../components/SnackbarComponent";
+import { connect } from "react-redux";
+import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
+
 
 const propertyTypeArray = [
   "Shop",
@@ -84,7 +87,8 @@ const CustomerCommercialPropertyDetailsForm = props => {
       setIsVisible(true);
       return;
     }
-    const customer = JSON.parse(await AsyncStorage.getItem("customer"));
+    // const customer = JSON.parse(await AsyncStorage.getItem("customer"));
+    const customer = props.customerDetails;
     const propertyFor = customer.customer_locality.property_for;
 
     const customer_property_details = {
@@ -99,7 +103,8 @@ const CustomerCommercialPropertyDetailsForm = props => {
 
     customer["customer_property_details"] = customer_property_details;
     // // console.log(property);
-    AsyncStorage.setItem("customer", JSON.stringify(customer));
+    // AsyncStorage.setItem("customer", JSON.stringify(customer));
+    props.setCustomerDetails(customer);
     // // console.log(property);
     if (propertyFor.toLowerCase() === "Rent".toLowerCase()) {
       navigation.navigate("CustomerCommercialRentDetailsForm");
@@ -241,4 +246,18 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CustomerCommercialPropertyDetailsForm;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propertyDetails: state.AppReducer.propertyDetails,
+  customerDetails: state.AppReducer.customerDetails
+});
+const mapDispatchToProps = {
+  setPropertyType,
+  setPropertyDetails,
+  setCustomerDetails,
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CustomerCommercialPropertyDetailsForm);
+// export default CustomerCommercialPropertyDetailsForm;

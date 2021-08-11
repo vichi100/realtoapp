@@ -18,6 +18,10 @@ import Button from "../../components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../../components/SnackbarComponent";
 import { numDifferentiation } from "../../util/methods";
+import { connect } from "react-redux";
+import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
+
+
 
 const negotiableArray = ["Yes", "No"];
 
@@ -76,10 +80,12 @@ const ContactBuyResidentialDetailsForm = props => {
       available_from: newDate.trim(),
       negotiable: negotiableArray[negotiableIndex]
     };
-    const customer = JSON.parse(await AsyncStorage.getItem("customer"));
+    // const customer = JSON.parse(await AsyncStorage.getItem("customer"));
+    const Customer = props.customerDetails;
     customer["customer_buy_details"] = customer_buy_details;
     // // console.log(property);
-    AsyncStorage.setItem("customer", JSON.stringify(customer));
+    // AsyncStorage.setItem("customer", JSON.stringify(customer));
+    props.setCustomerDetails(customer)
 
     navigation.navigate("AddNewCustomerBuyResidentialFinalDetails");
   };
@@ -236,4 +242,19 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ContactBuyResidentialDetailsForm;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propertyDetails: state.AppReducer.propertyDetails,
+  customerDetails: state.AppReducer.customerDetails
+});
+const mapDispatchToProps = {
+  setPropertyType,
+  setPropertyDetails,
+  setCustomerDetails,
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContactBuyResidentialDetailsForm);
+
+// export default ContactBuyResidentialDetailsForm;
