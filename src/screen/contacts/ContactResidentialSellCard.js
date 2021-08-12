@@ -22,7 +22,7 @@ import { ButtonGroup } from "react-native-elements";
 import { Avatar } from "react-native-elements";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { numDifferentiation } from "../../util/methods";
-import {SERVER_URL} from "../../util/constant";
+import { SERVER_URL } from "../../util/constant";
 import {
   setUserMobile,
   setUserDetails,
@@ -98,7 +98,7 @@ const ContactResidentialSellCard = props => {
       message: message
     };
 
-    axios(SERVER_URL+"/sendMessage", {
+    axios(SERVER_URL + "/sendMessage", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -244,12 +244,12 @@ const ContactResidentialSellCard = props => {
           >
             <View style={{ paddingLeft: 20, paddingTop: 10 }}>
               <Text style={[styles.title]}>{item.customer_details.name}</Text>
-              <Text style={[StyleSheet.subTitle]}>
+              <Text style={[styles.subTitle]}>
                 {item.customer_details.mobile1}
               </Text>
-              <Text style={[StyleSheet.subTitle]}>
+              {/* <Text style={[StyleSheet.subTitle]}>
                 {item.customer_details.address}
-              </Text>
+              </Text> */}
             </View>
 
             {displayCheckBox ? (
@@ -265,7 +265,7 @@ const ContactResidentialSellCard = props => {
                   // title="Select"
                   checked={
                     props.customerDetailsForMeeting &&
-                    props.customerDetailsForMeeting.customer_id ===
+                      props.customerDetailsForMeeting.customer_id ===
                       item.customer_id
                       ? true
                       : false
@@ -356,6 +356,22 @@ const ContactResidentialSellCard = props => {
             </View>
           </Animated.View>
         )}
+      </View>
+
+      <View
+        style={{
+          flexDirection: "row",
+          marginLeft: 0, backgroundColor: "rgba(220,220,220, .2)"
+        }}>
+        <Ionicons
+          name="location-sharp"
+          color={"#000"}
+          size={16}
+          style={{ marginLeft: 10, marginTop: 10 }}
+        />
+        <Text style={[styles.subTitleA, { marginLeft: 10, marginRight: 10, paddingTop: 5, paddingBottom: 5 }]}>
+          {item.customer_locality.location_area.map(item => item.main_text).join(', ')}
+        </Text>
       </View>
 
       <View
@@ -488,7 +504,7 @@ const ContactResidentialSellCard = props => {
               onChangeText={onChangeText}
               value={message}
               placeholder={message}
-              // keyboardType="numeric"
+            // keyboardType="numeric"
             />
 
             <View
@@ -562,7 +578,13 @@ const styles = StyleSheet.create({
   subTitle: {
     fontSize: 14,
     fontWeight: "400",
-    color: "rgba(255 ,255 ,255 , 0.87)"
+    color: "rgba(0,0,0, .8)"
+  },
+  subTitleA: {
+    fontSize: 14,
+    fontWeight: "400",
+    color: "rgb(0,0,0)",
+    marginTop: 5
   },
   detailsContainer: {
     // borderTopColor: "#DCDCDC",

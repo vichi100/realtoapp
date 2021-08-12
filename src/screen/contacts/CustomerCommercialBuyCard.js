@@ -21,7 +21,7 @@ import { Avatar } from "react-native-elements";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { CheckBox } from "react-native-elements";
 import { numDifferentiation } from "../../util/methods";
-import {SERVER_URL} from "../../util/constant";
+import { SERVER_URL } from "../../util/constant";
 import { connect } from "react-redux";
 import {
   setUserMobile,
@@ -98,7 +98,7 @@ const CustomerCommercialBuyCard = props => {
       message: message
     };
 
-    axios(SERVER_URL+"/sendMessage", {
+    axios(SERVER_URL + "/sendMessage", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -238,9 +238,7 @@ const CustomerCommercialBuyCard = props => {
               <Text style={[StyleSheet.subTitle]}>
                 {item.customer_details.mobile1}
               </Text>
-              <Text style={[StyleSheet.subTitle]}>
-                {item.customer_details.address}
-              </Text>
+
             </View>
 
             {displayCheckBox ? (
@@ -256,7 +254,7 @@ const CustomerCommercialBuyCard = props => {
                   // title="Select"
                   checked={
                     props.customerDetailsForMeeting &&
-                    props.customerDetailsForMeeting.customer_id ===
+                      props.customerDetailsForMeeting.customer_id ===
                       item.customer_id
                       ? true
                       : false
@@ -352,6 +350,22 @@ const CustomerCommercialBuyCard = props => {
             </View>
           </Animated.View>
         )}
+      </View>
+
+      <View
+        style={{
+          flexDirection: "row",
+          marginLeft: 0, backgroundColor: "rgba(220,220,220, .2)"
+        }}>
+        <Ionicons
+          name="location-sharp"
+          color={"#000"}
+          size={16}
+          style={{ marginLeft: 10, marginTop: 10 }}
+        />
+        <Text style={[styles.subTitleA, { marginLeft: 10, marginRight: 10, paddingTop: 5, paddingBottom: 5 }]}>
+          {item.customer_locality.location_area.map(item => item.main_text).join(', ')}
+        </Text>
       </View>
 
       <View style={[styles.detailsContainer]}>
@@ -478,7 +492,7 @@ const CustomerCommercialBuyCard = props => {
               onChangeText={onChangeText}
               value={message}
               placeholder={message}
-              // keyboardType="numeric"
+            // keyboardType="numeric"
             />
 
             <View
