@@ -24,7 +24,7 @@ import { SocialIcon } from "react-native-elements";
 import CustomerCommercialRentCard from "./CustomerCommercialRentCard";
 import CustomerCommercialBuyCard from "./CustomerCommercialBuyCard";
 import axios from "axios";
-import {SERVER_URL} from "../../util/constant";
+import { SERVER_URL } from "../../util/constant";
 import Slider from "../../components/Slider";
 import SliderX from "../../components/SliderX";
 import {
@@ -377,7 +377,7 @@ const CustomersCommercial = props => {
       agent_id: props.userDetails.works_for[0]
     };
 
-    axios(SERVER_URL+"/commercialCustomerList", {
+    axios(SERVER_URL + "/commercialCustomerList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -405,7 +405,7 @@ const CustomersCommercial = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = props.commercialCustomerList.filter(function(item) {
+      const newData = props.commercialCustomerList.filter(function (item) {
         // Applying filter for the inserted text in search bar
         const itemData =
           item.customer_details.name +
@@ -550,7 +550,7 @@ const CustomersCommercial = props => {
         onBackButtonPress={toggleBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -748,7 +748,7 @@ const CustomersCommercial = props => {
         onBackButtonPress={toggleSortingBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleSortingBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -846,7 +846,7 @@ const CustomersCommercial = props => {
           bottom: 15,
           right: 10,
           // height: 40,
-          backgroundColor: "#01a699",
+          backgroundColor: "rgba(0,191,255, .5)",
           borderRadius: 100
         }}
         onPress={() => navigation.navigate("AddCustomer")}

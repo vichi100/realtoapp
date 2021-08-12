@@ -232,7 +232,11 @@ const AddNewCustomerCommercialBuyFinalDetails = props => {
           </View>
           <View style={styles.overviewRightColumn}>
             <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
+              <Text style={{
+                fontSize: 14,
+                fontWeight: "600",
+                // paddingRight: 10
+              }}>
                 {dateFormat(
                   customerFinalDetails.customer_buy_details.available_from
                 )}
@@ -343,7 +347,8 @@ const styles = StyleSheet.create({
   },
   subDetailsValue: {
     fontSize: 14,
-    fontWeight: "600"
+    fontWeight: "600",
+    // paddingRight: 15
     // textAlign: "center"
   },
   verticalLine: {

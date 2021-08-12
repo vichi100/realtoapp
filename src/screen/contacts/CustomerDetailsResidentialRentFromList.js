@@ -160,7 +160,7 @@ const CustomerDetailsResidentialRentFromList = props => {
               <Text style={[styles.subDetailsTitle]}>City</Text>
             </View>
 
-            <View style={{ paddingBottom: 20, width: "80%" }}>
+            <View style={{ paddingBottom: 20, width: "70%" }}>
               <Text style={[styles.subDetailsValue]}>
                 {location.join(', ')}
               </Text>

@@ -96,7 +96,8 @@ const ContactLocalityDetailsForm = props => {
       return;
     }
 
-    const customer = JSON.parse(await AsyncStorage.getItem("customer"));
+    // const customer = JSON.parse(await AsyncStorage.getItem("customer"));
+    const customer = props.customerDetails
     // const propertyType = property.property_type;
     // // console.log(property);
 
@@ -329,6 +330,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
   propertyDetails: state.AppReducer.propertyDetails,
+  customerDetails: state.AppReducer.customerDetails
 });
 const mapDispatchToProps = {
   setPropertyType,

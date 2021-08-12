@@ -60,7 +60,7 @@ const CustomerCommercialBuyDetailsForm = props => {
     setIsVisible(false);
   };
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     if (expectedSellPrice.trim() === "") {
       setErrorMessage("Expected sell price is missing");
       setIsVisible(true);

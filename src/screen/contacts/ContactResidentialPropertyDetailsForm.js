@@ -91,7 +91,7 @@ const ContactResidentialPropertyDetailsForm = props => {
 
     customer["customer_property_details"] = customer_property_details;
     // // console.log(property);
-    AsyncStorage.setItem("customer", JSON.stringify(customer));
+    // AsyncStorage.setItem("customer", JSON.stringify(customer));
     props.setCustomerDetails(customer);
     // console.log(JSON.stringify(customer));
     if (propertyFor.toLowerCase() === "Rent".toLowerCase()) {

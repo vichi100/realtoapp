@@ -26,7 +26,7 @@ import SliderX from "../../components/SliderX";
 import ContactResidentialRentCard from "./ContactResidentialRentCard";
 import ContactResidentialSellCard from "./ContactResidentialSellCard";
 import axios from "axios";
-import {SERVER_URL} from "../../util/constant";
+import { SERVER_URL } from "../../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import {
   setResidentialCustomerList,
@@ -358,7 +358,7 @@ const ContactsResidential = props => {
       agent_id: props.userDetails.works_for[0]
     };
     // console.log(JSON.stringify(user));
-    axios(SERVER_URL+"/residentialCustomerList", {
+    axios(SERVER_URL + "/residentialCustomerList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -382,7 +382,7 @@ const ContactsResidential = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = props.residentialCustomerList.filter(function(item) {
+      const newData = props.residentialCustomerList.filter(function (item) {
         // Applying filter for the inserted text in search bar
         const itemData =
           item.customer_details.name +
@@ -540,7 +540,7 @@ const ContactsResidential = props => {
         onBackButtonPress={toggleBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -731,7 +731,7 @@ const ContactsResidential = props => {
         onBackButtonPress={toggleSortingBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleSortingBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -828,7 +828,7 @@ const ContactsResidential = props => {
           bottom: 15,
           right: 10,
           // height: 40,
-          backgroundColor: "#01a699",
+          backgroundColor: "rgba(0,191,255, .5)",
           borderRadius: 100
         }}
         onPress={() => navigation.navigate("AddCustomer")}

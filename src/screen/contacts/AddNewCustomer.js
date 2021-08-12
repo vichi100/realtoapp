@@ -101,7 +101,7 @@ const AddNewCustomer = props => {
         address: ownerAddress.trim()
       }
     };
-    // console.log(customer);
+    console.log("customer: ", JSON.stringify(customer));
     // AsyncStorage.setItem("customer", JSON.stringify(customer));
     props.setCustomerDetails(customer);
     // // console.log("1");

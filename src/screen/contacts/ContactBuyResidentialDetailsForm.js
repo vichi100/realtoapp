@@ -60,7 +60,7 @@ const ContactBuyResidentialDetailsForm = props => {
     setIsVisible(false);
   };
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     if (expectedBuyPrice.trim() === "") {
       setErrorMessage("Expected sell price is missing");
       setIsVisible(true);
@@ -81,7 +81,7 @@ const ContactBuyResidentialDetailsForm = props => {
       negotiable: negotiableArray[negotiableIndex]
     };
     // const customer = JSON.parse(await AsyncStorage.getItem("customer"));
-    const Customer = props.customerDetails;
+    const customer = props.customerDetails;
     customer["customer_buy_details"] = customer_buy_details;
     // // console.log(property);
     // AsyncStorage.setItem("customer", JSON.stringify(customer));
