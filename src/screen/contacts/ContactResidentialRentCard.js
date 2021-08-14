@@ -35,7 +35,7 @@ import axios from "axios";
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
 
-const Sliding_Drawer_Width = 250;
+const Sliding_Drawer_Width = 195;
 const width = Dimensions.get("window").width;
 
 const ContactResidentialRentCard = props => {
@@ -337,12 +337,12 @@ const ContactResidentialRentCard = props => {
                 <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
               </TouchableOpacity>
 
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => onShare()}
                 style={{ padding: 15, backgroundColor: "#0091ea" }}
               >
                 <Ionicons name="share-social" color={"#ffffff"} size={30} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TouchableOpacity
                 onPress={() => onClickMeeting(item)}
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
