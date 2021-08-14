@@ -25,7 +25,7 @@ import { ButtonGroup } from "react-native-elements";
 import Slideshow from "../components/Slideshow";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { numDifferentiation } from "../util/methods";
-import { SERVER_URL } from "../util/constant";
+import { SERVER_URL, WEB_APP_URL } from "../util/constant";
 import {
   setUserMobile,
   setUserDetails,
@@ -212,12 +212,14 @@ const Card = props => {
     Linking.openURL(url);
   };
 
-  const onShare = async () => {
+  const onShare = async (item) => {
+    console.log("item: ", JSON.stringify(item))
+    console.log(WEB_APP_URL + "/prop/" + item.agent_id + "/" + item.property_id + "/" + item.property_type.toLowerCase())
     // https://docs.expo.io/versions/latest/react-native/share/
     try {
       const result = await Share.share({
         message:
-          "React Native | A framework for building native apps using React"
+          WEB_APP_URL + "/prop/" + item.agent_id + "/" + item.property_id + "/" + item.property_type.toLowerCase()
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -348,7 +350,7 @@ const Card = props => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => onShare()}
+                onPress={() => onShare(item)}
                 style={{ padding: 15, backgroundColor: "#0091ea" }}
               >
                 <Ionicons name="share-social" color={"#ffffff"} size={30} />

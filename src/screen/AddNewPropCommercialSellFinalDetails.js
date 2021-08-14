@@ -150,7 +150,7 @@ const AddNewPropCommercialSellFinalDetails = props => {
                 propertyFinalDetails.sell_details.maintenance_charge
               )}
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Maintenance Charge</Text>
+            <Text style={[styles.subDetailsTitle]}>Maintenance</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
@@ -183,7 +183,7 @@ const AddNewPropCommercialSellFinalDetails = props => {
               </Text>
               <Text style={[styles.subDetailsTitle]}>Possession</Text>
             </View>
-            <View style={[styles.subDetails]}>
+            <View style={[styles.subDetails, { width: "75%" }]}>
               <Text style={[styles.subDetailsValue]}>
                 {propertyFinalDetails.property_details.ideal_for.join(", ")}
               </Text>
