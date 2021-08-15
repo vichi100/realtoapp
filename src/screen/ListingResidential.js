@@ -516,6 +516,13 @@ const ListingResidential = props => {
     setMaxSell(values[1]);
   };
 
+  useEffect(() => {
+    if (props.residentialPropertyList.length > 0) {
+      setData(props.residentialPropertyList)
+    }
+
+  }, [props.residentialPropertyList])
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.searchBarContainer}>

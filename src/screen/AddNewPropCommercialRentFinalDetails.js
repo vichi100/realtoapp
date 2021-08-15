@@ -13,7 +13,7 @@ import axios from "axios";
 import { SERVER_URL } from "../util/constant";
 import { numDifferentiation, dateFormat } from "../util/methods";
 import { connect } from "react-redux";
-import { setPropertyDetails } from "../reducers/Action";
+import { setPropertyDetails, setCommercialPropertyList } from "../reducers/Action";
 
 
 const AddNewPropCommercialRentFinalDetails = props => {
@@ -77,9 +77,10 @@ const AddNewPropCommercialRentFinalDetails = props => {
       .then(
         response => {
           // console.log(response.data);
-          if (response.data.property_id !== null) {
+          if (response.data !== null) {
             // await AsyncStorage.removeItem("property");
             props.setPropertyDetails(null);
+            props.setCommercialPropertyList([...props.commercialPropertyList, response.data])
             navigation.navigate("Listing");
           } else {
             setErrorMessage(
@@ -358,9 +359,11 @@ const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
   propertyType: state.AppReducer.propertyType,
   propertyDetails: state.AppReducer.propertyDetails,
+  commercialPropertyList: state.AppReducer.commercialPropertyList
 });
 const mapDispatchToProps = {
-  setPropertyDetails
+  setPropertyDetails,
+  setCommercialPropertyList
 };
 export default connect(
   mapStateToProps,

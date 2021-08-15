@@ -531,6 +531,13 @@ const ListingCommercial = props => {
     setVisibleSorting(!visibleSorting);
   };
 
+  useEffect(() => {
+    if (props.commercialPropertyList.length > 0) {
+      setData(props.commercialPropertyList)
+    }
+
+  }, [props.commercialPropertyList])
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.searchBarContainer}>
