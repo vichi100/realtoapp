@@ -24,7 +24,7 @@ import { SocialIcon } from "react-native-elements";
 import CustomerCommercialRentCard from "../contacts/CustomerCommercialRentCard";
 import CustomerCommercialBuyCard from "../contacts/CustomerCommercialBuyCard";
 import axios from "axios";
-import {SERVER_URL} from "../../util/constant";
+import { SERVER_URL } from "../../util/constant";
 import Slider from "../../components/Slider";
 import SliderX from "../../components/SliderX";
 import { setCommercialCustomerList } from "../../reducers/Action";
@@ -373,7 +373,7 @@ const GlobalCommercialCustomersSearchResult = props => {
       agent_id: props.userDetails.works_for[0]
     };
 
-    axios(SERVER_URL+"/commercialCustomerList", {
+    axios(SERVER_URL + "/commercialCustomerList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -401,7 +401,7 @@ const GlobalCommercialCustomersSearchResult = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = props.commercialCustomerList.filter(function(item) {
+      const newData = props.commercialCustomerList.filter(function (item) {
         // Applying filter for the inserted text in search bar
         const itemData =
           item.customer_details.name +
@@ -555,7 +555,7 @@ const GlobalCommercialCustomersSearchResult = props => {
         onBackButtonPress={toggleBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -753,7 +753,7 @@ const GlobalCommercialCustomersSearchResult = props => {
         onBackButtonPress={toggleSortingBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleSortingBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -854,7 +854,7 @@ const GlobalCommercialCustomersSearchResult = props => {
           backgroundColor: "#01a699",
           borderRadius: 100
         }}
-        onPress={() => navigation.navigate("AddCustomer")}
+        onPress={() => navigation.navigate("AddNewCustomerStack")}
       >
         <AntDesign name="pluscircleo" size={40} color="#ffffff" />
 

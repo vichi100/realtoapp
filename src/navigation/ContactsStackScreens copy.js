@@ -27,7 +27,6 @@ import CustomerDetailsCommercialRentFromList from "../screen/contacts/CustomerDe
 import CustomerDetailsCommercialBuyFromList from "../screen/contacts/CustomerDetailsCommercialBuyFromList";
 import PropertyListForMeeting from "../screen/contacts/PropertyListForMeeting";
 import CustomerMeetingDetails from "../screen/contacts/CustomerMeetingDetails";
-import AddNewContactsStackScreens from "./AddNewCustomerStackScreens"
 
 const Stack = createStackNavigator();
 export const hideTabBarComponents = ["ProductDetails"];
@@ -113,30 +112,104 @@ const ContactsStackScreens = () => {
           title: "Property details"
         }}
       />
+      <Stack.Screen
+        name="AddCustomer"
+        component={AddNewCustomer}
+        navigationOptions={{ tabBarVisible: false }}
+        // options={{ headerShown: false, }}
+        options={{
+          title: "Add New Customer"
+        }}
+      />
+      <Stack.Screen
+        name="ContactLocalityDetailsForm"
+        component={ContactLocalityDetailsForm}
+        options={{ title: "Locality Details" }}
+      />
+      <Stack.Screen
+        name="ContactResidentialPropertyDetailsForm"
+        component={ContactResidentialPropertyDetailsForm}
+        options={{ title: "Property Details" }}
+      />
+      <Stack.Screen
+        name="ContactRentDetailsForm"
+        component={ContactRentDetailsForm}
+        options={{ title: "Rent Details" }}
+      />
+      <Stack.Screen
+        name="AddNewCustomerRentResidentialFinalDetails"
+        component={AddNewCustomerRentResidentialFinalDetails}
+        options={{ title: "Customer Final Details" }}
+      />
 
+      <Stack.Screen
+        name="ContactBuyResidentialDetailsForm"
+        component={ContactBuyResidentialDetailsForm}
+        options={{ title: "Buy Details" }}
+      />
+
+      <Stack.Screen
+        name="AddNewCustomerBuyResidentialFinalDetails"
+        component={AddNewCustomerBuyResidentialFinalDetails}
+        options={{ title: "Customer Final Details" }}
+      />
+
+      <Stack.Screen
+        name="CustomerCommercialPropertyDetailsForm"
+        component={CustomerCommercialPropertyDetailsForm}
+        options={{ title: "Customer Property Details" }}
+      />
+
+      <Stack.Screen
+        name="AddNewCustomerCommercialRentFinalDetails"
+        component={AddNewCustomerCommercialRentFinalDetails}
+        options={{ title: "Customer Final Details" }}
+      />
+
+      <Stack.Screen
+        name="CustomerCommercialRentDetailsForm"
+        component={CustomerCommercialRentDetailsForm}
+        options={{ title: "Rent Details" }}
+      />
+
+      <Stack.Screen
+        name="CustomerCommercialBuyDetailsForm"
+        component={CustomerCommercialBuyDetailsForm}
+        options={{ title: "Buying Details" }}
+      />
+      <Stack.Screen
+        name="AddNewCustomerCommercialBuyFinalDetails"
+        component={AddNewCustomerCommercialBuyFinalDetails}
+        options={{ title: "Buying Details" }}
+      />
+
+      <Stack.Screen
+        name="CustomerDetailsResidentialRentFromList"
+        component={CustomerDetailsResidentialRentFromList}
+        options={{ title: "Customer Details" }}
+      />
+
+      <Stack.Screen
+        name="CustomerDetailsResidentialBuyFromList"
+        component={CustomerDetailsResidentialBuyFromList}
+        options={{ title: "Customer Details" }}
+      />
+
+      <Stack.Screen
+        name="CustomerDetailsCommercialRentFromList"
+        component={CustomerDetailsCommercialRentFromList}
+        options={{ title: "Customer Details" }}
+      />
+      <Stack.Screen
+        name="CustomerDetailsCommercialBuyFromList"
+        component={CustomerDetailsCommercialBuyFromList}
+        options={{ title: "Customer Details" }}
+      />
       <Stack.Screen
         name="CustomerMeetingDetails"
         component={CustomerMeetingDetails}
         options={{ title: "Meeting Details" }}
       />
-      <Stack.Screen
-        name="AddNewCustomerStack"
-        component={AddNewContactsStackScreens}
-        options={{
-          headerShown: false,
-          tabBarLabel: "",
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="view-grid-plus-outline"
-              color={color}
-              size={26}
-            />
-          )
-        }}
-      />
-
-
-
     </Stack.Navigator>
   );
 };

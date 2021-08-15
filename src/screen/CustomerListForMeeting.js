@@ -35,7 +35,7 @@ import { Divider } from "react-native-paper";
 import { SocialIcon } from "react-native-elements";
 import Slider from "../components/Slider";
 import axios from "axios";
-import {SERVER_URL} from "../util/constant";
+import { SERVER_URL } from "../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 
 CustomerListForMeeting = props => {
@@ -71,7 +71,7 @@ CustomerListForMeeting = props => {
       property_for: propertyFor
     };
     // console.log(JSON.stringify(queryObj));
-    axios(SERVER_URL+"/getCustomerListForMeeting", {
+    axios(SERVER_URL + "/getCustomerListForMeeting", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -179,7 +179,7 @@ CustomerListForMeeting = props => {
   };
 
   const navigateTo = () => {
-    navigation.navigate("Add");
+    navigation.navigate("AddNewCustomerStack");
   };
 
   const searchFilterFunction = text => {
@@ -187,7 +187,7 @@ CustomerListForMeeting = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = props.customerListForMeeting.filter(function(item) {
+      const newData = props.customerListForMeeting.filter(function (item) {
         // Applying filter for the inserted text in search bar
         const itemData =
           item.customer_details.name +
@@ -275,7 +275,7 @@ CustomerListForMeeting = props => {
         onBackButtonPress={toggleBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -395,7 +395,7 @@ CustomerListForMeeting = props => {
         onBackButtonPress={toggleSortingBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleSortingBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -465,7 +465,7 @@ CustomerListForMeeting = props => {
           backgroundColor: "#01a699",
           borderRadius: 100
         }}
-        onPress={() => navigation.navigate("AddCustomer")}
+        onPress={() => navigation.navigate("AddNewCustomerStack")}
       >
         <AntDesign name="pluscircleo" size={40} color="#ffffff" />
         {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}

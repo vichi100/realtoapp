@@ -465,7 +465,7 @@ const CustomersCommercial = props => {
   };
 
   const navigateTo = () => {
-    navigation.navigate("Add");
+    navigation.navigate("AddNewCustomerStack");
   };
 
   const [visible, setVisible] = useState(false);
@@ -849,7 +849,7 @@ const CustomersCommercial = props => {
           backgroundColor: "rgba(0,191,255, .5)",
           borderRadius: 100
         }}
-        onPress={() => navigation.navigate("AddCustomer")}
+        onPress={() => navigation.navigate("AddNewCustomerStack")}
       >
         <AntDesign name="pluscircleo" size={40} color="#ffffff" />
         {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}

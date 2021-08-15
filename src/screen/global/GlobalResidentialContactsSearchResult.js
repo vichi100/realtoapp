@@ -26,7 +26,7 @@ import SliderX from "../../components/SliderX";
 import ContactResidentialRentCard from "../contacts/ContactResidentialRentCard";
 import ContactResidentialSellCard from "../contacts/ContactResidentialSellCard";
 import axios from "axios";
-import {SERVER_URL} from "../../util/constant";
+import { SERVER_URL } from "../../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import { setResidentialCustomerList } from "../../reducers/Action";
 import { addDays, numDifferentiation } from "../../util/methods";
@@ -345,7 +345,7 @@ const GlobalResidentialContactsSearchResult = props => {
       agent_id: props.userDetails.works_for[0]
     };
     // console.log(JSON.stringify(user));
-    axios(SERVER_URL+"/residentialCustomerList", {
+    axios(SERVER_URL + "/residentialCustomerList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -373,7 +373,7 @@ const GlobalResidentialContactsSearchResult = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = props.residentialCustomerList.filter(function(item) {
+      const newData = props.residentialCustomerList.filter(function (item) {
         // Applying filter for the inserted text in search bar
         const itemData =
           item.customer_details.name +
@@ -543,7 +543,7 @@ const GlobalResidentialContactsSearchResult = props => {
         onBackButtonPress={toggleBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -734,7 +734,7 @@ const GlobalResidentialContactsSearchResult = props => {
         onBackButtonPress={toggleSortingBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleSortingBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -834,7 +834,7 @@ const GlobalResidentialContactsSearchResult = props => {
           backgroundColor: "#01a699",
           borderRadius: 100
         }}
-        onPress={() => navigation.navigate("AddCustomer")}
+        onPress={() => navigation.navigate("AddNewCustomerStack")}
       >
         <AntDesign name="pluscircleo" size={40} color="#ffffff" />
 

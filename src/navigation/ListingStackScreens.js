@@ -32,7 +32,7 @@ const ListingStackScreens = () => {
         name="Listing"
         component={ListingTopTab}
         options={{ headerShown: false }}
-        // options={{ tabBarLabel: "Home!" }}
+      // options={{ tabBarLabel: "Home!" }}
       />
       {/* <Stack.Screen
         name="Card"
@@ -97,6 +97,7 @@ const ListingStackScreens = () => {
           )
         }}
       />
+
       <Stack.Screen
         name="CustomerMeetingDetails"
         component={CustomerMeetingDetails}
