@@ -532,13 +532,13 @@ const CustomersCommercial = props => {
           }}
         >
           <Text style={{ textAlign: "center" }}>
-            You have no property listing
+            You have no customer
           </Text>
           <TouchableOpacity onPress={() => navigateTo()}>
             <Text
               style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
             >
-              Add New Property
+              Add New Customer
             </Text>
           </TouchableOpacity>
         </View>

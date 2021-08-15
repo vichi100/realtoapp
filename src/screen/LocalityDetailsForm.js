@@ -50,7 +50,7 @@ const LocalityDetailsForm = props => {
       setErrorMessage("Area is missing");
       setIsVisible(true);
       return;
-    } else if (flatNumber.trim() === "") {
+    } else if (props.propertyDetails && props.propertyDetails.property_type && props.propertyDetails.property_type.toLowerCase() === "residential" && flatNumber.trim() === "") {
       setErrorMessage("Flat Number is missing");
       setIsVisible(true);
       return;
@@ -188,22 +188,23 @@ const LocalityDetailsForm = props => {
               }
             }}
           /> */}
-          <TextInput
-            label="Flat No and Wing*"
-            value={flatNumber}
-            onChangeText={text => setFlatNumber(text)}
-            onFocus={() => setIsVisible(false)}
-            style={{ backgroundColor: "rgba(245,245,245, 0.1)", marginTop: 8 }}
-            theme={{
-              colors: {
-                // placeholder: "white",
-                // text: "white",
-                primary: "rgba(0,191,255, .9)",
-                underlineColor: "transparent",
-                background: "#ffffff"
-              }
-            }}
-          />
+          {props.propertyDetails && props.propertyDetails.property_type && props.propertyDetails.property_type.toLowerCase() === "residential" ?
+            <TextInput
+              label="Flat No and Wing*"
+              value={flatNumber}
+              onChangeText={text => setFlatNumber(text)}
+              onFocus={() => setIsVisible(false)}
+              style={{ backgroundColor: "rgba(245,245,245, 0.1)", marginTop: 8 }}
+              theme={{
+                colors: {
+                  // placeholder: "white",
+                  // text: "white",
+                  primary: "rgba(0,191,255, .9)",
+                  underlineColor: "transparent",
+                  background: "#ffffff"
+                }
+              }}
+            /> : null}
 
           <TextInput
             label="Building Name / Society*"

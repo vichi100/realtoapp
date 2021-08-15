@@ -24,7 +24,7 @@ import SliderX from "../components/SliderX";
 import CardRent from "./commercial/rent/Card";
 import CardSell from "./commercial/sell/Card";
 import axios from "axios";
-import {SERVER_URL} from "../util/constant";
+import { SERVER_URL } from "../util/constant";
 import {
   setCommercialPropertyList,
   setAnyItemDetails
@@ -413,8 +413,12 @@ const ListingCommercial = props => {
   };
 
   useEffect(() => {
-    getListing();
-    console.log("commercial Listing useEffect");
+    if (
+      props.userDetails &&
+      props.userDetails.works_for[0] !== null
+    ) {
+      getListing();
+    }
   }, []);
 
   const getListing = () => {
@@ -423,7 +427,7 @@ const ListingCommercial = props => {
       agent_id: props.userDetails.works_for[0]
     };
 
-    axios(SERVER_URL+"/commercialPropertyListings", {
+    axios(SERVER_URL + "/commercialPropertyListings", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -447,7 +451,7 @@ const ListingCommercial = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = props.commercialPropertyList.filter(function(item) {
+      const newData = props.commercialPropertyList.filter(function (item) {
         // Applying filter for the inserted text in search bar
         const itemData =
           item.property_address.building_name +
@@ -594,7 +598,7 @@ const ListingCommercial = props => {
         onBackButtonPress={toggleBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -792,7 +796,7 @@ const ListingCommercial = props => {
         onBackButtonPress={toggleSortingBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleSortingBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 

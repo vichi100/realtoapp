@@ -75,7 +75,7 @@ const AddNewPropCommercialRentFinalDetails = props => {
         propertyFinalDetails
       )
       .then(
-        async response => {
+        response => {
           // console.log(response.data);
           if (response.data.property_id !== null) {
             // await AsyncStorage.removeItem("property");
@@ -88,7 +88,7 @@ const AddNewPropCommercialRentFinalDetails = props => {
           }
         },
         error => {
-          // console.log(error);
+          console.log(error);
         }
       );
   };
@@ -96,7 +96,8 @@ const AddNewPropCommercialRentFinalDetails = props => {
     <ScrollView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
-          {propertyFinalDetails.property_address.flat_number},
+          {propertyFinalDetails.property_details.property_used_for} {" for rent in "}
+          {/* {propertyFinalDetails.property_address.flat_number}, */}
           {propertyFinalDetails.property_address.building_name},
 
           {/* 2 BHK For Rent In Anant Villa, Koregaon Park */}

@@ -29,7 +29,7 @@ const BottomTabScreen = () => {
       inactiveColor="rgb(105,105,105)"
       barStyle={{ backgroundColor: "#ffffff", paddingBottom: 0 }}
     >
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Home"
         component={HomeStackNav}
         options={{
@@ -38,8 +38,8 @@ const BottomTabScreen = () => {
             <MaterialCommunityIcons name="home" color={color} size={26} />
           )
         }}
-      /> */}
-      {/* <Tab.Screen
+      />
+      <Tab.Screen
         name="GlobalSearchStackNav"
         component={GlobalSearchStackNav}
         options={{
@@ -48,7 +48,7 @@ const BottomTabScreen = () => {
             <MaterialCommunityIcons name="web" color={color} size={26} />
           )
         }}
-      /> */}
+      />
       <Tab.Screen
         name="Listing"
         component={ListingStackScreens}

@@ -21,12 +21,11 @@ const PropDetailsFromListing = props => {
     <ScrollView style={[styles.container]}>
       <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
-          Rent {item.property_address.building_name},{" "}
+          Rent {item.property_address.flat_number},{" "} {item.property_address.building_name},{" "}
           {item.property_address.landmark_or_street}
         </Text>
         <Text style={[StyleSheet.subTitle]}>
-          {item.property_address.location_area}, {item.property_address.city}-
-          {item.property_address.pin}
+          {item.property_address.formatted_address}
         </Text>
       </View>
       {/* <Image
