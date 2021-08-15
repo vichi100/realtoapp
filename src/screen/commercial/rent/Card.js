@@ -232,7 +232,7 @@ const Card = props => {
         >
           <View style={[styles.headerContainer]}>
             <Text style={[styles.title]}>
-              Rent In {item.property_address.building_name},{" "}
+              Rent in {item.property_address.building_name},{" "}
               {item.property_address.landmark_or_street}
             </Text>
             <Text style={[StyleSheet.subTitle]}>

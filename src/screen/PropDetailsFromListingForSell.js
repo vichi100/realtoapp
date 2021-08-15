@@ -13,7 +13,7 @@ const PropDetailsFromListingForSell = props => {
     <ScrollView style={[styles.container]}>
       <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
-          Sell in {item.property_address.flat_number},{" "} {item.property_address.building_name},{" "}
+          Sell {item.property_address.flat_number},{" "} {item.property_address.building_name},{" "}
           {item.property_address.landmark_or_street}
         </Text>
         <Text style={[StyleSheet.subTitle]}>

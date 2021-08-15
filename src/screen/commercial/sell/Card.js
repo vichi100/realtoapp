@@ -30,7 +30,7 @@ import {
   setPropReminderList,
   setPropListForMeeting
 } from "../../../reducers/Action";
-import {SERVER_URL} from "../../../util/constant";
+import { SERVER_URL } from "../../../util/constant";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -98,7 +98,7 @@ const Card = props => {
       message: message
     };
 
-    axios(SERVER_URL+"/sendMessage", {
+    axios(SERVER_URL + "/sendMessage", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -231,12 +231,11 @@ const Card = props => {
         >
           <View style={[styles.headerContainer]}>
             <Text style={[styles.title]}>
-              Rent In {item.property_address.building_name},{" "}
+              Sell in {item.property_address.building_name},{" "}
               {item.property_address.landmark_or_street}
             </Text>
             <Text style={[StyleSheet.subTitle]}>
-              {item.property_address.location_area},{" "}
-              {item.property_address.city}-{item.property_address.pin}
+              {item.property_address.formatted_address}
             </Text>
           </View>
           {displayCheckBox ? (
@@ -473,7 +472,7 @@ const Card = props => {
               onChangeText={onChangeText}
               value={message}
               placeholder={message}
-              // keyboardType="numeric"
+            // keyboardType="numeric"
             />
 
             <View
