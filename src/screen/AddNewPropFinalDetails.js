@@ -86,7 +86,7 @@ const AddNewPropFinalDetails = props => {
         propertyFinalDetails
       )
       .then(
-        async response => {
+        response => {
           // console.log(response.data);
           if (response.data.property_id !== null) {
             // await AsyncStorage.removeItem("property");
@@ -108,7 +108,7 @@ const AddNewPropFinalDetails = props => {
     <ScrollView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
-          {propertyFinalDetails.property_address.flat_number},
+          {"Rent "}{propertyFinalDetails.property_address.flat_number},
           {propertyFinalDetails.property_address.building_name},
 
           {/* 2 BHK For Rent In Anant Villa, Koregaon Park */}
