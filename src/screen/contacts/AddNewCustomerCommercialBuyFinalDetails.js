@@ -13,7 +13,10 @@ import { SERVER_URL } from "../../util/constant";
 import { numDifferentiation, dateFormat } from "../../util/methods";
 import { Avatar } from "react-native-elements";
 import { connect } from "react-redux";
-import { setPropertyType, setPropertyDetails, setCustomerDetails, setStartNavigationPoint } from "../../reducers/Action";
+import {
+  setPropertyType, setPropertyDetails, setCustomerDetails,
+  setStartNavigationPoint, setCommercialCustomerList
+} from "../../reducers/Action";
 
 
 
@@ -83,10 +86,11 @@ const AddNewCustomerCommercialBuyFinalDetails = props => {
       .then(
         async response => {
           // // console.log("vichi: " + response.data.customer_id);
-          if (response.data.customer_id !== null) {
+          if (response.data !== null) {
             // // console.log("inside");
             // await AsyncStorage.removeItem("customer");
             props.setCustomerDetails(null);
+            props.setCommercialCustomerList([...props.commercialCustomerList, response.data])
             if (props.startNavigationPoint === null) {
               navigation.navigate("Contacts");
 
@@ -414,13 +418,15 @@ const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
   propertyDetails: state.AppReducer.propertyDetails,
   customerDetails: state.AppReducer.customerDetails,
-  startNavigationPoint: state.AppReducer.startNavigationPoint
+  startNavigationPoint: state.AppReducer.startNavigationPoint,
+  commercialCustomerList: state.AppReducer.commercialCustomerList
 });
 const mapDispatchToProps = {
   setPropertyType,
   setPropertyDetails,
   setCustomerDetails,
-  setStartNavigationPoint
+  setStartNavigationPoint,
+  setCommercialCustomerList
 };
 export default connect(
   mapStateToProps,

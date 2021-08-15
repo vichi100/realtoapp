@@ -471,6 +471,14 @@ const ContactsResidential = props => {
     setMaxSell(values[1]);
   };
 
+
+  useEffect(() => {
+    if (props.residentialCustomerList.length > 0) {
+      setData(props.residentialCustomerList)
+    }
+
+  }, [props.residentialCustomerList])
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.searchBarContainer}>

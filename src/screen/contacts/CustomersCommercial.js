@@ -481,6 +481,12 @@ const CustomersCommercial = props => {
     setVisibleSorting(!visibleSorting);
   };
 
+  useEffect(() => {
+    if (props.commercialCustomerList.length > 0) {
+      setData(props.commercialCustomerList)
+    }
+  }, [props.commercialCustomerList]);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.searchBarContainer}>
@@ -948,7 +954,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
-  commercialCustomerList: state.AppReducer.commercialCustomerList
+  commercialCustomerList: state.AppReducer.commercialCustomerList,
 });
 const mapDispatchToProps = {
   setCommercialCustomerList,

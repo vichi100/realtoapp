@@ -14,7 +14,10 @@ import { SERVER_URL } from "../../util/constant";
 import { numDifferentiation } from "../../util/methods";
 import { Avatar } from "react-native-elements";
 import { connect } from "react-redux";
-import { setPropertyType, setPropertyDetails, setCustomerDetails, setStartNavigationPoint } from "../../reducers/Action";
+import {
+  setPropertyType, setPropertyDetails, setCustomerDetails,
+  setStartNavigationPoint, setResidentialCustomerList
+} from "../../reducers/Action";
 
 
 
@@ -90,6 +93,8 @@ const AddNewCustomerBuyResidentialFinalDetails = props => {
           if (response.data.customer_id !== null) {
             // await AsyncStorage.removeItem("customer");
             props.setCustomerDetails(null);
+            props.setResidentialCustomerList([...props.residentialCustomerList, response.data]);
+
             if (props.startNavigationPoint === null) {
               navigation.navigate("Contacts");
 
@@ -408,13 +413,15 @@ const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
   propertyDetails: state.AppReducer.propertyDetails,
   customerDetails: state.AppReducer.customerDetails,
-  startNavigationPoint: state.AppReducer.startNavigationPoint
+  startNavigationPoint: state.AppReducer.startNavigationPoint,
+  residentialCustomerList: state.AppReducer.residentialCustomerList
 });
 const mapDispatchToProps = {
   setPropertyType,
   setPropertyDetails,
   setCustomerDetails,
-  setStartNavigationPoint
+  setStartNavigationPoint,
+  setResidentialCustomerList
 };
 export default connect(
   mapStateToProps,
