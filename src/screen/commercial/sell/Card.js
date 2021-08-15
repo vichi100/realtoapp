@@ -28,7 +28,9 @@ import {
   setUserMobile,
   setUserDetails,
   setPropReminderList,
-  setPropListForMeeting
+  setPropListForMeeting,
+  setStartNavigationPoint,
+  setCustomerDetailsForMeeting
 } from "../../../reducers/Action";
 import { SERVER_URL } from "../../../util/constant";
 
@@ -209,6 +211,16 @@ const Card = props => {
     // );
   };
 
+  const onClickMeeting = item => {
+    props.setCustomerDetailsForMeeting(null);
+    props.setPropListForMeeting([]);
+    navigation.navigate("Meeting", {
+      item: item,
+      category: "property"
+    });
+    props.setStartNavigationPoint("CustomerListForMeeting");
+  };
+
   return (
     <View style={styles.card}>
       <Slideshow
@@ -321,10 +333,7 @@ const Card = props => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate("Meeting", {
-                    item: item,
-                    category: "property"
-                  })
+                  onClickMeeting(item)
                 }
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
               >
@@ -680,7 +689,9 @@ const mapDispatchToProps = {
   setUserMobile,
   setUserDetails,
   setPropReminderList,
-  setPropListForMeeting
+  setPropListForMeeting,
+  setStartNavigationPoint,
+  setCustomerDetailsForMeeting
 };
 export default connect(
   mapStateToProps,

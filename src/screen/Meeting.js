@@ -30,7 +30,7 @@ import {
   setCustomerDetailsForMeeting
 } from "../reducers/Action";
 import PropertyReminder from "./PropertyReminder";
-import {SERVER_URL} from "../util/constant";
+import { SERVER_URL } from "../util/constant";
 
 const reminderForArray = ["Call", "Meeting", "Property Visit"];
 const ampmArray = ["AM", "PM"];
@@ -233,7 +233,7 @@ const Meeting = props => {
     };
     axios
       .post(
-        SERVER_URL+"/addNewReminder",
+        SERVER_URL + "/addNewReminder",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -263,7 +263,7 @@ const Meeting = props => {
     };
     axios
       .post(
-        SERVER_URL+"/getPropReminderList",
+        SERVER_URL + "/getPropReminderList",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -329,11 +329,7 @@ const Meeting = props => {
             </View>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("CustomerListForMeeting", {
-                  item: item,
-                  property_type: item.property_type,
-                  property_for: item.property_for
-                })
+                navigation.navigate("CustomerListForMeeting")
               }
             >
               <View style={{ flexDirection: "row", marginTop: 10 }}>

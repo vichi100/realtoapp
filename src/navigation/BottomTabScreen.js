@@ -24,7 +24,8 @@ const BottomTabScreen = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      // initialRouteName="Home"
+      lazy={false}
       activeColor="rgb(135,206,235)"
       inactiveColor="rgb(105,105,105)"
       barStyle={{ backgroundColor: "#ffffff", paddingBottom: 0 }}
@@ -49,7 +50,10 @@ const BottomTabScreen = () => {
           )
         }}
       /> */}
+
+
       <Tab.Screen
+        // lazy={false}
         name="Listing"
         component={ListingStackScreens}
         title="My Properties"
@@ -64,6 +68,19 @@ const BottomTabScreen = () => {
           )
         }}
       />
+
+      <Tab.Screen
+        // lazy={false}
+        name="Contact"
+        component={ContactsStackScreens}
+        options={{
+          tabBarLabel: "",
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="contacts" color={color} size={26} />
+          )
+        }}
+      />
+
       {/* <Tab.Screen
         name="Add"
         component={AddNewPropStackScreens}
@@ -79,16 +96,7 @@ const BottomTabScreen = () => {
         }}
       /> */}
 
-      <Tab.Screen
-        name="Contact"
-        component={ContactsStackScreens}
-        options={{
-          tabBarLabel: "",
-          tabBarIcon: ({ color }) => (
-            <AntDesign name="contacts" color={color} size={26} />
-          )
-        }}
-      />
+
 
       <Tab.Screen
         name="NotificationStackScreens"

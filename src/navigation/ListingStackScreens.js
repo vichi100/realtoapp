@@ -10,6 +10,7 @@ import CommercialSellPropDetails from "../screen/commercial/sell/CommercialSellP
 import AddNewPropStackScreens from "./AddNewPropStackScreens";
 import CustomerMeetingDetails from "../screen/contacts/CustomerMeetingDetails";
 import CustomerListForMeeting from "../screen/CustomerListForMeeting";
+import AddNewContactsStackScreens from "./AddNewCustomerStackScreens"
 
 const Stack = createStackNavigator();
 export const hideTabBarComponents = ["ProductDetails"];
@@ -79,6 +80,22 @@ const ListingStackScreens = () => {
         navigationOptions={{ tabBarVisible: false }}
         options={{
           title: "Property details"
+        }}
+      />
+
+      <Stack.Screen
+        name="AddNewCustomerStack"
+        component={AddNewContactsStackScreens}
+        options={{
+          headerShown: false,
+          tabBarLabel: "",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="view-grid-plus-outline"
+              color={color}
+              size={26}
+            />
+          )
         }}
       />
 

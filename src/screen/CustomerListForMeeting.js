@@ -40,8 +40,9 @@ import { getBottomSpace } from "react-native-iphone-x-helper";
 
 CustomerListForMeeting = props => {
   const { navigation } = props;
-  const propertyType = props.route.params.property_type;
-  const propertyFor = props.route.params.property_for;
+  console.log("props.propertyDetails.property_type: ", props.propertyDetails.property_type)
+  const propertyType = props.propertyDetails.property_type;
+  const propertyFor = props.propertyDetails.property_for;
   const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
@@ -477,7 +478,8 @@ CustomerListForMeeting = props => {
 const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
   propReminderList: state.AppReducer.propReminderList,
-  customerListForMeeting: state.AppReducer.customerListForMeeting
+  customerListForMeeting: state.AppReducer.customerListForMeeting,
+  propertyDetails: state.AppReducer.propertyDetails
 });
 
 const mapDispatchToProps = {

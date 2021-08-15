@@ -26,11 +26,12 @@ import SliderX from "../components/SliderX";
 import CardResidentialRent from "./Card";
 import CardResidentialSell from "./CardSell";
 import axios from "axios";
-import {SERVER_URL} from "../util/constant";
+import { SERVER_URL } from "../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import {
   setResidentialPropertyList,
-  setAnyItemDetails
+  setAnyItemDetails,
+  setPropertyDetails
 } from "../reducers/Action";
 import { addDays, numDifferentiation } from "../util/methods";
 import Snackbar from "../components/SnackbarComponent";
@@ -400,7 +401,7 @@ const ListingResidential = props => {
       agent_id: props.userDetails.works_for[0]
     };
     // // console.log(JSON.stringify(user));
-    axios(SERVER_URL+"/residentialPropertyListings", {
+    axios(SERVER_URL + "/residentialPropertyListings", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -424,7 +425,7 @@ const ListingResidential = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = props.residentialPropertyList.filter(function(item) {
+      const newData = props.residentialPropertyList.filter(function (item) {
         // Applying filter for the inserted text in search bar
         const itemData =
           item.property_address.building_name +
@@ -448,11 +449,15 @@ const ListingResidential = props => {
 
   const navigateToDetails = (item, propertyFor) => {
     props.setAnyItemDetails(item);
+    console.log("props.setPropertyDetails(item: )", item);
+    props.setPropertyDetails(item);
+
     if (propertyFor === "Rent") {
       navigation.navigate("PropDetailsFromListing", item);
     } else if (propertyFor === "Sell") {
       navigation.navigate("PropDetailsFromListingForSell", item);
     }
+
   };
 
   const ItemView = ({ item }) => {
@@ -580,7 +585,7 @@ const ListingResidential = props => {
         onBackButtonPress={toggleBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -772,7 +777,7 @@ const ListingResidential = props => {
         onBackButtonPress={toggleSortingBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleSortingBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -976,7 +981,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
   setResidentialPropertyList,
-  setAnyItemDetails
+  setAnyItemDetails,
+  setPropertyDetails
 };
 export default connect(
   mapStateToProps,

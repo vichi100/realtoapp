@@ -30,7 +30,9 @@ import {
   setUserDetails,
   setPropReminderList,
   setPropListForMeeting,
-  setCustomerDetailsForMeeting
+  setCustomerDetailsForMeeting,
+  setStartNavigationPoint,
+  setPropertyDetails
 } from "../reducers/Action";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
@@ -128,8 +130,11 @@ const Card = props => {
   });
 
   const onClickMeeting = item => {
+    console.log("hi")
     props.setCustomerDetailsForMeeting(null);
     props.setPropListForMeeting([]);
+    props.setPropertyDetails(item);
+    props.setStartNavigationPoint("CustomerListForMeeting");
     navigation.navigate("Meeting", {
       item: item,
       category: "property"
@@ -685,7 +690,9 @@ const mapDispatchToProps = {
   setUserDetails,
   setPropReminderList,
   setPropListForMeeting,
-  setCustomerDetailsForMeeting
+  setCustomerDetailsForMeeting,
+  setStartNavigationPoint,
+  setPropertyDetails
 };
 export default connect(
   mapStateToProps,

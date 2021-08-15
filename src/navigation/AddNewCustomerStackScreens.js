@@ -27,6 +27,7 @@ import CustomerDetailsCommercialRentFromList from "../screen/contacts/CustomerDe
 import CustomerDetailsCommercialBuyFromList from "../screen/contacts/CustomerDetailsCommercialBuyFromList";
 import PropertyListForMeeting from "../screen/contacts/PropertyListForMeeting";
 import CustomerMeetingDetails from "../screen/contacts/CustomerMeetingDetails";
+import AddNewPropStackScreens from "./AddNewPropStackScreens"
 
 const Stack = createStackNavigator();
 export const hideTabBarComponents = ["ProductDetails"];
@@ -122,29 +123,6 @@ const AddNewContactsStackScreens = () => {
                 name="AddNewCustomerCommercialBuyFinalDetails"
                 component={AddNewCustomerCommercialBuyFinalDetails}
                 options={{ title: "Buying Details" }}
-            />
-
-            <Stack.Screen
-                name="CustomerDetailsResidentialRentFromList"
-                component={CustomerDetailsResidentialRentFromList}
-                options={{ title: "Customer Details" }}
-            />
-
-            <Stack.Screen
-                name="CustomerDetailsResidentialBuyFromList"
-                component={CustomerDetailsResidentialBuyFromList}
-                options={{ title: "Customer Details" }}
-            />
-
-            <Stack.Screen
-                name="CustomerDetailsCommercialRentFromList"
-                component={CustomerDetailsCommercialRentFromList}
-                options={{ title: "Customer Details" }}
-            />
-            <Stack.Screen
-                name="CustomerDetailsCommercialBuyFromList"
-                component={CustomerDetailsCommercialBuyFromList}
-                options={{ title: "Customer Details" }}
             />
 
         </Stack.Navigator>

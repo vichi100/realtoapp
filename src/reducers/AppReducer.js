@@ -18,7 +18,8 @@ const initialState = {
   propertyType: "Residential",
   globalSearchResult: [],
   anyItemDetails: null,
-  propertyDetails: null
+  propertyDetails: null,
+  startNavigationPoint: null,
 };
 const AppReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -136,6 +137,14 @@ const AppReducer = (state = initialState, action) => {
         ...state,
         customerDetails: action.payload
       };
+
+    case ACTION_TYPES.SET_START_NAVIGATION_POINT:
+      // console.log("SET_START_NAVIGATION_POINT");
+      return {
+        ...state,
+        startNavigationPoint: action.payload
+      };
+
 
 
     default:

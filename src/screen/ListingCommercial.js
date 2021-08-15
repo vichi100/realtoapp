@@ -27,7 +27,8 @@ import axios from "axios";
 import { SERVER_URL } from "../util/constant";
 import {
   setCommercialPropertyList,
-  setAnyItemDetails
+  setAnyItemDetails,
+  setPropertyDetails
 } from "../reducers/Action";
 import { addDays, numDifferentiation } from "../util/methods";
 import Snackbar from "../components/SnackbarComponent";
@@ -475,11 +476,13 @@ const ListingCommercial = props => {
 
   const navigateToDetails = (item, propertyFor) => {
     props.setAnyItemDetails(item);
+    props.setPropertyDetails(item);
     if (propertyFor === "Rent") {
       navigation.navigate("CommercialRentPropDetails", item);
     } else if (propertyFor === "Sell") {
       navigation.navigate("CommercialSellPropDetails", item);
     }
+
   };
 
   const ItemView = ({ item }) => {
@@ -1000,7 +1003,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
   setCommercialPropertyList,
-  setAnyItemDetails
+  setAnyItemDetails,
+  setPropertyDetails
 };
 export default connect(
   mapStateToProps,

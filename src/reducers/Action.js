@@ -149,5 +149,11 @@ export const setCustomerDetails = payload => {
   };
 };
 
-
+export const setStartNavigationPoint = payload => {
+  // console.log("setPropertyType in action: " + JSON.stringify(payload));
+  return {
+    type: ACTION_TYPES.SET_START_NAVIGATION_POINT,
+    payload
+  };
+};
 
