@@ -209,6 +209,12 @@ CustomerListForMeeting = props => {
     }
   };
 
+  useEffect(() => {
+    if (props.residentialCustomerList.length > 0 || props.commercialCustomerList.length) {
+      getCustomerList();
+    }
+  }, [props.residentialCustomerList, props.commercialCustomerList])
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.searchBarContainer}>
@@ -479,7 +485,9 @@ const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
   propReminderList: state.AppReducer.propReminderList,
   customerListForMeeting: state.AppReducer.customerListForMeeting,
-  propertyDetails: state.AppReducer.propertyDetails
+  propertyDetails: state.AppReducer.propertyDetails,
+  commercialCustomerList: state.AppReducer.commercialCustomerList,
+  residentialCustomerList: state.AppReducer.residentialCustomerList
 });
 
 const mapDispatchToProps = {
