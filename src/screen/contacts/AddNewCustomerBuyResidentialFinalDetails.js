@@ -137,7 +137,7 @@ const AddNewCustomerBuyResidentialFinalDetails = props => {
             size={80}
             title={
               customerFinalDetails.customer_details.name &&
-              customerFinalDetails.customer_details.name.slice(0, 2)
+              customerFinalDetails.customer_details.name.slice(0, 1)
             }
             activeOpacity={0.7}
             titleStyle={{ color: "rgba(105,105,105, .9)" }}
