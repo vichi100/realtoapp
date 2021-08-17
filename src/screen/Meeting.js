@@ -35,6 +35,9 @@ import { SERVER_URL } from "../util/constant";
 const reminderForArray = ["Call", "Meeting", "Property Visit"];
 const ampmArray = ["AM", "PM"];
 
+
+// This from property list when click on meeting/clock icon
+
 const Meeting = props => {
   const { navigation } = props;
   const item = props.route.params.item; // property item

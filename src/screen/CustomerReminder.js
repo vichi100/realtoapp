@@ -16,43 +16,46 @@ import {
 import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
+import { SERVER_URL } from "../util/constant"
 
-const PropertyReminder = props => {
-  const { navigation } = props;
+const CustomerReminder = props => {
+  const { navigation, item } = props;
   const [reminderList, setReminderList] = useState([]);
-  useEffect(() => {
-    // console.log("props.propReminderList: ", props.propReminderList);
-    setReminderList(props.propReminderList);
-  }, [props.propReminderList]);
-
-
-
   // useEffect(() => {
-  //   if(reminderList.length > 0){
-  //     return;
-  //   }
-  //   const agentId = {
-  //     agent_id: props.userDetails.works_for
-  //   };
-  //   axios
-  //     .post(
-  //       SERVER_URL+"/getReminderList",
-  //       // SERVER_URL + "/addNewResidentialRentProperty",
-  //       // await AsyncStorage.getItem("property")
-  //       // JSON.stringify({ vichi: "vchi" })
-  //       agentId
-  //     )
-  //     .then(
-  //       response => {
-  //         // console.log(response.data);
-  //         setReminderList(response.data);
-  //         // navigation.navigate("CardDetails");
-  //       },
-  //       error => {
-  //         // console.log(error);
-  //       }
-  //     );
-  // }, []);
+  //   console.log("props.item: ", props.item);
+  //   setReminderList(props.propReminderList);
+  // }, [props.propReminderList]);
+
+
+  useEffect(() => {
+    if (reminderList.length > 0) {
+      return;
+    }
+    const agentId = {
+      agent_id: props.userDetails.works_for,
+      // customer_id: item.customer_id
+    };
+    axios
+      .post(
+        SERVER_URL + "/getReminderList",
+        // SERVER_URL + "/addNewResidentialRentProperty",
+        // await AsyncStorage.getItem("property")
+        // JSON.stringify({ vichi: "vchi" })
+        agentId
+      )
+      .then(
+        response => {
+          // console.log(response.data);
+          setReminderList(response.data);
+          // navigation.navigate("CardDetails");
+        },
+        error => {
+          // console.log(error);
+        }
+      );
+  }, []);
+
+
 
   const makeCall = mobile => {
     const url = "tel://" + mobile;
@@ -277,6 +280,6 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   null
-)(PropertyReminder);
+)(CustomerReminder);
 
 // export default Reminder;

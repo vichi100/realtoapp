@@ -423,7 +423,7 @@ const ListingCommercial = props => {
   }, []);
 
   const getListing = () => {
-    console.log("props.userDetails4 " + JSON.stringify(props.userDetails));
+    // console.log("props.userDetails4 " + JSON.stringify(props.userDetails));
     const user = {
       agent_id: props.userDetails.works_for[0]
     };

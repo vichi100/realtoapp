@@ -41,7 +41,7 @@ const CustomerMeeting = props => {
   const category = props.route.params.category;
   // console.log("route.params: " + JSON.stringify(props.route.params));
   const inputRef = useRef(null);
-  // // console.log(item);
+  console.log("item: ", item);
   const date = new Date();
   const [newDate, setNewDate] = React.useState("");
   const [newTime, setNewTime] = React.useState("");
@@ -239,14 +239,14 @@ const CustomerMeeting = props => {
       );
   };
 
-  const getPropReminders = () => {
+  const getCustomerReminderList = () => {
     // console.log("item getPropReminders: " + propertyIdX);
     const propertyId = {
-      property_id: propertyIdX
+      customer_id: item.customer_id
     };
     axios
       .post(
-        SERVER_URL + "/getPropReminderList",
+        SERVER_URL + "/getCustomerReminderList",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -274,7 +274,7 @@ const CustomerMeeting = props => {
     // console.log("useEffect called: " + props.propReminderList.length);
     // if (props.propReminderList.length === 0) {
     // console.log("getPropReminders called");
-    getPropReminders();
+    getCustomerReminderList();
     // }
   }, [propertyIdX]);
 
@@ -483,7 +483,7 @@ const CustomerMeeting = props => {
             </View>
           </View>
           {/* Property releted reminder list */}
-          <PropertyReminder navigation={navigation} />
+          <PropertyReminder navigation={navigation} item={item} />
         </ScrollView>
         <DatePickerModal
           mode="single"
