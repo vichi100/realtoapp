@@ -465,15 +465,15 @@ const ListingResidential = props => {
     if (item.property_type === "Residential") {
       if (item.property_for === "Rent") {
         return (
-          <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <CardResidentialRent navigation={navigation} item={item} />
-          </TouchableOpacity>
+          // <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
+          <CardResidentialRent navigation={navigation} item={item} />
+          // </TouchableOpacity>
         );
       } else if (item.property_for === "Sell") {
         return (
-          <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
-            <CardResidentialSell navigation={navigation} item={item} />
-          </TouchableOpacity>
+          // <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
+          <CardResidentialSell navigation={navigation} item={item} />
+          // </TouchableOpacity>
         );
       }
     }

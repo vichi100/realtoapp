@@ -225,7 +225,20 @@ const Card = props => {
     setChatModalVisible(false);
   };
 
-  return (
+  const navigateToDetails = (item, propertyFor) => {
+    // props.setAnyItemDetails(item);
+    console.log("props.setPropertyDetails(item: )", item);
+    props.setPropertyDetails(item);
+
+    if (propertyFor === "Rent") {
+      navigation.navigate("PropDetailsFromListing", item);
+    } else if (propertyFor === "Sell") {
+      navigation.navigate("PropDetailsFromListingForSell", item);
+    }
+
+  };
+
+  return (<TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
     <View style={styles.card}>
       <Slideshow
         dataSource={[
@@ -515,7 +528,7 @@ const Card = props => {
         </View>
       </Modal>
     </View>
-  );
+  </TouchableOpacity>);
 };
 
 const styles = StyleSheet.create({
