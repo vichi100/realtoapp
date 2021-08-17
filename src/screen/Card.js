@@ -60,7 +60,7 @@ const Card = props => {
     displayCheckBox,
     displayChat
   } = props;
-  // console.log(item.property_id);
+
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
   const [disabled, setDisabled] = useState(false);
@@ -270,11 +270,11 @@ const Card = props => {
           ]}
         >
           <View style={styles.headerContainer}>
-            <Text style={[styles.title]}>
+            <Text style={[styles.title,]}>
               Rent In {item.property_address.building_name},{" "}
               {item.property_address.landmark_or_street}
             </Text>
-            <Text style={[StyleSheet.subTitle]}>
+            <Text style={[StyleSheet.subTitle,]}>
               {item.property_address.formatted_address}
             </Text>
           </View>
@@ -591,6 +591,7 @@ const styles = StyleSheet.create({
     // alignItems: "stretch"
   },
   headerContainer: {
+    flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
     paddingRight: 16,
