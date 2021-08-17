@@ -430,7 +430,7 @@ const ListingResidential = props => {
         const itemData =
           item.property_address.building_name +
           item.property_address.landmark_or_street +
-          item.property_address.location_area +
+          item.property_address.formatted_address +
           item.owner_details.name +
           item.owner_details.mobile1;
 
