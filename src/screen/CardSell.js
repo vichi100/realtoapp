@@ -258,7 +258,7 @@ const Card = props => {
           {displayCheckBox ? (
             <View
               style={{
-                backgroundColor: "rgba(108, 198, 114, 0.2)",
+                // backgroundColor: "rgba(108, 198, 114, 0.2)",
                 justifyContent: "center"
               }}
             >
@@ -539,6 +539,7 @@ const styles = StyleSheet.create({
     // alignItems: "stretch"
   },
   headerContainer: {
+    flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
     paddingRight: 16,

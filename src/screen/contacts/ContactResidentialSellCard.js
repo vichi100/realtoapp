@@ -260,7 +260,7 @@ const ContactResidentialSellCard = props => {
             {displayCheckBox ? (
               <View
                 style={{
-                  backgroundColor: "rgba(108, 198, 114, 0.2)",
+                  // backgroundColor: "rgba(108, 198, 114, 0.2)",
                   justifyContent: "center"
                 }}
               >

@@ -267,8 +267,9 @@ const ContactResidentialRentCard = props => {
             {displayCheckBox ? (
               <View
                 style={{
-                  backgroundColor: "rgba(108, 198, 114, 0.2)",
-                  justifyContent: "center"
+                  // backgroundColor: "rgba(108, 198, 114, 0.2)",
+                  justifyContent: "center",
+                  // height: "100%"
                 }}
               >
                 <CheckBox
@@ -284,10 +285,10 @@ const ContactResidentialRentCard = props => {
                   }
                   containerStyle={{
                     // backgroundColor: "rgba(108, 198, 114, 0.3)",
-                    borderWidth: 0,
-                    margin: 0,
-                    // padding: 30,
-                    borderRadius: 10
+                    // borderWidth: 0,
+                    // margin: 0,
+                    // padding: 10,
+                    // borderRadius: 10
                     // width: 60
                   }}
                 />
