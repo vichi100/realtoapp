@@ -28,7 +28,9 @@ import {
   setUserDetails,
   setPropReminderList,
   setPropListForMeeting,
-  setCustomerDetailsForMeeting
+  setCustomerDetailsForMeeting,
+  setStartNavigationPoint,
+  setCustomerDetails
 } from "../../reducers/Action";
 import axios from "axios";
 
@@ -193,6 +195,8 @@ const ContactResidentialSellCard = props => {
   const onClickMeeting = item => {
     props.setCustomerDetailsForMeeting(null);
     props.setPropListForMeeting([]);
+    props.setStartNavigationPoint("PropertyListForMeeting");
+    props.setCustomerDetails(item)
     navigation.navigate("CustomerMeeting", {
       item: item,
       category: "customer"
@@ -715,7 +719,9 @@ const mapDispatchToProps = {
   setUserDetails,
   setPropReminderList,
   setCustomerDetailsForMeeting,
-  setPropListForMeeting
+  setPropListForMeeting,
+  setStartNavigationPoint,
+  setCustomerDetails
 };
 export default connect(
   mapStateToProps,

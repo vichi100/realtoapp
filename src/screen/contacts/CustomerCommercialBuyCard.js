@@ -28,7 +28,9 @@ import {
   setUserDetails,
   setPropReminderList,
   setPropListForMeeting,
-  setCustomerDetailsForMeeting
+  setCustomerDetailsForMeeting,
+  setStartNavigationPoint,
+  setCustomerDetails
 } from "../../reducers/Action";
 import axios from "axios";
 
@@ -191,6 +193,17 @@ const CustomerCommercialBuyCard = props => {
     props.setCustomerDetailsForMeeting(customerObj);
   };
 
+  const onClickMeeting = item => {
+    props.setCustomerDetailsForMeeting(null);
+    props.setPropListForMeeting([]);
+    props.setStartNavigationPoint("PropertyListForMeeting");
+    props.setCustomerDetails(item)
+    navigation.navigate("CustomerMeeting", {
+      item: item,
+      category: "customer"
+    })
+  };
+
   return (
     <View style={styles.card}>
       <View style={styles.MainContainer}>
@@ -330,10 +343,7 @@ const CustomerCommercialBuyCard = props => {
 
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate("CustomerMeeting", {
-                    item: item,
-                    category: "customer"
-                  })
+                  onClickMeeting(item)
                 }
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
               >
@@ -707,7 +717,9 @@ const mapDispatchToProps = {
   setUserMobile,
   setUserDetails,
   setPropReminderList,
-  setCustomerDetailsForMeeting
+  setCustomerDetailsForMeeting,
+  setStartNavigationPoint,
+  setCustomerDetails
 };
 export default connect(
   mapStateToProps,

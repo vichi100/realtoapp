@@ -23,7 +23,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Snackbar from "../../components/SnackbarComponent";
 import axios from "axios";
 import { dateFormat } from "../../util/methods";
-import {SERVER_URL} from "../../util/constant";
+import { SERVER_URL } from "../../util/constant";
 import {
   setUserMobile,
   setUserDetails,
@@ -60,7 +60,7 @@ const CustomerMeeting = props => {
   const [propertyIdX, setPropertyIdX] = useState(item.property_id);
   const [visible, setVisible] = React.useState(false);
 
-  const clearState = () =>{
+  const clearState = () => {
     setNewDate("");
     setNewTime("");
     setClientName("");
@@ -216,7 +216,7 @@ const CustomerMeeting = props => {
     };
     axios
       .post(
-        SERVER_URL+"/addNewReminder",
+        SERVER_URL + "/addNewReminder",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -246,7 +246,7 @@ const CustomerMeeting = props => {
     };
     axios
       .post(
-        SERVER_URL+"/getPropReminderList",
+        SERVER_URL + "/getPropReminderList",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -400,9 +400,9 @@ const CustomerMeeting = props => {
               }
             >
               <View style={{ flexDirection: "row", marginTop: 10 }}>
-                <AntDesign name="pluscircleo" color={"#80d8ff"} size={26} />
+                <AntDesign name="pluscircleo" color={"#00BFFF"} size={26} />
                 <Text
-                  style={{ color: "#80d8ff", paddingLeft: 10, paddingTop: 5 }}
+                  style={{ color: "#00BFFF", paddingLeft: 10, paddingTop: 5, fontWeight: "500" }}
                 >
                   Add {item.customer_locality.property_type} Properties for{" "}
                   {item.customer_locality.property_for.toLowerCase()}

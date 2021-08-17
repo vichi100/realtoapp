@@ -29,7 +29,9 @@ import {
   setUserDetails,
   setPropReminderList,
   setPropListForMeeting,
-  setCustomerDetailsForMeeting
+  setCustomerDetailsForMeeting,
+  setStartNavigationPoint,
+  setCustomerDetails
 } from "../../reducers/Action";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
@@ -191,9 +193,16 @@ const CustomerCommercialRentCard = props => {
     props.setCustomerDetailsForMeeting(customerObj);
   };
 
-  // useEffect(()=>{
-  //   customer_locality
-  // },[])
+  const onClickMeeting = item => {
+    props.setCustomerDetailsForMeeting(null);
+    props.setPropListForMeeting([]);
+    props.setStartNavigationPoint("PropertyListForMeeting");
+    props.setCustomerDetails(item);
+    navigation.navigate("CustomerMeeting", {
+      item: item,
+      category: "customer"
+    })
+  };
 
   return (
     <View style={styles.card}>
@@ -335,10 +344,7 @@ const CustomerCommercialRentCard = props => {
 
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate("CustomerMeeting", {
-                    item: item,
-                    category: "customer"
-                  })
+                  onClickMeeting(item)
                 }
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
               >
@@ -716,7 +722,9 @@ const mapDispatchToProps = {
   setUserMobile,
   setUserDetails,
   setPropReminderList,
-  setCustomerDetailsForMeeting
+  setCustomerDetailsForMeeting,
+  setStartNavigationPoint,
+  setCustomerDetails
 };
 export default connect(
   mapStateToProps,

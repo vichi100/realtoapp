@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 const CommercialRentPropDetails = props => {
   // const { navigation } = props;
   // const item = route.params;
-  const item = props.anyItemDetails;
+  const item = props.propertyDetails;
   // // console.log(item);
   return (
     <ScrollView style={[styles.container]}>
@@ -257,7 +257,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
-  anyItemDetails: state.AppReducer.anyItemDetails
+  anyItemDetails: state.AppReducer.anyItemDetails,
+  propertyDetails: state.AppReducer.propertyDetails
 });
 // const mapDispatchToProps = {
 //   // setCommercialPropertyList,

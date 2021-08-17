@@ -439,7 +439,7 @@ const mapDispatchToProps = {
   setPropertyDetails,
   setCustomerDetails,
   setStartNavigationPoint,
-  setResidentialCustomerList
+  setResidentialCustomerList,
 };
 export default connect(
   mapStateToProps,

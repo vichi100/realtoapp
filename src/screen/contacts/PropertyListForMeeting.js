@@ -25,7 +25,7 @@ import Slider from "../../components/Slider";
 import CardResidentialRent from "../Card";
 import CardResidentialSell from "../CardSell";
 import axios from "axios";
-import {SERVER_URL} from "../../util/constant";
+import { SERVER_URL } from "../../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 
 import CardRent from "../commercial/rent/Card";
@@ -34,8 +34,9 @@ import { setPropertyListingForMeeting } from "../../reducers/Action";
 
 const PropertyListForMeeting = props => {
   const { navigation } = props;
-  const propertyType = props.route.params.property_type;
-  const propertyFor = props.route.params.property_for;
+  // console.log("props.customerDetails.customer_locality : ", props.customerDetails.customer_locality)
+  const propertyType = props.customerDetails.customer_locality.property_type;
+  const propertyFor = props.customerDetails.customer_locality.property_for;
   const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
@@ -56,16 +57,12 @@ const PropertyListForMeeting = props => {
     // console.log("residential Listing useEffect");
   }, [props.userDetails]);
 
-  // const getAgentDetails = async () => {
-  //   // AsyncStorage.setItem("agent_details", JSON.stringify(agentDetails));
-  //   const agentDetailsStr = await AsyncStorage.getItem("user_details");
-  //   // console.log(agentDetailsStr);
-  //   if (agentDetailsStr !== null) {
-  //     return JSON.parse(agentDetailsStr);
-  //   } else {
-  //     return null;
-  //   }
-  // };
+
+  useEffect(() => {
+    if (props.commercialPropertyList.length > 0 || residentialPropertyList.length > 0) {
+      getListing()
+    }
+  }, [props.commercialPropertyList, props.residentialPropertyList])
 
   const getListing = () => {
     // const agentDetailsX = getAgentDetails();
@@ -76,7 +73,7 @@ const PropertyListForMeeting = props => {
       property_for: propertyFor
     };
     // console.log(JSON.stringify(user));
-    axios(SERVER_URL+"/getPropertyListingForMeeting", {
+    axios(SERVER_URL + "/getPropertyListingForMeeting", {
       // getPropertyListingForMeeting
       method: "post",
       headers: {
@@ -105,7 +102,7 @@ const PropertyListForMeeting = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = props.propertyListingForMeeting.filter(function(item) {
+      const newData = props.propertyListingForMeeting.filter(function (item) {
         // Applying filter for the inserted text in search bar
         const itemData =
           item.property_address.building_name +
@@ -289,7 +286,7 @@ const PropertyListForMeeting = props => {
         onBackButtonPress={toggleBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -409,7 +406,7 @@ const PropertyListForMeeting = props => {
         onBackButtonPress={toggleSortingBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleSortingBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -578,7 +575,11 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
-  propertyListingForMeeting: state.AppReducer.propertyListingForMeeting
+  propertyListingForMeeting: state.AppReducer.propertyListingForMeeting,
+  residentialCustomerList: state.AppReducer.residentialCustomerList,
+  commercialPropertyList: state.AppReducer.commercialPropertyList,
+  residentialPropertyList: state.AppReducer.residentialPropertyList,
+  customerDetails: state.AppReducer.customerDetails
 });
 const mapDispatchToProps = {
   setPropertyListingForMeeting

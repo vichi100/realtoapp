@@ -448,7 +448,7 @@ const ListingResidential = props => {
   };
 
   const navigateToDetails = (item, propertyFor) => {
-    props.setAnyItemDetails(item);
+    // props.setAnyItemDetails(item);
     console.log("props.setPropertyDetails(item: )", item);
     props.setPropertyDetails(item);
 

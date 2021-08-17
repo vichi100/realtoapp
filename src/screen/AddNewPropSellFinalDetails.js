@@ -13,7 +13,7 @@ import axios from "axios";
 import { SERVER_URL } from "../util/constant";
 import { numDifferentiation } from "../util/methods";
 import { connect } from "react-redux";
-import { setPropertyDetails, setResidentialPropertyList } from "../reducers/Action";
+import { setPropertyDetails, setResidentialPropertyList, setStartNavigationPoint } from "../reducers/Action";
 
 const AddNewPropSellFinalDetails = props => {
   const { navigation } = props;
@@ -80,7 +80,15 @@ const AddNewPropSellFinalDetails = props => {
             // await AsyncStorage.removeItem("property");
             props.setPropertyDetails(null)
             props.setResidentialPropertyList([...props.residentialPropertyList, response.data])
-            navigation.navigate("Listing");
+            // navigation.navigate("Listing");
+            if (props.startNavigationPoint === null) {
+              navigation.navigate("Listing");
+
+            } else {
+              navigation.navigate("PropertyListForMeeting");
+            }
+            props.setStartNavigationPoint(null)
+
           } else {
             setErrorMessage(
               "Error: Seems there is some network issue, please try later"
@@ -367,7 +375,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
   setPropertyDetails,
-  setResidentialPropertyList
+  setResidentialPropertyList,
+  setStartNavigationPoint
 };
 export default connect(
   mapStateToProps,

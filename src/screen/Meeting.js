@@ -333,9 +333,9 @@ const Meeting = props => {
               }
             >
               <View style={{ flexDirection: "row", marginTop: 10 }}>
-                <AntDesign name="pluscircleo" color={"#80d8ff"} size={26} />
+                <AntDesign name="pluscircleo" color={"#00BFFF"} size={26} />
                 <Text
-                  style={{ color: "#80d8ff", paddingLeft: 10, paddingTop: 5 }}
+                  style={{ color: "#00BFFF", paddingLeft: 10, paddingTop: 5, fontWeight: "500" }}
                 >
                   Add client details for this meeting.
                 </Text>
