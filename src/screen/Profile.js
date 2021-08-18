@@ -10,12 +10,13 @@ import {
   AsyncStorage
 } from "react-native";
 import {
-  Avatar,
+  // Avatar,
   Title,
   Caption,
   Text,
   TouchableRipple
 } from "react-native-paper";
+import { Avatar } from "react-native-elements";
 import { connect } from "react-redux";
 import Button from "../components/Button";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -28,7 +29,7 @@ import {
   setPropReminderList
 } from "../reducers/Action";
 import axios from "axios";
-import {SERVER_URL} from "../util/constant";
+import { SERVER_URL } from "../util/constant";
 
 // import Share from "react-native-share";
 
@@ -94,7 +95,7 @@ const Profile = props => {
     const agent = {
       agent_id: props.userDetails.id
     };
-    axios(SERVER_URL+"/deleteAgentAccount", {
+    axios(SERVER_URL + "/deleteAgentAccount", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -130,11 +131,34 @@ const Profile = props => {
     <SafeAreaView style={styles.container}>
       <View style={styles.userInfoSection}>
         <View style={{ flexDirection: "row", marginTop: 15 }}>
-          <Avatar.Image
+          {/* <Avatar.Image
             source={{
-              uri: "https://api.adorable.io/avatars/80/abott@adorable.png"
+              // uri: "https://api.adorable.io/avatars/80/abott@adorable.png"
             }}
             size={80}
+          /> */}
+          <Avatar
+            rounded
+            size={80}
+            title={
+              props.userDetails &&
+                props.userDetails.name
+                ? props.userDetails.name.slice(0, 1)
+                : "Guest".slice(0, 1)
+              // item.customer_details.name &&
+              // item.customer_details.name.slice(0, 1)
+            }
+            activeOpacity={0.7}
+            titleStyle={{ color: "rgba(105,105,105, .9)" }}
+            // source={{
+            //   uri: props.item.photo
+            // }}
+            avatarStyle={{
+              borderWidth: 2,
+              borderColor: "rgba(127,255,212, .9)",
+              // borderTopLeftRadius: 1,
+              borderStyle: "solid"
+            }}
           />
           <View style={{ marginLeft: 20 }}>
             <Title
@@ -147,13 +171,13 @@ const Profile = props => {
               ]}
             >
               {props.userDetails &&
-              props.userDetails.name
+                props.userDetails.name
                 ? props.userDetails.name
                 : "Guest"}
             </Title>
             <Caption style={styles.caption}>
               {props.userDetails &&
-              props.userDetails.company_name
+                props.userDetails.company_name
                 ? props.userDetails.company_name
                 : "Company"}
             </Caption>
@@ -166,7 +190,7 @@ const Profile = props => {
           <Icon name="map-marker-radius" color="#777777" size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>
             {props.userDetails &&
-            props.userDetails.city
+              props.userDetails.city
               ? props.userDetails.city
               : "Guest City"}
           </Text>
@@ -187,7 +211,7 @@ const Profile = props => {
         </View> */}
       </View>
       {props.userDetails &&
-      props.userDetails.user_type === "agent" ? (
+        props.userDetails.user_type === "agent" ? (
         <View
           style={{
             flexDirection: "row",
@@ -208,7 +232,7 @@ const Profile = props => {
       ) : null}
 
       {props.userDetails &&
-      props.userDetails.user_type === "agent" ? (
+        props.userDetails.user_type === "agent" ? (
         <View style={[{ flexDirection: "column", marginTop: 20 }]}>
           <View
             style={{
@@ -246,13 +270,13 @@ const Profile = props => {
             <Text style={styles.menuItemText}>Support</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => {}}>
+        <TouchableRipple onPress={() => { }}>
           <View style={styles.menuItem}>
             <Icon name="settings-outline" color="#FF6347" size={25} />
             <Text style={styles.menuItemText}>Settings</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => {}}>
+        <TouchableRipple onPress={() => { }}>
           <View style={styles.menuItem}>
             <MaterialIcons name="local-police" color="#FF6347" size={25} />
             <Text style={styles.menuItemText}>Privacy Policy</Text>
