@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -22,6 +22,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Snackbar from "../components/SnackbarComponent";
 import { setPropertyDetails } from "../reducers/Action";
 import { connect } from "react-redux";
+import { useFocusEffect } from '@react-navigation/native';
 
 const propertyTypeArray = [
   "Shop",
@@ -66,11 +67,51 @@ const PropertyDetails = props => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [idealForSelectArray, setIdealForSelectArray] = useState([]);
-  const [idealForArray, setIdealForArray] = useState(idealForArrayDict);
+  const [idealForArray, setIdealForArray] = useState([
+    { name: "Shop", checked: false },
+    { name: "Bank", checked: false },
+    { name: "ATM", checked: false },
+    { name: "Restaurant/Cafe", checked: false },
+    { name: "Pub/Night Club", checked: false },
+    { name: "Office", checked: false },
+    { name: "Showroom", checked: false },
+    { name: "Godown", checked: false }
+  ]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+        console.log("cleaned up");
+        setIdealForSelectArray([]);
+        setIdealForArray([
+          { name: "Shop", checked: false },
+          { name: "Bank", checked: false },
+          { name: "ATM", checked: false },
+          { name: "Restaurant/Cafe", checked: false },
+          { name: "Pub/Night Club", checked: false },
+          { name: "Office", checked: false },
+          { name: "Showroom", checked: false },
+          { name: "Godown", checked: false }
+        ])
+      };
+    }, [])
+  );
+
+  // useEffect(() => {
+  //   return () => {
+  //     console.log("cleaned up");
+  //   };
+  // }, []);
 
   const dismissSnackBar = () => {
     setIsVisible(false);
   };
+
+
 
   const onSubmit = async () => {
     if (propertyTypeIndex === -1) {
@@ -161,7 +202,7 @@ const PropertyDetails = props => {
     if (!tempChecked === true) {
       idealForSelectArray.push(temp[index].name);
     } else {
-      var filteredAry = ary.filter(e => e !== temp[index].name);
+      var filteredAry = idealForSelectArray.filter(e => e !== temp[index].name);
       setIdealForSelectArray(filteredAry);
     }
   };

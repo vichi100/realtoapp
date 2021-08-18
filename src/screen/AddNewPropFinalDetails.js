@@ -93,6 +93,7 @@ const AddNewPropFinalDetails = props => {
             props.setPropertyDetails(null);
             props.setResidentialPropertyList([...props.residentialPropertyList, response.data])
             // navigation.navigate("Listing");
+            console.log("props.startNavigationPoint: ", props.startNavigationPoint)
             if (props.startNavigationPoint === null) {
               navigation.navigate("Listing");
 
@@ -387,7 +388,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   propertyDetails: state.AppReducer.propertyDetails,
   userDetails: state.AppReducer.userDetails,
-  residentialPropertyList: state.AppReducer.residentialPropertyList
+  residentialPropertyList: state.AppReducer.residentialPropertyList,
+  startNavigationPoint: state.AppReducer.startNavigationPoint
 });
 const mapDispatchToProps = {
   setPropertyDetails,

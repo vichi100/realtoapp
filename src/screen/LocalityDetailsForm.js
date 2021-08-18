@@ -111,6 +111,7 @@ const LocalityDetailsForm = props => {
     >
       <KeyboardAwareScrollView onPress={Keyboard.dismiss} keyboardShouldPersistTaps="handled">
         <ScrollView style={styles.container} keyboardShouldPersistTaps={'always'} listViewDisplayed={false}>
+          <Text style={{ color: "#696969", fontSize: 16, fontWeight: "500", marginBottom: 20 }}>Enter property address details</Text>
           <TextInput
             label="City*"
             value={city}
@@ -251,7 +252,7 @@ const LocalityDetailsForm = props => {
         actionHandler={() => dismissSnackBar()}
         actionText="OK"
       />
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 

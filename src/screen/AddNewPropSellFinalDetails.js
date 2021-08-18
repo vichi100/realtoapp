@@ -371,7 +371,8 @@ const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
   propertyType: state.AppReducer.propertyType,
   propertyDetails: state.AppReducer.propertyDetails,
-  residentialPropertyList: state.AppReducer.residentialPropertyList
+  residentialPropertyList: state.AppReducer.residentialPropertyList,
+  startNavigationPoint: state.AppReducer.startNavigationPoint
 });
 const mapDispatchToProps = {
   setPropertyDetails,
