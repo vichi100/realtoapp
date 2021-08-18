@@ -95,7 +95,7 @@ const CommercialRentPropDetails = props => {
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue, { width: 200 }]}>
-                {item.property_details.ideal_for.join(", ")}
+                {item.property_details && item.property_details.ideal_for.join(", ")}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Ideal For</Text>
             </View>

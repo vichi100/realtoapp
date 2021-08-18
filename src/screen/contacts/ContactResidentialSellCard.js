@@ -194,7 +194,7 @@ const ContactResidentialSellCard = props => {
 
   const onClickMeeting = item => {
     props.setCustomerDetailsForMeeting(null);
-    props.setPropListForMeeting([]);
+    // props.setPropListForMeeting([]);
     props.setStartNavigationPoint("PropertyListForMeeting");
     props.setCustomerDetails(item)
     navigation.navigate("CustomerMeeting", {

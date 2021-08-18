@@ -132,7 +132,7 @@ const Card = props => {
   const onClickMeeting = item => {
     console.log("hi")
     props.setCustomerDetailsForMeeting(null);
-    props.setPropListForMeeting([]);
+    // props.setPropListForMeeting([]);
     props.setPropertyDetails(item);
     props.setStartNavigationPoint("CustomerListForMeeting");
     navigation.navigate("Meeting", {

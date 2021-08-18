@@ -69,7 +69,7 @@ const CustomerMeeting = props => {
     setMinutes("");
     setAMPMIndex(-1);
     setReminderForIndex(-1);
-    props.setPropListForMeeting([])
+    // props.setPropListForMeeting([])
   }
 
   const setModalVisibleTemp = flag => {

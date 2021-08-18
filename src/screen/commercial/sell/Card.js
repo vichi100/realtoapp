@@ -213,7 +213,7 @@ const Card = props => {
 
   const onClickMeeting = item => {
     props.setCustomerDetailsForMeeting(null);
-    props.setPropListForMeeting([]);
+    // props.setPropListForMeeting([]);
     navigation.navigate("Meeting", {
       item: item,
       category: "property"
