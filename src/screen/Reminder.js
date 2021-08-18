@@ -11,26 +11,31 @@ import {
   Keyboard,
   style,
   FlatList,
-  Linking
+  Linking,
+  ActivityIndicator
 } from "react-native";
 import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
-import {SERVER_URL} from "../util/constant";
+import { SERVER_URL } from "../util/constant";
 
 const Reminder = props => {
   const { navigation } = props;
   const [reminderList, setReminderList] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+
   useEffect(() => {
     if (reminderList.length > 0) {
       return;
     }
+    setLoading(true);
     const agentId = {
       agent_id: props.userDetails.works_for[0]
     };
     axios
       .post(
-        SERVER_URL+"/getReminderList",
+        SERVER_URL + "/getReminderList",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -40,10 +45,13 @@ const Reminder = props => {
         response => {
           // console.log("getReminderList:   ", response.data);
           setReminderList(response.data);
+          setLoading(false);
           // navigation.navigate("CardDetails");
         },
         error => {
-          // console.log(error);
+          setLoading(false);
+          console.log(error);
+
         }
       );
   }, []);
@@ -248,7 +256,17 @@ const Reminder = props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    loading ? <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(245,245,245, .4)'
+      }}
+    >
+      <ActivityIndicator animating size="large" color={'#000'} />
+      {/* <ActivityIndicator animating size="large" /> */}
+    </View> : <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <ScrollView>
         <FlatList
           data={reminderList}

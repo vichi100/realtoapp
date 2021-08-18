@@ -10,7 +10,8 @@ import {
   KeyboardAvoidingView,
   TouchableHighlight,
   Modal,
-  Keyboard
+  Keyboard,
+  ActivityIndicator
 } from "react-native";
 import { connect } from "react-redux";
 import { DatePickerModal, TimePickerModal } from "react-native-paper-dates";
@@ -59,6 +60,9 @@ const Meeting = props => {
   const [minutes, setMinutes] = useState(null);
   const [ampmIndex, setAMPMIndex] = useState(-1);
   const [propertyIdX, setPropertyIdX] = useState(item.property_id);
+  const [loading, setLoading] = useState(false);
+
+
   const clearState = () => {
     setNewDate("");
     setNewTime("");
@@ -264,6 +268,8 @@ const Meeting = props => {
     const propertyId = {
       property_id: propertyIdX
     };
+    setLoading(true);
+
     axios
       .post(
         SERVER_URL + "/getPropReminderList",
@@ -280,12 +286,15 @@ const Meeting = props => {
             // const x = [...props.propReminderList, ...response.data];
             // // console.log("X: " + x);
             props.setPropReminderList(response.data);
+            setLoading(false);
           } else {
             props.setPropReminderList([]);
+            setLoading(false);
           }
         },
         error => {
-          // console.log(error);
+          setLoading(false);
+          console.log(error);
         }
       );
   };
@@ -438,7 +447,17 @@ const Meeting = props => {
             </View>
           </View>
           {/* Property releted reminder list */}
-          <PropertyReminder navigation={navigation} />
+          {loading ? <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'rgba(245,245,245, .4)'
+            }}
+          >
+            <ActivityIndicator animating size="large" color={'#000'} />
+            {/* <ActivityIndicator animating size="large" /> */}
+          </View> : <PropertyReminder navigation={navigation} />}
         </ScrollView>
         <DatePickerModal
           mode="single"

@@ -22,9 +22,9 @@ const NotificationTopTab = () => {
         />
       </View> */}
       <Tab.Navigator>
-        <Tab.Screen name="Message" component={Message} />
+        {/* <Tab.Screen name="Message" component={Message} /> */}
         <Tab.Screen name="Reminders" component={Reminder} />
-        <Tab.Screen name="General" component={Reminder} />
+        {/* <Tab.Screen name="General" component={Reminder} /> */}
       </Tab.Navigator>
     </SafeAreaView>
   );

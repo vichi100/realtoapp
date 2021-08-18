@@ -7,7 +7,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  TextInput
+  TextInput,
+  ActivityIndicator
 } from "react-native";
 import { connect } from "react-redux";
 import { CheckBox } from "react-native-elements";
@@ -88,6 +89,7 @@ const CustomersCommercial = props => {
   const [sortByNameIndex, setSortByNameIndex] = useState(-1);
   const [sortByPostedDateIndex, setSortByPostedDateIndex] = useState(-1);
   const [lookingForIndexSortBy, setLookingForIndexSortBy] = useState(-1);
+  const [loading, setLoading] = useState(false);
 
   const resetSortBy = () => {
     setLookingForIndexSortBy(-1);
@@ -378,6 +380,8 @@ const CustomersCommercial = props => {
       agent_id: props.userDetails.works_for[0]
     };
 
+    setLoading(true);
+
     axios(SERVER_URL + "/commercialCustomerList", {
       method: "post",
       headers: {
@@ -390,9 +394,11 @@ const CustomersCommercial = props => {
         // // console.log(response.data);
         props.setCommercialCustomerList(response.data);
         setData(response.data);
+        setLoading(false);
       },
       error => {
-        // console.log(error);
+        console.log(error);
+        setLoading(false);
       }
     );
   };
@@ -491,172 +497,183 @@ const CustomersCommercial = props => {
   }, [props.commercialCustomerList]);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.searchBarContainer}>
-        <TextInput
-          style={styles.textInputStyle}
-          onChangeText={text => searchFilterFunction(text)}
-          value={search}
-          underlineColorAndroid="transparent"
-          placeholder="Search Here"
-        />
-      </View>
-      {data.length > 0 ? (
-        <View style={styles.container}>
-          <FlatList
-            data={data}
-            //data defined in constructor
-            // ItemSeparatorComponent={ItemSeparatorView}
-            //Item Separator View
-            renderItem={ItemView}
-            keyExtractor={(item, index) => index.toString()}
+    loading ? <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(245,245,245, .4)'
+      }}
+    >
+      <ActivityIndicator animating size="large" color={'#000'} />
+      {/* <ActivityIndicator animating size="large" /> */}
+    </View> :
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.searchBarContainer}>
+          <TextInput
+            style={styles.textInputStyle}
+            onChangeText={text => searchFilterFunction(text)}
+            value={search}
+            underlineColorAndroid="transparent"
+            placeholder="Search Here"
           />
-          <View style={styles.fab}>
-            <TouchableOpacity
-              onPress={() => toggleSortingBottomNavigationView()}
-              style={styles.fabIcon1}
-            >
-              <MaterialCommunityIcons name="sort" color={"#ffffff"} size={26} />
-            </TouchableOpacity>
-            <View style={styles.verticalLine}></View>
-            <TouchableOpacity
-              onPress={() => toggleBottomNavigationView()}
-              style={styles.fabIcon2}
-            >
-              <MaterialCommunityIcons
-                name="filter-variant-plus"
-                color={"#ffffff"}
-                size={26}
-              />
-            </TouchableOpacity>
-          </View>
         </View>
-      ) : (
-        <View style={styles.container}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              textAlign: "center"
-            }}
-          >
-            <Text style={{ textAlign: "center" }}>
-              You have no customer
-            </Text>
-            <TouchableOpacity onPress={() => navigateTo()}>
-              <Text
-                style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
+        {data.length > 0 ? (
+          <View style={styles.container}>
+            <FlatList
+              data={data}
+              //data defined in constructor
+              // ItemSeparatorComponent={ItemSeparatorView}
+              //Item Separator View
+              renderItem={ItemView}
+              keyExtractor={(item, index) => index.toString()}
+            />
+            <View style={styles.fab}>
+              <TouchableOpacity
+                onPress={() => toggleSortingBottomNavigationView()}
+                style={styles.fabIcon1}
               >
-                Add New Customer
-              </Text>
-            </TouchableOpacity>
+                <MaterialCommunityIcons name="sort" color={"#ffffff"} size={26} />
+              </TouchableOpacity>
+              <View style={styles.verticalLine}></View>
+              <TouchableOpacity
+                onPress={() => toggleBottomNavigationView()}
+                style={styles.fabIcon2}
+              >
+                <MaterialCommunityIcons
+                  name="filter-variant-plus"
+                  color={"#ffffff"}
+                  size={26}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.fab}>
-            <TouchableOpacity
-              onPress={() => toggleSortingBottomNavigationView()}
-              style={styles.fabIcon1}
+        ) : (
+          <View style={styles.container}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center"
+              }}
             >
-              <MaterialCommunityIcons name="sort" color={"#ffffff"} size={26} />
-            </TouchableOpacity>
-            <View style={styles.verticalLine}></View>
+              <Text style={{ textAlign: "center" }}>
+                You have no customer
+              </Text>
+              <TouchableOpacity onPress={() => navigateTo()}>
+                <Text
+                  style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
+                >
+                  Add New Customer
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.fab}>
+              <TouchableOpacity
+                onPress={() => toggleSortingBottomNavigationView()}
+                style={styles.fabIcon1}
+              >
+                <MaterialCommunityIcons name="sort" color={"#ffffff"} size={26} />
+              </TouchableOpacity>
+              <View style={styles.verticalLine}></View>
+              <TouchableOpacity
+                onPress={() => toggleBottomNavigationView()}
+                style={styles.fabIcon2}
+              >
+                <MaterialCommunityIcons
+                  name="filter-variant-plus"
+                  color={"#ffffff"}
+                  size={26}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>)}
+        {/* Bottom for filters */}
+        <BottomSheet
+          visible={visible}
+          //setting the visibility state of the bottom shee
+          onBackButtonPress={toggleBottomNavigationView}
+          //Toggling the visibility state on the click of the back botton
+          onBackdropPress={toggleBottomNavigationView}
+        //Toggling the visibility state on the clicking out side of the sheet
+        >
+          {/*Bottom Sheet inner View*/}
+
+          <View style={styles.bottomNavigationView}>
+            <Text style={{ marginTop: 15, fontSize: 16, fontWeight: "600" }}>
+              Filter
+            </Text>
+
             <TouchableOpacity
-              onPress={() => toggleBottomNavigationView()}
-              style={styles.fabIcon2}
+              onPress={() => resetFilter()}
+              style={{ position: "absolute", top: 10, right: 10 }}
             >
               <MaterialCommunityIcons
-                name="filter-variant-plus"
-                color={"#ffffff"}
-                size={26}
+                name="restart"
+                color={"#000000"}
+                size={30}
               />
             </TouchableOpacity>
-          </View>
-        </View>)}
-      {/* Bottom for filters */}
-      <BottomSheet
-        visible={visible}
-        //setting the visibility state of the bottom shee
-        onBackButtonPress={toggleBottomNavigationView}
-        //Toggling the visibility state on the click of the back botton
-        onBackdropPress={toggleBottomNavigationView}
-      //Toggling the visibility state on the clicking out side of the sheet
-      >
-        {/*Bottom Sheet inner View*/}
+            <ScrollView style={{ marginTop: 20, marginBottom: 20 }}>
+              <Text style={styles.marginBottom10}>Looking For</Text>
+              <View style={styles.propSubSection}>
+                <ButtonGroup
+                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                  onPress={selectLookingForIndex}
+                  selectedIndex={lookingForIndex}
+                  buttons={lookingForArray}
+                  // containerStyle={{ height: 30 }}
+                  textStyle={{ textAlign: "center" }}
+                  selectedTextStyle={{ color: "#fff" }}
+                  containerStyle={{ borderRadius: 10, width: 350 }}
+                  containerBorderRadius={10}
+                />
+              </View>
 
-        <View style={styles.bottomNavigationView}>
-          <Text style={{ marginTop: 15, fontSize: 16, fontWeight: "600" }}>
-            Filter
-          </Text>
-
-          <TouchableOpacity
-            onPress={() => resetFilter()}
-            style={{ position: "absolute", top: 10, right: 10 }}
-          >
-            <MaterialCommunityIcons
-              name="restart"
-              color={"#000000"}
-              size={30}
-            />
-          </TouchableOpacity>
-          <ScrollView style={{ marginTop: 20, marginBottom: 20 }}>
-            <Text style={styles.marginBottom10}>Looking For</Text>
-            <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectLookingForIndex}
-                selectedIndex={lookingForIndex}
-                buttons={lookingForArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 350 }}
-                containerBorderRadius={10}
-              />
-            </View>
-
-            <Text style={styles.marginBottom10}>Prop type</Text>
-            <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectPropertyTypeIndex}
-                selectedIndex={propertyTypeIndex}
-                buttons={propertyTypeArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 350 }}
-                containerBorderRadius={10}
-                vertical={true}
-              />
-            </View>
-            <Text style={styles.marginBottom10}>Building type</Text>
-            <View style={styles.propSubSection}>
-              <FlatList
-                data={buildingTypeArray}
-                renderItem={({ item }) => (
-                  <View style={{ flex: 1, flexDirection: "column", margin: 1 }}>
-                    {/* <Text>{item}</Text> */}
-                    <CheckBox
-                      title={item}
-                      checked={checkBoxSelectArray.indexOf(item) > -1}
-                      onPress={() => onCheckBoxSelect(item)}
-                      containerStyle={{
-                        backgroundColor: "#ffffff",
-                        borderColor: "#ffffff",
-                        margin: 0
-                      }}
-                      textStyle={{
-                        fontSize: 12,
-                        fontWeight: "400"
-                      }}
-                    />
-                  </View>
-                )}
-                //Setting the number of column
-                numColumns={2}
-                keyExtractor={(item, index) => index}
-              />
-              {/* <ButtonGroup
+              <Text style={styles.marginBottom10}>Prop type</Text>
+              <View style={styles.propSubSection}>
+                <ButtonGroup
+                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                  onPress={selectPropertyTypeIndex}
+                  selectedIndex={propertyTypeIndex}
+                  buttons={propertyTypeArray}
+                  // containerStyle={{ height: 30 }}
+                  textStyle={{ textAlign: "center" }}
+                  selectedTextStyle={{ color: "#fff" }}
+                  containerStyle={{ borderRadius: 10, width: 350 }}
+                  containerBorderRadius={10}
+                  vertical={true}
+                />
+              </View>
+              <Text style={styles.marginBottom10}>Building type</Text>
+              <View style={styles.propSubSection}>
+                <FlatList
+                  data={buildingTypeArray}
+                  renderItem={({ item }) => (
+                    <View style={{ flex: 1, flexDirection: "column", margin: 1 }}>
+                      {/* <Text>{item}</Text> */}
+                      <CheckBox
+                        title={item}
+                        checked={checkBoxSelectArray.indexOf(item) > -1}
+                        onPress={() => onCheckBoxSelect(item)}
+                        containerStyle={{
+                          backgroundColor: "#ffffff",
+                          borderColor: "#ffffff",
+                          margin: 0
+                        }}
+                        textStyle={{
+                          fontSize: 12,
+                          fontWeight: "400"
+                        }}
+                      />
+                    </View>
+                  )}
+                  //Setting the number of column
+                  numColumns={2}
+                  keyExtractor={(item, index) => index}
+                />
+                {/* <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={updateIndex}
                 selectedIndex={index}
@@ -673,159 +690,159 @@ const CustomersCommercial = props => {
                 containerStyle={{ borderRadius: 10, width: 350 }}
                 containerBorderRadius={10}
               /> */}
-            </View>
-            {lookingForIndex === -1 ? null : lookingForIndex === 0 ? (
-              <View>
-                <Text>Rent Range</Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginTop: 10
-                  }}
-                >
-                  <View>
-                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
-                      {numDifferentiation(minRent)}
-                    </Text>
-                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Min</Text>
+              </View>
+              {lookingForIndex === -1 ? null : lookingForIndex === 0 ? (
+                <View>
+                  <Text>Rent Range</Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      marginTop: 10
+                    }}
+                  >
+                    <View>
+                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
+                        {numDifferentiation(minRent)}
+                      </Text>
+                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Min</Text>
+                    </View>
+                    <View>
+                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
+                        {numDifferentiation(maxRent)}
+                      </Text>
+                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Max</Text>
+                    </View>
                   </View>
-                  <View>
-                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
-                      {numDifferentiation(maxRent)}
-                    </Text>
-                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Max</Text>
-                  </View>
-                </View>
 
-                <Slider
-                  min={15000}
-                  max={1000000}
-                  step={5000}
-                  onSlide={values => setRentRange(values)}
-                />
-              </View>
-            ) : (
-              <View>
-                <Text>Buy Price Range</Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginTop: 10
-                  }}
-                >
-                  <View>
-                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
-                      {numDifferentiation(minSell)}
-                    </Text>
-                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Min</Text>
-                  </View>
-                  <View>
-                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
-                      {numDifferentiation(maxSell)}
-                    </Text>
-                    <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Max</Text>
-                  </View>
+                  <Slider
+                    min={15000}
+                    max={1000000}
+                    step={5000}
+                    onSlide={values => setRentRange(values)}
+                  />
                 </View>
-                <SliderX
-                  min={minSell}
-                  max={maxSell}
-                  step={500000}
-                  onSlide={values => setSellRange(values)}
-                />
-              </View>
-            )}
-            {/* <Text>Buildup area Range</Text>
+              ) : (
+                <View>
+                  <Text>Buy Price Range</Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      marginTop: 10
+                    }}
+                  >
+                    <View>
+                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
+                        {numDifferentiation(minSell)}
+                      </Text>
+                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Min</Text>
+                    </View>
+                    <View>
+                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
+                        {numDifferentiation(maxSell)}
+                      </Text>
+                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Max</Text>
+                    </View>
+                  </View>
+                  <SliderX
+                    min={minSell}
+                    max={maxSell}
+                    step={500000}
+                    onSlide={values => setSellRange(values)}
+                  />
+                </View>
+              )}
+              {/* <Text>Buildup area Range</Text>
             <Slider
               min={50}
               max={10000}
               step={50}
               onSlide={values => setBuildupAreaRange(values)}
             /> */}
-            <Text style={styles.marginBottom10}>Availability</Text>
-            <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectAvailabilityIndex}
-                selectedIndex={availabilityIndex}
-                buttons={availabilityArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 350 }}
-                containerBorderRadius={10}
-              />
-            </View>
+              <Text style={styles.marginBottom10}>Availability</Text>
+              <View style={styles.propSubSection}>
+                <ButtonGroup
+                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                  onPress={selectAvailabilityIndex}
+                  selectedIndex={availabilityIndex}
+                  buttons={availabilityArray}
+                  // containerStyle={{ height: 30 }}
+                  textStyle={{ textAlign: "center" }}
+                  selectedTextStyle={{ color: "#fff" }}
+                  containerStyle={{ borderRadius: 10, width: 350 }}
+                  containerBorderRadius={10}
+                />
+              </View>
 
-            <Button title="Apply" onPress={() => onFilter()} />
-          </ScrollView>
-          <Snackbar
-            visible={isVisible}
-            textMessage={errorMessage}
-            position={"top"}
-            actionHandler={() => dismissSnackBar()}
-            actionText="OK"
-          />
-        </View>
-      </BottomSheet>
-
-      {/* Bottom sheet for sorting */}
-      <BottomSheet
-        visible={visibleSorting}
-        //setting the visibility state of the bottom shee
-        onBackButtonPress={toggleSortingBottomNavigationView}
-        //Toggling the visibility state on the click of the back botton
-        onBackdropPress={toggleSortingBottomNavigationView}
-      //Toggling the visibility state on the clicking out side of the sheet
-      >
-        {/*Bottom Sheet inner View*/}
-
-        <View style={styles.sortingBottomNavigationView}>
-          <Text style={{ marginTop: 15, fontSize: 16, fontWeight: "600" }}>
-            Sort By
-          </Text>
-          <TouchableOpacity
-            onPress={() => resetSortBy()}
-            style={{ position: "absolute", top: 10, right: 10 }}
-          >
-            <MaterialCommunityIcons
-              name="restart"
-              color={"#000000"}
-              size={30}
+              <Button title="Apply" onPress={() => onFilter()} />
+            </ScrollView>
+            <Snackbar
+              visible={isVisible}
+              textMessage={errorMessage}
+              position={"top"}
+              actionHandler={() => dismissSnackBar()}
+              actionText="OK"
             />
-          </TouchableOpacity>
+          </View>
+        </BottomSheet>
 
-          <ScrollView style={{ marginTop: 10, marginBottom: 20 }}>
-            <Text style={styles.marginBottom10}>Customer Looking For</Text>
-            <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectLookingForIndexSortBy}
-                selectedIndex={lookingForIndexSortBy}
-                buttons={lookingForArraySortBy}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 350 }}
-                containerBorderRadius={10}
+        {/* Bottom sheet for sorting */}
+        <BottomSheet
+          visible={visibleSorting}
+          //setting the visibility state of the bottom shee
+          onBackButtonPress={toggleSortingBottomNavigationView}
+          //Toggling the visibility state on the click of the back botton
+          onBackdropPress={toggleSortingBottomNavigationView}
+        //Toggling the visibility state on the clicking out side of the sheet
+        >
+          {/*Bottom Sheet inner View*/}
+
+          <View style={styles.sortingBottomNavigationView}>
+            <Text style={{ marginTop: 15, fontSize: 16, fontWeight: "600" }}>
+              Sort By
+            </Text>
+            <TouchableOpacity
+              onPress={() => resetSortBy()}
+              style={{ position: "absolute", top: 10, right: 10 }}
+            >
+              <MaterialCommunityIcons
+                name="restart"
+                color={"#000000"}
+                size={30}
               />
-            </View>
-            <Text style={styles.marginBottom10}>Name</Text>
-            <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={sortByName}
-                selectedIndex={sortByNameIndex}
-                buttons={sortByNameArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 350 }}
-                containerBorderRadius={10}
-              />
-            </View>
-            {/* <Text style={styles.marginBottom10}>Availability</Text>
+            </TouchableOpacity>
+
+            <ScrollView style={{ marginTop: 10, marginBottom: 20 }}>
+              <Text style={styles.marginBottom10}>Customer Looking For</Text>
+              <View style={styles.propSubSection}>
+                <ButtonGroup
+                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                  onPress={selectLookingForIndexSortBy}
+                  selectedIndex={lookingForIndexSortBy}
+                  buttons={lookingForArraySortBy}
+                  // containerStyle={{ height: 30 }}
+                  textStyle={{ textAlign: "center" }}
+                  selectedTextStyle={{ color: "#fff" }}
+                  containerStyle={{ borderRadius: 10, width: 350 }}
+                  containerBorderRadius={10}
+                />
+              </View>
+              <Text style={styles.marginBottom10}>Name</Text>
+              <View style={styles.propSubSection}>
+                <ButtonGroup
+                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                  onPress={sortByName}
+                  selectedIndex={sortByNameIndex}
+                  buttons={sortByNameArray}
+                  // containerStyle={{ height: 30 }}
+                  textStyle={{ textAlign: "center" }}
+                  selectedTextStyle={{ color: "#fff" }}
+                  containerStyle={{ borderRadius: 10, width: 350 }}
+                  containerBorderRadius={10}
+                />
+              </View>
+              {/* <Text style={styles.marginBottom10}>Availability</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
@@ -840,50 +857,50 @@ const CustomersCommercial = props => {
               />
             </View> */}
 
-            <Text style={styles.marginBottom10}>Posted date</Text>
-            <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={sortByPostedDate}
-                selectedIndex={sortByPostedDateIndex}
-                buttons={sortByPostedDateArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 350 }}
-                containerBorderRadius={10}
-              />
-            </View>
-          </ScrollView>
-          <Snackbar
-            visible={isVisible}
-            textMessage={errorMessage}
-            position={"top"}
-            actionHandler={() => dismissSnackBar()}
-            actionText="OK"
-          />
-        </View>
-      </BottomSheet>
-      <TouchableOpacity
-        style={{
-          // borderWidth: 1,
-          // borderColor: "rgba(0,0,0,0.2)",
-          alignItems: "center",
-          justifyContent: "center",
-          // width: 40,
-          position: "absolute",
-          bottom: 15,
-          right: 10,
-          // height: 40,
-          backgroundColor: "rgba(0,191,255, .5)",
-          borderRadius: 100
-        }}
-        onPress={() => navigation.navigate("AddNewCustomerStack")}
-      >
-        <AntDesign name="pluscircleo" size={40} color="#ffffff" />
-        {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
-      </TouchableOpacity>
-    </SafeAreaView>
+              <Text style={styles.marginBottom10}>Posted date</Text>
+              <View style={styles.propSubSection}>
+                <ButtonGroup
+                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                  onPress={sortByPostedDate}
+                  selectedIndex={sortByPostedDateIndex}
+                  buttons={sortByPostedDateArray}
+                  // containerStyle={{ height: 30 }}
+                  textStyle={{ textAlign: "center" }}
+                  selectedTextStyle={{ color: "#fff" }}
+                  containerStyle={{ borderRadius: 10, width: 350 }}
+                  containerBorderRadius={10}
+                />
+              </View>
+            </ScrollView>
+            <Snackbar
+              visible={isVisible}
+              textMessage={errorMessage}
+              position={"top"}
+              actionHandler={() => dismissSnackBar()}
+              actionText="OK"
+            />
+          </View>
+        </BottomSheet>
+        <TouchableOpacity
+          style={{
+            // borderWidth: 1,
+            // borderColor: "rgba(0,0,0,0.2)",
+            alignItems: "center",
+            justifyContent: "center",
+            // width: 40,
+            position: "absolute",
+            bottom: 15,
+            right: 10,
+            // height: 40,
+            backgroundColor: "rgba(0,191,255, .5)",
+            borderRadius: 100
+          }}
+          onPress={() => navigation.navigate("AddNewCustomerStack")}
+        >
+          <AntDesign name="pluscircleo" size={40} color="#ffffff" />
+          {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
+        </TouchableOpacity>
+      </SafeAreaView>
   );
 };
 
