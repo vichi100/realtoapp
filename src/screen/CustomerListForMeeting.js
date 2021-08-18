@@ -194,7 +194,8 @@ CustomerListForMeeting = props => {
           item.customer_details.name +
           item.customer_details.address +
           item.customer_details.mobile1 +
-          item.customer_locality.location_area;
+          item.customer_locality.location_area.map(item => item.main_text).join(', ')
+        // item.customer_locality.location_area;
 
         const textData = text.toUpperCase();
         return itemData.toUpperCase().indexOf(textData) > -1;
