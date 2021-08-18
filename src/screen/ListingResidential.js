@@ -565,26 +565,47 @@ const ListingResidential = props => {
           </View>
         </View>
       ) : (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center"
-          }}
-        >
-          <Text style={{ textAlign: "center" }}>
-            You have no property listing
-          </Text>
-          <TouchableOpacity onPress={() => navigateTo()}>
-            <Text
-              style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
-            >
-              Add New Property
+        <View style={styles.container}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center"
+            }}
+          >
+            <Text style={{ textAlign: "center" }}>
+              You have no property listing
             </Text>
-          </TouchableOpacity>
-        </View>
-      )}
+            <TouchableOpacity onPress={() => navigateTo()}>
+              <Text
+                style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
+              >
+                Add New Property
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.fab}>
+            <TouchableOpacity
+              onPress={() => toggleSortingBottomNavigationView()}
+              style={styles.fabIcon1}
+            >
+              <MaterialCommunityIcons name="sort" color={"#ffffff"} size={26} />
+            </TouchableOpacity>
+            <View style={styles.verticalLine}></View>
+            <TouchableOpacity
+              onPress={() => toggleBottomNavigationView()}
+              style={styles.fabIcon2}
+            >
+              <MaterialCommunityIcons
+                name="filter-variant-plus"
+                color={"#ffffff"}
+                size={26}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>)}
       {/* Bottom for filters */}
       <BottomSheet
         visible={visible}
