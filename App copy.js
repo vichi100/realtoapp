@@ -10,10 +10,7 @@ const store = configureStore();
 export default function App() {
   return (
     <Provider store={store}>
-      {/* <MainScreen /> */}
-      <View>
-        <Text>Vichi</Text>
-      </View>
+      <MainScreen />
     </Provider>
   );
 }

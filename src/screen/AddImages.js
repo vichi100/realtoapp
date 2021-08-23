@@ -8,8 +8,10 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
+  FlatList,
   Platform,
-  AsyncStorage
+  AsyncStorage,
+  Dimensions
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
@@ -17,6 +19,8 @@ import PhotoGrid from "../components/PhotoGrid";
 import Button from "../components/Button";
 import { connect } from "react-redux";
 import { setPropertyDetails } from "../reducers/Action";
+
+let width = Dimensions.get('screen').width / 2 - 8
 
 const AddImages = props => {
   const { navigation } = props;
@@ -38,7 +42,7 @@ const AddImages = props => {
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
+      allowsEditing: false,
       aspect: [4, 3],
       quality: 1
     });
@@ -78,6 +82,17 @@ const AddImages = props => {
     }
   };
 
+  const ItemView = ({ item }) => {
+    // // console.log("hi");
+    return (
+      // Single Comes here which will be repeatative for the FlatListItems
+      // <Text>vichi</Text>
+      <View style={{ margin: 2 }}>
+        <Image source={{ uri: item }} style={{ width: 100, height: 200, resizeMode: 'contain' }} />
+      </View>
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -90,9 +105,28 @@ const AddImages = props => {
           }}
         >
           <Button title="Add Photos" onPress={pickImage} />
-          <View style={styles.imageContainer}>
-            <PhotoGrid source={imageArray} />
-          </View>
+          {/* <View style={styles.imageContainer}> */}
+          {/* <PhotoGrid source={imageArray} /> */}
+          <FlatList
+            // columnWrapperStyle={{ justifyContent: 'space-between', }}
+            horizontal={false}
+            numColumns={2}
+            data={imageArray}
+            //data defined in constructor
+            // ItemSeparatorComponent={ItemSeparatorView}
+            //Item Separator View
+            renderItem={ItemView}
+            keyExtractor={(item, index) => index.toString()}
+          />
+          {/* <FlatGrid
+            // fixed={true}
+            itemDimension={200}
+            data={imageArray}
+            renderItem={ItemView}
+
+          /> */}
+
+          {/* </View> */}
         </View>
         <Button title="NEXT" onPress={() => onSubmit()} />
       </ScrollView>

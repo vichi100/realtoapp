@@ -67,15 +67,38 @@ const AddNewPropCommercialSellFinalDetails = props => {
   };
 
   const send = async () => {
-    // console.log(await AsyncStorage.getItem("property"));
-    axios
-      .post(
-        SERVER_URL + "/addNewCommercialProperty",
-        // SERVER_URL + "/addNewResidentialRentProperty",
-        // await AsyncStorage.getItem("property")
-        // JSON.stringify({ vichi: "vchi" })
-        propertyFinalDetails
-      )
+    const data = new FormData();
+    propertyFinalDetails.image_urls.forEach((element, i) => {
+      const newFile = {
+        uri: element,
+        name: `vichi`,
+        type: `image/jpeg`,
+
+      }
+      data.append('prop_image_' + i, newFile)
+    });
+
+    data.append('propertyFinalDetails', JSON.stringify(propertyFinalDetails));
+    console.log("Data: ", data);
+
+    axios(SERVER_URL + "/addNewCommercialProperty", {
+      method: "post",
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+      },
+      data: data
+    })
+
+
+      // axios
+      //   .post(
+      //     SERVER_URL + "/addNewCommercialProperty",
+      //     // SERVER_URL + "/addNewResidentialRentProperty",
+      //     // await AsyncStorage.getItem("property")
+      //     // JSON.stringify({ vichi: "vchi" })
+      //     propertyFinalDetails
+      //   )
       .then(
         response => {
           // console.log(response.data);
