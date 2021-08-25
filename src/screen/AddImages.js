@@ -13,14 +13,18 @@ import {
   AsyncStorage,
   Dimensions
 } from "react-native";
+// import Image from 'react-native-scalable-image';
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import PhotoGrid from "../components/PhotoGrid";
 import Button from "../components/Button";
 import { connect } from "react-redux";
 import { setPropertyDetails } from "../reducers/Action";
+import * as ImageManipulator from 'expo-image-manipulator';
 
-let width = Dimensions.get('screen').width / 2 - 8
+
+let width = Dimensions.get('screen').width / 2 - 8;
+let height = width * (4 / 9)
 
 const AddImages = props => {
   const { navigation } = props;
@@ -48,11 +52,18 @@ const AddImages = props => {
     });
 
     // console.log(result);
+    const manipResult = await ImageManipulator.manipulateAsync(
+      result.localUri || result.uri, [{ resize: { width: 600 } }],
+      // [{ rotate: 90 }, { flip: ImageManipulator.FlipType.Vertical }],
+      { compress: .7, format: ImageManipulator.SaveFormat.PNG }
+    );
+
+    console.log("manipResult: ", manipResult);
 
     if (!result.cancelled) {
-      setImage(result.uri);
+      setImage(manipResult.uri);
       const imageArrayX = [...imageArray];
-      imageArrayX.push(result.uri);
+      imageArrayX.push({ url: manipResult.uri });
       setImageArray(imageArrayX);
     }
   };
@@ -87,38 +98,41 @@ const AddImages = props => {
     return (
       // Single Comes here which will be repeatative for the FlatListItems
       // <Text>vichi</Text>
-      <View style={{ margin: 2 }}>
-        <Image source={{ uri: item }} style={{ width: 100, height: 200, resizeMode: 'contain' }} />
+      <View style={{ margin: 2, backgroundColor: "#DCDCDC" }}>
+        <Image source={{ uri: item.url }} style={{ width: width, height: height, resizeMode: 'stretch' }} />
+        {/* <Image
+          width={Dimensions.get('window').width / 2 - 8} // height will be calculated automatically
+          source={{ uri: item }}
+        /> */}
       </View>
     );
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View
-          style={{
-            // flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            height: 500
-          }}
-        >
-          <Button title="Add Photos" onPress={pickImage} />
-          {/* <View style={styles.imageContainer}> */}
-          {/* <PhotoGrid source={imageArray} /> */}
-          <FlatList
-            // columnWrapperStyle={{ justifyContent: 'space-between', }}
-            horizontal={false}
-            numColumns={2}
-            data={imageArray}
-            //data defined in constructor
-            // ItemSeparatorComponent={ItemSeparatorView}
-            //Item Separator View
-            renderItem={ItemView}
-            keyExtractor={(item, index) => index.toString()}
-          />
-          {/* <FlatGrid
+
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        // justifyContent: "center",
+        // height: 500
+      }}
+    >
+      <Button title="Add Photos" onPress={pickImage} />
+      {/* <View style={styles.imageContainer}> */}
+      {/* <PhotoGrid source={imageArray} /> */}
+      <FlatList
+        // columnWrapperStyle={{ justifyContent: 'space-between', }}
+        // horizontal={false}
+        numColumns={2}
+        data={imageArray}
+        //data defined in constructor
+        // ItemSeparatorComponent={ItemSeparatorView}
+        //Item Separator View
+        renderItem={ItemView}
+        keyExtractor={(item, index) => index.toString()}
+      />
+      {/* <FlatGrid
             // fixed={true}
             itemDimension={200}
             data={imageArray}
@@ -126,23 +140,21 @@ const AddImages = props => {
 
           /> */}
 
-          {/* </View> */}
-        </View>
-        <Button title="NEXT" onPress={() => onSubmit()} />
-      </ScrollView>
-    </SafeAreaView>
+      {/* </View> */}
+      <Button title="NEXT" onPress={() => onSubmit()} />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 20,
     marginLeft: 20,
     marginRight: 20
   },
   imageContainer: {
-    flex: 1,
+    // flex: 1,
     // justifyContent: 'center',
     // alignItems: 'center',
     backgroundColor: "grey"

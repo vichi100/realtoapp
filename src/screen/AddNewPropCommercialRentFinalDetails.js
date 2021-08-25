@@ -143,11 +143,7 @@ const AddNewPropCommercialRentFinalDetails = props => {
         </Text>
       </View>
       <Slideshow
-        dataSource={[
-          { url: "http://placeimg.com/640/480/any" },
-          { url: "http://placeimg.com/640/480/any" },
-          { url: "http://placeimg.com/640/480/any" }
-        ]}
+        dataSource={propertyFinalDetails.image_urls}
       />
       {/* <Image
         source={require("../../assets/images/p1.jpg")}

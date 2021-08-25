@@ -16,6 +16,7 @@ import Snackbar from "../components/SnackbarComponent";
 import { setPropertyDetails, setResidentialPropertyList, setStartNavigationPoint } from "../reducers/Action";
 import { connect } from "react-redux";
 
+
 const AddNewPropFinalDetails = props => {
   const { navigation } = props;
   const [isVisible, setIsVisible] = useState(false);
@@ -140,11 +141,12 @@ const AddNewPropFinalDetails = props => {
         </Text>
       </View>
       <Slideshow
-        dataSource={[
-          { url: "http://placeimg.com/640/480/any" },
-          { url: "http://placeimg.com/640/480/any" },
-          { url: "http://placeimg.com/640/480/any" }
-        ]}
+        // dataSource={[
+        //   { url: propertyFinalDetails.image_urls[0] },
+        //   { url: "http://placeimg.com/640/480/any" },
+        //   { url: "http://placeimg.com/640/480/any" }
+        // ]}
+        dataSource={propertyFinalDetails.image_urls}
       />
       {/* <Image
         source={require("../../assets/images/p1.jpg")}
