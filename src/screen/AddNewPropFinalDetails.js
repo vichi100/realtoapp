@@ -5,7 +5,8 @@ import {
   Image,
   Text,
   ScrollView,
-  AsyncStorage
+  AsyncStorage,
+  // ActivityIndicator
 } from "react-native";
 import Slideshow from "../components/Slideshow";
 import Button from "../components/Button";
@@ -15,6 +16,7 @@ import { numDifferentiation } from "../util/methods";
 import Snackbar from "../components/SnackbarComponent";
 import { setPropertyDetails, setResidentialPropertyList, setStartNavigationPoint } from "../reducers/Action";
 import { connect } from "react-redux";
+import ModalActivityIndicator from 'react-native-modal-activityindicator'
 
 
 const AddNewPropFinalDetails = props => {
@@ -24,6 +26,7 @@ const AddNewPropFinalDetails = props => {
   const [propertyFinalDetails, setPropertyFinalDetails] = useState(null);
   const [bhk, setBHK] = useState(null);
   const [possessionDate, setPossessionDate] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (propertyFinalDetails === null) {
@@ -74,11 +77,12 @@ const AddNewPropFinalDetails = props => {
   };
 
   const send = () => {
-
+    setLoading(true);
+    console.log("propertyFinalDetails: ", propertyFinalDetails);
     const data = new FormData();
     propertyFinalDetails.image_urls.forEach((element, i) => {
       const newFile = {
-        uri: element,
+        uri: element.url,
         name: `vichi`,
         type: `image/jpeg`,
 
@@ -112,20 +116,23 @@ const AddNewPropFinalDetails = props => {
             } else {
               navigation.navigate("PropertyListForMeeting");
             }
-            props.setStartNavigationPoint(null)
+            props.setStartNavigationPoint(null);
+            setLoading(false);
           } else {
+            setLoading(false);
             setErrorMessage(
               "Error: Seems there is some network issue, please try later"
             );
           }
         },
         error => {
+          setLoading(false)
           console.log(error);
         }
       );
   };
 
-  return propertyFinalDetails ? (
+  return (propertyFinalDetails ? (
     <ScrollView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
@@ -283,8 +290,10 @@ const AddNewPropFinalDetails = props => {
         actionHandler={() => dismissSnackBar()}
         actionText="OK"
       />
+      <ModalActivityIndicator visible={loading} size='large' color='#A9A9A9' />
+
     </ScrollView>
-  ) : null;
+  ) : null);
 };
 
 const styles = StyleSheet.create({

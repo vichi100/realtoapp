@@ -14,6 +14,7 @@ import { SERVER_URL } from "../util/constant";
 import { numDifferentiation, dateFormat } from "../util/methods";
 import { connect } from "react-redux";
 import { setPropertyDetails, setCommercialPropertyList, setStartNavigationPoint } from "../reducers/Action";
+import ModalActivityIndicator from 'react-native-modal-activityindicator'
 
 
 const AddNewPropCommercialRentFinalDetails = props => {
@@ -21,6 +22,8 @@ const AddNewPropCommercialRentFinalDetails = props => {
   const [propertyFinalDetails, setPropertyFinalDetails] = useState(null);
   const [bhk, setBHK] = useState(null);
   const [possessionDate, setPossessionDate] = useState(null);
+  const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
     getPropFinalDetails();
@@ -65,10 +68,11 @@ const AddNewPropCommercialRentFinalDetails = props => {
   };
 
   const send = () => {
+    setLoading(true);
     const data = new FormData();
     propertyFinalDetails.image_urls.forEach((element, i) => {
       const newFile = {
-        uri: element,
+        uri: element.url,
         name: `vichi`,
         type: `image/jpeg`,
 
@@ -112,14 +116,17 @@ const AddNewPropCommercialRentFinalDetails = props => {
               navigation.navigate("PropertyListForMeeting");
             }
             props.setStartNavigationPoint(null)
+            setLoading(false)
 
           } else {
+            setLoading(false)
             setErrorMessage(
               "Error: Seems there is some network issue, please try later"
             );
           }
         },
         error => {
+          setLoading(false)
           console.log(error);
         }
       );
@@ -268,6 +275,7 @@ const AddNewPropCommercialRentFinalDetails = props => {
       <View style={{ margin: 20 }}>
         <Button title="ADD" onPress={() => send()} />
       </View>
+      <ModalActivityIndicator visible={loading} size='large' color='#A9A9A9' />
     </ScrollView>
   ) : null;
 };

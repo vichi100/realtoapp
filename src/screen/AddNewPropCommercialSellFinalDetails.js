@@ -14,6 +14,7 @@ import { SERVER_URL } from "../util/constant";
 import { numDifferentiation, dateFormat } from "../util/methods";
 import { connect } from "react-redux";
 import { setPropertyDetails, setCommercialPropertyList, setStartNavigationPoint } from "../reducers/Action";
+import ModalActivityIndicator from 'react-native-modal-activityindicator'
 
 
 
@@ -23,6 +24,7 @@ const AddNewPropCommercialSellFinalDetails = props => {
   const [propertyFinalDetails, setPropertyFinalDetails] = useState(null);
   const [bhk, setBHK] = useState(null);
   const [possessionDate, setPossessionDate] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getPropFinalDetails();
@@ -67,10 +69,11 @@ const AddNewPropCommercialSellFinalDetails = props => {
   };
 
   const send = async () => {
+    setLoading(true)
     const data = new FormData();
     propertyFinalDetails.image_urls.forEach((element, i) => {
       const newFile = {
-        uri: element,
+        uri: element.url,
         name: `vichi`,
         type: `image/jpeg`,
 
@@ -89,16 +92,6 @@ const AddNewPropCommercialSellFinalDetails = props => {
       },
       data: data
     })
-
-
-      // axios
-      //   .post(
-      //     SERVER_URL + "/addNewCommercialProperty",
-      //     // SERVER_URL + "/addNewResidentialRentProperty",
-      //     // await AsyncStorage.getItem("property")
-      //     // JSON.stringify({ vichi: "vchi" })
-      //     propertyFinalDetails
-      //   )
       .then(
         response => {
           // console.log(response.data);
@@ -113,15 +106,18 @@ const AddNewPropCommercialSellFinalDetails = props => {
             } else {
               navigation.navigate("PropertyListForMeeting");
             }
-            props.setStartNavigationPoint(null)
+            props.setStartNavigationPoint(null);
+            setLoading(false)
           } else {
+            setLoading(false)
             setErrorMessage(
               "Error: Seems there is some network issue, please try later"
             );
           }
         },
         error => {
-          // console.log(error);
+          setLoading(false)
+          console.log(error);
         }
       );
   };
@@ -269,6 +265,7 @@ const AddNewPropCommercialSellFinalDetails = props => {
       <View style={{ margin: 20 }}>
         <Button title="ADD" onPress={() => send()} />
       </View>
+      <ModalActivityIndicator visible={loading} size='large' color='#A9A9A9' />
     </ScrollView>
   ) : null;
 };
