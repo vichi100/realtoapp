@@ -13,7 +13,7 @@ import {
   Dimensions
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
+import { SERVER_URL } from "../util/constant"
 // https://github.com/kamalpandey/react-native-image-slider-show
 
 const reactNativePackage = require("react-native/package.json");
@@ -200,7 +200,7 @@ export default class Slideshow extends Component {
         >
           {this.props.dataSource.map((image, index) => {
             const imageObject =
-              typeof image.url === "string" ? { uri: image.url } : image.url;
+              typeof image.url === "string" ? { uri: SERVER_URL + image.url } : SERVER_URL + image.url;
             const textComponent = (
               <View style={styles.layoutText}>
                 {image.title === undefined ? null : (
@@ -358,7 +358,7 @@ Slideshow.propTypes = {
   onPositionChanged: PropTypes.func
 };
 
-const setIndicatorSize = function(size) {
+const setIndicatorSize = function (size) {
   return {
     width: size,
     height: size,
@@ -366,13 +366,13 @@ const setIndicatorSize = function(size) {
   };
 };
 
-const setIndicatorColor = function(color) {
+const setIndicatorColor = function (color) {
   return {
     backgroundColor: color
   };
 };
 
-const layoutArrow = function(imageHeight, iconHeight) {
+const layoutArrow = function (imageHeight, iconHeight) {
   return {
     position: "absolute",
     backgroundColor: "transparent",
@@ -383,7 +383,7 @@ const layoutArrow = function(imageHeight, iconHeight) {
   };
 };
 
-const iconArrow = function(iconHeight) {
+const iconArrow = function (iconHeight) {
   return {
     width: 0,
     height: 0,
@@ -397,7 +397,7 @@ const iconArrow = function(iconHeight) {
   };
 };
 
-const iconArrowRight = function(iconHeight) {
+const iconArrowRight = function (iconHeight) {
   return {
     borderRightWidth: 0,
     borderLeftWidth: (iconHeight * 75) / 100,
@@ -406,7 +406,7 @@ const iconArrowRight = function(iconHeight) {
   };
 };
 
-const iconArrowLeft = function(iconHeight) {
+const iconArrowLeft = function (iconHeight) {
   return {
     borderRightWidth: (iconHeight * 75) / 100,
     borderLeftWidth: 0,

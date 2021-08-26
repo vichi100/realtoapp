@@ -224,11 +224,7 @@ const Card = props => {
   return (
     <View style={styles.card}>
       <Slideshow
-        dataSource={[
-          { url: "http://placeimg.com/640/480/house" },
-          { url: "http://placeimg.com/640/480/any" },
-          { url: "http://placeimg.com/640/480/any" }
-        ]}
+        dataSource={item.image_urls}
       />
 
       <View style={styles.MainContainer}>

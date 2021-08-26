@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   FlatList,
   View,
@@ -50,7 +50,12 @@ const sortByRentArray = ["Lowest First", "Highest First"];
 const sortByAvailabilityArray = ["Earliest First", "Oldest First"];
 const sortByPostedDateArray = ["Recent First", "Oldest Fist"];
 
+
+
 const ListingResidential = props => {
+
+  const rent = useRef(0);;
+  const sell = useRef(0);;
   const { navigation } = props;
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -75,6 +80,14 @@ const ListingResidential = props => {
   const [sortByPostedDateIndex, setSortByPostedDateIndex] = useState(-1);
   const [lookingForIndexSortBy, setLookingForIndexSortBy] = useState(-1);
   const [loading, setLoading] = useState(false);
+  const [rentPropCount, setRentPropCount] = useState([]);
+  const [sellPropCount, setSellPropCount] = useState([]);
+
+  // useEffect(() => {
+  //   console.log(rent)
+  //   setRentPropCount(rent.current);
+  //   setSellPropCount(sell.current);
+  // }, [rent.current, sell.current])
 
   const resetSortBy = () => {
     setLookingForIndexSortBy(-1);
@@ -467,15 +480,18 @@ const ListingResidential = props => {
   };
 
   const ItemView = ({ item }) => {
-    // // console.log(item);
+
     if (item.property_type === "Residential") {
       if (item.property_for === "Rent") {
+        // rentPropCount.push("1");
+        // console.log(rentPropCount.length);
         return (
           // <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
           <CardResidentialRent navigation={navigation} item={item} />
           // </TouchableOpacity>
         );
       } else if (item.property_for === "Sell") {
+        // sellPropCount.push("1");
         return (
           // <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
           <CardResidentialSell navigation={navigation} item={item} />
@@ -543,6 +559,10 @@ const ListingResidential = props => {
     </View> :
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.searchBarContainer}>
+          {/* <View style={{ flexDirection: "row", margin: 10, justifyContent: "space-between" }}>
+            <Text>For Rent: {rentPropCount.length}</Text>
+            <Text>For Sell: {sellPropCount.length}</Text>
+          </View> */}
           <TextInput
             style={styles.textInputStyle}
             onChangeText={text => searchFilterFunction(text)}
