@@ -35,11 +35,7 @@ const PropDetailsFromListing = props => {
         style={{ width: "100%", height: 200 }}
       /> */}
       <Slideshow
-        dataSource={[
-          { url: "http://placeimg.com/640/480/any" },
-          { url: "http://placeimg.com/640/480/any" },
-          { url: "http://placeimg.com/640/480/any" }
-        ]}
+        dataSource={item.image_urls}
       />
       <View style={[styles.detailsContainer]}>
         <View style={[styles.details]}>
