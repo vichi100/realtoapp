@@ -104,8 +104,10 @@ const AddNewPropFinalDetails = props => {
         response => {
           console.log(response.data);
           if (response.data !== null) {
-            console.log(response.data);
-            // await AsyncStorage.removeItem("property");
+            // console.log(response.data);
+            response.data.image_urls.map(item => {
+              item.url = SERVER_URL + item.url
+            })
             props.setPropertyDetails(null);
             props.setResidentialPropertyList([...props.residentialPropertyList, response.data])
             // navigation.navigate("Listing");

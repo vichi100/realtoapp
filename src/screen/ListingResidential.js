@@ -427,9 +427,15 @@ const ListingResidential = props => {
     }).then(
       response => {
         // console.log("response.data:      ", response.data);
+        response.data.map(item => {
+          item.image_urls.map(image => {
+            image.url = SERVER_URL + image.url
+          })
+        })
         setData(response.data);
         props.setResidentialPropertyList(response.data);
         setLoading(false);
+        // console.log("response.data:      ", response.data);
       },
       error => {
         // console.log(error);
@@ -540,6 +546,7 @@ const ListingResidential = props => {
 
   useEffect(() => {
     if (props.residentialPropertyList.length > 0) {
+      // console.log("residentialPropertyList: ", props.residentialPropertyList);
       setData(props.residentialPropertyList)
     }
 

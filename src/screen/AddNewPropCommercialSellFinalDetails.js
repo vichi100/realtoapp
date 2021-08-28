@@ -96,7 +96,9 @@ const AddNewPropCommercialSellFinalDetails = props => {
         response => {
           // console.log(response.data);
           if (response.data.property_id !== null) {
-            // await AsyncStorage.removeItem("property");
+            response.data.image_urls.map(item => {
+              item.url = SERVER_URL + item.url
+            })
             props.setPropertyDetails(null);
             props.setCommercialPropertyList([...props.commercialPropertyList, response.data])
             // navigation.navigate("Listing");
