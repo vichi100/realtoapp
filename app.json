@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "propM",
-    "slug": "propM",
+    "name": "Realto",
+    "slug": "Realto",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,13 +17,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.dejavuapps.realtoapp",
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "NSContactsUsageDescription": "Realto want to access your contacts to to add your listing",
+        "NSPhotoLibraryUsageDescription": "Realto want to access your photos to add them in your listing"
+      }
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+      "package": "com.dejavuapps.realtoapp",
+      "permissions": [
+        "READ_CONTACTS",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"

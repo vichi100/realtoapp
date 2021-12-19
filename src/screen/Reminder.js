@@ -266,22 +266,43 @@ const Reminder = props => {
     >
       <ActivityIndicator animating size="large" color={'#000'} />
       {/* <ActivityIndicator animating size="large" /> */}
-    </View> : <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-      <ScrollView>
-        <FlatList
-          data={reminderList}
-          //data defined in constructor
-          ItemSeparatorComponent={ItemSeparatorView}
-          //Item Separator View
-          renderItem={ItemView}
-          keyExtractor={(item, index) => index.toString()}
-        />
-      </ScrollView>
-    </SafeAreaView>
+    </View> :
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+        {reminderList.length > 0 ? (<View>
+          <FlatList
+            data={reminderList}
+            //data defined in constructor
+            ItemSeparatorComponent={ItemSeparatorView}
+            //Item Separator View
+            renderItem={ItemView}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </View>) : (<View style={styles.container}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center"
+            }}
+          >
+            <Text style={{ textAlign: "center" }}>
+              You have no reminder
+            </Text>
+
+          </View>
+
+        </View>)}
+      </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    margin: 5
+    // alignContent: "center"
+  },
   verticalLine: {
     height: "100%",
     width: 2,

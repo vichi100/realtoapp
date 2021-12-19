@@ -26,7 +26,8 @@ export default function MainScreen() {
             backgroundColor: "#ffffff"
           },
           // headerBackTitleVisible: true,
-          headerTintColor: "rgba(105,105,105, .9)"
+          headerTintColor: "rgba(105,105,105, .9)",
+          gestureEnabled: false
         }}
       >
         <RootStack.Screen
