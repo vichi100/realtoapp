@@ -515,7 +515,7 @@ const CustomersCommercial = props => {
             onChangeText={text => searchFilterFunction(text)}
             value={search}
             underlineColorAndroid="transparent"
-            placeholder="Search Here"
+            placeholder="Search by name, location"
           />
         </View>
         {data.length > 0 ? (

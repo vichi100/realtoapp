@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text, View, SafeAreaView, TextInput, StyleSheet } from "react-native";
+import { Text, View, SafeAreaView, TextInput, StyleSheet, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,7 +12,7 @@ const Tab = createMaterialTopTabNavigator();
 
 const ContactsTopTab = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
       {/* <View style={styles.searchBarContainer}>
         <TextInput
           style={styles.textInputStyle}
@@ -34,11 +34,11 @@ const ContactsTopTab = () => {
             flexDirection: "column"
           }
         }}
-        // style={{
-        //   backgroundColor: "#000000",
-        //   height: 165,
-        //   borderBottomColor: "#D3D3D3"
-        // }}
+      // style={{
+      //   backgroundColor: "#000000",
+      //   height: 165,
+      //   borderBottomColor: "#D3D3D3"
+      // }}
       >
         <Tab.Screen
           name="Residential"

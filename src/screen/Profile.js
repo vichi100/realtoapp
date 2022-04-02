@@ -7,7 +7,8 @@ import {
   TouchableHighlight,
   Share,
   Linking,
-  AsyncStorage
+  AsyncStorage,
+  StatusBar
 } from "react-native";
 import {
   // Avatar,
@@ -356,7 +357,8 @@ export default connect(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff"
+    backgroundColor: "#ffffff",
+    marginTop: StatusBar.currentHeight
   },
   userInfoSection: {
     paddingHorizontal: 30,

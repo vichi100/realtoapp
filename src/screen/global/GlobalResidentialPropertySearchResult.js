@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  AsyncStorage
+  AsyncStorage,
+  StatusBar
 } from "react-native";
 import { connect } from "react-redux";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -26,7 +27,7 @@ import SliderX from "../../components/SliderX";
 import CardResidentialRent from "../Card"; //"./Card";
 import CardResidentialSell from "../CardSell";
 import axios from "axios";
-import {SERVER_URL} from "../../util/constant";
+import { SERVER_URL } from "../../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import { setResidentialPropertyList } from "../../reducers/Action";
 import { addDays, numDifferentiation } from "../../util/methods";
@@ -395,7 +396,7 @@ const GlobalResidentialPropertySearchResult = props => {
       agent_id: props.userDetails.works_for[0]
     };
     // // console.log(JSON.stringify(user));
-    axios(SERVER_URL+"/getAllGlobalListingByLocations", {
+    axios(SERVER_URL + "/getAllGlobalListingByLocations", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -419,7 +420,7 @@ const GlobalResidentialPropertySearchResult = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = props.residentialPropertyList.filter(function(item) {
+      const newData = props.residentialPropertyList.filter(function (item) {
         // Applying filter for the inserted text in search bar
         const itemData =
           item.property_address.building_name +
@@ -593,7 +594,7 @@ const GlobalResidentialPropertySearchResult = props => {
         onBackButtonPress={toggleBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -785,7 +786,7 @@ const GlobalResidentialPropertySearchResult = props => {
         onBackButtonPress={toggleSortingBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleSortingBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 

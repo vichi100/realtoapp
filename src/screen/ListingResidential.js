@@ -9,7 +9,8 @@ import {
   ScrollView,
   TextInput,
   ActivityIndicator,
-  AsyncStorage
+  AsyncStorage,
+  StatusBar
 } from "react-native";
 import { connect } from "react-redux";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -962,7 +963,8 @@ const ListingResidential = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 5
+    margin: 5,
+
     // alignContent: "center"
   },
   fab: {

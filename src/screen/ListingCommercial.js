@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  ActivityIndicator
+  ActivityIndicator,
+  StatusBar
 } from "react-native";
 import { connect } from "react-redux";
 import { CheckBox } from "react-native-elements";
@@ -956,7 +957,8 @@ const ListingCommercial = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 5
+    margin: 5,
+    // marginTop: StatusBar.currentHeight
     // alignContent: "center"
   },
   fab: {

@@ -9,13 +9,14 @@ import {
   SafeAreaView,
   AsyncStorage,
   Modal,
-  TouchableHighlight
+  TouchableHighlight,
+  StatusBar
 } from "react-native";
 
 import { setUserDetails, setPropReminderList } from "../reducers/Action";
 import axios from "axios";
 import { connect } from "react-redux";
-import {SERVER_URL} from "../util/constant";
+import { SERVER_URL } from "../util/constant";
 
 // rezar
 // rezo
@@ -56,7 +57,7 @@ const Home = props => {
   useEffect(() => {
     console.log("home1: " + JSON.stringify(props.userDetails));
     if (
-      props.userDetails.user_status === "suspend" && 
+      props.userDetails.user_status === "suspend" &&
       props.userDetails.user_type === "agent"
     ) {
       // console.log("home2");
@@ -77,7 +78,7 @@ const Home = props => {
     const agent = {
       agent_id: props.userDetails.works_for[0]
     };
-    axios(SERVER_URL+"/getTotalListingSummary", {
+    axios(SERVER_URL + "/getTotalListingSummary", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -99,7 +100,7 @@ const Home = props => {
     const agent = {
       agent_id: props.userDetails.id
     };
-    axios(SERVER_URL+"/reactivateAccount", {
+    axios(SERVER_URL + "/reactivateAccount", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -132,7 +133,7 @@ const Home = props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff", marginTop: StatusBar.currentHeight }}>
       <ScrollView>
         <View style={styles.container}>
           <View
@@ -182,7 +183,7 @@ const Home = props => {
             </View>
           </View>
 
-          
+
 
           <Text
             style={{
@@ -196,7 +197,7 @@ const Home = props => {
           </Text>
 
 
-          
+
           <Text
             style={{
               fontSize: 16,

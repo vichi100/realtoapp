@@ -8,7 +8,8 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
-  AsyncStorage
+  AsyncStorage,
+  StatusBar
 } from "react-native";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
 import { connect } from "react-redux";
