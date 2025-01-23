@@ -16,11 +16,11 @@ function MainStackNavigator() {
           component={Home}
           options={{ title: "Home Screen" }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Listing"
           component={Listing}
           options={{ title: "Listing Screen" }}
-        />
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

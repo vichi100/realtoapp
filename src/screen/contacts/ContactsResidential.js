@@ -499,7 +499,7 @@ const ContactsResidential = props => {
       <ActivityIndicator animating size="large" color={'#000'} />
       {/* <ActivityIndicator animating size="large" /> */}
     </View> :
-      <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <View style={styles.searchBarContainer}>
           <TextInput
             style={styles.textInputStyle}
@@ -890,7 +890,7 @@ const ContactsResidential = props => {
         actionHandler={() => dismissSnackBar()}
         actionText="OK"
       /> */}
-      </SafeAreaView>
+      </View>
   );
 };
 

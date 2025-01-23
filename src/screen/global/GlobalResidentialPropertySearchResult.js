@@ -515,7 +515,7 @@ const GlobalResidentialPropertySearchResult = props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <View>
         <View style={{ flexDirection: "row" }}>
           <TextInput
@@ -891,7 +891,7 @@ const GlobalResidentialPropertySearchResult = props => {
       >
         <AntDesign name="pluscircleo" size={40} color="#ffffff" />
       </TouchableOpacity> */}
-    </SafeAreaView>
+    </View>
   );
 };
 

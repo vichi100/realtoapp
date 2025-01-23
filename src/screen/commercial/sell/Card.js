@@ -223,15 +223,15 @@ const Card = props => {
 
   return (
     <View style={styles.card}>
-      <Slideshow
+      {/* <Slideshow
         dataSource={item.image_urls}
-      />
+      /> */}
 
       <View style={styles.MainContainer}>
         <View
           style={[
             {
-              backgroundColor: "rgba(245,245,245, 0.8)",
+              // backgroundColor: "rgba(245,245,245, 0.8)",
               flexDirection: "row",
               justifyContent: "space-between"
             }
@@ -334,7 +334,7 @@ const Card = props => {
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
               >
                 <Ionicons
-                  name="ios-alarm-outline"
+                  name="alarm-outline"
                   color={"#ffffff"}
                   size={30}
                 />

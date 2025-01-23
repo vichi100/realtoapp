@@ -100,7 +100,7 @@ const ProfileForm = props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
         <ScrollView style={styles.container}>
           {/* <View style={[styles.header, { marginTop: 30 }]}>
@@ -188,7 +188,7 @@ const ProfileForm = props => {
         actionHandler={() => dismissSnackBar()}
         actionText="OK"
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

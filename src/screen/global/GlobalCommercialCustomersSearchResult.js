@@ -487,7 +487,7 @@ const GlobalCommercialCustomersSearchResult = props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <View style={styles.searchBarContainer}>
         <TextInput
           style={styles.textInputStyle}
@@ -859,7 +859,7 @@ const GlobalCommercialCustomersSearchResult = props => {
         <AntDesign name="pluscircleo" size={40} color="#ffffff" />
 
       </TouchableOpacity> */}
-    </SafeAreaView>
+    </View>
   );
 };
 

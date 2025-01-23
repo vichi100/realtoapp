@@ -475,7 +475,7 @@ const GlobalResidentialContactsSearchResult = props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <View style={styles.searchBarContainer}>
         <TextInput
           style={styles.textInputStyle}
@@ -846,7 +846,7 @@ const GlobalResidentialContactsSearchResult = props => {
         actionHandler={() => dismissSnackBar()}
         actionText="OK"
       /> */}
-    </SafeAreaView>
+    </View>
   );
 };
 

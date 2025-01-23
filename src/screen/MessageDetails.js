@@ -29,7 +29,7 @@ const MessageDetails = props => {
   const item = props.route.params.item;
   console.log("props.route.params: ", item);
   return (
-    <SafeAreaView>
+    <View>
       <ScrollView>
         <View>
           <View style={{ padding: 10, fontSize: 16, paddingTop: 15 }}>
@@ -90,7 +90,7 @@ const MessageDetails = props => {
           ) : null}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

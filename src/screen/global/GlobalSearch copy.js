@@ -114,7 +114,7 @@ const GlobalSearch = props => {
   };
 
   return (
-    <SafeAreaView
+    <View
       style={{
         backgroundColor: "#ffffff",
         flex: 1
@@ -197,7 +197,7 @@ const GlobalSearch = props => {
           actionText="OK"
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

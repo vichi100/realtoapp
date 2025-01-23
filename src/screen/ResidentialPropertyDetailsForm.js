@@ -166,7 +166,7 @@ const ResidentialPropertyDetailsForm = props => {
   };
 
   return (
-    <SafeAreaView
+    <View
       style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
     >
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
@@ -384,7 +384,7 @@ const ResidentialPropertyDetailsForm = props => {
         actionHandler={() => dismissSnackBar()}
         actionText="OK"
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

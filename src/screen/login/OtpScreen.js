@@ -123,7 +123,7 @@ const OtpScreen = (props) => {
 			{/* <ActivityIndicator animating size="large" /> */}
 		</View>
 	) : (
-		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+		<View style={{ flex: 1, backgroundColor: '#fff' }}>
 			<ScrollView>
 				<View
 					style={{
@@ -199,7 +199,7 @@ const OtpScreen = (props) => {
 					<Text style={{ color: '#000000' }}>{'Skip >>'}</Text>
 				</TouchableOpacity>
 			</View>
-		</SafeAreaView>
+		</View>
 	);
 };
 

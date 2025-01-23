@@ -12,7 +12,7 @@ const Tab = createMaterialTopTabNavigator();
 
 const ContactsTopTab = () => {
   return (
-    <SafeAreaView style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
+    <View style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
       {/* <View style={styles.searchBarContainer}>
         <TextInput
           style={styles.textInputStyle}
@@ -25,6 +25,21 @@ const ContactsTopTab = () => {
       <Tab.Navigator
         activeColor="rgb(135,206,235)"
         inactiveColor="rgb(105,105,105)"
+        screenOptions={{
+          // showIcon: true,
+          showLabel: true,
+          tabBarIndicatorStyle: {
+            borderBottomWidth: 2,
+            borderBottomColor: 'rgb(2,171,61)',
+          },
+          // tabBarActiveTintColor: 'tomato',
+          // tabBarInactiveTintColor: 'gray',
+          style: {
+            // backgroundColor: "rgba(105,105,105, 0.1)",
+            // flex: 1,
+            flexDirection: "column"
+          }
+        }}
         tabBarOptions={{
           // showIcon: true,
           showLabel: true,
@@ -99,7 +114,7 @@ const ContactsTopTab = () => {
           }}
         />
       </Tab.Navigator>
-    </SafeAreaView>
+    </View>
   );
 };
 

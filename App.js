@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import configureStore from "./Store";
 
 
+
 // on top of your index.android.js file
 const isAndroid = require('react-native').Platform.OS === 'android'; // this line is only needed if you don't use an .android.js file
 const isHermesEnabled = !!global.HermesInternal;  // this line is only needed if you don't use an .android.js file
@@ -60,9 +61,10 @@ if (isHermesEnabled || isAndroid) {  // this line is only needed if you don't us
 
 const store = configureStore();
 
+
 const App=()=> {
   return (
-    <Provider store={store}>
+    <Provider store={store} >
       <MainScreen />
     </Provider>
   );

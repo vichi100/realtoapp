@@ -68,7 +68,7 @@ const CustomerMeetingDetails = props => {
   };
 
   return (
-    <SafeAreaView
+    <View
       style={{ flex: 1, backgroundColor: "rgba(254,254,250, 0.1)" }}
     >
       {customerMeetingDetailsObj ? (
@@ -272,7 +272,7 @@ const CustomerMeetingDetails = props => {
           ) : null}
         </ScrollView>
       ) : null}
-    </SafeAreaView>
+    </View>
   );
 };
 

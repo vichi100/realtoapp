@@ -369,23 +369,25 @@ const Card = props => {
                   style={{ padding: 15, backgroundColor: "#0091ea" }}
                 >
                   <Ionicons name="share-social" color={"#ffffff"} size={30} />
+                  {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Share</Text> */}
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => onClickMeeting(item)}
                   style={{ padding: 15, backgroundColor: "#ffd600" }}
                 >
                   <Ionicons
-                    name="ios-alarm-outline"
+                    name="alarm-outline"
                     color={"#ffffff"}
                     size={30}
                   />
+                   {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Meeting</Text> */}
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => makeCall(item.owner_details.mobile1)}
                   style={{ padding: 15, backgroundColor: "#00bfa5" }}
                 >
                   <Ionicons name="call" color={"#ffffff"} size={30} />
-                  <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text>
+                  {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Owner</Text> */}
                 </TouchableOpacity>
               </View>
             </Animated.View>

@@ -106,7 +106,7 @@ const SellDetails = props => {
   // };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
         <ScrollView>
           <View style={styles.container}>
@@ -219,7 +219,7 @@ const SellDetails = props => {
         actionHandler={() => dismissSnackBar()}
         actionText="OK"
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

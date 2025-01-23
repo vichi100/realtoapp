@@ -106,7 +106,7 @@ const LocalityDetailsForm = props => {
   }
 
   return (
-    <SafeAreaView
+    <View
       style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
     >
       <KeyboardAwareScrollView onPress={Keyboard.dismiss} keyboardShouldPersistTaps="handled">
@@ -131,6 +131,10 @@ const LocalityDetailsForm = props => {
           <View style={{ marginTop: 25 }} />
           <GooglePlacesAutocomplete
             placeholder="Area / Location"
+            textInputProps={{
+              placeholderTextColor: 'rgba(90, 90, 90,1)',
+              returnKeyType: "search"
+            }}
             minLength={2}
             query={{
               key: GOOGLE_PLACES_API_KEY,
@@ -252,7 +256,7 @@ const LocalityDetailsForm = props => {
         actionHandler={() => dismissSnackBar()}
         actionText="OK"
       />
-    </SafeAreaView >
+    </View>
   );
 };
 

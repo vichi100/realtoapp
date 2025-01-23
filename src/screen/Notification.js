@@ -13,11 +13,11 @@ import {
 
 const Notification = () => {
   return (
-    <SafeAreaView>
+    <View>
       <View>
         <Text>Notification</Text>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

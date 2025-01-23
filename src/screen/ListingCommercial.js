@@ -442,6 +442,11 @@ const ListingCommercial = props => {
     }).then(
       response => {
         // console.log(response.data);
+        response.data.map(item => {
+          item.image_urls.map(image => {
+            image.url = SERVER_URL + image.url
+          })
+        })
         setData(response.data);
         props.setCommercialPropertyList(response.data);
         setLoading(false);
@@ -556,7 +561,7 @@ const ListingCommercial = props => {
       <ActivityIndicator animating size="large" color={'#000'} />
       {/* <ActivityIndicator animating size="large" /> */}
     </View> :
-      <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "#ffffff", marginTop: StatusBar.currentHeight }}>
         <View style={styles.searchBarContainer}>
           <TextInput
             style={styles.textInputStyle}
@@ -950,7 +955,7 @@ const ListingCommercial = props => {
           <AntDesign name="pluscircleo" size={40} color="#ffffff" />
           {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
         </TouchableOpacity>
-      </SafeAreaView>
+      </View>
   );
 };
 

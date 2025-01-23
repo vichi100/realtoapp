@@ -43,7 +43,7 @@ const CloseProperty = props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <ScrollView>
         <View>
           <Text>Did you close this deal successfully</Text>
@@ -73,7 +73,7 @@ const CloseProperty = props => {
           />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

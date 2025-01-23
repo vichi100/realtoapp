@@ -267,7 +267,7 @@ const Reminder = props => {
       <ActivityIndicator animating size="large" color={'#000'} />
       {/* <ActivityIndicator animating size="large" /> */}
     </View> :
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+      <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
         {reminderList.length > 0 ? (<View>
           <FlatList
             data={reminderList}
@@ -293,7 +293,7 @@ const Reminder = props => {
           </View>
 
         </View>)}
-      </SafeAreaView>
+      </View>
   );
 };
 

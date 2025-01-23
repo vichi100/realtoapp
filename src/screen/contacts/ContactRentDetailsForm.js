@@ -134,7 +134,7 @@ const ContactRentDetailsForm = props => {
     navigation.navigate("AddNewCustomerRentResidentialFinalDetails");
   };
   return (
-    <SafeAreaView
+    <View
       style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
     >
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
@@ -274,7 +274,7 @@ const ContactRentDetailsForm = props => {
         actionHandler={() => dismissSnackBar()}
         actionText="OK"
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

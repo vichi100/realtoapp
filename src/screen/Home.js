@@ -133,7 +133,7 @@ const Home = props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff", marginTop: StatusBar.currentHeight }}>
+    <View style={{ flex: 1, backgroundColor: "#ffffff", marginTop: StatusBar.currentHeight }}>
       <ScrollView>
         <View style={styles.container}>
           <View
@@ -261,7 +261,7 @@ const Home = props => {
           </View>
         </Modal>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

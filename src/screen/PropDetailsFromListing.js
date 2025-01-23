@@ -5,12 +5,14 @@ import {
   Image,
   Text,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  SafeAreaView
 } from "react-native";
 import Slideshow from "../components/Slideshow";
 import { numDifferentiation } from "../util/methods";
 import Feather from "react-native-vector-icons/Feather";
 import { connect } from "react-redux";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const PropDetailsFromListing = props => {
   // const { navigation } = props;
@@ -18,6 +20,7 @@ const PropDetailsFromListing = props => {
   const item = props.propertyDetails;
   // console.log("item:  ", item);
   return (
+   
     <ScrollView style={[styles.container]}>
       <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
@@ -167,12 +170,47 @@ const PropDetailsFromListing = props => {
           </View>
         </View>
       </View>
+
+
+      <View style={[styles.media]}>
+
+        <TouchableOpacity
+          onPress={() => onShare()}
+          style={{ padding: 15, backgroundColor: "#0091ea" }}
+        >
+          <Ionicons name="share-social" color={"#ffffff"} size={30} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => onClickMeeting(item)}
+          style={{ padding: 15, backgroundColor: "#ffd600" }}
+        >
+          <Ionicons
+            name="alarm-outline"
+            color={"#ffffff"}
+            size={35}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => makeCall(item.owner_details.mobile1)}
+          style={{ padding: 15, backgroundColor: "#00bfa5" }}
+        >
+          <Ionicons name="call" color={"#ffffff"} size={30} />
+          {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text> */}
+        </TouchableOpacity>
+      </View>
     </ScrollView>
+    
   );
 };
 
 const styles = StyleSheet.create({
   container: {},
+  media: {
+    padding: 2,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
+  },
   card: {
     shadowOpacity: 0.0015 * 5 + 0.18,
     shadowRadius: 0.54 * 5,

@@ -1,5 +1,9 @@
 import React from "react";
-import { View, Button, Text, StyleSheet } from "react-native";
+import { View, Button, Text, StyleSheet, SafeAreaView } from "react-native";
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";
 import { Ionicons } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -18,15 +22,25 @@ import ProfileStackScreens from "./ProfileStackScreens";
 const BottomTabScreen = () => {
   const Tab = createMaterialBottomTabNavigator();
   const Stack = createStackNavigator();
-
+  const insets = useSafeAreaInsets();
   return (
+    
+
     <Tab.Navigator
       // initialRouteName="Home"
       lazy={false}
-      activeColor="rgb(135,206,235)"
-      inactiveColor="rgb(105,105,105)"
-      barStyle={{ backgroundColor: "#ffffff", paddingBottom: 0 }}
-    >
+      activeColor="rgb(2,171,61)"
+      // inactiveColor="rgb(105,105,105)"
+      barStyle={{ backgroundColor: "#ffffff", paddingBottom: 0, height: 20+insets.bottom}}
+      // tabBarStyle={{height: 0}}
+      // tabBarOptions={{
+      //   style: {
+      //     backgroundColor: "red",
+      //   }
+      // }}
+      >
+      
+    
       {/* <Tab.Screen
         name="Home"
         component={HomeStackNav}
@@ -56,6 +70,7 @@ const BottomTabScreen = () => {
         title="My Properties"
         options={{
           tabBarLabel: "",
+          tabBarColor: "#ffffff",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="view-grid-outline"
@@ -122,7 +137,7 @@ const BottomTabScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center"

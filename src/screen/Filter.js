@@ -18,7 +18,7 @@ const Filter = props => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.container}>
         <Text
           style={{
@@ -142,7 +142,7 @@ const Filter = props => {
           </View>
         </BottomSheet>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

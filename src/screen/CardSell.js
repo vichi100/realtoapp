@@ -349,9 +349,9 @@ const Card = props => {
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
               >
                 <Ionicons
-                  name="ios-alarm-outline"
+                  name="alarm-outline"
                   color={"#ffffff"}
-                  size={30}
+                  size={40}
                 />
               </TouchableOpacity>
               <TouchableOpacity

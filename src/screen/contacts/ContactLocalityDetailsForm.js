@@ -159,7 +159,7 @@ const ContactLocalityDetailsForm = props => {
   }
 
   return (
-    <SafeAreaView
+    <View
       style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
     >
       <KeyboardAwareScrollView onPress={Keyboard.dismiss} keyboardShouldPersistTaps="handled">
@@ -302,7 +302,7 @@ const ContactLocalityDetailsForm = props => {
         actionHandler={() => dismissSnackBar()}
         actionText="OK"
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

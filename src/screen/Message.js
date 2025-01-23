@@ -177,7 +177,7 @@ const Message = props => {
     );
   };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
       {/* <ScrollView> */}
       <FlatList
         data={messageList}
@@ -188,7 +188,7 @@ const Message = props => {
         keyExtractor={(item, index) => index.toString()}
       />
       {/* </ScrollView> */}
-    </SafeAreaView>
+    </View>
   );
 };
 

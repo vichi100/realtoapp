@@ -152,7 +152,7 @@ const CustomerCommercialPropertyDetailsForm = props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
         <ScrollView style={styles.container}>
           <View style={{ paddingTop: 30, marginLeft: 20, marginRight: 20 }}>
@@ -219,7 +219,7 @@ const CustomerCommercialPropertyDetailsForm = props => {
         actionHandler={() => dismissSnackBar()}
         actionText="OK"
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

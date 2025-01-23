@@ -565,7 +565,7 @@ const ListingResidential = props => {
       <ActivityIndicator animating size="large" color={'#000'} />
       {/* <ActivityIndicator animating size="large" /> */}
     </View> :
-      <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <View style={styles.searchBarContainer}>
           {/* <View style={{ flexDirection: "row", margin: 10, justifyContent: "space-between" }}>
             <Text>For Rent: {rentPropCount.length}</Text>
@@ -956,7 +956,7 @@ const ListingResidential = props => {
           <AntDesign name="pluscircleo" size={40} color="#ffffff" />
           {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
         </TouchableOpacity>
-      </SafeAreaView>
+      </View>
   );
 };
 

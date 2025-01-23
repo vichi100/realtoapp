@@ -106,7 +106,7 @@ const AddNewProperty = props => {
   };
 
   return (
-    <SafeAreaView
+    <View
       style={{ flex: 1, backgroundColor: "rgba(254,254,250, 0.1)" }}
     >
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
@@ -230,7 +230,7 @@ const AddNewProperty = props => {
         actionHandler={() => dismissSnackBar()}
         actionText="OK"
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
