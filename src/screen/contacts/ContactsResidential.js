@@ -420,19 +420,27 @@ const ContactsResidential = props => {
     }
   };
 
+  const deleteMe = (itemToDelete) =>{
+    // console.log("props.setPropertyDetails(item: deleteMe: )", itemToDelete);
+    setData((data) => data.filter((item) => item.customer_id !== itemToDelete.customer_id));
+    //Fist delete for data
+    
+
+  }
+
   const ItemView = ({ item }) => {
     // // console.log(item);
     if (item.customer_locality.property_type === "Residential") {
       if (item.customer_locality.property_for === "Rent") {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <ContactResidentialRentCard navigation={navigation} item={item} />
+            <ContactResidentialRentCard navigation={navigation} item={item} deleteMe={deleteMe}/>
           </TouchableOpacity>
         );
       } else if (item.customer_locality.property_for === "Buy") {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Buy")}>
-            <ContactResidentialSellCard navigation={navigation} item={item} />
+            <ContactResidentialSellCard navigation={navigation} item={item} deleteMe={deleteMe}/>
           </TouchableOpacity>
         );
       }
@@ -500,13 +508,28 @@ const ContactsResidential = props => {
       {/* <ActivityIndicator animating size="large" /> */}
     </View> :
       <View style={{ flex: 1 }}>
-        <View style={styles.searchBarContainer}>
+        {/* <View style={styles.searchBarContainer}>
           <TextInput
             style={styles.textInputStyle}
             onChangeText={text => searchFilterFunction(text)}
             value={search}
             underlineColorAndroid="transparent"
             placeholder="Search by name, location"
+          />
+        </View> */}
+        <View style={styles.searchBar}>
+        <AntDesign name="search1" size={20} color="#999" style={{marginRight: 5,}} />
+          {/* <View style={{ flexDirection: "row", margin: 10, justifyContent: "space-between" }}>
+            <Text>For Rent: {rentPropCount.length}</Text>
+            <Text>For Sell: {sellPropCount.length}</Text>
+          </View> */}
+          <TextInput
+            style={styles.textInputStyle}
+            onChangeText={text => searchFilterFunction(text)}
+            value={search}
+            underlineColorAndroid="transparent"
+            placeholder="Search by name, location"
+            placeholderTextColor="#000" 
           />
         </View>
         {data.length > 0 ? (
@@ -899,6 +922,19 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 5
     // alignContent: "center"
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
   },
   fab: {
     flexDirection: "row",

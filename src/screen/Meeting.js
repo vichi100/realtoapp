@@ -32,6 +32,7 @@ import {
 } from "../reducers/Action";
 import PropertyReminder from "./PropertyReminder";
 import { SERVER_URL } from "../util/constant";
+import DatePicker, { RangeOutput, SingleOutput } from 'react-native-neat-date-picker';
 
 const reminderForArray = ["Call", "Meeting", "Property Visit"];
 const ampmArray = ["AM", "PM"];
@@ -136,6 +137,7 @@ const Meeting = props => {
     // // console.log("date");
     setVisible(false);
     setIsVisible(false);
+    Keyboard.dismiss();
   }, [setVisible]);
 
   const onChange = React.useCallback(({ date }) => {
@@ -145,6 +147,7 @@ const Meeting = props => {
     // setNewDate(x[0]);
     const x = dateFormat(date.toString());
     setNewDate(x);
+    Keyboard.dismiss();
     // // console.log(new Date(date).getDay());
     // // console.log(date.toString());
   }, []);
@@ -401,6 +404,7 @@ const Meeting = props => {
                 label="Date*"
                 placeholder="Date*"
                 value={newDate}
+                showSoftInputOnFocus={false}
                 // onChangeText={newDate => setNewDate(newDate)}
                 onFocus={() => setVisible(true)}
                 style={{ width: "50%" }}
@@ -459,17 +463,18 @@ const Meeting = props => {
             {/* <ActivityIndicator animating size="large" /> */}
           </View> : <PropertyReminder navigation={navigation} />}
         </ScrollView>
-        <DatePickerModal
-          mode="single"
-          visible={visible}
-          onDismiss={onDismiss}
-          date={date}
-          onConfirm={onChange}
-          saveLabel="OK" // optional
-          label="Select date" // optional
-          animationType="slide" // optional, default is 'slide' on ios/android and 'none' on web
-          locale={"en"} // optional, default is automically detected by your system
-        />
+        
+      </KeyboardAwareScrollView>
+      <DatePicker
+        isVisible={visible}
+        mode={'single'}
+        initialDate={new Date()}
+        minDate={new Date()}
+        onCancel={onDismiss}
+        onConfirm={onChange}
+        dateStringFormat={"dd-mmm-yyyy"}
+      />
+        
         <TimePickerModal
           visible={timeVisible}
           onDismiss={onDismissTimePicker}
@@ -482,7 +487,6 @@ const Meeting = props => {
           animationType="fade" // optional, default is 'none'
           locale={"en"} // optional, default is automically detected by your system
         />
-      </KeyboardAwareScrollView>
       <Snackbar
         visible={isVisible}
         textMessage={errorMessage}

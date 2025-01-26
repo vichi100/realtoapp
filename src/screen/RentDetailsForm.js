@@ -13,7 +13,7 @@ import {
 } from "react-native";
 
 import { DatePickerModal } from "react-native-paper-dates";
-import { ButtonGroup } from "@rneui/themed";
+import { ButtonGroup } from "react-native-elements";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
 import Button from "../components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -21,6 +21,8 @@ import Snackbar from "../components/SnackbarComponent";
 import { numDifferentiation } from "../util/methods";
 import { connect } from "react-redux";
 import { setPropertyDetails } from "../reducers/Action";
+import DatePicker, { RangeOutput, SingleOutput } from 'react-native-neat-date-picker'
+import { MaterialIcons } from "@expo/vector-icons";
 
 const preferredTenantsArray = ["Family", "Bachelors", "Any"];
 const nonvegAllowedArray = ["Yes", "No"];
@@ -55,6 +57,7 @@ const RentDetailsForm = props => {
   const onDismiss = React.useCallback(() => {
     setVisible(false);
     setIsVisible(false);
+    Keyboard.dismiss();
   }, [setVisible]);
 
   const onChange = React.useCallback(({ date }) => {
@@ -67,6 +70,7 @@ const RentDetailsForm = props => {
         .slice(0, 16)
         .trim()
     );
+    Keyboard.dismiss();
     // setNewDate(date.toString());
     // // console.log({ date });
   }, []);
@@ -130,7 +134,7 @@ const RentDetailsForm = props => {
     navigation.navigate("AddImages");
   };
   return (
-    <View
+    <SafeAreaView
       style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
     >
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
@@ -149,7 +153,7 @@ const RentDetailsForm = props => {
               // label="Expected Rent*"
               placeholder="Expected Rent"
               value={expectedRent}
-              keyboardType={"numeric"}
+              // keyboardType={"numeric"}
               onChangeText={text => setExpectedRent(text)}
               onFocus={() => setIsVisible(false)}
               theme={{
@@ -175,7 +179,7 @@ const RentDetailsForm = props => {
               // label="Expected Deposit*"
               placeholder="Expected Deposit"
               value={expectedDeposit}
-              keyboardType={"numeric"}
+              // keyboardType={"numeric"}
               onChangeText={text => setExpectedDeposit(text)}
               onFocus={() => setIsVisible(false)}
               theme={{
@@ -191,12 +195,18 @@ const RentDetailsForm = props => {
                 }
               }}
             />
+            {/* <View style={styles.searchSection}> */}
+            {/* <MaterialIcons style={styles.searchIcon} name="calendar-month-outline" color="#FF6347" size={20} /> */}
+            {/* <Icon style={styles.searchIcon} name="ios-search" size={20} color="#000"/> */}
             <TextInput
               mode="outlined"
+              // editable={false}
               style={styles.inputContainerStyle}
               label="Available From *"
               placeholder="Available From *"
               value={newDate}
+              showSoftInputOnFocus={false}
+              
               // onChangeText={newDate => setNewDate(newDate)}
               onFocus={() => setVisible(true)}
               theme={{
@@ -210,6 +220,7 @@ const RentDetailsForm = props => {
                 }
               }}
             />
+            {/* </View> */}
             {props.propertyType && props.propertyType === "Residential" ? (
               <View>
                 <Text>Preferred Tenants*</Text>
@@ -246,7 +257,7 @@ const RentDetailsForm = props => {
             <Button title="NEXT" onPress={() => onSubmit()} />
           </View>
         </ScrollView>
-        <DatePickerModal
+        {/* <DatePickerModal
           mode="single"
           visible={visible}
           onDismiss={onDismiss}
@@ -256,8 +267,20 @@ const RentDetailsForm = props => {
           label="Select date" // optional
           animationType="slide" // optional, default is 'slide' on ios/android and 'none' on web
           locale={"en"} // optional, default is automically detected by your system
-        />
+        /> */}
+        
       </KeyboardAwareScrollView>
+      {/* https://github.com/roto93/react-native-neat-date-picker/tree/main */}
+      <DatePicker
+        isVisible={visible}
+        mode={'single'}
+        showSoftInputOnFocus={false}
+        initialDate={new Date()}
+        minDate={new Date()}
+        onCancel={onDismiss}
+        onConfirm={onChange}
+        dateStringFormat={"dd-mmm-yyyy"}
+      />
       <Snackbar
         visible={isVisible}
         textMessage={errorMessage}
@@ -265,7 +288,7 @@ const RentDetailsForm = props => {
         actionHandler={() => dismissSnackBar()}
         actionText="OK"
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -289,7 +312,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 5,
     marginBottom: 5
-  }
+  },
+  searchSection: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+},
+searchIcon: {
+    padding: 10,
+},
 });
 
 const mapStateToProps = state => ({

@@ -496,18 +496,26 @@ const ListingCommercial = props => {
 
   };
 
+  const deleteMe = (itemToDelete) =>{
+    // console.log("props.setPropertyDetails(item: deleteMe: )", itemToDelete);
+    setData((data) => data.filter((item) => item.property_id !== itemToDelete.property_id));
+    //Fist delete for data
+    
+
+  }
+
   const ItemView = ({ item }) => {
     if (item.property_type === "Commercial") {
       if (item.property_for === "Rent") {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <CardRent navigation={navigation} item={item} />
+            <CardRent navigation={navigation} item={item} deleteMe={deleteMe}/>
           </TouchableOpacity>
         );
       } else if (item.property_for === "Sell") {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
-            <CardSell navigation={navigation} item={item} />
+            <CardSell navigation={navigation} item={item} deleteMe={deleteMe}/>
           </TouchableOpacity>
         );
       }
@@ -562,13 +570,19 @@ const ListingCommercial = props => {
       {/* <ActivityIndicator animating size="large" /> */}
     </View> :
       <View style={{ flex: 1, backgroundColor: "#ffffff", marginTop: StatusBar.currentHeight }}>
-        <View style={styles.searchBarContainer}>
+        <View style={styles.searchBar}>
+        <AntDesign name="search1" size={20} color="#999" style={{marginRight: 5,}} />
+          {/* <View style={{ flexDirection: "row", margin: 10, justifyContent: "space-between" }}>
+            <Text>For Rent: {rentPropCount.length}</Text>
+            <Text>For Sell: {sellPropCount.length}</Text>
+          </View> */}
           <TextInput
             style={styles.textInputStyle}
             onChangeText={text => searchFilterFunction(text)}
             value={search}
             underlineColorAndroid="transparent"
-            placeholder="My property | Search by property address, owner"
+            placeholder="Search by property address, owner"
+            placeholderTextColor="#000" 
           />
         </View>
         {data.length > 0 ? (
@@ -965,6 +979,19 @@ const styles = StyleSheet.create({
     margin: 5,
     // marginTop: StatusBar.currentHeight
     // alignContent: "center"
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
   },
   fab: {
     flexDirection: "row",

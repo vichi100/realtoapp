@@ -57,7 +57,14 @@ const CustomerMeetingDetails = props => {
         response => {
           // console.log("response.data:    ", response.data);
           // navigation.navigate("CardDetails");
+
           if (response.data !== "fail") {
+            response.data.property_details.map(item => {
+              item.image_urls.map(image => {
+                image.url = SERVER_URL + image.url
+              })
+            })
+            
             setCustomerMeetingDetailsObj(response.data);
           }
         },
@@ -107,7 +114,7 @@ const CustomerMeetingDetails = props => {
                   }}
                 >
                   <Text style={{ padding: 10, textAlign: "center" }}>
-                    Related properties for this reminder
+                    Related properties for this meeting
                   </Text>
                 </View>
 
@@ -155,7 +162,7 @@ const CustomerMeetingDetails = props => {
                   }}
                 >
                   <Text style={{ padding: 10, textAlign: "center" }}>
-                    Related properties for this reminder
+                    Related properties for this meeting
                   </Text>
                 </View>
 
@@ -205,7 +212,7 @@ const CustomerMeetingDetails = props => {
                   }}
                 >
                   <Text style={{ padding: 10, textAlign: "center" }}>
-                    Related properties for this reminder
+                    Related properties for this meeting
                   </Text>
                 </View>
 
@@ -253,7 +260,7 @@ const CustomerMeetingDetails = props => {
                   }}
                 >
                   <Text style={{ padding: 10, textAlign: "center" }}>
-                    Related properties for this reminder
+                    Related properties for this meeting
                   </Text>
                 </View>
 

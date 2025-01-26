@@ -20,6 +20,7 @@ import Snackbar from "../../components/SnackbarComponent";
 import { numDifferentiation } from "../../util/methods";
 import { connect } from "react-redux";
 import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
+import DatePicker, { RangeOutput, SingleOutput } from 'react-native-neat-date-picker';
 
 
 
@@ -59,6 +60,7 @@ const ContactRentDetailsForm = props => {
   const onDismiss = React.useCallback(() => {
     setVisible(false);
     setIsVisible(false);
+    Keyboard.dismiss();
   }, [setVisible]);
 
   const onChange = React.useCallback(({ date }) => {
@@ -71,6 +73,7 @@ const ContactRentDetailsForm = props => {
         .slice(0, 16)
         .trim()
     );
+    Keyboard.dismiss();
     // setNewDate(date.toString());
     // // console.log({ date });
   }, []);
@@ -204,6 +207,7 @@ const ContactRentDetailsForm = props => {
               label="Required From *"
               placeholder="Required From *"
               value={newDate}
+              showSoftInputOnFocus={false}
               // onChangeText={newDate => setNewDate(newDate)}
               onFocus={() => setVisible(true)}
               theme={{
@@ -255,7 +259,16 @@ const ContactRentDetailsForm = props => {
             <Button title="NEXT" onPress={() => onSubmit()} />
           </View>
         </ScrollView>
-        <DatePickerModal
+        <DatePicker
+        isVisible={visible}
+        mode={'single'}
+        initialDate={new Date()}
+        minDate={new Date()}
+        onCancel={onDismiss}
+        onConfirm={onChange}
+        dateStringFormat={"dd-mmm-yyyy"}
+      />
+        {/* <DatePickerModal
           mode="single"
           visible={visible}
           onDismiss={onDismiss}
@@ -265,7 +278,7 @@ const ContactRentDetailsForm = props => {
           label="Select date" // optional
           animationType="slide" // optional, default is 'slide' on ios/android and 'none' on web
           locale={"en"} // optional, default is automically detected by your system
-        />
+        /> */}
       </KeyboardAwareScrollView>
       <Snackbar
         visible={isVisible}

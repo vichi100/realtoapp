@@ -32,6 +32,7 @@ import {
   setPropListForMeeting
 } from "../../reducers/Action";
 import PropertyReminder from "../PropertyReminder";
+import DatePicker, { RangeOutput, SingleOutput } from 'react-native-neat-date-picker'
 
 const reminderForArray = ["Call", "Meeting", "Property Visit"];
 const ampmArray = ["AM", "PM"];
@@ -71,7 +72,7 @@ const CustomerMeeting = props => {
     setMinutes("");
     setAMPMIndex(-1);
     setReminderForIndex(-1);
-    // props.setPropListForMeeting([])
+    props.setPropListForMeeting([])
   }
 
   const setModalVisibleTemp = flag => {
@@ -120,6 +121,7 @@ const CustomerMeeting = props => {
     // // console.log("date");
     setVisible(false);
     setIsVisible(false);
+    Keyboard.dismiss();
   }, [setVisible]);
 
   const onChange = React.useCallback(({ date }) => {
@@ -129,6 +131,7 @@ const CustomerMeeting = props => {
     // setNewDate(x[0]);
     const x = dateFormat(date.toString());
     setNewDate(x);
+    Keyboard.dismiss();
     // // console.log(new Date(date).getDay());
     // // console.log(date.toString());
   }, []);
@@ -261,6 +264,11 @@ const CustomerMeeting = props => {
           // console.log("response.data.length: " + response.data.length);
           // navigation.navigate("CardDetails");
           if (response.data && response.data.length > 0) {
+            // response.data.map(item => {
+            //   item.image_urls.map(image => {
+            //     image.url = SERVER_URL + image.url
+            //   })
+            // })
             // const x = [...props.propReminderList, ...response.data];
             // // console.log("X: " + x);
             props.setPropReminderList(response.data);
@@ -424,6 +432,7 @@ const CustomerMeeting = props => {
                 label="Date*"
                 placeholder="Date*"
                 value={newDate}
+                showSoftInputOnFocus={false}
                 // onChangeText={newDate => setNewDate(newDate)}
                 onFocus={() => setVisible(true)}
                 style={{ width: "50%" }}
@@ -502,7 +511,7 @@ const CustomerMeeting = props => {
             {/* <ActivityIndicator animating size="large" /> */}
           </View> : <PropertyReminder navigation={navigation} item={item} />}
         </ScrollView>
-        <DatePickerModal
+        {/* <DatePickerModal
           mode="single"
           visible={visible}
           onDismiss={onDismiss}
@@ -512,7 +521,16 @@ const CustomerMeeting = props => {
           label="Select date" // optional
           animationType="slide" // optional, default is 'slide' on ios/android and 'none' on web
           locale={"en"} // optional, default is automically detected by your system
-        />
+        /> */}
+        <DatePicker
+        isVisible={visible}
+        mode={'single'}
+        initialDate={new Date()}
+        minDate={new Date()}
+        onCancel={onDismiss}
+        onConfirm={onChange}
+        dateStringFormat={"dd-mmm-yyyy"}
+      />
         <TimePickerModal
           visible={timeVisible}
           onDismiss={onDismissTimePicker}

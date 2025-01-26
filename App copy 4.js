@@ -1,11 +1,19 @@
+// import { StatusBar } from "expo-status-bar";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import { registerRootComponent } from 'expo';
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState }  from "react";
+import { StyleSheet, Text, View, Button } from "react-native";
 import MainScreen from "./src/navigation/MainScreen";
 import { Provider } from "react-redux";
 import configureStore from "./Store";
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+  SafeAreaView
+} from 'react-native-safe-area-context';
+
+import DatePicker, { RangeOutput, SingleOutput } from 'react-native-neat-date-picker'
 
 
 
@@ -62,15 +70,55 @@ const store = configureStore();
 
 
 const App=()=> {
-  
+  const [showDatePickerSingle, setShowDatePickerSingle] = useState(false)
+  const [showDatePickerRange, setShowDatePickerRange] = useState(false)
+
+  const [date, setDate] = useState('')
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+
+  const openDatePickerSingle = () => setShowDatePickerSingle(true)
+  const openDatePickerRange = () => setShowDatePickerRange(true)
+
+  const onCancelSingle = () => {
+    // You should close the modal here
+    setShowDatePickerSingle(false)
+  }
+
+  const onConfirmSingle = (SingleOutput) => {
+    // You should close the modal here
+    setShowDatePickerSingle(false)
+
+    // The parameter 'output' is an object containing date and dateString (for single mode).
+    // For range mode, the output contains startDate, startDateString, endDate, and endDateString
+    console.log(SingleOutput)
+    setDate(SingleOutput.dateString ?? '')
+  }
+
+  const onCancelRange = () => {
+    setShowDatePickerRange(false)
+  }
 
   
 
   return (
-    <Provider store={store} >
-      <MainScreen />
-    </Provider>
-  );
+    <View style={styles.container}>
+      {/* Single Date */}
+      <Button title={'single'} onPress={openDatePickerSingle} />
+      <DatePicker
+        isVisible={showDatePickerSingle}
+        mode={'single'}
+        initialDate={new Date()}
+        minDate={new Date()}
+        onCancel={onCancelSingle}
+        onConfirm={onConfirmSingle}
+        dateStringFormat={"dd-mmm-yyyy"}
+      />
+      <Text>{date}</Text>
+
+      
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({

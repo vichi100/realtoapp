@@ -47,7 +47,8 @@ const Card = props => {
     item,
     disableDrawer,
     displayCheckBox,
-    displayChat
+    displayChat,
+    deleteMe
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -452,6 +453,7 @@ const Card = props => {
               <TouchableHighlight
                 style={{ ...styles.applyButton }}
                 onPress={() => {
+                  deleteMe(item);
                   setModalVisible(!modalVisible);
                 }}
               >

@@ -31,7 +31,9 @@ const BottomTabScreen = () => {
       lazy={false}
       activeColor="rgb(2,171,61)"
       // inactiveColor="rgb(105,105,105)"
-      barStyle={{ backgroundColor: "#ffffff", paddingBottom: 0, height: 20+insets.bottom}}
+      barStyle={{ backgroundColor: "#ffffff", paddingBottom: 0, height: 50+insets.bottom}}
+      // https://github.com/callstack/react-native-paper/issues/3248
+      theme={{colors: {secondaryContainer: '#ffffff'}}}
       // tabBarStyle={{height: 0}}
       // tabBarOptions={{
       //   style: {

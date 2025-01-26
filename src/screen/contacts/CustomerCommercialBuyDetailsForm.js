@@ -20,6 +20,7 @@ import Snackbar from "../../components/SnackbarComponent";
 import { numDifferentiation } from "../../util/methods";
 import { connect } from "react-redux";
 import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
+import DatePicker, { RangeOutput, SingleOutput } from 'react-native-neat-date-picker';
 
 
 
@@ -44,6 +45,7 @@ const CustomerCommercialBuyDetailsForm = props => {
   const onDismiss = React.useCallback(() => {
     setVisible(false);
     setIsVisible(false);
+    Keyboard.dismiss();
   }, [setVisible]);
 
   const onChange = React.useCallback(({ date }) => {
@@ -51,6 +53,7 @@ const CustomerCommercialBuyDetailsForm = props => {
     setIsVisible(false);
     const x = date.toString().split("00:00");
     setNewDate(x[0].toString().trim());
+    Keyboard.dismiss();
     // setNewDate(date.toString());
     // // console.log({ date });
   }, []);
@@ -165,6 +168,7 @@ const CustomerCommercialBuyDetailsForm = props => {
               label="Required From *"
               placeholder="Required From *"
               value={newDate}
+              showSoftInputOnFocus={false}
               // onChangeText={newDate => setNewDate(newDate)}
               onFocus={() => setVisible(true)}
               theme={{
@@ -197,7 +201,7 @@ const CustomerCommercialBuyDetailsForm = props => {
             <Button title="NEXT" onPress={() => onSubmit()} />
           </View>
         </ScrollView>
-        <DatePickerModal
+        {/* <DatePickerModal
           mode="single"
           visible={visible}
           onDismiss={onDismiss}
@@ -207,8 +211,17 @@ const CustomerCommercialBuyDetailsForm = props => {
           label="Select date" // optional
           animationType="slide" // optional, default is 'slide' on ios/android and 'none' on web
           locale={"en"} // optional, default is automically detected by your system
-        />
+        /> */}
       </KeyboardAwareScrollView>
+      <DatePicker
+        isVisible={visible}
+        mode={'single'}
+        initialDate={new Date()}
+        minDate={new Date()}
+        onCancel={onDismiss}
+        onConfirm={onChange}
+        dateStringFormat={"dd-mmm-yyyy"}
+      />
       <Snackbar
         visible={isVisible}
         textMessage={errorMessage}

@@ -84,6 +84,11 @@ const PropertyListForMeeting = props => {
     }).then(
       response => {
         // // console.log(response.data);
+        response.data.map(item => {
+          item.image_urls.map(image => {
+            image.url = SERVER_URL + image.url
+          })
+        })
         setData(response.data);
         props.setPropertyListingForMeeting(response.data);
       },

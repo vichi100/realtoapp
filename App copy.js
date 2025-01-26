@@ -1,3 +1,4 @@
+// import { StatusBar } from "expo-status-bar";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import { registerRootComponent } from 'expo';
@@ -62,10 +63,6 @@ const store = configureStore();
 
 
 const App=()=> {
-  
-
-  
-
   return (
     <Provider store={store} >
       <MainScreen />

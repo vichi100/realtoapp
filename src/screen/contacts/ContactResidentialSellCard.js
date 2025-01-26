@@ -47,7 +47,8 @@ const ContactResidentialSellCard = props => {
     item,
     disableDrawer,
     displayCheckBox,
-    displayChat
+    displayChat,
+    deleteMe
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -346,7 +347,7 @@ const ContactResidentialSellCard = props => {
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
               >
                 <Ionicons
-                  name="ios-alarm-outline"
+                  name="alarm-outline"
                   color={"#ffffff"}
                   size={30}
                 />
@@ -356,7 +357,7 @@ const ContactResidentialSellCard = props => {
                 style={{ padding: 15, backgroundColor: "#00bfa5" }}
               >
                 <Ionicons name="call" color={"#ffffff"} size={30} />
-                <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text>
+                {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text> */}
               </TouchableOpacity>
             </View>
           </Animated.View>
@@ -470,6 +471,7 @@ const ContactResidentialSellCard = props => {
               <TouchableHighlight
                 style={{ ...styles.applyButton }}
                 onPress={() => {
+                  deleteMe(item);
                   setModalVisible(!modalVisible);
                 }}
               >

@@ -1,16 +1,22 @@
 import * as React from "react";
-import { Text, View, SafeAreaView, TextInput, StyleSheet, StatusBar } from "react-native";
+import { Text, View, TextInput, StyleSheet, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ListingResidential from "../screen/ListingResidential";
 import ListingCommercial from "../screen/ListingCommercial";
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+  SafeAreaView
+} from 'react-native-safe-area-context';
 
 const Tab = createMaterialTopTabNavigator();
 
 const ListingTopTab = () => {
   return (
+   
     <View style={{ flex: 1 }}>
       {/* <View style={styles.searchBarContainer}>
         <TextInput
@@ -106,6 +112,7 @@ const ListingTopTab = () => {
         />
       </Tab.Navigator>
     </View>
+    
   );
 };
 

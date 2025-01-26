@@ -12,7 +12,7 @@ import {
   AsyncStorage
 } from "react-native";
 import { DatePickerModal } from "react-native-paper-dates";
-import { ButtonGroup } from "@rneui/themed";
+import { ButtonGroup } from "react-native-elements";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
 import Button from "../../components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -20,6 +20,7 @@ import Snackbar from "../../components/SnackbarComponent";
 import { numDifferentiation } from "../../util/methods";
 import { connect } from "react-redux";
 import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
+import DatePicker, { RangeOutput, SingleOutput } from 'react-native-neat-date-picker';
 
 
 const preferredTenantsArray = ["Family", "Bachelors", "Any"];
@@ -58,6 +59,7 @@ const CustomerCommercialRentDetailsForm = props => {
   const onDismiss = React.useCallback(() => {
     setVisible(false);
     setIsVisible(false);
+    Keyboard.dismiss();
   }, [setVisible]);
 
   const onChange = React.useCallback(({ date }) => {
@@ -70,6 +72,7 @@ const CustomerCommercialRentDetailsForm = props => {
         .slice(0, 16)
         .trim()
     );
+    Keyboard.dismiss();
     // setNewDate(date.toString());
     // // console.log({ date });
   }, []);
@@ -134,7 +137,7 @@ const CustomerCommercialRentDetailsForm = props => {
     navigation.navigate("AddNewCustomerCommercialRentFinalDetails");
   };
   return (
-    <View
+    <SafeAreaView
       style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
     >
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
@@ -201,6 +204,7 @@ const CustomerCommercialRentDetailsForm = props => {
               label="Required From *"
               placeholder="Required From *"
               value={newDate}
+              showSoftInputOnFocus={false}
               // onChangeText={newDate => setNewDate(newDate)}
               onFocus={() => setVisible(true)}
               theme={{
@@ -252,7 +256,7 @@ const CustomerCommercialRentDetailsForm = props => {
             <Button title="NEXT" onPress={() => onSubmit()} />
           </View>
         </ScrollView>
-        <DatePickerModal
+        {/* <DatePickerModal
           mode="single"
           visible={visible}
           onDismiss={onDismiss}
@@ -262,8 +266,17 @@ const CustomerCommercialRentDetailsForm = props => {
           label="Select date" // optional
           animationType="slide" // optional, default is 'slide' on ios/android and 'none' on web
           locale={"en"} // optional, default is automically detected by your system
-        />
+        /> */}
       </KeyboardAwareScrollView>
+      <DatePicker
+        isVisible={visible}
+        mode={'single'}
+        initialDate={new Date()}
+        minDate={new Date()}
+        onCancel={onDismiss}
+        onConfirm={onChange}
+        dateStringFormat={"dd-mmm-yyyy"}
+      />
       <Snackbar
         visible={isVisible}
         textMessage={errorMessage}
@@ -271,7 +284,7 @@ const CustomerCommercialRentDetailsForm = props => {
         actionHandler={() => dismissSnackBar()}
         actionText="OK"
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

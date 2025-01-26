@@ -32,8 +32,10 @@ export default function MainScreen() {
   // };
 
   return (
-    
-    <SafeAreaView 
+    // <SafeAreaProvider>
+    //   <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+
+        <SafeAreaView 
             style={{ flex: 1, backgroundColor:"#ffffff" }} 
             // edges={["right", "top", "left"]}
             forceInset={{ top: "always", bottom: "never" }}
@@ -96,9 +98,9 @@ export default function MainScreen() {
             />
           </RootStack.Navigator>
         </NavigationContainer>
-      
-    
-    </SafeAreaView>
+      </SafeAreaView>
+    // </SafeAreaProvider>
+    // </Provider>
   );
 }
 

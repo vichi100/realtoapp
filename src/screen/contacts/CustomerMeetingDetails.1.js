@@ -100,7 +100,7 @@ const CustomerMeetingDetails = props => {
                 }}
               >
                 <Text style={{ padding: 10, textAlign: "center" }}>
-                  Related properties for this reminder
+                  Related properties for this meeting
                 </Text>
               </View>
 
@@ -142,7 +142,7 @@ const CustomerMeetingDetails = props => {
                 }}
               >
                 <Text style={{ padding: 10, textAlign: "center" }}>
-                  Related properties for this reminder
+                  Related properties for this meeting
                 </Text>
               </View>
 
@@ -189,7 +189,7 @@ const CustomerMeetingDetails = props => {
                 }}
               >
                 <Text style={{ padding: 10, textAlign: "center" }}>
-                  Related properties for this reminder
+                  Related properties for this meeting
                 </Text>
               </View>
 
@@ -231,7 +231,7 @@ const CustomerMeetingDetails = props => {
                 }}
               >
                 <Text style={{ padding: 10, textAlign: "center" }}>
-                  Related properties for this reminder
+                  Related properties for this meeting
                 </Text>
               </View>
 

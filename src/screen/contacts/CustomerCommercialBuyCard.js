@@ -48,7 +48,8 @@ const CustomerCommercialBuyCard = props => {
     item,
     disableDrawer,
     displayCheckBox,
-    displayChat
+    displayChat,
+    deleteMe
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -348,7 +349,7 @@ const CustomerCommercialBuyCard = props => {
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
               >
                 <Ionicons
-                  name="ios-alarm-outline"
+                  name="alarm-outline"
                   color={"#ffffff"}
                   size={30}
                 />
@@ -358,7 +359,7 @@ const CustomerCommercialBuyCard = props => {
                 style={{ padding: 15, backgroundColor: "#00bfa5" }}
               >
                 <Ionicons name="call" color={"#ffffff"} size={30} />
-                <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text>
+                {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text> */}
               </TouchableOpacity>
             </View>
           </Animated.View>
@@ -467,6 +468,7 @@ const CustomerCommercialBuyCard = props => {
               <TouchableHighlight
                 style={{ ...styles.applyButton }}
                 onPress={() => {
+                  deleteMe(item);
                   setModalVisible(!modalVisible);
                 }}
               >
@@ -675,8 +677,8 @@ const styles = StyleSheet.create({
     // paddingTop: 10,
     // paddingBottom: 10,
     // elevation: 2,
-    marginTop: 20,
-    marginLeft: 10
+    marginLeft: 10,
+    marginRight: 10
   },
 
   cancelButton: {
@@ -689,8 +691,8 @@ const styles = StyleSheet.create({
     // paddingTop: 10,
     // paddingBottom: 10,
     // elevation: 2,
-    marginTop: 20,
-    marginLeft: 10
+    marginLeft: 10,
+    marginRight: 30
   },
   modalText: {
     marginBottom: 15,

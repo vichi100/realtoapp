@@ -48,3 +48,18 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+## ICON URL
+
+https://oblador.github.io/react-native-vector-icons/
+
+# Date picker calender
+https://github.com/roto93/react-native-neat-date-picker/tree/main
+
+# TODO
+1) DB functinality to delete property and customer
+2) meeting categorization past and future on reminder screen and customer details screen
+3) Global search
+4) diffrent collor coding on bottom bar
+

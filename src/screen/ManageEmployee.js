@@ -11,7 +11,6 @@ import {
   Keyboard,
   Switch
 } from "react-native";
-import { DatePickerModal, TimePickerModal } from "react-native-paper-dates";
 import { TextInput, Divider } from "react-native-paper";
 import Button from "../components/Button";
 import { ButtonGroup } from "@rneui/themed";
