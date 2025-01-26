@@ -59,7 +59,7 @@ https://github.com/roto93/react-native-neat-date-picker/tree/main
 
 # TODO
 1) DB functinality to delete property and customer
-2) meeting categorization past and future on reminder screen and customer details screen
+2) meeting categorization past and future on reminder screen and customer details screen - Done
 3) Global search
 4) diffrent collor coding on bottom bar
-
+5) meeting reschedule functionality

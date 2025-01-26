@@ -62,6 +62,7 @@ const CustomerMeeting = props => {
   const [propertyIdX, setPropertyIdX] = useState(item.property_id);
   const [visible, setVisible] = React.useState(false);
   const [loading, setLoading] = useState(false);
+  
 
   const clearState = () => {
     setNewDate("");
@@ -271,6 +272,7 @@ const CustomerMeeting = props => {
             // })
             // const x = [...props.propReminderList, ...response.data];
             // // console.log("X: " + x);
+            
             props.setPropReminderList(response.data);
             setLoading(false);
           } else {
@@ -523,14 +525,14 @@ const CustomerMeeting = props => {
           locale={"en"} // optional, default is automically detected by your system
         /> */}
         <DatePicker
-        isVisible={visible}
-        mode={'single'}
-        initialDate={new Date()}
-        minDate={new Date()}
-        onCancel={onDismiss}
-        onConfirm={onChange}
-        dateStringFormat={"dd-mmm-yyyy"}
-      />
+          isVisible={visible}
+          mode={'single'}
+          initialDate={new Date()}
+          minDate={new Date()}
+          onCancel={onDismiss}
+          onConfirm={onChange}
+          dateStringFormat={"dd-mmm-yyyy"}
+        />
         <TimePickerModal
           visible={timeVisible}
           onDismiss={onDismissTimePicker}

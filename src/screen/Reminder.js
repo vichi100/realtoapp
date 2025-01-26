@@ -22,6 +22,8 @@ import { SERVER_URL } from "../util/constant";
 const Reminder = props => {
   const { navigation } = props;
   const [reminderList, setReminderList] = useState([]);
+  const [futureReminderList, setFutureReminderList] = useState([]);
+  const [pastReminderList, setPastReminderList] = useState([]);
   const [loading, setLoading] = useState(false);
 
 
@@ -43,7 +45,28 @@ const Reminder = props => {
       )
       .then(
         response => {
+          const dataArr = response.data;
+          const future = [];
+          const past = [];
+          for (const value of dataArr) {
+            console.log(value);
+            const todayDate = new Date();
+            const meetingDate = new Date(value.meeting_date.toString());
+            if (todayDate < meetingDate) {
+              // console.log("date1 is earlier than date2");
+              future.push(value);
+            } else if (todayDate > meetingDate) {
+              // console.log("date1 is later than date2");
+              past.push(value);
+            } else {
+              // console.log("Both dates are equal");
+              future.push(value);
+            }
+
+          }
           // console.log("getReminderList:   ", response.data);
+          setFutureReminderList(future);
+          setPastReminderList(past);
           setReminderList(response.data);
           setLoading(false);
           // navigation.navigate("CardDetails");
@@ -268,16 +291,34 @@ const Reminder = props => {
       {/* <ActivityIndicator animating size="large" /> */}
     </View> :
       <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
-        {reminderList.length > 0 ? (<View>
+        {reminderList.length > 0 ? (
+          <View>
+            <Text style={{ textAlign: "center", fontSize:16, fontWeight:500, marginTop:15, marginBottom:10}}>
+              Upcoming Meetings
+            </Text>
           <FlatList
-            data={reminderList}
+            data={futureReminderList}
             //data defined in constructor
             ItemSeparatorComponent={ItemSeparatorView}
             //Item Separator View
             renderItem={ItemView}
             keyExtractor={(item, index) => index.toString()}
           />
-        </View>) : (<View style={styles.container}>
+          <Text style={{ textAlign: "center", fontSize:16, fontWeight:500, marginTop:15, marginBottom:10}}>
+              Past Meetings
+            </Text>
+          <FlatList
+            data={pastReminderList}
+            //data defined in constructor
+            ItemSeparatorComponent={ItemSeparatorView}
+            //Item Separator View
+            renderItem={ItemView}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </View>
+        
+
+      ) : (<View style={styles.container}>
           <View
             style={{
               flex: 1,

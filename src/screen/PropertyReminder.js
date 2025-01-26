@@ -20,8 +20,34 @@ import axios from "axios";
 const PropertyReminder = props => {
   const { navigation } = props;
   const [reminderList, setReminderList] = useState([]);
+  const [futureReminderList, setFutureReminderList] = useState([]);
+  const [pastReminderList, setPastReminderList] = useState([]);
+
+
   useEffect(() => {
     // console.log("props.propReminderList: ", props.propReminderList);
+    const dataArr = props.propReminderList;
+    const future = [];
+    const past = [];
+    for (const value of dataArr) {
+      console.log(value);
+      const todayDate = new Date();
+      const meetingDate = new Date(value.meeting_date.toString());
+      if (todayDate < meetingDate) {
+        // console.log("date1 is earlier than date2");
+        future.push(value);
+      } else if (todayDate > meetingDate) {
+        // console.log("date1 is later than date2");
+        past.push(value);
+      } else {
+        // console.log("Both dates are equal");
+        future.push(value);
+      }
+
+    }
+    // console.log("getReminderList:   ", response.data);
+    setFutureReminderList(future);
+    setPastReminderList(past);
     setReminderList(props.propReminderList);
   }, [props.propReminderList]);
 
@@ -249,8 +275,22 @@ const PropertyReminder = props => {
   return (
     <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <ScrollView>
+        <Text style={{ textAlign: "center", fontSize: 16, fontWeight: 500, marginTop: 0, marginBottom: 10 }}>
+          Upcoming Meetings
+        </Text>
         <FlatList
-          data={reminderList}
+          data={futureReminderList}
+          //data defined in constructor
+          ItemSeparatorComponent={ItemSeparatorView}
+          //Item Separator View
+          renderItem={ItemView}
+          keyExtractor={(item, index) => index.toString()}
+        />
+        <Text style={{ textAlign: "center", fontSize: 16, fontWeight: 500, marginTop: 15, marginBottom: 10 }}>
+          Past Meetings
+        </Text>
+        <FlatList
+          data={pastReminderList}
           //data defined in constructor
           ItemSeparatorComponent={ItemSeparatorView}
           //Item Separator View
