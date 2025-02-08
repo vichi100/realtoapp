@@ -23,48 +23,31 @@ import { Platform, View, StyleSheet, Text } from "react-native";
 //   font-size: 20px;
 // `;
 
+
 const Slider = props => {
+  // // console.log("multiSliderValue", multiSliderValue);
+  const [multiSliderValue, setMultiSliderValue] = useState([
+    props.min,
+    props.max
+  ]);
 
-  const minValue = props.min; // Minimum value
-  const maxValue = props.max; // Maximum value
-  const [range, setRange] = useState([0, 1]); // Normalized values (0 to 1)
-  const [selectedRange, setSelectedRange] = useState({
-    min: minValue,
-    max: maxValue,
-  });
+  useEffect(() => {
+    // console.log("multiSliderValue", multiSliderValue);
+  }, [multiSliderValue]);
 
-  // Custom scaling logic based on the given rules
-  const getScaledValue = (val) => {
-    
-    const scaledValue = maxValue * Math.pow(minValue / maxValue, 1 - val); // Reverse direction
-    var x = 0;
-    if (scaledValue > 300000) {
-      x =  Math.round(scaledValue / 20000) * 20000; // Round by 20,000
-    } else if (scaledValue > 100000) {
-      x =  Math.round(scaledValue / 10000) * 10000; // Round by 10,000
-    } else {
-      x =  Math.round(scaledValue / 1000) * 1000; // Round by 1,000
-    }
-    return x;
-    
+  const multiSliderValuesChange = values => {
+    // console.log(values);
+    setMultiSliderValue(values);
+    props.onSlide(values);
   };
 
-    // Handle slider value change
-    const handleValuesChange = (values) => {
-      setRange(values); // Store normalized values
-      setSelectedRange({
-        min: getScaledValue(values[0]), // Right knob is the min value
-        max: getScaledValue(values[1]), // Left knob is the max value
-      });
-      const maxMin = [getScaledValue(values[0]), getScaledValue(values[1])]
-      props.onSlide(maxMin);
-    };
+  const expValue =  props.min * Math.pow(props.max / props.min, 0);
 
   return (
     <View style={styles.container}>
       <View style={styles.LabelWrapper}>
-        <Text style={styles.LabelText}>{selectedRange.min.toLocaleString()} </Text>
-        <Text style={styles.LabelText}>{selectedRange.max.toLocaleString()}</Text>
+        <Text style={styles.LabelText}>{multiSliderValue[0]} </Text>
+        <Text style={styles.LabelText}>{multiSliderValue[1]}</Text>
       </View>
       <MultiSlider
         markerStyle={{
@@ -72,7 +55,7 @@ const Slider = props => {
             ios: {
               height: 30,
               width: 30,
-              shadowColor: "#000000",
+              shadowColor: "#009688",
               shadowOffset: {
                 width: 0,
                 height: 3
@@ -102,21 +85,21 @@ const Slider = props => {
           backgroundColor: "#009688"
         }}
         trackStyle={{
-          backgroundColor: "#CECECE"
+          backgroundColor: "#009688"
         }}
         touchDimensions={{
           height: 40,
           width: 40,
           borderRadius: 20,
-          slipDisplacement: 40
+          slipDisplacement: 40,
+          
         }}
-        values={range}
+        values={[multiSliderValue[0], multiSliderValue[1]]}
         sliderLength={280}
-        // onValuesChange={multiSliderValuesChange}
-        onValuesChange={handleValuesChange}
-        min={0}
-        max={1}
-        step={0.01}
+        onValuesChange={multiSliderValuesChange}
+        min={props.min}
+        max={props.max}
+        step={Math.round(expValue / 1000) * 1000}
         allowOverlap={false}
         showSteps={true}
         minMarkerOverlapDistance={1}
@@ -132,7 +115,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginLeft: 50,
-    justifyContent: "space-between"
+    justifyContent: "space-between",
     // alignItems: "center",
     // backgroundColor: "#E0F7FA"
   },
@@ -140,12 +123,14 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     width: 280,
     height: 300,
-    justifyContent: "center"
+    justifyContent: "center",
+    
   },
   LabelWrapper: {
     flexDirection: "row",
     justifyContent: "space-between",
     padding: (20, 0),
-    marginTop: 10
+    marginTop: 10,
+    
   }
 });

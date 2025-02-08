@@ -186,6 +186,10 @@ const ContactLocalityDetailsForm = props => {
           <GooglePlacesAutocomplete
             ref={ref}
             placeholder="Add multiple locations"
+            textInputProps={{
+              placeholderTextColor: 'rgba(90, 90, 90,1)',
+              returnKeyType: "search"
+            }}
             minLength={2}
             setAddressText={address}
             query={{

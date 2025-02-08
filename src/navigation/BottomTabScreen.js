@@ -18,6 +18,8 @@ import ContactsStackScreens from "./ContactsStackScreens";
 import NotificationStackScreens from "./NotificationStackScreens";
 import ProfileStackScreens from "./ProfileStackScreens";
 // import NotificationTopTab from "./NotificationTopTab";
+import GlobalSearchStackNav from "./GlobalSearchStackNav";
+
 
 const BottomTabScreen = () => {
   const Tab = createMaterialBottomTabNavigator();
@@ -29,7 +31,9 @@ const BottomTabScreen = () => {
     <Tab.Navigator
       // initialRouteName="Home"
       lazy={false}
-      activeColor="rgb(2,171,61)"
+      // activeColor="rgba(65, 147, 169, 1)"
+      inactiveColor="#828282"
+      shifting={false} // Enables individual tabBarColor
       // inactiveColor="rgb(105,105,105)"
       barStyle={{ backgroundColor: "#ffffff", paddingBottom: 0, height: 50+insets.bottom}}
       // https://github.com/callstack/react-native-paper/issues/3248
@@ -53,16 +57,16 @@ const BottomTabScreen = () => {
           )
         }}
       /> */}
-      {/* <Tab.Screen
+      <Tab.Screen
         name="GlobalSearchStackNav"
         component={GlobalSearchStackNav}
         options={{
           tabBarLabel: "",
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="web" color={color} size={26} />
+          tabBarIcon: ({ focused }) => (
+            <MaterialCommunityIcons name="web" color={focused ? '#ff5733' : '#828282'} size={26} />
           )
         }}
-      /> */}
+      />
 
 
       <Tab.Screen
@@ -73,10 +77,10 @@ const BottomTabScreen = () => {
         options={{
           tabBarLabel: "",
           tabBarColor: "#ffffff",
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ focused }) => (
             <MaterialCommunityIcons
               name="view-grid-outline"
-              color={color}
+              color={focused ? 'rgba(63, 195, 128, 1)' : '#828282'}
               size={26}
             />
           )
@@ -89,8 +93,8 @@ const BottomTabScreen = () => {
         component={ContactsStackScreens}
         options={{
           tabBarLabel: "",
-          tabBarIcon: ({ color }) => (
-            <AntDesign name="contacts" color={color} size={26} />
+          tabBarIcon: ({ focused }) => (
+            <AntDesign name="contacts" color={focused ? '#33aaff' : '#828282'} size={26} />
           )
         }}
       />
@@ -117,8 +121,8 @@ const BottomTabScreen = () => {
         component={NotificationStackScreens}
         options={{
           tabBarLabel: "",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="notifications-outline" color={color} size={26} />
+          tabBarIcon: ({ focused }) => (
+            <Ionicons name="notifications-outline" color={focused ? '#FFAA1D' : '#828282'} size={26} />
           )
         }}
       />
@@ -128,8 +132,8 @@ const BottomTabScreen = () => {
         component={ProfileStackScreens}
         options={{
           tabBarLabel: "",
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account" color={color} size={26} />
+          tabBarIcon: ({ focused }) => (
+            <MaterialCommunityIcons name="account" color={focused ? 'rgba(148, 124, 176, 1)' : '#828282'} size={26} />
           )
         }}
       />

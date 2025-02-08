@@ -12,9 +12,10 @@ import {
   AsyncStorage,
   ImageBackground
 } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import Entypo from "react-native-vector-icons/Entypo";
 import { setUserMobile, setUserDetails } from "../../reducers/Action";
 import { connect } from "react-redux";
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Login = props => {
   const { navigation } = props;
@@ -69,6 +70,11 @@ const Login = props => {
     <ImageBackground source={require("../../../assets/images/rbg.jpeg")} resizeMode="cover" style={{
       flex: 1,
     }}>
+      <LinearGradient
+        // Background Linear Gradient
+        colors={['rgba(0,0,0,0.8)', 'transparent']}
+        style={styles.background}
+      />
       <View
         style={{
           flex: 1,
@@ -80,26 +86,37 @@ const Login = props => {
           alignItems: "center"
         }}
       >
+
         <Image
           style={{ width: 200, height: 200 }}
           source={require("../../../assets/images/logo.png")}
         />
-        <View style={{ flexDirection: "row", marginTop: 70 }}>
-          <TextInput
-            style={{
-              borderWidth: 1, // size/width of the border
-              borderColor: "lightgrey", // color of the border
-              // backgroundColor: "lightgrey",
-              paddingLeft: 10,
-              width: 60,
-              height: 45,
-              // borderRadius: 5
-              color: "#DCDCDC",
-              fontSize: 18
-            }}
-            // placeholder="+91"
-            value="+91"
-          />
+        <View>
+          <Text style={{
+            // borderWidth: 1, // size/width of the border
+            // borderColor: "lightgrey", // color of the border
+            paddingLeft: 10,
+            width: "80%",
+            height: 45,
+            color: "#ffffff",
+            fontWeight: "500",
+            // borderRadius: 5
+            fontSize: 18
+          }}>Supercharge your property broking</Text>
+        </View>
+
+
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            // marginTop: 20
+            marginBottom: "55%"
+          }}
+        >
+
           <TextInput
             style={{
               borderWidth: 1, // size/width of the border
@@ -121,34 +138,24 @@ const Login = props => {
             placeholderStyle={{ fontSize: 16 }}
           // value={mobileNumber.length === 0 ? "+91-": mobileNumber}
           />
-        </View>
-
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            marginTop: 20
-          }}
-        >
           <TouchableOpacity
             onPress={() => onNext()}
             style={{
               padding: 5,
+              paddingTop: 15, 
               // width: 200,
-              justifyContent: "flex-end",
-              flexDirection: "row",
+              // justifyContent: "flex-end",
+              // flexDirection: "row",
               // backgroundColor: "rgba(60,179,113, .9)",
               left: 0
             }}
           >
             {/* <Text style={{ padding: 5, textAlign: "center" }}>NEXT</Text> */}
-            <Ionicons
-              name="caret-forward-circle"
-              color={"#000000"}
+            <Entypo
+              name="controller-play"
+              color={"#ffffff"}
               size={50}
-              // color={"rgba(60,179,113, .9)"}
+            // color={"rgba(60,179,113, .9)"}
             />
           </TouchableOpacity>
         </View>
@@ -176,6 +183,33 @@ const Login = props => {
 
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'orange',
+  },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: '100%',
+    flex: 1
+  },
+  button: {
+    padding: 15,
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  text: {
+    backgroundColor: 'transparent',
+    fontSize: 15,
+    color: '#fff',
+  },
+});
 
 const mapStateToProps = state => ({
   userMobileNumber: state.AppReducer.userMobileNumber,
