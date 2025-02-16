@@ -494,8 +494,17 @@ const GlobalCommercialCustomersSearchResult = props => {
           onChangeText={text => searchFilterFunction(text)}
           value={search}
           underlineColorAndroid="transparent"
-          placeholder="Search Here"
+          placeholder="GLocal Search..."
+          onFocus={() => navigation.navigate("GlobalSearch")}
+          placeholderTextColor="#000"
         />
+        <View style={{ position: "absolute", right: 5, paddingTop: 10 }}>
+          <MaterialCommunityIcons
+            name="search-web"
+            color={"#ff5733"}
+            size={26}
+          />
+        </View>
       </View>
       {data.length > 0 ? (
         <View style={styles.container}>

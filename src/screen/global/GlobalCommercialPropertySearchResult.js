@@ -24,7 +24,7 @@ import SliderX from "../../components/SliderX";
 import CardRent from "../commercial/rent/Card";
 import CardSell from "../commercial/sell/Card";
 import axios from "axios";
-import {SERVER_URL} from "../../util/constant";
+import { SERVER_URL } from "../../util/constant";
 import { setCommercialPropertyList } from "../../reducers/Action";
 import { addDays, numDifferentiation } from "../../util/methods";
 import Snackbar from "../../components/SnackbarComponent";
@@ -421,7 +421,7 @@ const GlobalCommercialPropertySearchResult = props => {
       agent_id: props.userDetails.works_for[0]
     };
 
-    axios(SERVER_URL+"/commercialPropertyListings", {
+    axios(SERVER_URL + "/commercialPropertyListings", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -449,7 +449,7 @@ const GlobalCommercialPropertySearchResult = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = props.commercialPropertyList.filter(function(item) {
+      const newData = props.commercialPropertyList.filter(function (item) {
         // Applying filter for the inserted text in search bar
         const itemData =
           item.property_address.building_name +
@@ -545,9 +545,17 @@ const GlobalCommercialPropertySearchResult = props => {
           onChangeText={text => searchFilterFunction(text)}
           value={search}
           underlineColorAndroid="transparent"
-          placeholder="My property | Search by property address, owner"
+          placeholder="GLocal Search..."
           onFocus={() => navigation.navigate("GlobalSearch")}
+          placeholderTextColor="#000"
         />
+        <View style={{ position: "absolute", right: 5, paddingTop: 10 }}>
+          <MaterialCommunityIcons
+            name="search-web"
+            color={"#ff5733"}
+            size={26}
+          />
+        </View>
       </View>
       {data.length > 0 ? (
         <View style={styles.container}>
@@ -608,7 +616,7 @@ const GlobalCommercialPropertySearchResult = props => {
         onBackButtonPress={toggleBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
@@ -806,7 +814,7 @@ const GlobalCommercialPropertySearchResult = props => {
         onBackButtonPress={toggleSortingBottomNavigationView}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleSortingBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
+      //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
 
