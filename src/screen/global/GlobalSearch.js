@@ -191,7 +191,7 @@ const GlobalSearch = props => {
       response => {
         console.log("response.data:      ", response.data);
         setData(response.data);
-        props.setResidentialPropertyList(response.data);
+        // props.setResidentialPropertyList(response.data);
         props.setGlobalSearchResult(response.data);
                 if (lookingFor.toLowerCase() === "Property".toLowerCase()) {
                   if (whatType.toLowerCase() === "Residential".toLowerCase()) {
@@ -211,34 +211,6 @@ const GlobalSearch = props => {
         console.log(error);
       }
     );
-
-
-
-    
-    // const customer = JSON.parse(await AsyncStorage.getItem("customer"));
-    // const customer = props.customerDetails
-    // const propertyType = property.property_type;
-    // // console.log(property);
-
-    // const customer_locality = {
-    //   city: city.trim(),
-    //   location_area: selectedLocationArray,
-    //   property_type: selectedPropType.key,
-    //   property_for: propertyForArray[propertyForIndex],
-    //   pin: "123"
-    // };
-
-    // customer["customer_locality"] = customer_locality;
-    // // // console.log(property_address);
-    // const propertyType = selectedPropType.key;
-    // // AsyncStorage.setItem("customer", JSON.stringify(customer));
-    // props.setCustomerDetails(customer);
-    // // console.log(JSON.stringify(customer));
-    // if (propertyType.toLowerCase() === "Residential".toLowerCase()) {
-    //   navigation.navigate("ContactResidentialPropertyDetailsForm");
-    // } else {
-    //   navigation.navigate("CustomerCommercialPropertyDetailsForm");
-    // }
   };
 
   const onSelectPlace = (data, details) => {
