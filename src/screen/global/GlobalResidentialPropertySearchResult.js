@@ -523,13 +523,14 @@ const GlobalResidentialPropertySearchResult = props => {
             onChangeText={text => searchFilterFunction(text)}
             value={search}
             underlineColorAndroid="transparent"
-            placeholder="Global | Search by property location"
+            placeholder="GLocal Search..."
             onFocus={() => navigation.navigate("GlobalSearch")}
+            placeholderTextColor="#000" 
           />
           <View style={{ position: "absolute", right: 5, paddingTop: 10 }}>
             <MaterialCommunityIcons
               name="search-web"
-              color={"#86b9d4"}
+              color={"#ff5733"}
               size={26}
             />
           </View>
@@ -970,13 +971,15 @@ const styles = StyleSheet.create({
   textInputStyle: {
     width: "98%",
     height: 40,
-    // borderWidth: 1,
+    placeholderTextColor: "black",
+    borderWidth: 1,
     paddingLeft: 20,
     margin: 5,
     // marginBottom: 5,
     borderRadius: 10,
-    // borderColor: "#009688",
-    backgroundColor: "#FFFFFF"
+    borderColor: "#009688",
+    backgroundColor: "#FFFFFF",
+    color:"black"
   },
   marginBottom10: {
     marginBottom: 10

@@ -15,8 +15,6 @@ import {
 } from "react-native";
 import { TextInput, HelperText, useTheme } from "react-native-paper";
 import Button from "../../components/Button";
-import RadioButton from "../../components/RadioButtons";
-import { ButtonGroup } from "@rneui/themed";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../../components/SnackbarComponent";
 import CustomButtonGroup from "../../components/CustomButtonGroup";
@@ -24,8 +22,12 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/constant";
 import Slider from "../../components/Slider";
 import { connect } from "react-redux";
-import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
+import { setPropertyType, setPropertyDetails, setCustomerDetails, setResidentialPropertyList,
+  setAnyItemDetails, setGlobalSearchResult } from "../../reducers/Action";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
+import axios from "axios";
+
 // import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/constant";
 
 // import Button from "../../components/Button";
@@ -101,10 +103,11 @@ const GlobalSearch = props => {
   const [errorMessage, setErrorMessage] = useState("");
   const [propertyForIndex, setPropertyForIndex] = useState(-1);
   const [selectedPropType, setSelectedPropType] = useState(null);
+  const [data, setData] = useState([]);
+
+
   const [selectedLocationArray, setSelectedLocationArray] = useState([]);// when add multiple location
   const [selectedIndex, setSelectedIndex] = React.useState([]);
-
-
   const [lookingFor, setLookingFor] = useState("Property");
   const [whatType, setWhatType] = useState("Residential");
   const [purpose, setPurpose] = useState("Rent");
@@ -149,7 +152,7 @@ const GlobalSearch = props => {
     // // console.log(property);
   }, []);
 
-  const onSubmit = async () => {
+  const onSubmit =  () => {
     if (city.trim() === "") {
       setErrorMessage("City is missing");
       setIsVisible(true);
@@ -160,31 +163,82 @@ const GlobalSearch = props => {
       setErrorMessage("Please add a location of your city");
       setIsVisible(true);
       return;
-    } 
+    }
+
+   
+    const queryObject = {
+      city: city.trim(),
+      selectedLocationArray: selectedLocationArray,
+      lookingFor: lookingFor,
+      whatType: whatType,
+      purpose: purpose,
+      selectedBHK: selectedBHK,
+      selectedRequiredFor: selectedRequiredFor,
+      selectedBuildingType: selectedBuildingType,
+      priceRange: priceRange,
+      reqWithin: reqWithin,
+      tenant: tenant
+    };
+    // // console.log(JSON.stringify(user));
+    axios(SERVER_URL + "/getGlobalSearchResult", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: queryObject
+    }).then(
+      response => {
+        console.log("response.data:      ", response.data);
+        setData(response.data);
+        props.setResidentialPropertyList(response.data);
+        props.setGlobalSearchResult(response.data);
+                if (lookingFor.toLowerCase() === "Property".toLowerCase()) {
+                  if (whatType.toLowerCase() === "Residential".toLowerCase()) {
+                    navigation.navigate("GlobalResidentialPropertySearchResult");
+                  } else if (whatType.toLowerCase() === "Commercial".toLowerCase()) {
+                    navigation.navigate("GlobalCommercialPropertySearchResult");
+                  }
+                } else if (lookingFor.toLowerCase() == "Customer".toLowerCase()) {
+                  if (whatType.toLowerCase() === "Residential".toLowerCase()) {
+                    navigation.navigate("GlobalResidentialContactsSearchResult");
+                  } else if (whatType.toLowerCase() === "Commercial".toLowerCase()) {
+                    navigation.navigate("GlobalCommercialCustomersSearchResult");
+                  }
+                }
+      },
+      error => {
+        console.log(error);
+      }
+    );
+
+
+
+    
     // const customer = JSON.parse(await AsyncStorage.getItem("customer"));
-    const customer = props.customerDetails
+    // const customer = props.customerDetails
     // const propertyType = property.property_type;
     // // console.log(property);
 
-    const customer_locality = {
-      city: city.trim(),
-      location_area: selectedLocationArray,
-      property_type: selectedPropType.key,
-      property_for: propertyForArray[propertyForIndex],
-      pin: "123"
-    };
+    // const customer_locality = {
+    //   city: city.trim(),
+    //   location_area: selectedLocationArray,
+    //   property_type: selectedPropType.key,
+    //   property_for: propertyForArray[propertyForIndex],
+    //   pin: "123"
+    // };
 
-    customer["customer_locality"] = customer_locality;
-    // // console.log(property_address);
-    const propertyType = selectedPropType.key;
-    // AsyncStorage.setItem("customer", JSON.stringify(customer));
-    props.setCustomerDetails(customer);
-    // console.log(JSON.stringify(customer));
-    if (propertyType.toLowerCase() === "Residential".toLowerCase()) {
-      navigation.navigate("ContactResidentialPropertyDetailsForm");
-    } else {
-      navigation.navigate("CustomerCommercialPropertyDetailsForm");
-    }
+    // customer["customer_locality"] = customer_locality;
+    // // // console.log(property_address);
+    // const propertyType = selectedPropType.key;
+    // // AsyncStorage.setItem("customer", JSON.stringify(customer));
+    // props.setCustomerDetails(customer);
+    // // console.log(JSON.stringify(customer));
+    // if (propertyType.toLowerCase() === "Residential".toLowerCase()) {
+    //   navigation.navigate("ContactResidentialPropertyDetailsForm");
+    // } else {
+    //   navigation.navigate("CustomerCommercialPropertyDetailsForm");
+    // }
   };
 
   const onSelectPlace = (data, details) => {
@@ -643,6 +697,8 @@ const mapDispatchToProps = {
   setPropertyType,
   setPropertyDetails,
   setCustomerDetails,
+  setResidentialPropertyList,
+  setGlobalSearchResult
 };
 export default connect(
   mapStateToProps,

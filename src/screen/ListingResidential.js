@@ -498,8 +498,8 @@ const ListingResidential = props => {
 
   const ItemView = ({ item }) => {
 
-    if (item.property_type === "Residential") {
-      if (item.property_for === "Rent") {
+    if (item.property_type.toLowerCase()  === "Residential".toLowerCase() ) {
+      if (item.property_for.toLowerCase() === "Rent".toLowerCase()) {
         // rentPropCount.push("1");
         // console.log(rentPropCount.length);
         return (
@@ -507,7 +507,7 @@ const ListingResidential = props => {
           <CardResidentialRent navigation={navigation} item={item} deleteMe={deleteMe}/>
           // </TouchableOpacity>
         );
-      } else if (item.property_for === "Sell") {
+      } else if (item.property_for.toLowerCase() === "Sell".toLowerCase()) {
         // sellPropCount.push("1");
         return (
           // <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>

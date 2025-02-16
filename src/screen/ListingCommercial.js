@@ -487,6 +487,7 @@ const ListingCommercial = props => {
 
   const navigateToDetails = (item, propertyFor) => {
     // props.setAnyItemDetails(item);
+    console.log("props.setPropertyDetails(item: )", item);
     props.setPropertyDetails(item);
     if (propertyFor === "Rent") {
       navigation.navigate("CommercialRentPropDetails", item);
@@ -505,14 +506,14 @@ const ListingCommercial = props => {
   }
 
   const ItemView = ({ item }) => {
-    if (item.property_type === "Commercial") {
-      if (item.property_for === "Rent") {
+    if (item.property_type.toLowerCase() === "Commercial".toLowerCase()) {
+      if (item.property_for.toLowerCase() === "Rent".toLowerCase()) {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
             <CardRent navigation={navigation} item={item} deleteMe={deleteMe}/>
           </TouchableOpacity>
         );
-      } else if (item.property_for === "Sell") {
+      } else if (item.property_for.toLowerCase() === "Sell".toLowerCase()) {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
             <CardSell navigation={navigation} item={item} deleteMe={deleteMe}/>
