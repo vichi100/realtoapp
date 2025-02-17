@@ -285,7 +285,7 @@ export default class Slideshow extends Component {
         <View
           style={[
             layoutArrow(this.props.height, this.props.arrowSize),
-            { left: 10, height: 50 }
+            { left: 10, height: 30, width: 30, borderRadius:30/2, backgroundColor:"rgba(0,0,0,.15)" }
           ]}
         >
           <TouchableOpacity onPress={() => this._prev()}>
@@ -305,7 +305,7 @@ export default class Slideshow extends Component {
         <View
           style={[
             layoutArrow(this.props.height, this.props.arrowSize),
-            { right: 10, height: 50 }
+            { right: 10, height: 30, width: 30, borderRadius:30/2, backgroundColor:"rgba(0,0,0,.15)" , }
           ]}
         >
           <TouchableOpacity onPress={() => this._next()}>
@@ -321,6 +321,10 @@ export default class Slideshow extends Component {
           </TouchableOpacity>
         </View>
         {/* END SECTION ARROW RIGHT */}
+
+        <View>
+          <Text></Text>
+        </View>
       </View>
     );
   }

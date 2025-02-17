@@ -276,18 +276,37 @@ const Card = props => {
               {
                 // backgroundColor: "rgba(245,245,245, 0.8)",
                 flexDirection: "row",
-                justifyContent: "space-between"
+                // justifyContent: "space-between"
               }
             ]}
           >
-            <View style={styles.headerContainer}>
-              <Text style={[styles.title,]}>
+            <View style={{ backgroundColor: 'rgba(80, 200, 120,.7)', alignItems: 'center', justifyContent: 'center' , width:30, minHeight:70}}>
+              <Text style={{ transform: [{ rotate: '-90deg' }] , width: 60, padding:0, fontSize:14, fontWeight: 300}}>Matched</Text>
+            </View>
+             
+            <View style={{
+              flex: 1,
+              // flexDirection: "column",
+              // alignItems: "flex-start",
+              paddingRight: 16,
+              paddingLeft: 16,
+              paddingBottom: 16,
+              paddingTop: 16,
+              // width: "100%",
+              backgroundColor: "#ffffff"
+            }}>
+               
+              <View style={{  flexDirection: 'row' }}>
+                <View style={{ alignItems: "flex-start", justifyContent: 'center' }}><Text style={[styles.title,]}>
                 Rent In {item.property_address.building_name},{" "}
                 {item.property_address.landmark_or_street}
               </Text>
               <Text style={[StyleSheet.subTitle,]}>
                 {item.property_address.formatted_address}
-              </Text>
+              </Text></View>
+              </View>
+
+              
             </View>
 
             {displayCheckBox ? (
@@ -381,7 +400,7 @@ const Card = props => {
                     color={"#ffffff"}
                     size={30}
                   />
-                   {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Meeting</Text> */}
+                  {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Meeting</Text> */}
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => makeCall(item.owner_details.mobile1)}

@@ -18,14 +18,8 @@ const ListingTopTab = () => {
   return (
    
     <View style={{ flex: 1 }}>
-      {/* <View style={styles.searchBarContainer}>
-        <TextInput
-          style={styles.textInputStyle}
-          onChangeText={text => searchFilterFunction(text)}
-          value={"search"}
-          underlineColorAndroid="transparent"
-          placeholder="Search Here"
-        />
+      {/* <View style={styles.container}>
+        <Text style={{textAlign:"center", fontSize:16, fontWeight:500}}>My Listings</Text>
       </View> */}
       <Tab.Navigator
         activeColor="rgb(135,206,235)"
@@ -118,8 +112,9 @@ const ListingTopTab = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    margin: 5
+    // flex: 1,
+    margin: 5,
+    backgroundColor: 'transparent',
     // alignContent: "center"
   },
   fab: {

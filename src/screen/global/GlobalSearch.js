@@ -165,6 +165,13 @@ const GlobalSearch = props => {
       return;
     }
 
+    
+    const match = reqWithin.match(/\d+/); // Find the number in the string
+    const daysFromReqWithin = match ? parseInt(match[0], 10) : null; // Convert to integer and return
+    console.log("daysFromReqWithin: ", daysFromReqWithin);
+    const today = new Date(); // Get today's date
+    // const newReqWithinDate = new Date(today.getDate() +daysFromReqWithin);
+    today.setDate(today.getDate() + daysFromReqWithin);
    
     const queryObject = {
       city: city.trim(),
@@ -176,7 +183,7 @@ const GlobalSearch = props => {
       selectedRequiredFor: selectedRequiredFor,
       selectedBuildingType: selectedBuildingType,
       priceRange: priceRange,
-      reqWithin: reqWithin,
+      reqWithin: today,
       tenant: tenant
     };
     // // console.log(JSON.stringify(user));

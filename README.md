@@ -102,3 +102,15 @@ realtodb>
 5) meeting reschedule functionality
 6) Modify code to store the location where customer wants property. for both type of customer Residential and Commercial
 7) create a form so that agent will sent link on whats up to fill that with details
+8) create a button on global search right top to check recenly matched property or cutomer  this will have below sections
+   1) matched witin hour
+   2) today
+   3) older
+9) liked property
+10) display how many percent property or customer match to eachother
+11) create location model for residential and commercial property too like customer to provide sugestion at time when some one posting .. that how many possible match this post have
+
+
+
+
+
