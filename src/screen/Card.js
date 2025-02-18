@@ -757,7 +757,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     // top: Platform.OS == "ios" ? 20 : 0,
     right: 0,
-    bottom: 0,
+    // bottom: 0,
+    alignContent: "center",
     width: Sliding_Drawer_Width,
     flexDirection: "row"
   }
