@@ -280,39 +280,30 @@ const Card = props => {
               }
             ]}
           >
-            
-             
+
+
             <View style={{
               flex: 1,
               flexDirection: "row",
-              // alignItems: "flex-start",
-              // paddingRight: 16,
-              // paddingLeft: 16,
-              // paddingBottom: 16,
-              // paddingTop: 16,
-              // width: "100%",
               backgroundColor: "#ffffff"
             }}>
-              <View style={{ backgroundColor: 'rgba(80, 200, 120,.7)', alignItems: 'center', justifyContent: 'center' , width:30, minHeight:70}}>
-              <Text style={{ transform: [{ rotate: '270deg' }] , width: 60, padding:0, fontSize:14, fontWeight: 300}}>Matched</Text>
-            </View>
-               
-              <View style={{  flexDirection: 'row', 
-                paddingRight: 16,
-              paddingLeft: 10,
-              paddingBottom: 16,
-              paddingTop: 16,
-               }}>
-                <View style={{ alignItems: "flex-start", justifyContent: 'center' }}><Text style={[styles.title,]}>
-                Rent In {item.property_address.building_name},{" "}
-                {item.property_address.landmark_or_street}
-              </Text>
-              <Text style={[StyleSheet.subTitle,]}>
-                {item.property_address.formatted_address}
-              </Text></View>
+              <View style={{
+                position: 'absolute', left: 0, top: 0, transform: [{ rotate: '270deg' }],
+                backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
+                width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
+              }}>
+                <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Matched</Text>
               </View>
-
-              
+              <View style={{ flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: 50, paddingRight: 20, 
+                paddingBottom: 20, paddingTop: 5, minHeight: 80 }}>
+                <Text style={[styles.title]}>
+                  Rent In {item.property_address.building_name},{" "}
+                  {item.property_address.landmark_or_street}
+                </Text>
+                <Text style={{ paddingRight: 10 }}>
+                  {item.property_address.formatted_address}
+                </Text>
+              </View>
             </View>
 
             {displayCheckBox ? (
@@ -633,16 +624,17 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
-    paddingRight: 16,
-    paddingLeft: 16,
-    paddingBottom: 16,
-    paddingTop: 16,
+    // paddingRight: 16,
+    // paddingLeft: 16,
+    // paddingBottom: 16,
+    // paddingTop: 16,
     // width: "100%",
     backgroundColor: "#ffffff"
   },
   title: {
     fontSize: 16,
-    fontWeight: "600"
+    fontWeight: "600",
+    paddingRight:15
   },
   subTitle: {
     fontSize: 14,
