@@ -47,7 +47,7 @@ const AccordionListItem = ({ title, children }) => {
         <View style={styles.titleContainer}>
           <Text>{title}</Text>
           <Animated.View style={{ transform: [{ rotateZ: arrowAngle }] }}>
-            <MaterialIcons name="keyboard-arrow-down" size={20} color="black" />
+            <MaterialIcons name="keyboard-arrow-down" size={30} color="black" />
           </Animated.View>
         </View>
       </TouchableWithoutFeedback>
@@ -79,8 +79,9 @@ const styles = StyleSheet.create({
     padding: "1rem",
     paddingLeft: "1.5rem",
     borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: "#EFEFEF"
+    borderBottomWidth: 5,
+    borderColor: "#EFEFEF",
+    padding: 10,
   },
   bodyContainer: {
     padding: "1rem",

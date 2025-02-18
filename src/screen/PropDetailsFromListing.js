@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -6,22 +6,26 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView
+  SafeAreaView,
+  Animated
 } from "react-native";
 import Slideshow from "../components/Slideshow";
 import { numDifferentiation } from "../util/methods";
 import Feather from "react-native-vector-icons/Feather";
 import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import AccordionListItem from '../components/AccordionListItem';
 
 const PropDetailsFromListing = props => {
-  // const { navigation } = props;
-  // const item = route.params;
   const item = props.propertyDetails;
-  // console.log("item:  ", item);
+  const scrollViewRef = useRef();
+
+  const scrollToAccordion = () => {
+    scrollViewRef.current.scrollTo({ y: 0, animated: true });
+  };
+
   return (
-   
-    <ScrollView style={[styles.container]}>
+    <ScrollView style={[styles.container]} ref={scrollViewRef}>
       <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
           Rent {item.property_address.flat_number},{" "} {item.property_address.building_name},{" "}
@@ -31,12 +35,6 @@ const PropDetailsFromListing = props => {
           {item.property_address.formatted_address}
         </Text>
       </View>
-      {/* <Image
-        source={require("../../assets/images/p1.jpg")}
-        resizeMode={"stretch"}
-        resizeMethod={"resize"}
-        style={{ width: "100%", height: 200 }}
-      /> */}
       <Slideshow
         dataSource={item.image_urls}
       />
@@ -46,7 +44,6 @@ const PropDetailsFromListing = props => {
             <Text style={[styles.subDetailsValue, { paddingTop: 5 }]}>
               {item.property_details.bhk_type}
             </Text>
-            {/* <Text style={[styles.subDetailsTitle]}>BHK</Text> */}
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
@@ -80,7 +77,6 @@ const PropDetailsFromListing = props => {
       </View>
 
       <View style={styles.margin1}></View>
-      {/* property details */}
       <View style={styles.overviewContainer}>
         <View style={styles.overview}>
           <View
@@ -93,7 +89,6 @@ const PropDetailsFromListing = props => {
             >
               <Feather
                 name="edit"
-                // color={"#ffffff"}
                 size={20}
               />
             </TouchableOpacity>
@@ -157,20 +152,14 @@ const PropDetailsFromListing = props => {
           </View>
         </View>
       </View>
-      {/* owner details */}
       <View style={styles.margin1}></View>
-      <View style={styles.overviewContainer}>
-        <View style={styles.overview}>
-          <Text>Owner</Text>
-          <View style={styles.horizontalLine}></View>
-          <View style={styles.ownerDetails}>
-            <Text>{item.owner_details.name}</Text>
-            <Text>{item.owner_details.address}</Text>
-            <Text>+91 {item.owner_details.mobile1}</Text>
-          </View>
+      <AccordionListItem title="Owner" onPress={scrollToAccordion}>
+        <View style={styles.ownerDetails}>
+          <Text>{item.owner_details.name}</Text>
+          <Text>{item.owner_details.address}</Text>
+          <Text>+91 {item.owner_details.mobile1}</Text>
         </View>
-      </View>
-
+      </AccordionListItem>
 
       <View style={[styles.media]}>
 
@@ -195,16 +184,16 @@ const PropDetailsFromListing = props => {
           style={{ padding: 15, backgroundColor: "#00bfa5" }}
         >
           <Ionicons name="call" color={"#ffffff"} size={30} />
-          {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text> */}
         </TouchableOpacity>
       </View>
     </ScrollView>
-    
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    backgroundColor: "white"
+  },
   media: {
     padding: 2,
     flexDirection: "row",
@@ -244,7 +233,6 @@ const styles = StyleSheet.create({
     color: "rgba(255 ,255 ,255 , 0.87)"
   },
   detailsContainer: {
-    // borderBottomWidth: 1,
     height: 60,
     borderTopWidth: 1,
     borderTopColor: "#C0C0C0",
@@ -312,11 +300,13 @@ const styles = StyleSheet.create({
   },
   margin1: {
     marginTop: 2
-    // paddingTop: 5
   },
   ownerDetails: {
+    flex: 1,
     paddingTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    marginLeft: 20,
+    width: "100%",
   }
 });
 
