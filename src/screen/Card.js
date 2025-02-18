@@ -280,23 +280,29 @@ const Card = props => {
               }
             ]}
           >
-            <View style={{ backgroundColor: 'rgba(80, 200, 120,.7)', alignItems: 'center', justifyContent: 'center' , width:30, minHeight:70}}>
-              <Text style={{ transform: [{ rotate: '-90deg' }] , width: 60, padding:0, fontSize:14, fontWeight: 300}}>Matched</Text>
-            </View>
+            
              
             <View style={{
               flex: 1,
-              // flexDirection: "column",
+              flexDirection: "row",
               // alignItems: "flex-start",
-              paddingRight: 16,
-              paddingLeft: 16,
-              paddingBottom: 16,
-              paddingTop: 16,
+              // paddingRight: 16,
+              // paddingLeft: 16,
+              // paddingBottom: 16,
+              // paddingTop: 16,
               // width: "100%",
               backgroundColor: "#ffffff"
             }}>
+              <View style={{ backgroundColor: 'rgba(80, 200, 120,.7)', alignItems: 'center', justifyContent: 'center' , width:30, minHeight:70}}>
+              <Text style={{ transform: [{ rotate: '270deg' }] , width: 60, padding:0, fontSize:14, fontWeight: 300}}>Matched</Text>
+            </View>
                
-              <View style={{  flexDirection: 'row' }}>
+              <View style={{  flexDirection: 'row', 
+                paddingRight: 16,
+              paddingLeft: 10,
+              paddingBottom: 16,
+              paddingTop: 16,
+               }}>
                 <View style={{ alignItems: "flex-start", justifyContent: 'center' }}><Text style={[styles.title,]}>
                 Rent In {item.property_address.building_name},{" "}
                 {item.property_address.landmark_or_street}

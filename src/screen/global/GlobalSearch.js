@@ -291,6 +291,8 @@ const GlobalSearch = props => {
         />
         <Text style={{ padding: 10, textAlign:'center', fontSize:16, fontWeight:500  }}>GLocal Search</Text>
         {/* <MaterialCommunityIcons name="facebook-messenger" color={"rgba(255, 76, 48, 1)"} size={35} /> */}
+        <MaterialCommunityIcons name="heart-outline" color={"rgb(137, 135, 135)"} size={32} />
+        <MaterialCommunityIcons name="dots-circle" color={"rgb(108, 110, 110)"} size={30} />
         {/* <Text>Realto</Text> */}
       </View>
       

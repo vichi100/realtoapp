@@ -554,7 +554,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "flex-start",
     paddingRight: 16,
-    paddingLeft: 16,
+    paddingLeft: 10,
     paddingBottom: 16,
     paddingTop: 16,
     // width: "100%",
