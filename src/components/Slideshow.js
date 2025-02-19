@@ -213,6 +213,13 @@ export default class Slideshow extends Component {
             );
             const imageComponent = (
               <View key={index}>
+                <View style={{position:"absolute", top:5, right:15, zIndex:1000, justifyContent:"center", alignItems:"center", shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.8, shadowRadius: 2 }}>
+                  <TouchableHighlight onPress={() => {
+                    console.log("Image liked")
+                  }}>
+                <MaterialCommunityIcons name="heart-outline" color={"rgb(245, 239, 239)"} size={30} />
+                </TouchableHighlight>
+                </View>
                 <Image
                   source={imageObject}
                   style={{ height, width }}
@@ -224,6 +231,7 @@ export default class Slideshow extends Component {
             const imageComponentWithOverlay = (
               <View key={index} style={styles.containerImage}>
                 <View style={styles.overlay}>
+                  
                   <Image
                     source={imageObject}
                     style={{ height, width }}

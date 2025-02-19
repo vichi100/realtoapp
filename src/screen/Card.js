@@ -302,7 +302,7 @@ const Card = props => {
               </View>
               <View style={{ flex: 1, alignItems:'center', justifyContent: 'center',}}>
                 <View style={{
-                  flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: 50, paddingRight: 20,
+                  flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: 40, paddingRight: 20,
                   paddingBottom: 20, paddingTop: 5, minHeight: 90
                 }}>
                   <Text style={[styles.title]}>

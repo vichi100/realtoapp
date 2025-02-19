@@ -109,6 +109,8 @@ realtodb>
 9) liked property
 10) display how many percent property or customer match to eachother
 11) create location model for residential and commercial property too like customer to provide sugestion at time when some one posting .. that how many possible match this post have
+12) add a flag when any add/update/edit opration happen so that if you go to that data page you can refetch the data
+   example: you create a meeting then make set newMeetingadded flag to true so if you go on reminder page, you will refech the meeting data
 
 
 
