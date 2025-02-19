@@ -26,6 +26,7 @@ import Slideshow from "../components/Slideshow";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { numDifferentiation } from "../util/methods";
 import { SERVER_URL, WEB_APP_URL } from "../util/constant";
+import { MaterialIcons } from "@expo/vector-icons";
 import {
   setUserMobile,
   setUserDetails,
@@ -290,7 +291,7 @@ const Card = props => {
               marginBottom: 5,
             }}>
               <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
-                <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft:20 }}>999</Text>
+                <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>999</Text>
               </View>
               <View style={{
                 position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
@@ -299,16 +300,26 @@ const Card = props => {
               }}>
                 <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Matched</Text>
               </View>
-              <View style={{ flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: 50, paddingRight: 20, 
-                paddingBottom: 20, paddingTop: 5, minHeight: 90 }}>
-                <Text style={[styles.title]}>
-                  Rent In {item.property_address.building_name},{" "}
-                  {item.property_address.landmark_or_street}
-                </Text>
-                <Text style={{ paddingRight: 10 }}>
-                  {item.property_address.formatted_address}
-                </Text>
+              <View style={{ flex: 1, alignItems:'center', justifyContent: 'center',}}>
+                <View style={{
+                  flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: 50, paddingRight: 20,
+                  paddingBottom: 20, paddingTop: 5, minHeight: 90
+                }}>
+                  <Text style={[styles.title]}>
+                    Rent In {item.property_address.building_name},{" "}
+                    {item.property_address.landmark_or_street}
+                  </Text>
+                  <Text style={{ paddingRight: 10 }}>
+                    {item.property_address.formatted_address}
+                  </Text>
+                </View>
+                <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center', marginBottom: 10, marginTop: -15}}>
+                <MaterialIcons name="alarm" size={20} color="black" />
+                <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>10:30</Text>
+                </View>
+                
               </View>
+              
             </View>
 
             {displayCheckBox ? (
