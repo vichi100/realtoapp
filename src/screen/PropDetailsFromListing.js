@@ -24,6 +24,10 @@ const PropDetailsFromListing = props => {
     scrollViewRef.current.scrollTo({ y: 0, animated: true });
   };
 
+  const getMatched = () => {
+    props.navigation.navigate('ResidentialMatchedCustomerList');
+  }
+
   return (
     <ScrollView style={[styles.container]} ref={scrollViewRef}>
       <View style={[styles.headerContainer]}>
@@ -77,8 +81,9 @@ const PropDetailsFromListing = props => {
       </View>
 
       <View style={styles.margin1}></View>
+      <AccordionListItem title="Details" onPress={scrollToAccordion}>
       <View style={styles.overviewContainer}>
-        <View style={styles.overview}>
+        {/* <View style={styles.overview}>
           <View
             style={{ justifyContent: "space-between", flexDirection: "row" }}
           >
@@ -94,7 +99,7 @@ const PropDetailsFromListing = props => {
             </TouchableOpacity>
           </View>
           <View style={styles.horizontalLine}></View>
-        </View>
+        </View> */}
         <View style={styles.overviewColumnWrapper}>
           <View style={styles.overviewLeftColumn}>
             <View style={[styles.subDetails]}>
@@ -152,6 +157,7 @@ const PropDetailsFromListing = props => {
           </View>
         </View>
       </View>
+      </AccordionListItem>
       <View style={styles.margin1}></View>
       <AccordionListItem title="Owner" onPress={scrollToAccordion}>
         <View style={styles.ownerDetails}>
@@ -160,8 +166,33 @@ const PropDetailsFromListing = props => {
           <Text>+91 {item.owner_details.mobile1}</Text>
         </View>
       </AccordionListItem>
-
+      <View style={{flexDirection:'row', justifyContent:'space-between', padding: 10}}>
+      <Text style={{ color: "#000" }}>Mettings Details</Text>
+      <Text style={{ color: "#000" }}>10:30</Text>
+      </View>
       <View style={[styles.media]}>
+
+        <TouchableOpacity
+          onPress={() => getMatched()}
+          style={{ padding: 15, backgroundColor: 'rgba(80, 200, 120, 0.7)' }}
+        >
+          <Text style={{ color: "#000" }}>Matched Customers</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => onClickMeeting(item)}
+          style={{ padding: 15, backgroundColor: "#ffd600", marginLeft: 5 }}
+        >
+          <Text style={{ color: "#000" }}>Mettings</Text>
+        </TouchableOpacity>
+        {/* <TouchableOpacity
+          onPress={() => makeCall(item.owner_details.mobile1)}
+          style={{ padding: 15, backgroundColor: "#00bfa5" }}
+        >
+          <Ionicons name="call" color={"#ffffff"} size={30} />
+        </TouchableOpacity> */}
+      </View>
+
+      {/* <View style={[styles.media]}>
 
         <TouchableOpacity
           onPress={() => onShare()}
@@ -185,7 +216,7 @@ const PropDetailsFromListing = props => {
         >
           <Ionicons name="call" color={"#ffffff"} size={30} />
         </TouchableOpacity>
-      </View>
+      </View> */}
     </ScrollView>
   );
 };
@@ -269,6 +300,8 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   overviewContainer: {
+    flex: 1,
+    width: "100%",
     shadowOpacity: 0.0015 * 5 + 0.18,
     shadowRadius: 0.54 * 5,
     shadowOffset: {

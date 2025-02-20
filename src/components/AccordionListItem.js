@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     padding: "1rem",
     paddingLeft: "1.5rem",
     position: "absolute",
-    bottom: 0
+    bottom: 0,
+    width: "100%",
   }
 });

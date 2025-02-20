@@ -16,11 +16,22 @@ import AddNewPropStackScreens from "./AddNewPropStackScreens";
 import CustomerMeetingDetails from "../screen/contacts/CustomerMeetingDetails";
 import CustomerListForMeeting from "../screen/CustomerListForMeeting";
 import AddNewContactsStackScreens from "./AddNewCustomerStackScreens"
+import ContactsResidential from "../screen/contacts/ContactsResidential"
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const Stack = createStackNavigator();
 export const hideTabBarComponents = ["ProductDetails"];
 
-const ListingStackScreens = () => {
+const ListingStackScreens = ({ navigation, route }) => {
+  React.useLayoutEffect(() => {
+    const routeName = getFocusedRouteNameFromRoute(route);
+    if (routeName === 'ResidentialMatchedCustomerList') {
+      navigation.getParent()?.setOptions({ tabBarStyle: { display: 'none' } });
+    } else {
+      navigation.getParent()?.setOptions({ tabBarStyle: { display: 'flex' } });
+    }
+  }, [navigation, route]);
+
   const insets = useSafeAreaInsets();
   return (
     
@@ -62,6 +73,19 @@ const ListingStackScreens = () => {
           options={{
             title: "Property details"
           }}
+        />
+
+        <Stack.Screen
+          name="ResidentialMatchedCustomerList"
+          component={ContactsResidential}
+          options={{
+            title: "Matched Customers",
+            tabBarStyle: {
+              display: "none",
+            },
+            tabBarButton: () => null,
+          }}
+          
         />
 
         <Stack.Screen
