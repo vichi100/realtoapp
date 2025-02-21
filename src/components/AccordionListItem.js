@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,9 +9,9 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const AccordionListItem = ({ title, children }) => {
-  const [open, setOpen] = useState(false);
-  const animatedController = useRef(new Animated.Value(0)).current;
+const AccordionListItem = ({ title, children, open = false }) => {
+  const [isOpen, setIsOpen] = useState(open);
+  const animatedController = useRef(new Animated.Value(open ? 1 : 0)).current;
   const [bodySectionHeight, setBodySectionHeight] = useState();
 
   const bodyHeight = animatedController.interpolate({
@@ -25,21 +25,34 @@ const AccordionListItem = ({ title, children }) => {
   });
 
   const toggleListItem = () => {
-    if (open) {
+    if (isOpen) {
       Animated.timing(animatedController, {
         duration: 300,
         toValue: 0,
-        easing: Easing.bezier(0.4, 0.0, 0.2, 1)
+        easing: Easing.bezier(0.4, 0.0, 0.2, 1),
+        useNativeDriver: false
       }).start();
     } else {
       Animated.timing(animatedController, {
         duration: 300,
         toValue: 1,
-        easing: Easing.bezier(0.4, 0.0, 0.2, 1)
+        easing: Easing.bezier(0.4, 0.0, 0.2, 1),
+        useNativeDriver: false
       }).start();
     }
-    setOpen(!open);
+    setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    if (open) {
+      Animated.timing(animatedController, {
+        duration: 300,
+        toValue: 1,
+        easing: Easing.bezier(0.4, 0.0, 0.2, 1),
+        useNativeDriver: false
+      }).start();
+    }
+  }, [open]);
 
   return (
     <>

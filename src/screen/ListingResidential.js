@@ -522,7 +522,7 @@ const ListingResidential = props => {
     return (
       //Item Separator
       <View
-        style={{ height: 0.5, width: "100%", backgroundColor: "#C8C8C8" }}
+        style={{ height: 50, width: "100%", backgroundColor: "#C8C8C8" }}
       />
     );
   };
@@ -596,7 +596,7 @@ const ListingResidential = props => {
             <FlatList
               data={data}
               //data defined in constructor
-              // ItemSeparatorComponent={ItemSeparatorView}
+              ItemSeparatorComponent={ItemSeparatorView}
               //Item Separator View
               renderItem={ItemView}
               keyExtractor={(item, index) => index.toString()}
