@@ -522,7 +522,7 @@ const ListingResidential = props => {
     return (
       //Item Separator
       <View
-        style={{ height: 50, width: "100%", backgroundColor: "#C8C8C8" }}
+        style={{ height: 5, width: "100%", backgroundColor: "#C8C8C8" }}
       />
     );
   };

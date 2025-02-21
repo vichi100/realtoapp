@@ -430,7 +430,7 @@ const Card = props => {
         <View
           style={[
             styles.detailsContainer,
-            { backgroundColor: "rgba(192,192,192, 0.1)" }
+            { backgroundColor: "rgba(192,192,192, 0.0)" }
           ]}
         >
           <View style={[styles.details]}>
@@ -625,14 +625,20 @@ const styles = StyleSheet.create({
     shadowOffset: {
       height: 0.6 * 5
     },
-    backgroundColor: "white"
+    backgroundColor: "white",
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
   cardImage: {
     // alignSelf: "stretch",
     marginBottom: 16,
     flex: 1,
     width: "100%",
-    height: "auto"
+    height: "auto",
+    topborderleftRadius: 15,
+    topborderRightRadius: 15,
     // justifyContent: "center",
     // alignItems: "stretch"
   },
