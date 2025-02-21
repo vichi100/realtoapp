@@ -7,7 +7,10 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
-  Animated
+  Animated,
+  Dimensions,
+  useWindowDimensions,
+  FlatList
 } from "react-native";
 import Slideshow from "../components/Slideshow";
 import { numDifferentiation } from "../util/methods";
@@ -15,11 +18,20 @@ import Feather from "react-native-vector-icons/Feather";
 import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AccordionListItem from '../components/AccordionListItem';
-import { MaterialIcons } from "@expo/vector-icons";
+import { TabView, SceneMap } from 'react-native-tab-view';
 
 const PropDetailsFromListing = props => {
   const item = props.propertyDetails;
   const scrollViewRef = useRef();
+  const tabViewRef = useRef();
+
+  const layout = useWindowDimensions();
+
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: 'first', title: 'First' },
+    { key: 'second', title: 'Second' },
+  ]);
 
   const scrollToAccordion = () => {
     scrollViewRef.current.scrollTo({ y: 0, animated: true });
@@ -29,56 +41,40 @@ const PropDetailsFromListing = props => {
     props.navigation.navigate('ResidentialMatchedCustomerList');
   }
 
+  const FirstRoute = () => (
+    <FlatList
+      data={Array.from({ length: 100 }, (_, i) => ({ key: `Item ${i + 1}` }))}
+      renderItem={({ item }) => <Text style={{ color: '#000', padding: 10 }}>{item.key}</Text>}
+      keyExtractor={item => item.key}
+      onScrollEndDrag={({ nativeEvent }) => {
+        if (nativeEvent.contentOffset.y <= 0) {
+          scrollViewRef.current?.scrollTo({ y: '50%', animated: true });
+        }
+      }}
+    />
+  );
+  
+  const SecondRoute = () => (
+    <View style={{ flex: 1, backgroundColor: '#673ab7', padding: 20 }} >
+      <Text style={{color:'#000'}}>Second</Text>
+    </View>
+  );
+  
+  const renderScene = SceneMap({
+    first: FirstRoute,
+    second: SecondRoute,
+  });
+
   return (
     <ScrollView style={[styles.container]} ref={scrollViewRef}>
-      <View style={{ flexDirection: 'row', flex: 1, }}>
-        <View style={{ flex: 1, minHeight: 100 }}>
-          <View style={{
-            flex: 1,
-            flexDirection: "column",
-            alignItems: "flex-start",
-            paddingRight: 16,
-            paddingLeft: 16,
-            // paddingBottom: 25,
-            paddingTop: 16,
-            // backgroundColor: "#d1d1d1",
-          }}>
-            <Text style={[styles.title]}>
-              Rent {item.property_address.flat_number},{" "} {item.property_address.building_name},{" "}
-              {item.property_address.landmark_or_street}
-            </Text>
-            <Text style={[StyleSheet.subTitle]}>
-              {item.property_address.formatted_address}
-            </Text>
-          </View>
-          <View style={{  flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: 10 }}>
-            <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Next Meeting </Text>
-            <MaterialIcons name="alarm" size={20} color="black" />
-            <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}> 10:30</Text>
-          </View>
-
-        </View>
-
-        <TouchableOpacity
-          onPress={() => getMatched()}
-          style={{ flexDirection: 'row', marginTop:8}}
-        >
-          <View style={{
-            backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', right: 0, top: 0, alignItems: 'center', justifyContent: 'center',
-            width: 38, height: 20, marginRight: 0
-          }}>
-            <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 0 }}>20</Text>
-          </View>
-          <View style={{
-            position: 'absolute', right: 0, top: 20, transform: [{ rotate: '270deg' }],
-            backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
-            width: 70, height: 35, padding: 0, marginRight: -15, marginTop: 20, marginBottom: 15,
-          }}>
-            <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Matched</Text>
-          </View>
-
-
-        </TouchableOpacity>
+      <View style={[styles.headerContainer]}>
+        <Text style={[styles.title]}>
+          Rent {item.property_address.flat_number},{" "} {item.property_address.building_name},{" "}
+          {item.property_address.landmark_or_street}
+        </Text>
+        <Text style={[StyleSheet.subTitle]}>
+          {item.property_address.formatted_address}
+        </Text>
       </View>
       <Slideshow
         dataSource={item.image_urls}
@@ -123,24 +119,7 @@ const PropDetailsFromListing = props => {
 
       <View style={styles.margin1}></View>
       <AccordionListItem title="Details" onPress={scrollToAccordion}>
-        <View style={styles.overviewContainer}>
-          {/* <View style={styles.overview}>
-          <View
-            style={{ justifyContent: "space-between", flexDirection: "row" }}
-          >
-            <Text>Details</Text>
-            <TouchableOpacity
-              onPress={() => toggleBottomNavigationView()}
-              style={styles.fabIcon2}
-            >
-              <Feather
-                name="edit"
-                size={20}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.horizontalLine}></View>
-        </View> */}
+        <View style={[styles.overviewContainer, { width: '100%' }]}>
           <View style={styles.overviewColumnWrapper}>
             <View style={styles.overviewLeftColumn}>
               <View style={[styles.subDetails]}>
@@ -207,60 +186,18 @@ const PropDetailsFromListing = props => {
           <Text>+91 {item.owner_details.mobile1}</Text>
         </View>
       </AccordionListItem>
-      <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 10 }}>
+      <View style={{flexDirection:'row', justifyContent:'space-between', padding: 10}}>
         <Text style={{ color: "#000" }}>Mettings Details</Text>
+        <Text style={{ color: "#000" }}>10:30</Text>
       </View>
-      {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
-        <Text style={{ color: "#000" }}>Matched Customer</Text>
-        <Text style={{ color: "#000" }}>20</Text>
-      </View> */}
-      {/* <View style={[styles.media]}>
-
-        <TouchableOpacity
-          onPress={() => getMatched()}
-          style={{ padding: 15, backgroundColor: 'rgba(80, 200, 120, 0.7)' }}
-        >
-          <Text style={{ color: "#000" }}>Matched Customers</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => onClickMeeting(item)}
-          style={{ padding: 15, backgroundColor: "#ffd600", marginLeft: 5 }}
-        >
-          <Text style={{ color: "#000" }}>Mettings</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => makeCall(item.owner_details.mobile1)}
-          style={{ padding: 15, backgroundColor: "#00bfa5" }}
-        >
-          <Ionicons name="call" color={"#ffffff"} size={30} />
-        </TouchableOpacity>
-      </View> */}
-
-      {/* <View style={[styles.media]}>
-
-        <TouchableOpacity
-          onPress={() => onShare()}
-          style={{ padding: 15, backgroundColor: "#0091ea" }}
-        >
-          <Ionicons name="share-social" color={"#ffffff"} size={30} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => onClickMeeting(item)}
-          style={{ padding: 15, backgroundColor: "#ffd600" }}
-        >
-          <Ionicons
-            name="alarm-outline"
-            color={"#ffffff"}
-            size={35}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => makeCall(item.owner_details.mobile1)}
-          style={{ padding: 15, backgroundColor: "#00bfa5" }}
-        >
-          <Ionicons name="call" color={"#ffffff"} size={30} />
-        </TouchableOpacity>
-      </View> */}
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
+        style={{ height: 900 }} // Ensure the TabView has a fixed height
+        ref={tabViewRef}
+      />
     </ScrollView>
   );
 };
@@ -290,15 +227,13 @@ const styles = StyleSheet.create({
     alignItems: "stretch"
   },
   headerContainer: {
-    flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
     paddingRight: 16,
     paddingLeft: 16,
-    paddingBottom: 25,
+    paddingBottom: 16,
     paddingTop: 16,
-    backgroundColor: "#d1d1d1",
-
+    backgroundColor: "#d1d1d1"
   },
   title: {
     fontSize: 16,
@@ -315,7 +250,6 @@ const styles = StyleSheet.create({
     borderTopColor: "#C0C0C0",
     backgroundColor: "rgba(220,220,220, 0.80)"
   },
-
   details: {
     padding: 10,
     flexDirection: "row",
@@ -337,7 +271,6 @@ const styles = StyleSheet.create({
     width: 1,
     backgroundColor: "#909090"
   },
-
   horizontalLine: {
     borderBottomColor: "#E0E0E0",
     borderBottomWidth: 1,
@@ -363,7 +296,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 15
   },
-
   overviewColumnWrapper: {
     flexDirection: "row",
     justifyContent: "space-between",
