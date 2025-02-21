@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AccordionListItem from '../components/AccordionListItem';
 import { MaterialIcons } from "@expo/vector-icons";
+import Reminder from "./Reminder";
 
 const PropDetailsFromListing = props => {
   const item = props.propertyDetails;
@@ -122,7 +123,7 @@ const PropDetailsFromListing = props => {
       </View>
 
       <View style={styles.margin1}></View>
-      <AccordionListItem title="Details" onPress={scrollToAccordion}>
+      <AccordionListItem title="Details" onPress={scrollToAccordion} open = {true}> 
         <View style={styles.overviewContainer}>
           {/* <View style={styles.overview}>
           <View
@@ -200,16 +201,17 @@ const PropDetailsFromListing = props => {
         </View>
       </AccordionListItem>
       <View style={styles.margin1}></View>
-      <AccordionListItem title="Owner" onPress={scrollToAccordion}>
+      <AccordionListItem title="Owner" open = {false} onPress={scrollToAccordion}>
         <View style={styles.ownerDetails}>
           <Text>{item.owner_details.name}</Text>
           <Text>{item.owner_details.address}</Text>
           <Text>+91 {item.owner_details.mobile1}</Text>
         </View>
       </AccordionListItem>
-      <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 10 }}>
+      {/* <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 10 }}>
         <Text style={{ color: "#000" }}>Mettings Details</Text>
-      </View>
+      </View> */}
+      <Reminder />
       {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
         <Text style={{ color: "#000" }}>Matched Customer</Text>
         <Text style={{ color: "#000" }}>20</Text>
