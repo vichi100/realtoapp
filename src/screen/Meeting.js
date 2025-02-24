@@ -256,7 +256,10 @@ const Meeting = props => {
           // navigation.navigate("CardDetails");
           if (response.data !== "fail") {
             const x = [reminderDetails, ...props.propReminderList];
+            reminderListX.push(reminderDetails);
+            const m = [...reminderListX];
             props.setPropReminderList(x);
+            setReminderListX(m);
           }
           clearState();
         },
@@ -289,10 +292,11 @@ const Meeting = props => {
           if (response.data && response.data.length > 0) {
             // const x = [...props.propReminderList, ...response.data];
             // // console.log("X: " + x);
-            // props.setPropReminderList(response.data);
+            props.setPropReminderList(response.data);
             setReminderListX(response.data);
             setLoading(false);
           } else {
+            props.setPropReminderList(response.data);
             setReminderListX([]);
             setLoading(false);
           }

@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 import { SERVER_URL } from "../util/constant";
+import { useIsFocused } from '@react-navigation/native';
 
 const Reminder = props => {
   const { navigation } = props;
@@ -26,11 +27,16 @@ const Reminder = props => {
   const [pastReminderList, setPastReminderList] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const isFocused = useIsFocused();
+
 
   useEffect(() => {
-    if (reminderList.length > 0) {
-      return;
+    if (!isFocused) {
+      return
     }
+    // if (reminderList.length > 0) {
+    //   return;
+    // }
     setLoading(true);
     const agentId = {
       agent_id: props.userDetails.works_for[0]
@@ -77,7 +83,7 @@ const Reminder = props => {
 
         }
       );
-  }, []);
+  }, [isFocused]);
 
   const makeCall = mobile => {
     const url = "tel://" + mobile;
