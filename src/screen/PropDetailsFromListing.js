@@ -1,4 +1,4 @@
-import React, { Component, useRef } from "react";
+import React, { Component, useRef , useState, useEffect} from "react";
 import {
   StyleSheet,
   View,
@@ -7,7 +7,8 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
-  Animated
+  Animated,
+  ActivityIndicator
 } from "react-native";
 import Slideshow from "../components/Slideshow";
 import { numDifferentiation } from "../util/methods";
@@ -16,11 +17,15 @@ import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AccordionListItem from '../components/AccordionListItem';
 import { MaterialIcons } from "@expo/vector-icons";
-import Reminder from "./Reminder";
+import PropertyReminder from './PropertyReminder';
+import { SERVER_URL } from "../util/constant";
+import axios from "axios";
 
 const PropDetailsFromListing = props => {
   const item = props.propertyDetails;
   const scrollViewRef = useRef();
+  const [reminderListX, setReminderListX] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const scrollToAccordion = () => {
     scrollViewRef.current.scrollTo({ y: 0, animated: true });
@@ -29,6 +34,50 @@ const PropDetailsFromListing = props => {
   const getMatched = () => {
     props.navigation.navigate('ResidentialMatchedCustomerList');
   }
+
+  const getPropReminders = () => {
+    // console.log("item getPropReminders: " + propertyIdX);
+    const propertyId = {
+      property_id: item.property_id
+    };
+    setLoading(true);
+
+    axios
+      .post(
+        SERVER_URL + "/getPropReminderList",
+        // SERVER_URL + "/addNewResidentialRentProperty",
+        // await AsyncStorage.getItem("property")
+        // JSON.stringify({ vichi: "vchi" })
+        propertyId
+      )
+      .then(
+        response => {
+          // console.log("response.data.length: " + response.data.length);
+          // navigation.navigate("CardDetails");
+          if (response.data && response.data.length > 0) {
+            // const x = [...props.propReminderList, ...response.data];
+            // // console.log("X: " + x);
+            // props.setPropReminderList(response.data);
+            setReminderListX(response.data);
+            setLoading(false);
+          } else {
+            setReminderListX([]);
+            setLoading(false);
+          }
+        },
+        error => {
+          setLoading(false);
+          console.log(error);
+        }
+      );
+  };
+  useEffect(() => {
+      // console.log("useEffect called: " + props.propReminderList.length);
+      // if (props.propReminderList.length === 0) {
+      // console.log("getPropReminders called");
+      getPropReminders();
+      // }
+    }, []);
 
   return (
     <ScrollView style={[styles.container]} ref={scrollViewRef}>
@@ -211,7 +260,17 @@ const PropDetailsFromListing = props => {
       {/* <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 10 }}>
         <Text style={{ color: "#000" }}>Mettings Details</Text>
       </View> */}
-      <Reminder />
+      {loading ? <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'rgba(245,245,245, .4)'
+                  }}
+                >
+                  <ActivityIndicator animating size="large" color={'#000'} />
+                  {/* <ActivityIndicator animating size="large" /> */}
+                </View> : <PropertyReminder reminderListX={reminderListX}/>}
       {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
         <Text style={{ color: "#000" }}>Matched Customer</Text>
         <Text style={{ color: "#000" }}>20</Text>

@@ -46,7 +46,7 @@ const ContactResidentialRentCard = props => {
     item,
     disableDrawer,
     displayCheckBox,
-    displayChat,
+    displayChat, 
     deleteMe
   } = props;
   // console.log("ContactResidentialRentCard :    ", item);
@@ -229,40 +229,25 @@ const ContactResidentialRentCard = props => {
             // { backgroundColor: "rgba(245,245,245, 0.8)" }
           ]}
         >
-
-          <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
-            <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>999</Text>
-          </View>
-          <View style={{
-            position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
-            backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
-            width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
-          }}>
-            <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Matched</Text>
-          </View>
-
-          <View style={{ marginLeft: 30, }}>
-            <Avatar
-              square
-              size={60}
-              title={
-                item.customer_details.name &&
-                item.customer_details.name.slice(0, 1)
-              }
-              activeOpacity={0.7}
-              titleStyle={{ color: "rgba(105,105,105, .9)" }}
-              // source={{
-              //   uri: props.item.photo
-              // }}
-              avatarStyle={{
-                borderWidth: 1,
-                borderColor: "rgba(127,255,212, .9)",
-                // borderTopLeftRadius: 1,
-                borderStyle: "solid",
-
-              }}
-            />
-          </View>
+          <Avatar
+            square
+            size={60}
+            title={
+              item.customer_details.name &&
+              item.customer_details.name.slice(0, 1)
+            }
+            activeOpacity={0.7}
+            titleStyle={{ color: "rgba(105,105,105, .9)" }}
+            // source={{
+            //   uri: props.item.photo
+            // }}
+            avatarStyle={{
+              borderWidth: 1,
+              borderColor: "rgba(127,255,212, .9)",
+              // borderTopLeftRadius: 1,
+              borderStyle: "solid"
+            }}
+          />
           <View
             style={{
               flexDirection: "row",
@@ -390,7 +375,7 @@ const ContactResidentialRentCard = props => {
       <View
         style={{
           flexDirection: "row",
-          marginLeft: 30, backgroundColor: "rgba(220,220,220, .2)"
+          marginLeft: 0, backgroundColor: "rgba(220,220,220, .2)"
         }}>
         <Ionicons
           name="location-sharp"

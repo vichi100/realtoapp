@@ -18,7 +18,11 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 
 const PropertyReminder = props => {
-  const { navigation } = props;
+  const {
+    navigation,
+    reminderListX,
+    
+  } = props;
   const [reminderList, setReminderList] = useState([]);
   const [futureReminderList, setFutureReminderList] = useState([]);
   const [pastReminderList, setPastReminderList] = useState([]);
@@ -26,7 +30,7 @@ const PropertyReminder = props => {
 
   useEffect(() => {
     // console.log("props.propReminderList: ", props.propReminderList);
-    const dataArr = props.propReminderList;
+    const dataArr = reminderListX;
     const future = [];
     const past = [];
     for (const value of dataArr) {
@@ -275,28 +279,32 @@ const PropertyReminder = props => {
   return (
     <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <ScrollView>
-        <Text style={{ textAlign: "center", fontSize: 16, fontWeight: 500, marginTop: 0, marginBottom: 10 }}>
+        <Text style={{ textAlign: "center", fontSize: 16, fontWeight: 500, marginTop: 10, marginBottom: 10 }}>
           Upcoming Meetings
         </Text>
-        <FlatList
+        { futureReminderList.length > 0 ?<FlatList
           data={futureReminderList}
           //data defined in constructor
           ItemSeparatorComponent={ItemSeparatorView}
           //Item Separator View
           renderItem={ItemView}
           keyExtractor={(item, index) => index.toString()}
-        />
+        />:<Text style={{ textAlign: "center", fontSize: 16, fontWeight: 500, marginTop: 0, marginBottom: 10 }}>
+          No Meetings
+        </Text>}
         <Text style={{ textAlign: "center", fontSize: 16, fontWeight: 500, marginTop: 15, marginBottom: 10 }}>
           Past Meetings
         </Text>
-        <FlatList
+        {pastReminderList.length > 0 ? <FlatList
           data={pastReminderList}
           //data defined in constructor
           ItemSeparatorComponent={ItemSeparatorView}
           //Item Separator View
           renderItem={ItemView}
           keyExtractor={(item, index) => index.toString()}
-        />
+        />:<Text style={{ textAlign: "center", fontSize: 14, fontWeight: 500, marginTop: 0, marginBottom: 10 }}>
+        No Meetings
+      </Text>}
       </ScrollView>
     </View>
   );

@@ -62,6 +62,7 @@ const Meeting = props => {
   const [ampmIndex, setAMPMIndex] = useState(-1);
   const [propertyIdX, setPropertyIdX] = useState(item.property_id);
   const [loading, setLoading] = useState(false);
+  const [reminderListX, setReminderListX] = useState([]);
 
 
   const clearState = () => {
@@ -288,10 +289,11 @@ const Meeting = props => {
           if (response.data && response.data.length > 0) {
             // const x = [...props.propReminderList, ...response.data];
             // // console.log("X: " + x);
-            props.setPropReminderList(response.data);
+            // props.setPropReminderList(response.data);
+            setReminderListX(response.data);
             setLoading(false);
           } else {
-            props.setPropReminderList([]);
+            setReminderListX([]);
             setLoading(false);
           }
         },
@@ -407,7 +409,7 @@ const Meeting = props => {
                 showSoftInputOnFocus={false}
                 // onChangeText={newDate => setNewDate(newDate)}
                 onFocus={() => setVisible(true)}
-                style={{ width: "50%" }}
+                // style={{ width: "50%" }}
                 theme={{
                   colors: {
                     // placeholder: "white",
@@ -427,7 +429,7 @@ const Meeting = props => {
                 value={newTime}
                 onChangeText={() => setModalVisibleTemp(false)}
                 onFocus={() => setModalVisibleTemp1(true)}
-                style={{ width: "30%", marginLeft: 10 }}
+                // style={{ width: "30%", marginLeft: 10 }}
                 theme={{
                   colors: {
                     // placeholder: "white",
@@ -461,7 +463,7 @@ const Meeting = props => {
           >
             <ActivityIndicator animating size="large" color={'#000'} />
             {/* <ActivityIndicator animating size="large" /> */}
-          </View> : <PropertyReminder navigation={navigation} />}
+          </View> : <PropertyReminder navigation={navigation} reminderListX={reminderListX}/>}
         </ScrollView>
         
       </KeyboardAwareScrollView>
@@ -519,7 +521,7 @@ const Meeting = props => {
                 // label="Expected Rent*"
                 placeholder="Hour"
                 value={hour}
-                keyboardType={"numeric"}
+                // keyboardType={"numeric"}
                 onChangeText={text => checkHourValidation(text)}
                 onFocus={() => setIsVisible(false)}
                 theme={{
@@ -544,7 +546,7 @@ const Meeting = props => {
                 // label="Expected Rent*"
                 placeholder="Minute"
                 value={minutes}
-                keyboardType={"numeric"}
+                // keyboardType={"numeric"}
                 onChangeText={text => checkMinutesValidation(text)}
                 onFocus={() => setIsVisible(false)}
                 theme={{

@@ -11,6 +11,7 @@ import { Avatar } from "@rneui/themed";
 import { numDifferentiation } from "../../util/methods";
 import Feather from "react-native-vector-icons/Feather";
 import { connect } from "react-redux";
+import Reminder from "../Reminder";
 
 const CustomerDetailsResidentialRentFromList = props => {
   // const { navigation } = props;
@@ -38,13 +39,14 @@ const CustomerDetailsResidentialRentFromList = props => {
       <View
         style={[
           {
+            flex: 1,
             flexDirection: "row",
             alignItems: "flex-start",
-            paddingRight: 16,
+            // paddingRight: 16,
             // paddingLeft: 16,
             // paddingBottom: 16,
             // paddingTop: 16,
-            width: "100%",
+            // width: "100%",
             backgroundColor: "#ffffff"
           }
           // { backgroundColor: "rgba(245,245,245, 0.8)" }
@@ -68,7 +70,7 @@ const CustomerDetailsResidentialRentFromList = props => {
             borderStyle: "solid"
           }}
         />
-        <View style={{ paddingLeft: 20, paddingTop: 10 }}>
+        <View style={{ paddingLeft: 20, paddingTop: 10, flex: 1, minHeight:95 }}>
           <Text style={[styles.title]}>{item.customer_details.name}</Text>
           <Text style={[StyleSheet.subTitle]}>
             {item.customer_details.mobile1}
@@ -77,7 +79,28 @@ const CustomerDetailsResidentialRentFromList = props => {
             {item.customer_details.address}
           </Text>
         </View>
+        <TouchableOpacity
+          onPress={() => getMatched()}
+          style={{ flexDirection: 'row', marginTop: 0 }}
+        >
+          <View style={{
+            backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', right: 0, top: 0, alignItems: 'center', justifyContent: 'center',
+            width: 38, height: 20, marginRight: 0
+          }}>
+            <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 0 }}>20</Text>
+          </View>
+          <View style={{
+            position: 'absolute', right: 0, top: 20, transform: [{ rotate: '270deg' }],
+            backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
+            width: 70, height: 35, padding: 0, marginRight: -15, marginTop: 20, marginBottom: 15,
+          }}>
+            <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Matched</Text>
+          </View>
+
+
+        </TouchableOpacity>
       </View>
+
       {/* <Image
         source={require("../../assets/images/p1.jpg")}
         resizeMode={"stretch"}
@@ -210,6 +233,7 @@ const CustomerDetailsResidentialRentFromList = props => {
       </View>
       {/* owner details */}
       <View style={styles.margin1}></View>
+      <Reminder />
       {/* <View style={styles.overviewContainer}>
         <View style={styles.overview}>
           <Text>Owner</Text>
@@ -226,7 +250,9 @@ const CustomerDetailsResidentialRentFromList = props => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1
+  },
   card: {
     shadowOpacity: 0.0015 * 5 + 0.18,
     shadowRadius: 0.54 * 5,
