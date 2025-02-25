@@ -22,6 +22,7 @@ import { SERVER_URL } from "../util/constant";
 import axios from "axios";
 
 const PropDetailsFromListing = props => {
+  const { navigation } = props;
   const item = props.propertyDetails;
   const scrollViewRef = useRef();
   const [reminderListX, setReminderListX] = useState([]);
@@ -270,7 +271,7 @@ const PropDetailsFromListing = props => {
                 >
                   <ActivityIndicator animating size="large" color={'#000'} />
                   {/* <ActivityIndicator animating size="large" /> */}
-                </View> : <PropertyReminder reminderListX={reminderListX}/>}
+                </View> : <PropertyReminder navigation={navigation} reminderListX={reminderListX}/>}
       {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
         <Text style={{ color: "#000" }}>Matched Customer</Text>
         <Text style={{ color: "#000" }}>20</Text>

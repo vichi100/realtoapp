@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 import Reminder from "../Reminder";
 
 const CustomerDetailsResidentialRentFromList = props => {
-  // const { navigation } = props;
+  const { navigation } = props;
   // const item = route.params;
   const item = props.anyItemDetails;
   // // console.log(item);
@@ -233,7 +233,7 @@ const CustomerDetailsResidentialRentFromList = props => {
       </View>
       {/* owner details */}
       <View style={styles.margin1}></View>
-      <Reminder />
+      <Reminder navigation={navigation} />
       {/* <View style={styles.overviewContainer}>
         <View style={styles.overview}>
           <Text>Owner</Text>
