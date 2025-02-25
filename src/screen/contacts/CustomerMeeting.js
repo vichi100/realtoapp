@@ -62,6 +62,7 @@ const CustomerMeeting = props => {
   const [propertyIdX, setPropertyIdX] = useState(item.property_id);
   const [visible, setVisible] = React.useState(false);
   const [loading, setLoading] = useState(false);
+  const [reminderListX, setReminderListX] = useState([]);
   
 
   const clearState = () => {
@@ -234,7 +235,10 @@ const CustomerMeeting = props => {
           // navigation.navigate("CardDetails");
           if (response.data !== "fail") {
             const x = [reminderDetails, ...props.propReminderList];
+            reminderListX.push(reminderDetails);
+            const m = [...reminderListX];
             props.setPropReminderList(x);
+            setReminderListX(m);
           }
           clearState()
         },
@@ -274,9 +278,11 @@ const CustomerMeeting = props => {
             // // console.log("X: " + x);
             
             props.setPropReminderList(response.data);
+            setReminderListX(response.data);
             setLoading(false);
           } else {
             props.setPropReminderList([]);
+            setReminderListX([]);
             setLoading(false);
           }
         },
@@ -437,7 +443,7 @@ const CustomerMeeting = props => {
                 showSoftInputOnFocus={false}
                 // onChangeText={newDate => setNewDate(newDate)}
                 onFocus={() => setVisible(true)}
-                style={{ width: "50%" }}
+                // style={{ width: "50%" }}
                 theme={{
                   colors: {
                     // placeholder: "white",
@@ -457,7 +463,7 @@ const CustomerMeeting = props => {
                 value={newTime}
                 onChangeText={() => setModalVisibleTemp(false)}
                 onFocus={() => setModalVisibleTemp1(true)}
-                style={{ width: "30%", marginLeft: 10 }}
+                // style={{ width: "30%", marginLeft: 10 }}
                 theme={{
                   colors: {
                     // placeholder: "white",
@@ -511,7 +517,7 @@ const CustomerMeeting = props => {
           >
             <ActivityIndicator animating size="large" color={'#000'} />
             {/* <ActivityIndicator animating size="large" /> */}
-          </View> : <PropertyReminder navigation={navigation} item={item} />}
+          </View> : <PropertyReminder navigation={navigation} reminderListX={reminderListX} />}
         </ScrollView>
         {/* <DatePickerModal
           mode="single"
@@ -578,7 +584,7 @@ const CustomerMeeting = props => {
                 // label="Expected Rent*"
                 placeholder="Hour"
                 value={hour}
-                keyboardType={"numeric"}
+                // keyboardType={"numeric"}
                 onChangeText={text => checkHourValidation(text)}
                 onFocus={() => setIsVisible(false)}
                 theme={{
@@ -603,7 +609,7 @@ const CustomerMeeting = props => {
                 // label="Expected Rent*"
                 placeholder="Minute"
                 value={minutes}
-                keyboardType={"numeric"}
+                // keyboardType={"numeric"}
                 onChangeText={text => checkMinutesValidation(text)}
                 onFocus={() => setIsVisible(false)}
                 theme={{

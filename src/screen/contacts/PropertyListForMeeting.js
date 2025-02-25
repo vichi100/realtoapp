@@ -59,7 +59,7 @@ const PropertyListForMeeting = props => {
 
 
   useEffect(() => {
-    if (props.commercialPropertyList.length > 0 || residentialPropertyList.length > 0) {
+    if (props.commercialPropertyList.length > 0 || props.residentialPropertyList.length > 0) {
       getListing()
     }
   }, [props.commercialPropertyList, props.residentialPropertyList])
