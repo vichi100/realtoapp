@@ -18,6 +18,7 @@ import CustomerListForMeeting from "../screen/CustomerListForMeeting";
 import AddNewContactsStackScreens from "./AddNewCustomerStackScreens"
 import ContactsResidential from "../screen/contacts/ContactsResidential"
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import CustomerMeeting from "../screen/contacts/CustomerMeeting";
 
 const Stack = createStackNavigator();
 export const hideTabBarComponents = ["ProductDetails"];
@@ -156,6 +157,12 @@ const ListingStackScreens = ({ navigation, route }) => {
           component={CustomerListForMeeting}
           options={{ title: "Client List" }}
         />
+        <Stack.Screen
+                name="CustomerMeeting"
+                component={CustomerMeeting}
+                options={{ title: "Reminders", tabBarVisible: false }}
+                navigationOptions={{ tabBarVisible: false }}
+              />
       </Stack.Navigator>
   );
 };

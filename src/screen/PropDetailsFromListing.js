@@ -33,7 +33,7 @@ const PropDetailsFromListing = props => {
   };
 
   const getMatched = () => {
-    props.navigation.navigate('ResidentialMatchedCustomerList');
+    navigation.navigate('ResidentialMatchedCustomerList');
   }
 
   const getPropReminders = () => {

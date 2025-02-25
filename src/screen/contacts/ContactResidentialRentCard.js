@@ -162,7 +162,8 @@ const ContactResidentialRentCard = props => {
 
   // // console.log(width);
 
-  const makeCall = mobile => {
+  const makeCall = item => {
+    const mobile = item.customer_details.mobile1;
     const url = "tel://" + mobile;
     Linking.openURL(url);
   };
@@ -376,7 +377,7 @@ const ContactResidentialRentCard = props => {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => makeCall(item.owner_details.mobile1)}
+                onPress={() => makeCall(item)}
                 style={{ padding: 15, backgroundColor: "#00bfa5" }}
               >
                 <Ionicons name="call" color={"#ffffff"} size={30} />
