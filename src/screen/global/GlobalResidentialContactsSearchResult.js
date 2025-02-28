@@ -327,16 +327,7 @@ const GlobalResidentialContactsSearchResult = props => {
     setData(props.globalSearchResult);
   }, [props.globalSearchResult]);
 
-  // const getAgentDetails = async () => {
-  //   // AsyncStorage.setItem("agent_details", JSON.stringify(agentDetails));
-  //   const agentDetailsStr = await AsyncStorage.getItem("user_details");
-  //   // console.log(agentDetailsStr);
-  //   if (agentDetailsStr !== null) {
-  //     return JSON.parse(agentDetailsStr);
-  //   } else {
-  //     return null;
-  //   }
-  // };
+
 
   const getListing = () => {
     // const agentDetailsX = getAgentDetails();
