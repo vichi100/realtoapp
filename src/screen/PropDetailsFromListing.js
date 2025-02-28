@@ -32,8 +32,8 @@ const PropDetailsFromListing = props => {
     scrollViewRef.current.scrollTo({ y: 0, animated: true });
   };
 
-  const getMatched = () => {
-    navigation.navigate('ResidentialMatchedCustomerList');
+  const getMatched = (matchedProprtyItem) => {
+    navigation.navigate('MatchedCustomers', {matchedProprtyItem: matchedProprtyItem},);
   }
 
   const getPropReminders = () => {
@@ -111,14 +111,14 @@ const PropDetailsFromListing = props => {
         </View>
 
         <TouchableOpacity
-          onPress={() => getMatched()}
+          onPress={() => getMatched(item)}
           style={{ flexDirection: 'row', marginTop:8}}
         >
           <View style={{
             backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', right: 0, top: 0, alignItems: 'center', justifyContent: 'center',
             width: 38, height: 20, marginRight: 0
           }}>
-            <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 0 }}>20</Text>
+            <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 0 }}>{item.match_count}</Text>
           </View>
           <View style={{
             position: 'absolute', right: 0, top: 20, transform: [{ rotate: '270deg' }],

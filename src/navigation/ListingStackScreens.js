@@ -19,6 +19,7 @@ import AddNewContactsStackScreens from "./AddNewCustomerStackScreens"
 import ContactsResidential from "../screen/contacts/ContactsResidential"
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import CustomerMeeting from "../screen/contacts/CustomerMeeting";
+import MatchedCustomers from "../screen/contacts/MatchedCustomers";
 
 const Stack = createStackNavigator();
 export const hideTabBarComponents = ["ProductDetails"];
@@ -77,8 +78,8 @@ const ListingStackScreens = ({ navigation, route }) => {
         />
 
         <Stack.Screen
-          name="ResidentialMatchedCustomerList"
-          component={ContactsResidential}
+          name="MatchedCustomers"
+          component={MatchedCustomers}
           options={{
             title: "Matched Customers",
             tabBarStyle: {
