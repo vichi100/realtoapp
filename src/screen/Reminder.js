@@ -299,32 +299,40 @@ const Reminder = props => {
       <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
         {reminderList.length > 0 ? (
           <View>
-            <Text style={{ textAlign: "center", fontSize:16, fontWeight:500, marginTop:15, marginBottom:10}}>
+            <Text style={{ textAlign: "center", fontSize: 16, fontWeight: 500, marginTop: 15, marginBottom: 10 }}>
               Upcoming Meetings
             </Text>
-          <FlatList
-            data={futureReminderList}
-            //data defined in constructor
-            ItemSeparatorComponent={ItemSeparatorView}
-            //Item Separator View
-            renderItem={ItemView}
-            keyExtractor={(item, index) => index.toString()}
-          />
-          <Text style={{ textAlign: "center", fontSize:16, fontWeight:500, marginTop:15, marginBottom:10}}>
+            {futureReminderList.length > 0 ? <FlatList
+              data={futureReminderList}
+              //data defined in constructor
+              ItemSeparatorComponent={ItemSeparatorView}
+              //Item Separator View
+              renderItem={ItemView}
+              keyExtractor={(item, index) => index.toString()}
+            /> : <View style={{ alignContent: 'center', justifyContent: 'center', backgroundColor: "rgba(239, 239, 240, .9)" }}>
+              <Text style={{ textAlign: "center", fontSize: 15, fontWeight: 300, marginTop: 0, marginBottom: 20, marginTop: 20 }}>
+                No Meetings
+              </Text>
+            </View>}
+            <Text style={{ textAlign: "center", fontSize: 16, fontWeight: 500, marginTop: 15, marginBottom: 10 }}>
               Past Meetings
             </Text>
-          <FlatList
-            data={pastReminderList}
-            //data defined in constructor
-            ItemSeparatorComponent={ItemSeparatorView}
-            //Item Separator View
-            renderItem={ItemView}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>
-        
+            {pastReminderList.length > 0 ? <FlatList
+              data={pastReminderList}
+              //data defined in constructor
+              ItemSeparatorComponent={ItemSeparatorView}
+              //Item Separator View
+              renderItem={ItemView}
+              keyExtractor={(item, index) => index.toString()}
+            /> : <View style={{ alignContent: 'center', justifyContent: 'center', backgroundColor: "rgba(239, 239, 240, .9)" }}>
+              <Text style={{ textAlign: "center", fontSize: 15, fontWeight: 300, marginTop: 0, marginBottom: 20, marginTop: 20 }}>
+                No Meetings
+              </Text>
+            </View>}
+          </View>
 
-      ) : (<View style={styles.container}>
+
+        ) : (<View style={styles.container}>
           <View
             style={{
               flex: 1,

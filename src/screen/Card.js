@@ -264,6 +264,10 @@ const Card = props => {
 
   };
 
+  const getMatched = (matchedProprtyItem) => {
+    navigation.navigate('MatchedCustomers', {matchedProprtyItem: matchedProprtyItem},);
+  }
+
   return (
     <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
       <View style={styles.card}>
@@ -287,20 +291,22 @@ const Card = props => {
               flex: 1,
               flexDirection: "row",
               backgroundColor: "#ffffff",
-              marginTop:-5,
+              marginTop: -5,
               marginBottom: 5,
             }}>
-              <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
-                <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count}</Text>
-              </View>
-              <View style={{
-                position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
-                backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
-                width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
-              }}>
-                <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Matched</Text>
-              </View>
-              <View style={{ flex: 1, alignItems:'center', justifyContent: 'center',}}>
+              <TouchableOpacity onPress={() => getMatched(item)}>
+                <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
+                  <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count}</Text>
+                </View>
+                <View style={{
+                  position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
+                  backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
+                  width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
+                }}>
+                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Matched</Text>
+                </View>
+              </TouchableOpacity>
+              <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
                 <View style={{
                   flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: 40, paddingRight: 20,
                   paddingBottom: 20, paddingTop: 5, minHeight: 90
@@ -313,13 +319,13 @@ const Card = props => {
                     {item.property_address.formatted_address}
                   </Text>
                 </View>
-                <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center', marginBottom: 10, marginTop: -15}}>
-                <MaterialIcons name="alarm" size={20} color="black" />
-                <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>10:30</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: -15 }}>
+                  <MaterialIcons name="alarm" size={20} color="black" />
+                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>10:30</Text>
                 </View>
-                
+
               </View>
-              
+
             </View>
 
             {displayCheckBox ? (
@@ -656,7 +662,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "600",
-    paddingRight:15
+    paddingRight: 15
   },
   subTitle: {
     fontSize: 14,

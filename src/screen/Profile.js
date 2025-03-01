@@ -8,7 +8,8 @@ import {
   Share,
   Linking,
   AsyncStorage,
-  StatusBar
+  StatusBar,
+  ScrollView
 } from "react-native";
 import {
   // Avatar,
@@ -31,6 +32,7 @@ import {
 } from "../reducers/Action";
 import axios from "axios";
 import { SERVER_URL } from "../util/constant";
+import Home from "../screen/Home"
 
 // import Share from "react-native-share";
 
@@ -129,7 +131,7 @@ const Profile = props => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.userInfoSection}>
         <View style={{ flexDirection: "row", marginTop: 15 }}>
           {/* <Avatar.Image
@@ -284,6 +286,7 @@ const Profile = props => {
           </View>
         </TouchableRipple>
       </View>
+      <Home/>
       <Modal
         animationType="slide"
         transparent={true}
@@ -336,7 +339,7 @@ const Profile = props => {
           </View>
         </View>
       </Modal>
-    </View>
+    </ScrollView>
   );
 };
 

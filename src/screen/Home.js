@@ -134,7 +134,7 @@ const Home = props => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#ffffff", marginTop: StatusBar.currentHeight }}>
-      <ScrollView>
+      {/* <ScrollView> */}
         <View style={styles.container}>
           <View
             style={[
@@ -260,7 +260,7 @@ const Home = props => {
             </View>
           </View>
         </Modal>
-      </ScrollView>
+      {/* </ScrollView> */}
     </View>
   );
 };

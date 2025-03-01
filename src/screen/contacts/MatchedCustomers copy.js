@@ -74,7 +74,6 @@ const ContactsResidential = props => {
   const [lookingForIndexSortBy, setLookingForIndexSortBy] = useState(-1);
 
   const [loading, setLoading] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(0);
 
   const resetSortBy = () => {
     setLookingForIndexSortBy(-1);
@@ -531,38 +530,32 @@ const ContactsResidential = props => {
         </View> */}
         {1 > 0 ? (
           <View style={styles.container}>
-            <View style={styles.tabContainer}>
-              <TouchableOpacity
-                style={[styles.tab, selectedTab === 0 && styles.activeTab]}
-                onPress={() => setSelectedTab(0)}
-              >
-                <Text style={styles.tabText}>My Customer</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.tab, selectedTab === 1 && styles.activeTab]}
-                onPress={() => setSelectedTab(1)}
-              >
-                <Text style={styles.tabText}>Other's Customer</Text>
-              </TouchableOpacity>
-            </View>
-            {selectedTab === 0 && (
-              matchedCustomerDetailsMine.length > 0 ? <FlatList
-                data={matchedCustomerDetailsMine}
-                renderItem={ItemView}
-                keyExtractor={(item, index) => index.toString()}
-              /> : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{ fontSize: 14 }}>No Matched Customer Found</Text>
+            {matchedCustomerDetailsMine.length > 0 && (
+              <View style={{ margin: 10 }}>
+                <Text style={{ fontSize: 14 }}>Matching from My Customers</Text>
               </View>
             )}
-            {selectedTab === 1 && (
-              matchedCustomerDetailsOther.length > 0 ? <FlatList
-                data={matchedCustomerDetailsOther}
-                renderItem={ItemView}
-                keyExtractor={(item, index) => index.toString()}
-              />: <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ fontSize: 14 }}>No Matched Customer Found</Text>
-            </View>
+            <FlatList
+              data={matchedCustomerDetailsMine}
+              //data defined in constructor
+              // ItemSeparatorComponent={ItemSeparatorView}
+              //Item Separator View
+              renderItem={ItemView}
+              keyExtractor={(item, index) => index.toString()}
+            />
+            {matchedCustomerDetailsOther.length > 0 && (
+              <View style={{ margin: 10 }}>
+                <Text style={{ fontSize: 14 }}>Matching from Other Agents Customer</Text>
+              </View>
             )}
+            <FlatList
+              data={matchedCustomerDetailsOther}
+              //data defined in constructor
+              // ItemSeparatorComponent={ItemSeparatorView}
+              //Item Separator View
+              renderItem={ItemView}
+              keyExtractor={(item, index) => index.toString()}
+            />
             <View style={styles.fab}>
               <TouchableOpacity
                 onPress={() => toggleSortingBottomNavigationView()}
@@ -870,7 +863,7 @@ const ContactsResidential = props => {
             />
           </View>
         </BottomSheet>
-
+        
       </View>
   );
 };
@@ -973,30 +966,9 @@ const styles = StyleSheet.create({
   },
   marginBottom10: {
     marginBottom: 10
-  },
-  tabContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignContent: 'center',
-    backgroundColor: "#FFFFFF",
-    paddingBottom: 15,
-    paddingTop: 10,
-    // marginBottom: 10,
-  },
-  tab: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-    backgroundColor: '#f0f0f0',
-    marginLeft: 20,
-  },
-  activeTab: {
-    backgroundColor: " rgba(102, 204, 153, .9)",
-  },
-  tabText: {
-    color: '#000',
-  },
+  }
 });
+
 const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
   residentialCustomerList: state.AppReducer.residentialCustomerList
