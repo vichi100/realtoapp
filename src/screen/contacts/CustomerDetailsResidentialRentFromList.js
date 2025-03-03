@@ -233,7 +233,7 @@ const CustomerDetailsResidentialRentFromList = props => {
       </View>
       {/* owner details */}
       <View style={styles.margin1}></View>
-      <Reminder navigation={navigation} />
+      <Reminder navigation={navigation} customerData={item} isSpecificRemider = {true}/>
       {/* <View style={styles.overviewContainer}>
         <View style={styles.overview}>
           <Text>Owner</Text>

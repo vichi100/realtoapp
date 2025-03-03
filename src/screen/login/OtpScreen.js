@@ -22,9 +22,9 @@ import { SERVER_URL } from '../../util/constant';
 
 const OtpScreen = (props) => {
 	const { navigation } = props;
-	const [ otp, setOTP ] = useState(null);
+	const [otp, setOTP] = useState(null);
 	const otpInput = useRef(null);
-	const [ loading, setLoading ] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		setLoading(true);
@@ -98,11 +98,11 @@ const OtpScreen = (props) => {
 			);
 	};
 
-	const save =  (userData) => {
+	const save = (userData) => {
 		// console.log('userData: ' + JSON.stringify(userData));
 		props.setUserDetails(userData);
 		// await AsyncStorage.setItem('user_details', JSON.stringify(userData));
-		
+
 	};
 
 	const onSkip = () => {
@@ -160,30 +160,30 @@ const OtpScreen = (props) => {
 						inputCellLength={1}
 					/> */}
 
-<OtpInput
-  numberOfDigits={6}
-  focusColor="green"
-  autoFocus={false}
-  hideStick={true}
-//   placeholder="******"
-  blurOnFilled={true}
-  disabled={false}
-  type="numeric"
-  secureTextEntry={false}
-  focusStickBlinkingDuration={500}
-  onFocus={() => console.log("Focused")}
-  onBlur={() => console.log("Blurred")}
-  onTextChange={(text) => console.log(text)}
-//   onFilled={(text) => console.log(`OTP is ${text}`)}
-  onFilled={(text) => {
-	console.log(`Code is ${text}, you are good to go!`);
-	handleSubmit(text);
-}}
-  textInputProps={{
-    accessibilityLabel: "One-Time Password",
-  }}
-  
-/>
+					<OtpInput
+						numberOfDigits={6}
+						focusColor="green"
+						autoFocus={false}
+						hideStick={true}
+						  placeholder="******"
+						blurOnFilled={true}
+						disabled={false}
+						type="numeric"
+						secureTextEntry={false}
+						focusStickBlinkingDuration={500}
+						onFocus={() => console.log("Focused")}
+						onBlur={() => console.log("Blurred")}
+						onTextChange={(text) => console.log(text)}
+						//   onFilled={(text) => console.log(`OTP is ${text}`)}
+						onFilled={(text) => {
+							console.log(`Code is ${text}, you are good to go!`);
+							handleSubmit(text);
+						}}
+						textInputProps={{
+							accessibilityLabel: "One-Time Password",
+						}}
+
+					/>
 				</View>
 
 				<View style={{ margin: 20 }}>

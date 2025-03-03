@@ -247,7 +247,7 @@ const ContactResidentialRentCard = props => {
             </>
           )}
 
-          <View style={{ marginLeft: {showMatched}?10:30, }}>
+          <View style={{ marginLeft: {showMatched}?40:30, }}>
             <Avatar
               square
               size={60}
