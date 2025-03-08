@@ -277,7 +277,7 @@ const GlobalSearch = props => {
     <View
       style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
     >
-      <View style={{ margin:10, flexDirection: 'row', justifyContent:'center' }}>
+      <View style={{ margin:10, flexDirection: 'row', justifyContent:'center', alignItems:'centerßßßß' }}>
         <Image
           source={require('../../../assets/images/home.png')} // Path to your image
           style={{ width: 45, height: 45 , position: "absolute",
@@ -289,10 +289,14 @@ const GlobalSearch = props => {
             // left: 0,
             }}
         />
-        <Text style={{ padding: 10, textAlign:'center', fontSize:16, fontWeight:500  }}>GLocal Search</Text>
+        
+        <Text style={{ padding: 10, textAlign:'center', fontSize:24, fontWeight:500  }}>GLocal Search</Text>
         {/* <MaterialCommunityIcons name="facebook-messenger" color={"rgba(255, 76, 48, 1)"} size={35} /> */}
-        <MaterialCommunityIcons name="heart-outline" color={"rgb(137, 135, 135)"} size={32} />
-        <MaterialCommunityIcons name="dots-circle" color={"rgb(108, 110, 110)"} size={30} />
+        <View style={{position: "absolute", right:"2%"}}>
+        <MaterialCommunityIcons name="heart-outline" color={"rgb(137, 135, 135)"} size={30} />
+        </View>
+        
+        {/* <MaterialCommunityIcons name="dots-circle" color={"rgb(108, 110, 110)"} size={30} /> */}
         {/* <Text>Realto</Text> */}
       </View>
       

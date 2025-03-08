@@ -64,6 +64,10 @@ const ContactResidentialRentCard = props => {
     "I have property for this customer. Please call me. "
   );
 
+  const getMatched = (matchedCustomerItem) => {
+    navigation.navigate('MatchedProperties', {matchedCustomerItem: matchedCustomerItem},);
+  }
+
   const onChangeText = text => {
     console.log(text);
     setMessage(text);
@@ -234,8 +238,9 @@ const ContactResidentialRentCard = props => {
 
           {showMatched && (
             <>
+            <TouchableOpacity onPress={() => getMatched(item)}>
               <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
-                <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>999</Text>
+                <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count}</Text>
               </View>
               <View style={{
                 position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
@@ -244,6 +249,7 @@ const ContactResidentialRentCard = props => {
               }}>
                 <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Matched</Text>
               </View>
+              </TouchableOpacity>
             </>
           )}
 

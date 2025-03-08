@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   FlatList,
   View,
@@ -8,10 +8,12 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  ActivityIndicator
+  ActivityIndicator,
+  AsyncStorage,
+  StatusBar,
+  RefreshControl
 } from "react-native";
 import { connect } from "react-redux";
-import { CheckBox } from "@rneui/themed";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -19,101 +21,102 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { BottomSheet } from "react-native-btr";
 import { ButtonGroup } from "@rneui/themed";
 import { HelperText, useTheme } from "react-native-paper";
-import Button from "../../components/Button";
+import Button from "../components/Button";
 import { Divider } from "react-native-paper";
 import { SocialIcon } from "@rneui/themed";
-import CustomerCommercialRentCard from "./CustomerCommercialRentCard";
-import CustomerCommercialBuyCard from "./CustomerCommercialBuyCard";
+import Slider from "../components/Slider";
+import SliderX from "../components/SliderX";
+import CardResidentialRent from "./Card";
+import CardResidentialSell from "./CardSell";
 import axios from "axios";
-import { SERVER_URL } from "../../util/constant";
-import Slider from "../../components/Slider";
-import SliderX from "../../components/SliderX";
+import { SERVER_URL } from "../util/constant";
+import { getBottomSpace } from "react-native-iphone-x-helper";
 import {
-  setCommercialCustomerList,
-  setAnyItemDetails
-} from "../../reducers/Action";
-import { addDays, numDifferentiation } from "../../util/methods";
-import Snackbar from "../../components/SnackbarComponent";
+  setResidentialPropertyList,
+  setAnyItemDetails,
+  setPropertyDetails
+} from "../reducers/Action";
+import { addDays, numDifferentiation } from "../util/methods";
+import Snackbar from "../components/SnackbarComponent";
 
-const buildingTypeArray = [
-  "Businesses park ",
-  "Mall",
-  "StandAlone",
-  "Industrial",
-  "Shopping complex"
-];
+// Dynamic query
+// https://stackoverflow.com/questions/29831164/how-to-filter-in-mongodb-dynamically#:~:text=answer%20was%20accepted%E2%80%A6-,var%20fName%3D%22John%22%2C%20fCountry%3D%22US%22,fName%7D)%3B%20%7D%20if%20(fCountry%20!%3D%3D
 
-const lookingForArray = ["Rent", "Buy"];
-const propertyTypeArray = [
-  "Shop",
-  "Office",
-  "Showroom",
-  "Godown",
-  "Restaurant/Cafe"
-];
+const lookingForArray = ["Rent", "Sell"];
+const homeTypeArray = ["Apartment", "Villa", "Independent House"];
+const bhkTypeArray = ["1RK", "1BHK", "2BHK", "3BHK", "4BHK", "4+BHK"];
 const availabilityArray = ["Immediate", "15 Days", "30 Days", "30+ Days"];
-
-// const buildingTypeArray = [
-//   "Businesses park ",
-//   "Mall",
-//   "StandAlone",
-//   "Industrial",
-//   "Shopping complex"
-// ];
-
-const sortByNameArray = ["A First", "Z First"];
-const lookingForArraySortBy = ["Rent", "Buy"];
+const furnishingStatusArray = ["Full", "Semi", "Empty"];
+const lookingForArraySortBy = ["Rent", "Sell"];
+const sortByRentArray = ["Lowest First", "Highest First"];
+const sortByAvailabilityArray = ["Earliest First", "Oldest First"];
 const sortByPostedDateArray = ["Recent First", "Oldest Fist"];
 
-const CustomersCommercial = props => {
-  const { navigation } = props;
-  const [search, setSearch] = useState("");
+
+
+const ListingResidential = props => {
+  const { navigation, route } = props;
+  const matchedCustomerItem = route.params.matchedCustomerItem;
+
+  const rent = useRef(0);;
+  const sell = useRef(0);;
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [search, setSearch] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [visibleSorting, setVisibleSorting] = useState(false);
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [index, setIndex] = useState(null);
   const [data, setData] = useState([]);
-
   const [lookingForIndex, setLookingForIndex] = useState(-1);
-  const [propertyTypeIndex, setPropertyTypeIndex] = useState(-1);
-  const [checkBoxSelectArray, setCheckBoxSelectArray] = useState([]);
+  const [homeTypeIndex, setHomeTypeIndex] = useState(-1);
+  const [bhkTypeIndex, setBHKTypeIndex] = useState(-1);
   const [availabilityIndex, setAvailabilityIndex] = useState(-1);
+  const [furnishingIndex, setFurnishingIndex] = useState(-1);
   const [minRent, setMinRent] = useState(5000);
   const [maxRent, setMaxRent] = useState(500000);
   const [minSell, setMinSell] = useState(1000000);
   const [maxSell, setMaxSell] = useState(100000000);
-  const [minBuildupArea, setMinBuildupArea] = useState(50);
-  const [maxBuildupArea, setMaxBuildupArea] = useState(15000);
-  //sorting
-  const [sortByNameIndex, setSortByNameIndex] = useState(-1);
+  const [sortByRentIndex, setSortByRentIndex] = useState(-1);
+  const [sortByAvailabilityIndex, setSortByAvailabilityIndex] = useState(-1);
   const [sortByPostedDateIndex, setSortByPostedDateIndex] = useState(-1);
   const [lookingForIndexSortBy, setLookingForIndexSortBy] = useState(-1);
   const [loading, setLoading] = useState(false);
+  const [rentPropCount, setRentPropCount] = useState([]);
+  const [sellPropCount, setSellPropCount] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const [matchedPropertiesDetailsMine, setMatchedPropertiesDetailsMine] = useState([]);
+  const [matchedPropertiesDetailsOther, setMatchedPropertiesDetailsOther] = useState([]);
+
+  // useEffect(() => {
+  //   console.log(rent)
+  //   setRentPropCount(rent.current);
+  //   setSellPropCount(sell.current);
+  // }, [rent.current, sell.current])
 
   const resetSortBy = () => {
     setLookingForIndexSortBy(-1);
-    setSortByNameIndex(-1);
+    setSortByRentIndex(-1);
+    setSortByAvailabilityIndex(-1);
     setSortByPostedDateIndex(-1);
-    setData(props.commercialCustomerList);
+    setData(props.residentialPropertyList);
   };
 
   const sortByPostedDate = index => {
-    console.log("sortByName", props.commercialCustomerList);
     if (lookingForIndexSortBy === -1) {
       setErrorMessage("Looking for is missing in filter");
       setIsVisible(true);
       return;
     }
     setSortByPostedDateIndex(index);
-    setSortByNameIndex(-1);
+    setSortByRentIndex(-1);
+    setSortByAvailabilityIndex(-1);
     setVisibleSorting(false);
-    let filterList = props.commercialCustomerList;
-    console.log("lookingForIndexSortBy: ", lookingForIndexSortBy);
+    let filterList = props.residentialPropertyList;
     if (lookingForIndexSortBy === 0) {
-      filterList = filterList.filter(
-        item => item.customer_locality.property_for === "Rent"
-      );
+      filterList = filterList.filter(item => item.property_for === "Rent");
       if (sortByPostedDateArray[index] === "Recent First") {
         filterList.sort((a, b) => {
           return (
@@ -130,9 +133,7 @@ const CustomersCommercial = props => {
       }
       setData(filterList);
     } else if (lookingForIndexSortBy === 1) {
-      filterList = filterList.filter(
-        item => item.customer_locality.property_for === "Buy"
-      );
+      filterList = filterList.filter(item => item.property_for === "Sell");
       if (sortByPostedDateArray[index] === "Recent First") {
         filterList.sort((a, b) => {
           // console.log("a", a);
@@ -152,140 +153,149 @@ const CustomersCommercial = props => {
     }
   };
 
-  const sortByName = index => {
-    console.log("sortByName", props.commercialCustomerList);
+  const sortByAvailability = index => {
     if (lookingForIndexSortBy === -1) {
       setErrorMessage("Looking for is missing in filter");
       setIsVisible(true);
       return;
     }
+    setSortByAvailabilityIndex(index);
+    setSortByRentIndex(-1);
     setSortByPostedDateIndex(-1);
-    setSortByNameIndex(index);
     setVisibleSorting(false);
-    let filterList = props.commercialCustomerList;
-    console.log("lookingForIndexSortBy: ", lookingForIndexSortBy);
+    let filterList = props.residentialPropertyList;
     if (lookingForIndexSortBy === 0) {
-      filterList = filterList.filter(
-        item => item.customer_locality.property_for === "Rent"
-      );
-      console.log("lookingForIndexSortBy: ", sortByNameArray[index]);
-      if (sortByNameArray[index] === "A First") {
+      filterList = filterList.filter(item => item.property_for === "Rent");
+      if (sortByAvailabilityArray[index] === "Earliest First") {
         filterList.sort((a, b) => {
-          return a.customer_details.name.localeCompare(b.customer_details.name);
+          // console.log("a", a);
+          return (
+            new Date(a.rent_details.available_from).getTime() -
+            new Date(b.rent_details.available_from).getTime()
+          );
         });
-      } else if (sortByNameArray[index] === "Z Fist") {
-        filterList.sort((a, b) => {
-          return b.customer_details.name.localeCompare(a.customer_details.name);
-        });
+      } else if (sortByAvailabilityArray[index] === "Oldest First") {
+        filterList.sort(
+          (a, b) =>
+            new Date(b.rent_details.available_from).getTime() -
+            new Date(a.rent_details.available_from).getTime()
+        );
       }
       setData(filterList);
     } else if (lookingForIndexSortBy === 1) {
-      filterList = filterList.filter(
-        item => item.customer_locality.property_for === "Buy"
-      );
-      if (sortByNameArray[index] === "A First") {
+      filterList = filterList.filter(item => item.property_for === "Sell");
+      if (sortByAvailabilityArray[index] === "Earliest First") {
         filterList.sort((a, b) => {
           // console.log("a", a);
-          return a.customer_details.name.localeCompare(b.customer_details.name);
+          return (
+            new Date(a.rent_details.available_from).getTime() -
+            new Date(b.rent_details.available_from).getTime()
+          );
         });
-      } else if (sortByNameArray[index] === "Z Fist") {
-        filterList.sort((a, b) =>
-          b.customer_details.name.localeCompare(a.customer_details.name)
+      } else if (sortByAvailabilityArray[index] === "Oldest First") {
+        filterList.sort(
+          (a, b) =>
+            new Date(b.rent_details.available_from).getTime() -
+            new Date(a.rent_details.available_from).getTime()
         );
       }
       setData(filterList);
     }
   };
 
-  const selectLookingForIndexSortBy = index => {
-    setLookingForIndexSortBy(index);
-    setSortByNameIndex(-1);
+  const sortByRent = index => {
+    console.log("onFilter:     ", props.residentialPropertyList);
+    if (lookingForIndexSortBy === -1) {
+      setErrorMessage("Looking for is missing in filter");
+      setIsVisible(true);
+      return;
+    }
+    setSortByRentIndex(index);
+    setSortByAvailabilityIndex(-1);
     setSortByPostedDateIndex(-1);
-    setIsVisible(false);
+    setVisibleSorting(false);
+    let filterList = props.residentialPropertyList;
+    if (lookingForIndexSortBy === 0) {
+      filterList = filterList.filter(item => item.property_for === "Rent");
+      // const x = filterList;
+      console.log("filterList:   ", filterList);
+      if (sortByRentArray[index] === "Lowest First") {
+        filterList.sort((a, b) => {
+          // console.log("a", a);
+          return (
+            parseFloat(a.rent_details.expected_rent) -
+            parseFloat(b.rent_details.expected_rent)
+          );
+        });
+      } else if (sortByRentArray[index] === "Highest First") {
+        filterList.sort(
+          (a, b) =>
+            parseFloat(b.rent_details.expected_rent) -
+            parseFloat(a.rent_details.expected_rent)
+        );
+      }
+      setData(filterList);
+    } else if (lookingForIndexSortBy === 1) {
+      filterList = filterList.filter(item => item.property_for === "Sell");
+      // const x = filterList;
+      // console.log("filterList:   ", filterList);
+      if (sortByRentArray[index] === "Lowest First") {
+        filterList.sort((a, b) => {
+          // console.log("a", a);
+          return (
+            parseFloat(a.sell_details.expected_sell_price) -
+            parseFloat(b.sell_details.expected_sell_price)
+          );
+        });
+      } else if (sortByRentArray[index] === "Highest First") {
+        filterList.sort(
+          (a, b) =>
+            parseFloat(b.sell_details.expected_sell_price) -
+            parseFloat(a.sell_details.expected_sell_price)
+        );
+      }
+      setData(filterList);
+    }
   };
 
   const resetFilter = () => {
     setLookingForIndex(-1);
-    setPropertyTypeIndex(-1);
-    setCheckBoxSelectArray([]);
+    setHomeTypeIndex(-1);
+    setBHKTypeIndex(-1);
     setAvailabilityIndex(-1);
-    setData(props.commercialCustomerList);
+    setFurnishingIndex(-1);
+    setData(props.residentialPropertyList);
+    setVisible(false);
     setMinRent(5000);
     setMaxRent(500000);
     setMinSell(1000000);
     setMaxSell(100000000);
-    setMinBuildupArea(50);
-    setMaxBuildupArea(15000);
-    setVisible(false);
   };
 
   const onFilter = () => {
-    console.log("onFilter:     ", props.commercialCustomerList);
+    console.log("onFilter:     ", props.residentialPropertyList);
     if (lookingForIndex === -1) {
       setErrorMessage("Looking for is missing in filter");
       setIsVisible(true);
       return;
     }
-    let filterList = props.commercialCustomerList;
+    let filterList = props.residentialPropertyList;
     if (lookingForIndex > -1) {
       filterList = filterList.filter(
-        item =>
-          item.customer_locality.property_for ===
-          lookingForArray[lookingForIndex]
+        item => item.property_for === lookingForArray[lookingForIndex]
       );
     }
-
-    if (propertyTypeIndex > -1) {
-      filterList = filterList.filter(item => {
-        const all = [item.customer_property_details.property_used_for];
-        return all.indexOf(propertyTypeArray[propertyTypeIndex]) > -1;
-      });
-    }
-
-    if (checkBoxSelectArray.length > 0) {
-      // console.log(checkBoxSelectArray);
-      // console.log(
-      //   checkBoxSelectArray.indexOf(
-      //     filterList[0].property_details.building_type
-      //   )
-      // );
-
+    if (homeTypeIndex > -1) {
       filterList = filterList.filter(
         item =>
-          checkBoxSelectArray.indexOf(
-            item.customer_property_details.building_type
-          ) > -1
+          item.property_details.house_type === homeTypeArray[homeTypeIndex]
       );
     }
-
-    if (lookingForIndex === 0) {
-      if (minRent > 5000 || maxRent < 500000) {
-        // console.log("rent");
-        filterList = filterList.filter(
-          item =>
-            item.customer_rent_details.expected_rent >= minRent &&
-            item.customer_rent_details.expected_rent <= maxRent
-        );
-      }
-    } else if (lookingForIndex === 1) {
-      if (minSell > 1000000 || maxSell < 100000000) {
-        // console.log("rent");
-        filterList = filterList.filter(
-          item =>
-            item.customer_buy_details.expected_buy_price >= minSell &&
-            item.customer_buy_details.expected_buy_price <= maxSell
-        );
-      }
+    if (bhkTypeIndex > -1) {
+      filterList = filterList.filter(
+        item => item.property_details.bhk_type === bhkTypeArray[bhkTypeIndex]
+      );
     }
-
-    // if (minBuildupArea > 5000 || maxBuildupArea < 500000) {
-    //   // console.log("rent");
-    //   filterList = filterList.filter(
-    //     item =>
-    //       item.property_details.property_size >= minBuildupArea &&
-    //       item.property_details.property_size <= maxBuildupArea
-    //   );
-    // }
 
     if (availabilityIndex > -1) {
       const oneDay = 24 * 60 * 60 * 1000;
@@ -296,10 +306,10 @@ const CustomersCommercial = props => {
         filterList = filterList.filter(
           item => possessionDate > new Date(item.rent_details.available_from)
         );
-        console.log(
-          "possessionDate: ",
-          new Date(filterList[0].rent_details.available_from)
-        );
+        // console.log(
+        //   "possessionDate: ",
+        //   new Date(filterList[0].rent_details.available_from)
+        // );
       } else if (availabilityArray[availabilityIndex] === "15 Days") {
         possessionDate = addDays(today, 15);
         filterList = filterList.filter(
@@ -317,6 +327,45 @@ const CustomersCommercial = props => {
         );
       }
     }
+
+    if (furnishingIndex > -1) {
+      filterList = filterList.filter(
+        item =>
+          item.property_details.furnishing_status ===
+          furnishingStatusArray[furnishingIndex]
+      );
+    }
+    // // console.log("rent", minRent);
+    // // console.log("rent", maxRent);
+    // if (minRent > 5000 || maxRent < 500000) {
+    //   // // console.log("rent");
+    //   filterList = filterList.filter(
+    //     item =>
+    //       item.rent_details.expected_rent >= minRent &&
+    //       item.rent_details.expected_rent <= maxRent
+    //   );
+    // }
+
+    if (lookingForIndex === 0) {
+      if (minRent > 5000 || maxRent < 500000) {
+        // console.log("rent");
+        filterList = filterList.filter(
+          item =>
+            item.rent_details.expected_rent >= minRent &&
+            item.rent_details.expected_rent <= maxRent
+        );
+      }
+    } else if (lookingForIndex === 1) {
+      if (minSell > 1000000 || maxSell < 100000000) {
+        // console.log("rent");
+        filterList = filterList.filter(
+          item =>
+            item.sell_details.expected_sell_price >= minRent &&
+            item.sell_details.expected_sell_price <= maxRent
+        );
+      }
+    }
+
     setData(filterList);
     setVisible(false);
   };
@@ -324,87 +373,92 @@ const CustomersCommercial = props => {
   const dismissSnackBar = () => {
     setIsVisible(false);
   };
-
-  const setBuildupAreaRange = values => {
-    // console.log("slider value min: ", values[0]);
-    // console.log("slider value max: ", values[1]);
-    setMinBuildupArea(values[0]);
-    setMaxBuildupArea(values[1]);
-  };
-
-  const setRentRange = values => {
-    // console.log("slider value min: ", values[0]);
-    // console.log("slider value max: ", values[1]);
-    setMinRent(values[0]);
-    setMaxRent(values[1]);
-  };
-
-  const setSellRange = values => {
-    // console.log("slider value min: ", values[0]);
-    // console.log("slider value max: ", values[1]);
-    setMinSell(values[0]);
-    setMaxSell(values[1]);
-  };
-  const selectLookingForIndex = index => {
-    setLookingForIndex(index);
-    setIsVisible(false);
-  };
-
-  const selectPropertyTypeIndex = index => {
-    setPropertyTypeIndex(index);
-  };
-
-  const onCheckBoxSelect = item => {
-    console.log(item);
-    if (checkBoxSelectArray.indexOf(item) > -1) {
-      const x = checkBoxSelectArray.filter(z => z !== item);
-      setCheckBoxSelectArray(x);
-    } else {
-      const x = [item, ...checkBoxSelectArray];
-      setCheckBoxSelectArray(x);
-    }
+  const selectFurnishingIndex = index => {
+    setFurnishingIndex(index);
   };
 
   const selectAvailabilityIndex = index => {
     setAvailabilityIndex(index);
   };
 
+  const selectBHKTypeIndex = index => {
+    setBHKTypeIndex(index);
+  };
+
+  const selectHomeTypeIndex = index => {
+    setHomeTypeIndex(index);
+  };
+
+  const selectLookingForIndex = index => {
+    setLookingForIndex(index);
+    setIsVisible(false);
+  };
+
+  const selectLookingForIndexSortBy = index => {
+    setLookingForIndexSortBy(index);
+    setSortByRentIndex(-1);
+    setSortByAvailabilityIndex(-1);
+    setSortByPostedDateIndex(-1);
+    setIsVisible(false);
+  };
+
   useEffect(() => {
-    getListing();
-    // console.log("commercial Listing useEffect");
-  }, []);
+    // // console.log(
+    //   "props.userDetail33 " +
+    //     JSON.stringify(props.userDetails.works_for[0])
+    // );
+    if (
+      props.userDetails &&
+      props.userDetails.works_for[0] !== null
+    ) {
+      getListing();
+    }
+    // console.log("residential Listing useEffect");
+  }, [props.userDetails]);
 
   const getListing = () => {
-    // console.log("props.userDetails4 " + JSON.stringify(props.userDetails));
-    const user = {
-      agent_id: props.userDetails.works_for[0]// here we get null pointer excpetion when user is created first time
+    // const agentDetailsX = getAgentDetails();
+    // console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
+    const customer = {
+      customer_id: matchedCustomerItem.customer_id,
     };
-
     setLoading(true);
-
-    axios(SERVER_URL + "/commercialCustomerList", {
+    // // console.log(JSON.stringify(user));
+    axios(SERVER_URL + "/matchedResidentialProptiesList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
         Accept: "Application/json"
       },
-      data: user
+      data: customer
     }).then(
       response => {
-        // // console.log(response.data);
-        props.setCommercialCustomerList(response.data);
-        setData(response.data);
+        // console.log("response.data:      ", response.data);
+        
+      
+        response.data.matchedPropertyDetailsMine.map(item => {
+          item.image_urls.map(image => {
+            image.url = SERVER_URL + image.url
+          })
+        })
+        response.data.matchedPropertyDetailsOther.map(item => {
+          item.image_urls.map(image => {
+            image.url = SERVER_URL + image.url
+          })
+        })
+        setMatchedPropertiesDetailsMine(response.data.matchedPropertyDetailsMine);
+        setMatchedPropertiesDetailsOther(response.data.matchedPropertyDetailsOther);
+        // setData(response.data);
+        props.setResidentialPropertyList(response.data);
         setLoading(false);
+        // console.log("response.data:      ", response.data);
       },
       error => {
-        console.log(error);
+        // console.log(error);
         setLoading(false);
-      } 
+        console.log(error);
+      }
     );
-  };
-
-  const updateIndex = index => {
-    setIndex(index);
   };
 
   const searchFilterFunction = text => {
@@ -412,15 +466,14 @@ const CustomersCommercial = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = props.commercialCustomerList.filter(function (item) {
+      const newData = props.residentialPropertyList.filter(function (item) {
         // Applying filter for the inserted text in search bar
-        console.log(item)
         const itemData =
-          item.customer_details.name +
-          item.customer_details.address +
-          item.customer_details.mobile1 +
-          item.customer_locality.location_area.map(item => item.main_text).join(', ')
-        // item.customer_locality.location_area;
+          item.property_address.building_name +
+          item.property_address.landmark_or_street +
+          item.property_address.formatted_address +
+          item.owner_details.name +
+          item.owner_details.mobile1;
 
         const textData = text.toUpperCase();
         return itemData.toUpperCase().indexOf(textData) > -1;
@@ -430,63 +483,62 @@ const CustomersCommercial = props => {
     } else {
       // Inserted text is blank
       // Update FilteredDataSource with masterDataSource
-      setData(props.commercialCustomerList);
+      setData(props.residentialPropertyList);
       setSearch(text);
     }
   };
 
   const navigateToDetails = (item, propertyFor) => {
-    props.setAnyItemDetails(item);
+    // props.setAnyItemDetails(item);
+    console.log("props.setPropertyDetails(item: )", item);
+    props.setPropertyDetails(item);
+
     if (propertyFor === "Rent") {
-      navigation.navigate("CustomerDetailsCommercialRentFromList", item);
-    } else if (propertyFor === "Buy") {
-      navigation.navigate("CustomerDetailsCommercialBuyFromList", item);
+      navigation.navigate("PropDetailsFromListing", item);
+    } else if (propertyFor === "Sell") {
+      navigation.navigate("PropDetailsFromListingForSell", item);
     }
+
   };
 
-  const deleteMe = (itemToDelete) =>{
+  const deleteMe = (itemToDelete) => {
     // console.log("props.setPropertyDetails(item: deleteMe: )", itemToDelete);
-    setData((data) => data.filter((item) => item.customer_id !== itemToDelete.customer_id));
+    setData((data) => data.filter((item) => item.property_id !== itemToDelete.property_id));
     //Fist delete for data
-    
+
 
   }
 
   const ItemView = ({ item }) => {
-    if (item.customer_locality.property_type === "Commercial") {
-      if (item.customer_locality.property_for === "Rent") {
+
+    if (item.property_type.toLowerCase() === "Residential".toLowerCase()) {
+      if (item.property_for.toLowerCase() === "Rent".toLowerCase()) {
+        // rentPropCount.push("1");
+        // console.log(rentPropCount.length);
         return (
-          <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <CustomerCommercialRentCard navigation={navigation} item={item} deleteMe={deleteMe}/>
-          </TouchableOpacity>
+          // <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
+          <CardResidentialRent navigation={navigation} item={item} deleteMe={deleteMe} />
+          // </TouchableOpacity>
         );
-      } else if (item.customer_locality.property_for === "Buy") {
+      } else if (item.property_for.toLowerCase() === "Sell".toLowerCase()) {
+        // sellPropCount.push("1");
         return (
-          <TouchableOpacity onPress={() => navigateToDetails(item, "Buy")}>
-            <CustomerCommercialBuyCard navigation={navigation} item={item} deleteMe={deleteMe}/>
-          </TouchableOpacity>
+          // <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
+          <CardResidentialSell navigation={navigation} item={item} deleteMe={deleteMe} />
+          // </TouchableOpacity>
         );
       }
     }
-
-    // // console.log("hi");
   };
 
   const ItemSeparatorView = () => {
     return (
       //Item Separator
       <View
-        style={{ height: 0.5, width: "100%", backgroundColor: "#C8C8C8" }}
+        style={{ height: 5, width: "100%", backgroundColor: "#C8C8C8" }}
       />
     );
   };
-
-  const navigateTo = () => {
-    navigation.navigate("AddNewCustomerStack");
-  };
-
-  const [visible, setVisible] = useState(false);
-  const [visibleSorting, setVisibleSorting] = useState(false);
 
   const toggleBottomNavigationView = () => {
     //Toggling the visibility state of the bottom sheet
@@ -498,11 +550,31 @@ const CustomersCommercial = props => {
     setVisibleSorting(!visibleSorting);
   };
 
+  const navigateTo = () => {
+    navigation.navigate("Add");
+  };
+
+  const setRentRange = values => {
+    // // console.log("slider value min: ", values[0]);
+    // // console.log("slider value max: ", values[1]);
+    setMinRent(values[0]);
+    setMaxRent(values[1]);
+  };
+
+  const setSellRange = values => {
+    // console.log("slider value min: ", values[0]);
+    // console.log("slider value max: ", values[1]);
+    setMinSell(values[0]);
+    setMaxSell(values[1]);
+  };
+
   useEffect(() => {
-    if (props.commercialCustomerList.length > 0) {
-      setData(props.commercialCustomerList)
+    if (props.residentialPropertyList.length > 0) {
+      // console.log("residentialPropertyList: ", props.residentialPropertyList);
+      setData(props.residentialPropertyList)
     }
-  }, [props.commercialCustomerList]);
+
+  }, [props.residentialPropertyList])
 
   return (
     loading ? <View
@@ -517,17 +589,8 @@ const CustomersCommercial = props => {
       {/* <ActivityIndicator animating size="large" /> */}
     </View> :
       <View style={{ flex: 1 }}>
-        {/* <View style={styles.searchBarContainer}>
-          <TextInput
-            style={styles.textInputStyle}
-            onChangeText={text => searchFilterFunction(text)}
-            value={search}
-            underlineColorAndroid="transparent"
-            placeholder="Search by name, location"
-          />
-        </View> */}
         <View style={styles.searchBar}>
-        <AntDesign name="search1" size={20} color="#999" style={{marginRight: 5,}} />
+          <AntDesign name="search1" size={20} color="#999" style={{ marginRight: 5, }} />
           {/* <View style={{ flexDirection: "row", margin: 10, justifyContent: "space-between" }}>
             <Text>For Rent: {rentPropCount.length}</Text>
             <Text>For Sell: {sellPropCount.length}</Text>
@@ -537,19 +600,35 @@ const CustomersCommercial = props => {
             onChangeText={text => searchFilterFunction(text)}
             value={search}
             underlineColorAndroid="transparent"
-            placeholder="Search by name, location"
-            placeholderTextColor="#000" 
+            placeholder="Search by property address, owner"
+            placeholderTextColor="#000"
           />
         </View>
-        {data.length > 0 ? (
+        {matchedPropertiesDetailsOther.length > 0 || matchedPropertiesDetailsMine.length > 0 ? (
           <View style={styles.container}>
             <FlatList
-              data={data}
+              data={matchedPropertiesDetailsMine}
               //data defined in constructor
-              // ItemSeparatorComponent={ItemSeparatorView}
+              ItemSeparatorComponent={ItemSeparatorView}
               //Item Separator View
               renderItem={ItemView}
               keyExtractor={(item, index) => index.toString()}
+            // refreshControl={
+            //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            // }
+
+            />
+            <FlatList
+              data={matchedPropertiesDetailsOther}
+              //data defined in constructor
+              ItemSeparatorComponent={ItemSeparatorView}
+              //Item Separator View
+              renderItem={ItemView}
+              keyExtractor={(item, index) => index.toString()}
+            // refreshControl={
+            //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            // }
+
             />
             <View style={styles.fab}>
               <TouchableOpacity
@@ -582,16 +661,17 @@ const CustomersCommercial = props => {
               }}
             >
               <Text style={{ textAlign: "center" }}>
-                You have no customer
+                You have no property listing
               </Text>
               <TouchableOpacity onPress={() => navigateTo()}>
                 <Text
                   style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
                 >
-                  Add New Customer
+                  Add New Property
                 </Text>
               </TouchableOpacity>
             </View>
+
             <View style={styles.fab}>
               <TouchableOpacity
                 onPress={() => toggleSortingBottomNavigationView()}
@@ -627,7 +707,6 @@ const CustomersCommercial = props => {
             <Text style={{ marginTop: 15, fontSize: 16, fontWeight: "600" }}>
               Filter
             </Text>
-
             <TouchableOpacity
               onPress={() => resetFilter()}
               style={{ position: "absolute", top: 10, right: 10 }}
@@ -653,67 +732,55 @@ const CustomersCommercial = props => {
                   containerBorderRadius={10}
                 />
               </View>
-
-              <Text style={styles.marginBottom10}>Prop type</Text>
-              <View style={styles.propSubSection}>
-                <ButtonGroup
-                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                  onPress={selectPropertyTypeIndex}
-                  selectedIndex={propertyTypeIndex}
-                  buttons={propertyTypeArray}
-                  // containerStyle={{ height: 30 }}
-                  textStyle={{ textAlign: "center" }}
-                  selectedTextStyle={{ color: "#fff" }}
-                  containerStyle={{ borderRadius: 10, width: 350 }}
-                  containerBorderRadius={10}
-                  vertical={true}
-                />
-              </View>
-              <Text style={styles.marginBottom10}>Building type</Text>
-              <View style={styles.propSubSection}>
-                <FlatList
-                  data={buildingTypeArray}
-                  renderItem={({ item }) => (
-                    <View style={{ flex: 1, flexDirection: "column", margin: 1 }}>
-                      {/* <Text>{item}</Text> */}
-                      <CheckBox
-                        title={item}
-                        checked={checkBoxSelectArray.indexOf(item) > -1}
-                        onPress={() => onCheckBoxSelect(item)}
-                        containerStyle={{
-                          backgroundColor: "#ffffff",
-                          borderColor: "#ffffff",
-                          margin: 0
-                        }}
-                        textStyle={{
-                          fontSize: 12,
-                          fontWeight: "400"
-                        }}
-                      />
-                    </View>
-                  )}
-                  //Setting the number of column
-                  numColumns={2}
-                  keyExtractor={(item, index) => index}
-                />
-                {/* <ButtonGroup
+              {/* <Text style={styles.marginBottom10}>Property type</Text>
+            <View style={styles.propSubSection}>
+              <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={updateIndex}
                 selectedIndex={index}
-                buttons={[
-                  "Businesses park ",
-                  "Mall",
-                  "StandAlone",
-                  "Industrial",
-                  "Shopping complex"
-                ]}
+                buttons={["Residential", "Commercial", "Any"]}
                 // containerStyle={{ height: 30 }}
                 textStyle={{ textAlign: "center" }}
                 selectedTextStyle={{ color: "#fff" }}
                 containerStyle={{ borderRadius: 10, width: 350 }}
                 containerBorderRadius={10}
-              /> */}
+              />
+            </View> */}
+              <Text style={styles.marginBottom10}>Home type</Text>
+              <View style={styles.propSubSection}>
+                <ButtonGroup
+                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                  onPress={selectHomeTypeIndex}
+                  selectedIndex={homeTypeIndex}
+                  buttons={homeTypeArray}
+                  // containerStyle={{ height: 30 }}
+                  textStyle={{ textAlign: "center" }}
+                  selectedTextStyle={{ color: "#fff" }}
+                  containerStyle={{ borderRadius: 10, width: 350 }}
+                  containerBorderRadius={10}
+                />
               </View>
+              <Text style={styles.marginBottom10}>BHK type</Text>
+              <View style={styles.propSubSection}>
+                <ButtonGroup
+                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                  onPress={selectBHKTypeIndex}
+                  selectedIndex={bhkTypeIndex}
+                  buttons={bhkTypeArray}
+                  // containerStyle={{ height: 30 }}
+                  textStyle={{ textAlign: "center" }}
+                  selectedTextStyle={{ color: "#fff" }}
+                  containerStyle={{ borderRadius: 10, width: 350 }}
+                  containerBorderRadius={10}
+                />
+              </View>
+              {/* <Text>Rent Range</Text>
+            <Slider
+              min={5000}
+              max={500000}
+              step={5000}
+              onSlide={values => setMultiSliderValue(values)}
+            /> */}
               {lookingForIndex === -1 ? null : lookingForIndex === 0 ? (
                 <View>
                   <Text>Rent Range</Text>
@@ -739,15 +806,15 @@ const CustomersCommercial = props => {
                   </View>
 
                   <Slider
-                    min={15000}
-                    max={1000000}
+                    min={5000}
+                    max={500000}
                     step={5000}
                     onSlide={values => setRentRange(values)}
                   />
                 </View>
               ) : (
                 <View>
-                  <Text>Buy Price Range</Text>
+                  <Text>Sell Price Range</Text>
                   <View
                     style={{
                       flexDirection: "row",
@@ -776,13 +843,6 @@ const CustomersCommercial = props => {
                   />
                 </View>
               )}
-              {/* <Text>Buildup area Range</Text>
-            <Slider
-              min={50}
-              max={10000}
-              step={50}
-              onSlide={values => setBuildupAreaRange(values)}
-            /> */}
               <Text style={styles.marginBottom10}>Availability</Text>
               <View style={styles.propSubSection}>
                 <ButtonGroup
@@ -797,7 +857,20 @@ const CustomersCommercial = props => {
                   containerBorderRadius={10}
                 />
               </View>
-
+              <Text style={styles.marginBottom10}>Furnishing</Text>
+              <View style={styles.propSubSection}>
+                <ButtonGroup
+                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                  onPress={selectFurnishingIndex}
+                  selectedIndex={furnishingIndex}
+                  buttons={furnishingStatusArray}
+                  // containerStyle={{ height: 30 }}
+                  textStyle={{ textAlign: "center" }}
+                  selectedTextStyle={{ color: "#fff" }}
+                  containerStyle={{ borderRadius: 10, width: 350 }}
+                  containerBorderRadius={10}
+                />
+              </View>
               <Button title="Apply" onPress={() => onFilter()} />
             </ScrollView>
             <Snackbar
@@ -811,6 +884,7 @@ const CustomersCommercial = props => {
         </BottomSheet>
 
         {/* Bottom sheet for sorting */}
+
         <BottomSheet
           visible={visibleSorting}
           //setting the visibility state of the bottom shee
@@ -835,9 +909,8 @@ const CustomersCommercial = props => {
                 size={30}
               />
             </TouchableOpacity>
-
-            <ScrollView style={{ marginTop: 10, marginBottom: 20 }}>
-              <Text style={styles.marginBottom10}>Customer Looking For</Text>
+            <ScrollView style={{ marginTop: 15, marginBottom: 20 }}>
+              <Text style={styles.marginBottom10}>Looking For</Text>
               <View style={styles.propSubSection}>
                 <ButtonGroup
                   selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
@@ -851,13 +924,13 @@ const CustomersCommercial = props => {
                   containerBorderRadius={10}
                 />
               </View>
-              <Text style={styles.marginBottom10}>Name</Text>
+              <Text style={styles.marginBottom10}>Rent</Text>
               <View style={styles.propSubSection}>
                 <ButtonGroup
                   selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                  onPress={sortByName}
-                  selectedIndex={sortByNameIndex}
-                  buttons={sortByNameArray}
+                  onPress={sortByRent}
+                  selectedIndex={sortByRentIndex}
+                  buttons={sortByRentArray}
                   // containerStyle={{ height: 30 }}
                   textStyle={{ textAlign: "center" }}
                   selectedTextStyle={{ color: "#fff" }}
@@ -865,20 +938,20 @@ const CustomersCommercial = props => {
                   containerBorderRadius={10}
                 />
               </View>
-              {/* <Text style={styles.marginBottom10}>Availability</Text>
-            <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Earliest First", "Oldest First"]}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 350 }}
-                containerBorderRadius={10}
-              />
-            </View> */}
+              <Text style={styles.marginBottom10}>Availability</Text>
+              <View style={styles.propSubSection}>
+                <ButtonGroup
+                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+                  onPress={sortByAvailability}
+                  selectedIndex={sortByAvailabilityIndex}
+                  buttons={sortByAvailabilityArray}
+                  // containerStyle={{ height: 30 }}
+                  textStyle={{ textAlign: "center" }}
+                  selectedTextStyle={{ color: "#fff" }}
+                  containerStyle={{ borderRadius: 10, width: 350 }}
+                  containerBorderRadius={10}
+                />
+              </View>
 
               <Text style={styles.marginBottom10}>Posted date</Text>
               <View style={styles.propSubSection}>
@@ -904,6 +977,7 @@ const CustomersCommercial = props => {
             />
           </View>
         </BottomSheet>
+
         <TouchableOpacity
           style={{
             // borderWidth: 1,
@@ -915,10 +989,10 @@ const CustomersCommercial = props => {
             bottom: 15,
             right: 10,
             // height: 40,
-            backgroundColor: "rgba(0,191,255, .5)",
+            backgroundColor: "rgba(50, 195, 77, 0.59)",
             borderRadius: 100
           }}
-          onPress={() => navigation.navigate("AddNewCustomerStack")}
+          onPress={() => navigation.navigate("Add")}
         >
           <AntDesign name="pluscircleo" size={40} color="#ffffff" />
           {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
@@ -930,7 +1004,8 @@ const CustomersCommercial = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 5
+    margin: 5,
+
     // alignContent: "center"
   },
   searchBar: {
@@ -1030,14 +1105,16 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
-  commercialCustomerList: state.AppReducer.commercialCustomerList,
+  residentialPropertyList: state.AppReducer.residentialPropertyList
 });
 const mapDispatchToProps = {
-  setCommercialCustomerList,
-  setAnyItemDetails
+  setResidentialPropertyList,
+  setAnyItemDetails,
+  setPropertyDetails
 };
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CustomersCommercial);
-// export default ListingCommercial;
+)(ListingResidential);
+
+// export default ListingResidential;

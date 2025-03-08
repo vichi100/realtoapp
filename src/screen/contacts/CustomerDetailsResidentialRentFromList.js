@@ -22,6 +22,10 @@ const CustomerDetailsResidentialRentFromList = props => {
   // const [item, setItem] = useState(null);
   const [location, setLocation] = useState([])
 
+  const getMatched = (matchedCustomerItem) => {
+    navigation.navigate('MatchedProperties', {matchedCustomerItem: matchedCustomerItem},);
+  }
+
   useEffect(() => {
     // setItem(props.anyItemDetails);
 
@@ -80,14 +84,14 @@ const CustomerDetailsResidentialRentFromList = props => {
           </Text>
         </View>
         <TouchableOpacity
-          onPress={() => getMatched()}
+          onPress={() => getMatched(item)}
           style={{ flexDirection: 'row', marginTop: 0 }}
         >
           <View style={{
             backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', right: 0, top: 0, alignItems: 'center', justifyContent: 'center',
             width: 38, height: 20, marginRight: 0
           }}>
-            <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 0 }}>20</Text>
+            <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 0 }}>{item.match_count}</Text>
           </View>
           <View style={{
             position: 'absolute', right: 0, top: 20, transform: [{ rotate: '270deg' }],

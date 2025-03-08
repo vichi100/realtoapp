@@ -16,7 +16,9 @@ import CustomerDetailsCommercialBuyFromList from "../screen/contacts/CustomerDet
 import PropertyListForMeeting from "../screen/contacts/PropertyListForMeeting";
 import CustomerMeetingDetails from "../screen/contacts/CustomerMeetingDetails";
 import AddNewContactsStackScreens from "./AddNewCustomerStackScreens";
-import AddNewPropStackScreens from "./AddNewPropStackScreens"
+import AddNewPropStackScreens from "./AddNewPropStackScreens";
+import MatchedProperties from "../screen/MatchedProperties";
+import MatchedCustomers from "../screen/contacts/MatchedCustomers";
 
 const Stack = createStackNavigator();
 export const hideTabBarComponents = ["ProductDetails"];
@@ -123,6 +125,24 @@ const ContactsStackScreens = () => {
         name="CustomerDetailsCommercialBuyFromList"
         component={CustomerDetailsCommercialBuyFromList}
         options={{ title: "Customer Details" }}
+      />
+
+      <Stack.Screen
+        name="MatchedProperties"
+        component={MatchedProperties}
+        options={{ title: "Matched Properties" }}
+      />
+      <Stack.Screen
+        name="MatchedCustomers"
+        component={MatchedCustomers}
+        options={{
+          title: "Matched Customers",
+          tabBarStyle: {
+            display: "none",
+          },
+          tabBarButton: () => null,
+        }}
+
       />
 
       <Stack.Screen
