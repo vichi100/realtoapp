@@ -978,7 +978,7 @@ const ListingResidential = props => {
           </View>
         </BottomSheet>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             // borderWidth: 1,
             // borderColor: "rgba(0,0,0,0.2)",
@@ -994,9 +994,9 @@ const ListingResidential = props => {
           }}
           onPress={() => navigation.navigate("Add")}
         >
-          <AntDesign name="pluscircleo" size={40} color="#ffffff" />
+          <AntDesign name="pluscircleo" size={40} color="#ffffff" /> */}
           {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
-        </TouchableOpacity>
+        {/* </TouchableOpacity> */}
       </View>
   );
 };

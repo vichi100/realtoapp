@@ -88,7 +88,8 @@ const OtpScreen = (props) => {
 			)
 			.then(
 				(response) => {
-					console.log(response.data);
+					console.log('response: ' + JSON.stringify(response));
+					console.log('response.data: ' + JSON.stringify(response.data));
 					save(response.data);
 					navigation.navigate('BottomTabScreen');
 				},
@@ -99,7 +100,7 @@ const OtpScreen = (props) => {
 	};
 
 	const save = (userData) => {
-		// console.log('userData: ' + JSON.stringify(userData));
+		console.log('userData: ' + JSON.stringify(userData));
 		props.setUserDetails(userData);
 		// await AsyncStorage.setItem('user_details', JSON.stringify(userData));
 

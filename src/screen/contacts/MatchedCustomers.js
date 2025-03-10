@@ -431,7 +431,7 @@ const ContactsResidential = props => {
       if (item.customer_locality.property_for === "Rent") {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <ContactResidentialRentCard navigation={navigation} item={item} deleteMe={deleteMe} showMatched={false} />
+            <ContactResidentialRentCard navigation={navigation} item={item} deleteMe={deleteMe} showMatched={false} navigatedFrom={"MatchedCustomers"} />
           </TouchableOpacity>
         );
       } else if (item.customer_locality.property_for === "Buy") {

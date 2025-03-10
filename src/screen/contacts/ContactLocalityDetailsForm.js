@@ -36,6 +36,8 @@ const options = [
 ];
 
 const propertyForArray = ["Rent", "Buy"];
+const requiredForArray = ["Family", "Bachelors"];//preferred_tenants
+
 
 const ContactLocalityDetailsForm = props => {
   const ref = useRef();
@@ -48,7 +50,27 @@ const ContactLocalityDetailsForm = props => {
   const [errorMessage, setErrorMessage] = useState("");
   const [propertyForIndex, setPropertyForIndex] = useState(-1);
   const [selectedPropType, setSelectedPropType] = useState(null);
-  const [SelectedLocationArray, setSelectedLocationArray] = useState([])
+  const [SelectedLocationArray, setSelectedLocationArray] = useState([]);
+  const [requiredForIndex, setRequiredForIndex] = useState(0);
+  const [selectedRequiredFor, setSelectedRequiredFor] = useState(null);
+  // const [p, setSelectedRequiredFor] = useState(null);
+
+  const selectRequiredForIndex = index => {
+    // // console.log(index);
+    // // console.log(propertyForArray[index]);
+    setRequiredForIndex(index);
+    setIsVisible(false);
+  };
+
+  const onSelectequiredFor = item => {
+    console.log(item);
+    if (selectedRequiredFor && selectedRequiredFor.key === item.key) {
+      setSelectedRequiredFor(null);
+    } else {
+      setSelectedRequiredFor(item);
+    }
+    setIsVisible(false);
+  };
 
   const onSelectPropType = item => {
     // // console.log(item);
@@ -106,7 +128,8 @@ const ContactLocalityDetailsForm = props => {
       location_area: SelectedLocationArray,
       property_type: selectedPropType.key,
       property_for: propertyForArray[propertyForIndex],
-      pin: "123"
+      pin: "123",
+      preferred_tenants: requiredForArray[requiredForIndex],
     };
 
     customer["customer_locality"] = customer_locality;
@@ -293,6 +316,33 @@ const ContactLocalityDetailsForm = props => {
               containerBorderRadius={10}
             />
           </View>
+
+          {propertyForIndex === 0 ? 
+          <View>
+          <View style={{ alignContent: "flex-start" }}>
+            <Text>Required for</Text>
+          </View>
+          <View
+            style={[styles.propSubSection, { marginBottom: 10, marginTop: 15 }]}
+          >
+            {/* <Text>Select Property For</Text> */}
+            <ButtonGroup
+              selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+              onPress={selectRequiredForIndex}
+              selectedIndex={requiredForIndex}
+              buttons={requiredForArray}
+              // containerStyle={{ height: 30 }}
+              textStyle={{ textAlign: "center" }}
+              selectedTextStyle={{ color: "#fff" }}
+              containerStyle={{
+                borderRadius: 10,
+                width: 300
+                // borderColor: "red"
+              }}
+              containerBorderRadius={10}
+            />
+            </View>
+          </View> : <View></View>}
 
           <View style={{ marginTop: 20 }}>
             <Button title="NEXT" onPress={() => onSubmit()} />

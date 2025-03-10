@@ -49,6 +49,7 @@ const ContactResidentialRentCard = props => {
     displayChat,
     deleteMe,
     showMatched = true,
+    navigatedFrom="none",
   } = props;
   // console.log("ContactResidentialRentCard :    ", item);
   let animatedValue = new Animated.Value(0);
@@ -250,6 +251,15 @@ const ContactResidentialRentCard = props => {
                 <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Matched</Text>
               </View>
               </TouchableOpacity>
+            </>
+          )}
+
+          {navigatedFrom==="MatchedCustomers"&&(
+            <>
+            <View style={{justifyContent:'center', alignItems:'center'}}>
+              <Text>61%</Text>
+              <Text>Match</Text>
+            </View>
             </>
           )}
 

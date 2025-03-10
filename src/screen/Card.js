@@ -303,7 +303,7 @@ const Card = props => {
                   backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
                   width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
                 }}>
-                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Matched</Text>
+                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
                 </View>
               </TouchableOpacity>
               <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>

@@ -85,7 +85,7 @@ const AddNewProperty = props => {
       setIsVisible(true);
       return;
     }
-    // console.log("props.userDetails: " + JSON.stringify(props.userDetails));
+    console.log("props.userDetails: " + JSON.stringify(props.userDetails));
     const property = {
       agent_id: props.userDetails.works_for[0],
       property_type: selectedPropType.key,
