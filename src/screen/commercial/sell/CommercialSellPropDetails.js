@@ -1,17 +1,147 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Image, Text, ScrollView } from "react-native";
+import React, { Component, useRef, useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+  Animated,
+  ActivityIndicator
+} from "react-native";
 import Slideshow from "../../../components/Slideshow";
 import { numDifferentiation, dateFormat } from "../../../util/methods";
 import { connect } from "react-redux";
 
+import Ionicons from "react-native-vector-icons/Ionicons";
+import AccordionListItem from '../../../components/AccordionListItem';
+import { MaterialIcons } from "@expo/vector-icons";
+import PropertyReminder from '../../PropertyReminder';
+import { SERVER_URL } from "../../../util/constant";
+import axios from "axios";
+
+
 const CommercialSellPropDetails = props => {
   // const { navigation } = props;
   // const item = route.params;
-  const item = props.propertyDetails;
+  // const item = props.propertyDetails;
   // // console.log(item);
+
+  const { navigation } = props;
+  const item = props.propertyDetails;
+  const scrollViewRef = useRef();
+  const [reminderListX, setReminderListX] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const scrollToAccordion = () => {
+    scrollViewRef.current.scrollTo({ y: 0, animated: true });
+  };
+
+  const getMatched = (matchedProprtyItem) => {
+    navigation.navigate('MatchedCustomers', { matchedProprtyItem: matchedProprtyItem },);
+  }
+
+  const getPropReminders = () => {
+    // console.log("item getPropReminders: " + propertyIdX);
+    const propertyId = {
+      property_id: item.property_id
+    };
+    setLoading(true);
+
+    axios
+      .post(
+        SERVER_URL + "/getPropReminderList",
+        // SERVER_URL + "/addNewResidentialRentProperty",
+        // await AsyncStorage.getItem("property")
+        // JSON.stringify({ vichi: "vchi" })
+        propertyId
+      )
+      .then(
+        response => {
+          // console.log("response.data.length: " + response.data.length);
+          // navigation.navigate("CardDetails");
+          if (response.data && response.data.length > 0) {
+            // const x = [...props.propReminderList, ...response.data];
+            // // console.log("X: " + x);
+            // props.setPropReminderList(response.data);
+            setReminderListX(response.data);
+            setLoading(false);
+          } else {
+            setReminderListX([]);
+            setLoading(false);
+          }
+        },
+        error => {
+          setLoading(false);
+          console.log(error);
+        }
+      );
+  };
+  useEffect(() => {
+    // console.log("useEffect called: " + props.propReminderList.length);
+    // if (props.propReminderList.length === 0) {
+    // console.log("getPropReminders called");
+    getPropReminders();
+    // }
+  }, []);
+
+
+
   return (
     <ScrollView style={[styles.container]}>
-      <View style={[styles.headerContainer]}>
+
+      <View style={{ flexDirection: 'row', flex: 1, }}>
+        <View style={{ flex: 1, minHeight: 100 }}>
+          <View style={{
+            flex: 1,
+            flexDirection: "column",
+            alignItems: "flex-start",
+            paddingRight: 16,
+            paddingLeft: 16,
+            // paddingBottom: 25,
+            paddingTop: 16,
+            // backgroundColor: "#d1d1d1",
+          }}>
+            <Text style={[styles.title]}>
+              Sell in {item.property_address.flat_number},{" "} {item.property_address.building_name},{" "}
+              {item.property_address.landmark_or_street}
+            </Text>
+            <Text style={[StyleSheet.subTitle]}>
+              {item.property_address.formatted_address}
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: 10 }}>
+            <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Next Meeting </Text>
+            <MaterialIcons name="alarm" size={20} color="black" />
+            <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}> 10:30</Text>
+          </View>
+
+        </View>
+
+        <TouchableOpacity
+          onPress={() => getMatched(item)}
+          style={{ flexDirection: 'row', marginTop: 8 }}
+        >
+          <View style={{
+            backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', right: 0, top: 0, alignItems: 'center', justifyContent: 'center',
+            width: 38, height: 20, marginRight: 0
+          }}>
+            <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 0 }}>{item.match_count}</Text>
+          </View>
+          <View style={{
+            position: 'absolute', right: 0, top: 20, transform: [{ rotate: '270deg' }],
+            backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
+            width: 70, height: 35, padding: 0, marginRight: -15, marginTop: 20, marginBottom: 15,
+          }}>
+            <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Matched</Text>
+          </View>
+
+
+        </TouchableOpacity>
+      </View>
+
+      {/* <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
           Sell in {item.property_address.building_name},{" "}
           {item.property_address.landmark_or_street}
@@ -19,7 +149,7 @@ const CommercialSellPropDetails = props => {
         <Text style={[StyleSheet.subTitle]}>
           {item.property_address.formatted_address}
         </Text>
-      </View>
+      </View> */}
       {/* <Image
         source={require("../../assets/images/p1.jpg")}
         resizeMode={"stretch"}
@@ -125,7 +255,27 @@ const CommercialSellPropDetails = props => {
       </View>
       {/* owner details */}
       <View style={styles.margin1}></View>
-      <View style={styles.overviewContainer}>
+      <AccordionListItem title="Owner" open={false} onPress={scrollToAccordion}>
+        <View style={styles.ownerDetails}>
+          <Text>{item.owner_details.name}</Text>
+          <Text>{item.owner_details.address}</Text>
+          <Text>+91 {item.owner_details.mobile1}</Text>
+        </View>
+      </AccordionListItem>
+      {loading ? <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(245,245,245, .4)'
+        }}
+      >
+        <ActivityIndicator animating size="large" color={'#000'} />
+        {/* <ActivityIndicator animating size="large" /> */}
+      </View> : <PropertyReminder navigation={navigation} reminderListX={reminderListX} />}
+
+
+      {/* <View style={styles.overviewContainer}>
         <View style={styles.overview}>
           <Text>Owner</Text>
           <View style={styles.horizontalLine}></View>
@@ -135,13 +285,21 @@ const CommercialSellPropDetails = props => {
             <Text>+91 {item.owner_details.mobile1}</Text>
           </View>
         </View>
-      </View>
+      </View> */}
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    backgroundColor: "white"
+  },
+  media: {
+    padding: 2,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
+  },
   card: {
     shadowOpacity: 0.0015 * 5 + 0.18,
     shadowRadius: 0.54 * 5,
@@ -157,13 +315,15 @@ const styles = StyleSheet.create({
     alignItems: "stretch"
   },
   headerContainer: {
+    flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
     paddingRight: 16,
     paddingLeft: 16,
-    paddingBottom: 16,
+    paddingBottom: 25,
     paddingTop: 16,
-    backgroundColor: "#d1d1d1"
+    backgroundColor: "#d1d1d1",
+
   },
   title: {
     fontSize: 16,
@@ -175,7 +335,6 @@ const styles = StyleSheet.create({
     color: "rgba(255 ,255 ,255 , 0.87)"
   },
   detailsContainer: {
-    // borderBottomWidth: 1,
     height: 60,
     borderTopWidth: 1,
     borderTopColor: "#C0C0C0",
@@ -212,6 +371,8 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   overviewContainer: {
+    flex: 1,
+    width: "100%",
     shadowOpacity: 0.0015 * 5 + 0.18,
     shadowRadius: 0.54 * 5,
     shadowOffset: {
@@ -243,11 +404,13 @@ const styles = StyleSheet.create({
   },
   margin1: {
     marginTop: 2
-    // paddingTop: 5
   },
   ownerDetails: {
+    flex: 1,
     paddingTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    marginLeft: 20,
+    width: "100%",
   }
 });
 

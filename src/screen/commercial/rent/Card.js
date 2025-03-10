@@ -15,6 +15,7 @@ import {
   TextInput
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { MaterialIcons } from "@expo/vector-icons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { ButtonGroup } from "@rneui/themed";
 import axios from "axios";
@@ -223,6 +224,10 @@ const Card = props => {
     props.setStartNavigationPoint("CustomerListForMeeting");
   };
 
+  const getMatched = (matchedProprtyItem) => {
+    navigation.navigate('MatchedCustomers', {matchedProprtyItem: matchedProprtyItem},);
+  }
+
   return (
     // <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
     <View style={styles.card}>
@@ -236,20 +241,56 @@ const Card = props => {
             {
               // backgroundColor: "rgba(245,245,245, 0.8)",
               flexDirection: "row",
-              justifyContent: "space-between"
+              // justifyContent: "space-between"
             }
           ]}
         >
-          <View style={[styles.headerContainer]}>
-            <Text style={[styles.title]}>
-              Rent in {item.property_address.building_name},{" "}
-              {item.property_address.landmark_or_street}
-            </Text>
-            <Text style={[StyleSheet.subTitle]}>
-              {item.property_address.formatted_address}
-              {/* {item.property_address.city}-{item.property_address.pin} */}
-            </Text>
+
+          <View style={{
+            flex: 1,
+            flexDirection: "row",
+            backgroundColor: "#ffffff",
+            marginTop: -5,
+            marginBottom: 5,
+          }}>
+            <TouchableOpacity onPress={() => getMatched(item)}>
+              <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
+                <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count}</Text>
+              </View>
+              <View style={{
+                position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
+                backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
+                width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
+              }}>
+                <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
+              </View>
+            </TouchableOpacity>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
+              <View style={{
+                flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: 40, paddingRight: 20,
+                paddingBottom: 20, paddingTop: 5, minHeight: 90
+              }}>
+                <Text style={[styles.title]}>
+                  Rent In {item.property_address.building_name},{" "}
+                  {item.property_address.landmark_or_street}
+                </Text>
+                <Text style={{ paddingRight: 10 }}>
+                  {item.property_address.formatted_address}
+                </Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: -15 }}>
+                <MaterialIcons name="alarm" size={20} color="black" />
+                <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>10:30</Text>
+              </View>
+
+            </View>
+
           </View>
+
+
+
+
+
           {displayCheckBox ? (
             <View
               style={{
@@ -529,14 +570,20 @@ const styles = StyleSheet.create({
     shadowOffset: {
       height: 0.6 * 5
     },
-    backgroundColor: "white"
+    backgroundColor: "white",
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
   cardImage: {
     // alignSelf: "stretch",
     marginBottom: 16,
     flex: 1,
     width: "100%",
-    height: "auto"
+    height: "auto",
+    topborderleftRadius: 15,
+    topborderRightRadius: 15,
     // justifyContent: "center",
     // alignItems: "stretch"
   },
@@ -544,16 +591,17 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
-    paddingRight: 16,
-    paddingLeft: 16,
-    paddingBottom: 16,
-    paddingTop: 16,
+    // paddingRight: 16,
+    // paddingLeft: 16,
+    // paddingBottom: 16,
+    // paddingTop: 16,
     // width: "100%",
     backgroundColor: "#ffffff"
   },
   title: {
     fontSize: 16,
-    fontWeight: "600"
+    fontWeight: "600",
+    paddingRight: 15
   },
   subTitle: {
     fontSize: 14,
@@ -676,7 +724,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     // top: Platform.OS == "ios" ? 20 : 0,
     right: 0,
-    bottom: 0,
+    // bottom: 0,
+    alignContent: "center",
     width: Sliding_Drawer_Width,
     flexDirection: "row"
   }
