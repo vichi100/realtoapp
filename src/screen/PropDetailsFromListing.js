@@ -1,4 +1,4 @@
-import React, { Component, useRef , useState, useEffect} from "react";
+import React, { Component, useRef, useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -33,7 +33,7 @@ const PropDetailsFromListing = props => {
   };
 
   const getMatched = (matchedProprtyItem) => {
-    navigation.navigate('MatchedCustomers', {matchedProprtyItem: matchedProprtyItem},);
+    navigation.navigate('MatchedCustomers', { matchedProprtyItem: matchedProprtyItem },);
   }
 
   const getPropReminders = () => {
@@ -73,12 +73,12 @@ const PropDetailsFromListing = props => {
       );
   };
   useEffect(() => {
-      // console.log("useEffect called: " + props.propReminderList.length);
-      // if (props.propReminderList.length === 0) {
-      // console.log("getPropReminders called");
-      getPropReminders();
-      // }
-    }, []);
+    // console.log("useEffect called: " + props.propReminderList.length);
+    // if (props.propReminderList.length === 0) {
+    // console.log("getPropReminders called");
+    getPropReminders();
+    // }
+  }, []);
 
   return (
     <ScrollView style={[styles.container]} ref={scrollViewRef}>
@@ -102,7 +102,7 @@ const PropDetailsFromListing = props => {
               {item.property_address.formatted_address}
             </Text>
           </View>
-          <View style={{  flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: 10 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: 10 }}>
             <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Next Meeting </Text>
             <MaterialIcons name="alarm" size={20} color="black" />
             <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}> 10:30</Text>
@@ -112,7 +112,7 @@ const PropDetailsFromListing = props => {
 
         <TouchableOpacity
           onPress={() => getMatched(item)}
-          style={{ flexDirection: 'row', marginTop:8}}
+          style={{ flexDirection: 'row', marginTop: 8 }}
         >
           <View style={{
             backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', right: 0, top: 0, alignItems: 'center', justifyContent: 'center',
@@ -173,7 +173,7 @@ const PropDetailsFromListing = props => {
       </View>
 
       <View style={styles.margin1}></View>
-      <AccordionListItem title="Details" onPress={scrollToAccordion} open = {true}> 
+      <AccordionListItem title="Details" onPress={scrollToAccordion} open={true}>
         <View style={styles.overviewContainer}>
           {/* <View style={styles.overview}>
           <View
@@ -251,7 +251,7 @@ const PropDetailsFromListing = props => {
         </View>
       </AccordionListItem>
       <View style={styles.margin1}></View>
-      <AccordionListItem title="Owner" open = {false} onPress={scrollToAccordion}>
+      <AccordionListItem title="Owner" open={false} onPress={scrollToAccordion}>
         <View style={styles.ownerDetails}>
           <Text>{item.owner_details.name}</Text>
           <Text>{item.owner_details.address}</Text>
@@ -262,16 +262,16 @@ const PropDetailsFromListing = props => {
         <Text style={{ color: "#000" }}>Mettings Details</Text>
       </View> */}
       {loading ? <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: 'rgba(245,245,245, .4)'
-                  }}
-                >
-                  <ActivityIndicator animating size="large" color={'#000'} />
-                  {/* <ActivityIndicator animating size="large" /> */}
-                </View> : <PropertyReminder navigation={navigation} reminderListX={reminderListX}/>}
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(245,245,245, .4)'
+        }}
+      >
+        <ActivityIndicator animating size="large" color={'#000'} />
+        {/* <ActivityIndicator animating size="large" /> */}
+      </View> : <PropertyReminder navigation={navigation} reminderListX={reminderListX} />}
       {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
         <Text style={{ color: "#000" }}>Matched Customer</Text>
         <Text style={{ color: "#000" }}>20</Text>
