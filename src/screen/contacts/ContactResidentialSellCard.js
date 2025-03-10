@@ -41,14 +41,16 @@ import axios from "axios";
 const Sliding_Drawer_Width = 195;
 const width = Dimensions.get("window").width;
 
-const ContactResidentialSellCard = props => {
+const ContactResidentialSellCard = props => {// this is for customer who want to buy property dont confuse by name "sell"
   const {
     navigation,
     item,
     disableDrawer,
     displayCheckBox,
     displayChat,
-    deleteMe
+    deleteMe,
+    showMatched = true,
+    navigatedFrom = "none",
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -62,6 +64,12 @@ const ContactResidentialSellCard = props => {
   const [message, setMessage] = React.useState(
     "I have property for this customer. Please call me. "
   );
+
+
+  const getMatched = (matchedCustomerItem) => {
+    navigation.navigate('MatchedProperties', { matchedCustomerItem: matchedCustomerItem },);
+  }
+
 
   const onChangeText = text => {
     console.log(text);
@@ -222,25 +230,56 @@ const ContactResidentialSellCard = props => {
             // { backgroundColor: "rgba(245,245,245, 0.8)" }
           ]}
         >
-          <Avatar
-            square
-            size={60}
-            title={
-              item.customer_details.name &&
-              item.customer_details.name.slice(0, 1)
-            }
-            activeOpacity={0.7}
-            titleStyle={{ color: "rgba(105,105,105, .9)" }}
-            // source={{
-            //   uri: props.item.photo
-            // }}
-            avatarStyle={{
-              borderWidth: 1,
-              borderColor: "rgba(127,255,212, .9)",
-              // borderTopLeftRadius: 1,
-              borderStyle: "solid"
-            }}
-          />
+
+
+          {showMatched && (
+            <>
+              <TouchableOpacity onPress={() => getMatched(item)}>
+                <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
+                  <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count}</Text>
+                </View>
+                <View style={{
+                  position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
+                  backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
+                  width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
+                }}>
+                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Matched</Text>
+                </View>
+              </TouchableOpacity>
+            </>
+          )}
+
+          {navigatedFrom === "MatchedCustomers" && (
+            <>
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text>61%</Text>
+                <Text>Match</Text>
+              </View>
+            </>
+          )}
+
+          <View style={{ marginLeft: { showMatched } ? 40 : 30, }}>
+
+            <Avatar
+              square
+              size={60}
+              title={
+                item.customer_details.name &&
+                item.customer_details.name.slice(0, 1)
+              }
+              activeOpacity={0.7}
+              titleStyle={{ color: "rgba(105,105,105, .9)" }}
+              // source={{
+              //   uri: props.item.photo
+              // }}
+              avatarStyle={{
+                borderWidth: 1,
+                borderColor: "rgba(127,255,212, .9)",
+                // borderTopLeftRadius: 1,
+                borderStyle: "solid"
+              }}
+            />
+          </View>
           <View
             style={{
               flexDirection: "row",
@@ -367,7 +406,7 @@ const ContactResidentialSellCard = props => {
       <View
         style={{
           flexDirection: "row",
-          marginLeft: 0, backgroundColor: "rgba(220,220,220, .2)"
+          marginLeft: 30, backgroundColor: "rgba(220,220,220, .2)"
         }}>
         <Ionicons
           name="location-sharp"
@@ -557,7 +596,10 @@ const styles = StyleSheet.create({
     // shadowOffset: {
     //   height: 0.6 * 5
     // },
-    backgroundColor: "white"
+    backgroundColor: "white",
+    borderColor: "#ffffff",
+    // borderWidth: 1,
+    marginTop: 2
   },
   cardImage: {
     // alignSelf: "stretch",
@@ -569,7 +611,7 @@ const styles = StyleSheet.create({
     // alignItems: "stretch"
   },
   headerContainer: {
-    flexDirection: "column",
+    flexDirection: "row",
     alignItems: "flex-start",
     paddingRight: 16,
     paddingLeft: 16,
@@ -594,7 +636,8 @@ const styles = StyleSheet.create({
     marginTop: 5
   },
   detailsContainer: {
-    // borderTopColor: "#DCDCDC",
+    // borderBottomWidth: 1,
+    // borderTopColor: "#ffffff",
     borderBottomColor: "#bdbdbd",
     // borderTopWidth: 1,
     borderBottomWidth: 1,
@@ -618,6 +661,11 @@ const styles = StyleSheet.create({
     height: "100%",
     width: 1,
     backgroundColor: "#909090"
+  },
+  MainContainer: {
+    // flex: 1,
+    // justifyContent: "center",
+    // alignItems: "center"
   },
 
   Root_Sliding_Drawer_Container: {
