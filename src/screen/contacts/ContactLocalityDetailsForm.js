@@ -317,7 +317,7 @@ const ContactLocalityDetailsForm = props => {
             />
           </View>
 
-          {propertyForIndex === 0 ? 
+          {propertyForIndex === 0 && selectedPropType.text.toLowerCase() == "Residential".toLowerCase()? 
           <View>
           <View style={{ alignContent: "flex-start" }}>
             <Text>Required for</Text>

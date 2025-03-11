@@ -355,7 +355,7 @@ const CustomerCommercialBuyCard = props => {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => makeCall(item.owner_details.mobile1)}
+                onPress={() => makeCall(item.customer_details.mobile1)}
                 style={{ padding: 15, backgroundColor: "#00bfa5" }}
               >
                 <Ionicons name="call" color={"#ffffff"} size={30} />

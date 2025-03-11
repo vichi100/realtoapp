@@ -68,6 +68,7 @@ const CustomerCommercialPropertyDetailsForm = props => {
 
   const [idealForSelectArray, setIdealForSelectArray] = useState([]);
   const [idealForArray, setIdealForArray] = useState(idealForArrayDict);
+  
 
   const dismissSnackBar = () => {
     setIsVisible(false);
@@ -95,10 +96,10 @@ const CustomerCommercialPropertyDetailsForm = props => {
       property_used_for: propertyTypeArray[propertyTypeIndex],
       building_type: buildingTypeArray[buildingIndex],
       // ideal_for: idealForSelectArray,
-      parking_type: parkingTypeArray[parkingTypeIndex]
+      parking_type: parkingTypeArray[parkingTypeIndex],
       // property_age: propertyAgeArray[propertyAgeIndex],
       // power_backup: powerBackupkArray[powerBackupIndex],
-      // property_size: propertySize
+      property_size: propertySize
     };
 
     customer["customer_property_details"] = customer_property_details;
@@ -191,7 +192,31 @@ const CustomerCommercialPropertyDetailsForm = props => {
               />
             </View>
 
-            <Text>Parkings</Text>
+            <Text>Looking for size in sqft*</Text>
+
+            <TextInput
+              mode="outlined"
+              style={styles.inputContainerStyle}
+              label="Property Size*"
+              keyboardType={"numeric"}
+              returnKeyType={"done"}
+              placeholder="Property Size"
+              value={propertySize}
+              // keyboardType={"numeric"}
+              onChangeText={text => setPropertySize(text)}
+              onFocus={() => setIsVisible(false)}
+              theme={{
+                colors: {
+                  // placeholder: "white",
+                  // text: "white",
+                  primary: "rgba(0,191,255, .9)",
+                  underlineColor: "transparent",
+                  background: "#ffffff"
+                }
+              }}
+            />
+
+            <Text style={{marginTop:10}}>Parkings*</Text>
             <View style={styles.doubleColSection}>
               <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
