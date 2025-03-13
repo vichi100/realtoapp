@@ -1,15 +1,27 @@
-import React, { Component, useState, useEffect } from "react";
-import { StyleSheet, View, Image, Text, ScrollView } from "react-native";
+import React, { Component, useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  ScrollView,
+  TouchableOpacity
+} from "react-native";
 import { Avatar } from "@rneui/themed";
 import { numDifferentiation, dateFormat } from "../../util/methods";
 import { connect } from "react-redux";
+import Reminder from "../Reminder";
 
 const CustomerDetailsCommercialBuyFromList = props => {
-  // const { navigation } = props;
+  const { navigation } = props;
   // const item = route.params;
   const item = props.anyItemDetails;
 
-  const [location, setLocation] = useState([])
+  const [location, setLocation] = useState([]);
+
+  const getMatched = (matchedCustomerItem) => {
+    navigation.navigate('MatchedProperties', { matchedCustomerItem: matchedCustomerItem },);
+  }
 
   useEffect(() => {
     // setItem(props.anyItemDetails);
@@ -31,7 +43,7 @@ const CustomerDetailsCommercialBuyFromList = props => {
           {
             flexDirection: "row",
             alignItems: "flex-start",
-            paddingRight: 16,
+            // paddingRight: 16,
             // paddingLeft: 16,
             // paddingBottom: 16,
             // paddingTop: 16,
@@ -59,7 +71,7 @@ const CustomerDetailsCommercialBuyFromList = props => {
             borderStyle: "solid"
           }}
         />
-        <View style={{ paddingLeft: 20, paddingTop: 10 }}>
+        <View style={{ paddingLeft: 20, paddingTop: 10, flex: 1, minHeight:95 }}>
           <Text style={[styles.title]}>{item.customer_details.name}</Text>
           <Text style={[StyleSheet.subTitle]}>
             {item.customer_details.mobile1}
@@ -68,6 +80,26 @@ const CustomerDetailsCommercialBuyFromList = props => {
             {item.customer_details.address}
           </Text>
         </View>
+        <TouchableOpacity
+          onPress={() => getMatched(item)}
+          style={{ flexDirection: 'row', marginTop: 0 }}
+        >
+          <View style={{
+            backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', right: 0, top: 0, alignItems: 'center', justifyContent: 'center',
+            width: 38, height: 20, marginRight: 0
+          }}>
+            <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 0 }}>{item.match_count}</Text>
+          </View>
+          <View style={{
+            position: 'absolute', right: 0, top: 20, transform: [{ rotate: '270deg' }],
+            backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
+            width: 70, height: 35, padding: 0, marginRight: -15, marginTop: 20, marginBottom: 15,
+          }}>
+            <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Matched</Text>
+          </View>
+
+
+        </TouchableOpacity>
       </View>
 
       {/* <Image
@@ -188,6 +220,7 @@ const CustomerDetailsCommercialBuyFromList = props => {
       </View>
       {/* owner details */}
       <View style={styles.margin1}></View>
+      <Reminder navigation={navigation} customerData={item} isSpecificRemider = {true}/>
       {/* <View style={styles.overviewContainer}>
         <View style={styles.overview}>
           <Text>Owner</Text>

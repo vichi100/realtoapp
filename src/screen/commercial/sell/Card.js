@@ -31,7 +31,8 @@ import {
   setPropReminderList,
   setPropListForMeeting,
   setStartNavigationPoint,
-  setCustomerDetailsForMeeting
+  setCustomerDetailsForMeeting,
+  setPropertyDetails,
 } from "../../../reducers/Action";
 import { SERVER_URL } from "../../../util/constant";
 
@@ -216,6 +217,7 @@ const Card = props => {
   const onClickMeeting = item => {
     props.setCustomerDetailsForMeeting(null);
     // props.setPropListForMeeting([]);
+    props.setPropertyDetails(item);
     navigation.navigate("Meeting", {
       item: item,
       category: "property"
@@ -746,7 +748,8 @@ const mapDispatchToProps = {
   setPropReminderList,
   setPropListForMeeting,
   setStartNavigationPoint,
-  setCustomerDetailsForMeeting
+  setCustomerDetailsForMeeting,
+  setPropertyDetails,
 };
 export default connect(
   mapStateToProps,

@@ -40,7 +40,7 @@ import { getBottomSpace } from "react-native-iphone-x-helper";
 
 CustomerListForMeeting = props => {
   const { navigation } = props;
-  console.log("props.propertyDetails.property_type: ", props.propertyDetails.property_type)
+  // console.log("props.propertyDetails.property_type: ", props.propertyDetails.property_type)
   const propertyType = props.propertyDetails.property_type;
   const propertyFor = props.propertyDetails.property_for;
   const [search, setSearch] = useState("");

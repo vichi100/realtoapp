@@ -217,6 +217,9 @@ const Meeting = props => {
   };
 
   const send = async () => {
+    try{
+
+    
     // console.log("item: " + JSON.stringify(item));
 
     const reminderDetails = {
@@ -268,6 +271,10 @@ const Meeting = props => {
           clearState();
         }
       );
+    }catch(error){
+      console.log("error: " + JSON.stringify(error));
+
+    }
   };
 
   const getPropReminders = () => {
