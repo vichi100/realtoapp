@@ -26,6 +26,10 @@ import Slider from "../../components/Slider";
 import SliderX from "../../components/SliderX";
 import ContactResidentialRentCard from "./ContactResidentialRentCard";
 import ContactResidentialSellCard from "./ContactResidentialSellCard";
+
+import ContactCommercialRentCard from "./CustomerCommercialRentCard";
+import ContactCommercialBuyCard from "./CustomerCommercialBuyCard";
+
 import axios from "axios";
 import { SERVER_URL } from "../../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
@@ -356,8 +360,19 @@ const ContactsResidential = props => {
       property_id: matchedProprtyItem.property_id,
     };
     setLoading(true);
+
+    let finalURL;
+
+    if (matchedProprtyItem.property_type == "Commercial") {
+      finalURL = SERVER_URL + "/matchedCommercialCustomerList";
+
+    } else if (matchedProprtyItem.property_type== "Residential") {
+      finalURL = SERVER_URL + "/matchedResidentialCustomerList";
+
+    }
+
     // console.log(JSON.stringify(user));
-    axios(SERVER_URL + "/matchedResidentialCustomerList", {
+    axios(finalURL, {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -438,6 +453,20 @@ const ContactsResidential = props => {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Buy")}>
             <ContactResidentialSellCard navigation={navigation} item={item} deleteMe={deleteMe} />
+          </TouchableOpacity>
+        );
+      }
+    } else if (item.customer_locality.property_type === "Commercial") {
+      if (item.customer_locality.property_for === "Rent") {
+        return (
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
+            <ContactCommercialRentCard navigation={navigation} item={item} deleteMe={deleteMe} showMatched={false} navigatedFrom={"MatchedCustomers"} />
+          </TouchableOpacity>
+        );
+      } else if (item.customer_locality.property_for === "Buy") {
+        return (
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Buy")}>
+            <ContactCommercialBuyCard navigation={navigation} item={item} deleteMe={deleteMe} />
           </TouchableOpacity>
         );
       }
@@ -550,7 +579,7 @@ const ContactsResidential = props => {
                 data={matchedCustomerDetailsMine}
                 renderItem={ItemView}
                 keyExtractor={(item, index) => index.toString()}
-              /> : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+              /> : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{ fontSize: 14 }}>No Matched Customer Found</Text>
               </View>
             )}
@@ -559,9 +588,9 @@ const ContactsResidential = props => {
                 data={matchedCustomerDetailsOther}
                 renderItem={ItemView}
                 keyExtractor={(item, index) => index.toString()}
-              />: <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ fontSize: 14 }}>No Matched Customer Found</Text>
-            </View>
+              /> : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 14 }}>No Matched Customer Found</Text>
+              </View>
             )}
             <View style={styles.fab}>
               <TouchableOpacity

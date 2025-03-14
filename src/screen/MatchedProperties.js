@@ -28,6 +28,9 @@ import Slider from "../components/Slider";
 import SliderX from "../components/SliderX";
 import CardResidentialRent from "./Card";
 import CardResidentialSell from "./CardSell";
+
+import CardCommercialRent from "../screen/commercial/rent/Card";
+import CardCommercialSell from "../screen/commercial/sell/Card";
 import axios from "axios";
 import { SERVER_URL } from "../util/constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
@@ -422,9 +425,19 @@ const ListingResidential = props => {
     const customer = {
       customer_id: matchedCustomerItem.customer_id,
     };
+    let finalURL;
+
+    if(matchedCustomerItem.customer_locality.property_type == "Commercial"){
+      finalURL = SERVER_URL + "/matchedCommercialProptiesList";
+        
+    }else if(matchedCustomerItem.customer_locality.property_type == "Residential"){
+       finalURL = SERVER_URL + "/matchedResidentialProptiesList";
+
+    }
+      
     setLoading(true);
     // // console.log(JSON.stringify(user));
-    axios(SERVER_URL + "/matchedResidentialProptiesList", {
+    axios(finalURL, {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -525,6 +538,23 @@ const ListingResidential = props => {
         return (
           // <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
           <CardResidentialSell navigation={navigation} item={item} deleteMe={deleteMe} />
+          // </TouchableOpacity>
+        );
+      }
+    }else if (item.property_type.toLowerCase() === "Commercial".toLowerCase()) {
+      if (item.property_for.toLowerCase() === "Rent".toLowerCase()) {
+        // rentPropCount.push("1");
+        // console.log(rentPropCount.length);
+        return (
+          // <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
+          <CardCommercialRent navigation={navigation} item={item} deleteMe={deleteMe} />
+          // </TouchableOpacity>
+        );
+      } else if (item.property_for.toLowerCase() === "Sell".toLowerCase()) {
+        // sellPropCount.push("1");
+        return (
+          // <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
+          <CardCommercialSell navigation={navigation} item={item} deleteMe={deleteMe} />
           // </TouchableOpacity>
         );
       }
