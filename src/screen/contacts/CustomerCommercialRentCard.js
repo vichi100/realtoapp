@@ -249,7 +249,7 @@ const CustomerCommercialRentCard = props => {
           {navigatedFrom === "MatchedCustomers" && (
             <>
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Text>61%</Text>
+                <Text>62%</Text>
                 <Text>Match</Text>
               </View>
             </>

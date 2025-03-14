@@ -427,24 +427,24 @@ const ListingResidential = props => {
     };
     let finalURL;
 
-    if(matchedCustomerItem.customer_locality.property_type == "Commercial"){
-      if(matchedCustomerItem.customer_locality.property_for == "Rent"){
+    if (matchedCustomerItem.customer_locality.property_type == "Commercial") {
+      if (matchedCustomerItem.customer_locality.property_for == "Rent") {
         finalURL = SERVER_URL + "/matchedCommercialProptiesRentList";
-      }else if(matchedCustomerItem.customer_locality.property_for == "Buy"){
+      } else if (matchedCustomerItem.customer_locality.property_for == "Buy") {
         finalURL = SERVER_URL + "/matchedCommercialProptiesBuyList";
       }
-      
-        
-    }else if(matchedCustomerItem.customer_locality.property_type == "Residential"){
-      if(matchedCustomerItem.customer_locality.property_for == "Rent"){
+
+
+    } else if (matchedCustomerItem.customer_locality.property_type == "Residential") {
+      if (matchedCustomerItem.customer_locality.property_for == "Rent") {
         finalURL = SERVER_URL + "/matchedResidentialProptiesRentList";
-      }else if(matchedCustomerItem.customer_locality.property_for == "Buy"){
+      } else if (matchedCustomerItem.customer_locality.property_for == "Buy") {
         finalURL = SERVER_URL + "/matchedResidentialProptiesBuyList";
       }
-       
+
 
     }
-      
+
     setLoading(true);
     // // console.log(JSON.stringify(user));
     axios(finalURL, {
@@ -457,8 +457,8 @@ const ListingResidential = props => {
     }).then(
       response => {
         // console.log("response.data:      ", response.data);
-        
-      
+
+
         response.data.matchedPropertyDetailsMine.map(item => {
           item.image_urls.map(image => {
             image.url = SERVER_URL + image.url
@@ -539,33 +539,33 @@ const ListingResidential = props => {
         // rentPropCount.push("1");
         // console.log(rentPropCount.length);
         return (
-          // <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-          <CardResidentialRent navigation={navigation} item={item} deleteMe={deleteMe} />
-          // </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
+            <CardResidentialRent navigation={navigation} item={item} deleteMe={deleteMe} />
+          </TouchableOpacity>
         );
       } else if (item.property_for.toLowerCase() === "Sell".toLowerCase()) {
         // sellPropCount.push("1");
         return (
-          // <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
-          <CardResidentialSell navigation={navigation} item={item} deleteMe={deleteMe} />
-          // </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
+            <CardResidentialSell navigation={navigation} item={item} deleteMe={deleteMe} />
+          </TouchableOpacity>
         );
       }
-    }else if (item.property_type.toLowerCase() === "Commercial".toLowerCase()) {
+    } else if (item.property_type.toLowerCase() === "Commercial".toLowerCase()) {
       if (item.property_for.toLowerCase() === "Rent".toLowerCase()) {
         // rentPropCount.push("1");
         // console.log(rentPropCount.length);
         return (
-          // <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-          <CardCommercialRent navigation={navigation} item={item} deleteMe={deleteMe} />
-          // </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
+            <CardCommercialRent navigation={navigation} item={item} deleteMe={deleteMe} />
+          </TouchableOpacity>
         );
       } else if (item.property_for.toLowerCase() === "Sell".toLowerCase()) {
         // sellPropCount.push("1");
         return (
-          // <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
-          <CardCommercialSell navigation={navigation} item={item} deleteMe={deleteMe} />
-          // </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
+            <CardCommercialSell navigation={navigation} item={item} deleteMe={deleteMe} />
+          </TouchableOpacity>
         );
       }
     }
@@ -1035,7 +1035,7 @@ const ListingResidential = props => {
           onPress={() => navigation.navigate("Add")}
         >
           <AntDesign name="pluscircleo" size={40} color="#ffffff" /> */}
-          {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
+        {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
         {/* </TouchableOpacity> */}
       </View>
   );
