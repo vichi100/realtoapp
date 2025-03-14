@@ -364,10 +364,19 @@ const ContactsResidential = props => {
     let finalURL;
 
     if (matchedProprtyItem.property_type == "Commercial") {
-      finalURL = SERVER_URL + "/matchedCommercialCustomerList";
+      if(matchedProprtyItem.property_for == "Rent"){
+        finalURL = SERVER_URL + "/matchedCommercialCustomerRentList";
+      }else if(matchedProprtyItem.property_for == "Sell"){
+        finalURL = SERVER_URL + "/matchedCommercialCustomerSellList";
+      }
 
     } else if (matchedProprtyItem.property_type== "Residential") {
-      finalURL = SERVER_URL + "/matchedResidentialCustomerList";
+      if(matchedProprtyItem.property_for == "Rent"){
+        finalURL = SERVER_URL + "/matchedResidentialCustomerRentList";
+      }else if(matchedProprtyItem.property_for == "Sell"){
+        finalURL = SERVER_URL + "/matchedResidentialCustomerBuyList";
+      }
+      
 
     }
 

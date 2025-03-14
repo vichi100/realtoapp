@@ -428,10 +428,20 @@ const ListingResidential = props => {
     let finalURL;
 
     if(matchedCustomerItem.customer_locality.property_type == "Commercial"){
-      finalURL = SERVER_URL + "/matchedCommercialProptiesList";
+      if(matchedCustomerItem.customer_locality.property_for == "Rent"){
+        finalURL = SERVER_URL + "/matchedCommercialProptiesRentList";
+      }else if(matchedCustomerItem.customer_locality.property_for == "Buy"){
+        finalURL = SERVER_URL + "/matchedCommercialProptiesBuyList";
+      }
+      
         
     }else if(matchedCustomerItem.customer_locality.property_type == "Residential"){
-       finalURL = SERVER_URL + "/matchedResidentialProptiesList";
+      if(matchedCustomerItem.customer_locality.property_for == "Rent"){
+        finalURL = SERVER_URL + "/matchedResidentialProptiesRentList";
+      }else if(matchedCustomerItem.customer_locality.property_for == "Buy"){
+        finalURL = SERVER_URL + "/matchedResidentialProptiesBuyList";
+      }
+       
 
     }
       
