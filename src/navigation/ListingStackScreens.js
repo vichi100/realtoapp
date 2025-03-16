@@ -15,6 +15,7 @@ import CommercialSellPropDetails from "../screen/commercial/sell/CommercialSellP
 import AddNewPropStackScreens from "./AddNewPropStackScreens";
 import CustomerMeetingDetails from "../screen/contacts/CustomerMeetingDetails";
 import CustomerListForMeeting from "../screen/CustomerListForMeeting";
+import PropertyListForMeeting from "../screen/contacts/PropertyListForMeeting";
 import AddNewContactsStackScreens from "./AddNewCustomerStackScreens"
 import ContactsResidential from "../screen/contacts/ContactsResidential"
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
@@ -182,6 +183,13 @@ const ListingStackScreens = ({ navigation, route }) => {
         component={CustomerDetailsResidentialBuyFromList}
         options={{ title: "Customer Details" }}
       />
+      <Stack.Screen
+        name="PropertyListForMeeting"
+        component={PropertyListForMeeting}
+        options={{ title: "Property List", tabBarVisible: false }}
+        navigationOptions={{ tabBarVisible: false }}
+      />
+
     </Stack.Navigator>
   );
 };

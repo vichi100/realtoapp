@@ -63,13 +63,13 @@ const CustomerMeeting = props => {
   const [visible, setVisible] = React.useState(false);
   const [loading, setLoading] = useState(false);
   const [reminderListX, setReminderListX] = useState([]);
-  
+
 
   const clearState = () => {
     setNewDate("");
     setNewTime("");
-    setClientName("");
-    setClientMobile("");
+    // setClientName("");
+    // setClientMobile("");
     setHour("");
     setMinutes("");
     setAMPMIndex(-1);
@@ -201,7 +201,7 @@ const CustomerMeeting = props => {
     send();
   };
 
-  const send = async () => {
+  const send = () => {
     // console.log("item: " + JSON.stringify(item));
     const categoryArray = [];
     props.propListForMeeting.map(x => {
@@ -277,7 +277,7 @@ const CustomerMeeting = props => {
             // })
             // const x = [...props.propReminderList, ...response.data];
             // // console.log("X: " + x);
-            
+
             props.setPropReminderList(response.data);
             setReminderListX(response.data);
             setLoading(false);
@@ -363,6 +363,18 @@ const CustomerMeeting = props => {
                 containerBorderRadius={10}
               />
             </View>
+            <DatePicker
+            isVisible={visible}
+            mode={'single'}
+            initialDate={new Date()}
+            minDate={new Date()}
+            onCancel={onDismiss}
+            onConfirm={onChange}
+            dateStringFormat={"dd-mmm-yyyy"}
+            // backgroundColor='#ffffff'
+            // modalStyles={{alignContent:'center', justifyContent:'center', flex:1}}
+            // withoutModal={true}
+          />
 
             <TextInput
               label="Client Name*"
@@ -531,27 +543,21 @@ const CustomerMeeting = props => {
           animationType="slide" // optional, default is 'slide' on ios/android and 'none' on web
           locale={"en"} // optional, default is automically detected by your system
         /> */}
-        <DatePicker
-          isVisible={visible}
-          mode={'single'}
-          initialDate={new Date()}
-          minDate={new Date()}
-          onCancel={onDismiss}
-          onConfirm={onChange}
-          dateStringFormat={"dd-mmm-yyyy"}
-        />
-        <TimePickerModal
-          visible={timeVisible}
-          onDismiss={onDismissTimePicker}
-          onConfirm={onConfirmTimePicker}
-          hours={12} // default: current hours
-          minutes={15} // default: current minutes
-          label="Select time" // optional, default 'Select time'
-          cancelLabel="Cancel" // optional, default: 'Cancel'
-          confirmLabel="Ok" // optional, default: 'Ok'
-          animationType="fade" // optional, default is 'none'
-          locale={"en"} // optional, default is automically detected by your system
-        />
+        {/* <View style={{alignContent:'center', justifyContent:'center', flex:1}} > */}
+          
+          <TimePickerModal
+            visible={timeVisible}
+            onDismiss={onDismissTimePicker}
+            onConfirm={onConfirmTimePicker}
+            hours={12} // default: current hours
+            minutes={15} // default: current minutes
+            label="Select time" // optional, default 'Select time'
+            cancelLabel="Cancel" // optional, default: 'Cancel'
+            confirmLabel="Ok" // optional, default: 'Ok'
+            animationType="fade" // optional, default is 'none'
+            locale={"en"} // optional, default is automically detected by your system
+          />
+        {/* </View> */}
       </KeyboardAwareScrollView>
       <Snackbar
         visible={isVisible}

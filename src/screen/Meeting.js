@@ -216,63 +216,63 @@ const Meeting = props => {
     send();
   };
 
-  const send = async () => {
-    try{
+  const send = () => {
+    try {
 
-    
-    // console.log("item: " + JSON.stringify(item));
 
-    const reminderDetails = {
-      // user_id: item.agent_id,
-      // category: category,
-      // category_id: item.property_id,
-      // category_type: item.property_type,
-      // reminder_for: reminderForArray[reminderForIndex],
-      // client_name: clientName.trim(),
-      // client_mobile: clientMobile.trim(),
-      // meeting_date: newDate.trim(),
-      // meeting_time: newTime.trim(), // newTime.trim(),
+      // console.log("item: " + JSON.stringify(item));
 
-      user_id: props.userDetails.works_for,
-      user_id_secondary: item.agent_id, // in case of other agent_id
-      category: category,
-      category_ids: [item.property_id],
-      category_type: item.property_type,
-      category_for: item.property_for,
-      reminder_for: reminderForArray[reminderForIndex],
-      client_name: clientName.trim(),
-      client_mobile: clientMobile.trim(),
-      client_id: clientId,
-      meeting_date: newDate.trim(),
-      meeting_time: newTime.trim() // newTime.trim()
-    };
-    axios
-      .post(
-        SERVER_URL + "/addNewReminder",
-        // SERVER_URL + "/addNewResidentialRentProperty",
-        // await AsyncStorage.getItem("property")
-        // JSON.stringify({ vichi: "vchi" })
-        reminderDetails
-      )
-      .then(
-        response => {
-          // console.log("response.data ", response.data);
-          // navigation.navigate("CardDetails");
-          if (response.data !== "fail") {
-            const x = [reminderDetails, ...props.propReminderList];
-            reminderListX.push(reminderDetails);
-            const m = [...reminderListX];
-            props.setPropReminderList(x);
-            setReminderListX(m);
+      const reminderDetails = {
+        // user_id: item.agent_id,
+        // category: category,
+        // category_id: item.property_id,
+        // category_type: item.property_type,
+        // reminder_for: reminderForArray[reminderForIndex],
+        // client_name: clientName.trim(),
+        // client_mobile: clientMobile.trim(),
+        // meeting_date: newDate.trim(),
+        // meeting_time: newTime.trim(), // newTime.trim(),
+
+        user_id: props.userDetails.works_for,
+        user_id_secondary: item.agent_id, // in case of other agent_id
+        category: category,
+        category_ids: [item.property_id],
+        category_type: item.property_type,
+        category_for: item.property_for,
+        reminder_for: reminderForArray[reminderForIndex],
+        client_name: clientName.trim(),
+        client_mobile: clientMobile.trim(),
+        client_id: clientId,
+        meeting_date: newDate.trim(),
+        meeting_time: newTime.trim() // newTime.trim()
+      };
+      axios
+        .post(
+          SERVER_URL + "/addNewReminder",
+          // SERVER_URL + "/addNewResidentialRentProperty",
+          // await AsyncStorage.getItem("property")
+          // JSON.stringify({ vichi: "vchi" })
+          reminderDetails
+        )
+        .then(
+          response => {
+            // console.log("response.data ", response.data);
+            // navigation.navigate("CardDetails");
+            if (response.data !== "fail") {
+              const x = [reminderDetails, ...props.propReminderList];
+              reminderListX.push(reminderDetails);
+              const m = [...reminderListX];
+              props.setPropReminderList(x);
+              setReminderListX(m);
+            }
+            clearState();
+          },
+          error => {
+            // console.log(error);
+            clearState();
           }
-          clearState();
-        },
-        error => {
-          // console.log(error);
-          clearState();
-        }
-      );
-    }catch(error){
+        );
+    } catch (error) {
       console.log("error: " + JSON.stringify(error));
 
     }
@@ -370,6 +370,15 @@ const Meeting = props => {
                 </Text>
               </View>
             </TouchableOpacity>
+            <DatePicker
+              isVisible={visible}
+              mode={'single'}
+              initialDate={new Date()}
+              minDate={new Date()}
+              onCancel={onDismiss}
+              onConfirm={onChange}
+              dateStringFormat={"dd-mmm-yyyy"}
+            />
             {clientName ? (
               <View>
                 <TextInput
@@ -475,32 +484,24 @@ const Meeting = props => {
           >
             <ActivityIndicator animating size="large" color={'#000'} />
             {/* <ActivityIndicator animating size="large" /> */}
-          </View> : <PropertyReminder navigation={navigation} reminderListX={reminderListX}/>}
+          </View> : <PropertyReminder navigation={navigation} reminderListX={reminderListX} />}
         </ScrollView>
-        
+
       </KeyboardAwareScrollView>
-      <DatePicker
-        isVisible={visible}
-        mode={'single'}
-        initialDate={new Date()}
-        minDate={new Date()}
-        onCancel={onDismiss}
-        onConfirm={onChange}
-        dateStringFormat={"dd-mmm-yyyy"}
+
+
+      <TimePickerModal
+        visible={timeVisible}
+        onDismiss={onDismissTimePicker}
+        onConfirm={onConfirmTimePicker}
+        hours={12} // default: current hours
+        minutes={15} // default: current minutes
+        label="Select time" // optional, default 'Select time'
+        cancelLabel="Cancel" // optional, default: 'Cancel'
+        confirmLabel="Ok" // optional, default: 'Ok'
+        animationType="fade" // optional, default is 'none'
+        locale={"en"} // optional, default is automically detected by your system
       />
-        
-        <TimePickerModal
-          visible={timeVisible}
-          onDismiss={onDismissTimePicker}
-          onConfirm={onConfirmTimePicker}
-          hours={12} // default: current hours
-          minutes={15} // default: current minutes
-          label="Select time" // optional, default 'Select time'
-          cancelLabel="Cancel" // optional, default: 'Cancel'
-          confirmLabel="Ok" // optional, default: 'Ok'
-          animationType="fade" // optional, default is 'none'
-          locale={"en"} // optional, default is automically detected by your system
-        />
       <Snackbar
         visible={isVisible}
         textMessage={errorMessage}
