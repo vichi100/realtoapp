@@ -209,7 +209,8 @@ const CustomerMeeting = props => {
     });
 
     const reminderDetails = {
-      user_id: item.agent_id,
+      user_id: props.userDetails.works_for,
+      user_id_secondary: item.agent_id, // in case of other agent_id
       category: category,
       category_ids: categoryArray,
       category_type: item.customer_locality.property_type,

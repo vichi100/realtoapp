@@ -158,6 +158,9 @@ realtodb>
 
 14) when ever any new proerty / customer match show user that new matching is found in list as well deatils. this will work as match_count is increase
 
+15) if the property / customer belongs to others agent then in meeting please mention "call with other agent" meeting 
+
+16) when sharing any property deatils make sure you replace original owner deatils
 
 
 

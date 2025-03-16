@@ -20,6 +20,7 @@ import ContactsResidential from "../screen/contacts/ContactsResidential"
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import CustomerMeeting from "../screen/contacts/CustomerMeeting";
 import MatchedCustomers from "../screen/contacts/MatchedCustomers";
+import MatchedProperties from "../screen/MatchedProperties";
 import CustomerDetailsResidentialRentFromList from "../screen/contacts/CustomerDetailsResidentialRentFromList";
 import CustomerDetailsResidentialBuyFromList from "../screen/contacts/CustomerDetailsResidentialBuyFromList";
 
@@ -90,6 +91,11 @@ const ListingStackScreens = ({ navigation, route }) => {
           tabBarButton: () => null,
         }}
 
+      />
+      <Stack.Screen
+        name="MatchedProperties"
+        component={MatchedProperties}
+        options={{ title: "Matched Properties" }}
       />
 
       <Stack.Screen

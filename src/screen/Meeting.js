@@ -233,7 +233,8 @@ const Meeting = props => {
       // meeting_date: newDate.trim(),
       // meeting_time: newTime.trim(), // newTime.trim(),
 
-      user_id: item.agent_id,
+      user_id: props.userDetails.works_for,
+      user_id_secondary: item.agent_id, // in case of other agent_id
       category: category,
       category_ids: [item.property_id],
       category_type: item.property_type,
