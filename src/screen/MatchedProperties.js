@@ -93,6 +93,8 @@ const ListingResidential = props => {
   const [matchedPropertiesDetailsMine, setMatchedPropertiesDetailsMine] = useState([]);
   const [matchedPropertiesDetailsOther, setMatchedPropertiesDetailsOther] = useState([]);
 
+  const [selectedTab, setSelectedTab] = useState(0);
+
   // useEffect(() => {
   //   console.log(rent)
   //   setRentPropCount(rent.current);
@@ -408,11 +410,11 @@ const ListingResidential = props => {
   useEffect(() => {
     // // console.log(
     //   "props.userDetail33 " +
-    //     JSON.stringify(props.userDetails.works_for[0])
+    //     JSON.stringify(props.userDetails.works_for)
     // );
     if (
       props.userDetails &&
-      props.userDetails.works_for[0] !== null
+      props.userDetails.works_for !== null
     ) {
       getListing();
     }
@@ -629,109 +631,83 @@ const ListingResidential = props => {
       {/* <ActivityIndicator animating size="large" /> */}
     </View> :
       <View style={{ flex: 1 }}>
-        <View style={styles.searchBar}>
-          <AntDesign name="search1" size={20} color="#999" style={{ marginRight: 5, }} />
+        {/* <View style={styles.searchBar}>
+          <AntDesign name="search1" size={20} color="#999" style={{ marginRight: 5, }} /> */}
           {/* <View style={{ flexDirection: "row", margin: 10, justifyContent: "space-between" }}>
             <Text>For Rent: {rentPropCount.length}</Text>
             <Text>For Sell: {sellPropCount.length}</Text>
           </View> */}
-          <TextInput
+          {/* <TextInput
             style={styles.textInputStyle}
             onChangeText={text => searchFilterFunction(text)}
             value={search}
             underlineColorAndroid="transparent"
             placeholder="Search by property address, owner"
             placeholderTextColor="#000"
-          />
-        </View>
-        {matchedPropertiesDetailsOther.length > 0 || matchedPropertiesDetailsMine.length > 0 ? (
-          <View style={styles.container}>
-            <FlatList
-              data={matchedPropertiesDetailsMine}
-              //data defined in constructor
-              ItemSeparatorComponent={ItemSeparatorView}
-              //Item Separator View
-              renderItem={ItemView}
-              keyExtractor={(item, index) => index.toString()}
-            // refreshControl={
-            //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            // }
+          /> */}
+        {/* </View> */}
 
-            />
-            <FlatList
-              data={matchedPropertiesDetailsOther}
-              //data defined in constructor
-              ItemSeparatorComponent={ItemSeparatorView}
-              //Item Separator View
-              renderItem={ItemView}
-              keyExtractor={(item, index) => index.toString()}
-            // refreshControl={
-            //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            // }
 
-            />
-            <View style={styles.fab}>
-              <TouchableOpacity
-                onPress={() => toggleSortingBottomNavigationView()}
-                style={styles.fabIcon1}
-              >
-                <MaterialCommunityIcons name="sort" color={"#ffffff"} size={26} />
-              </TouchableOpacity>
-              <View style={styles.verticalLine}></View>
-              <TouchableOpacity
-                onPress={() => toggleBottomNavigationView()}
-                style={styles.fabIcon2}
-              >
-                <MaterialCommunityIcons
-                  name="filter-variant-plus"
-                  color={"#ffffff"}
-                  size={26}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        ) : (
-          <View style={styles.container}>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                textAlign: "center"
-              }}
-            >
-              <Text style={{ textAlign: "center" }}>
-                You have no property listing
-              </Text>
-              <TouchableOpacity onPress={() => navigateTo()}>
-                <Text
-                  style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
-                >
-                  Add New Property
-                </Text>
-              </TouchableOpacity>
-            </View>
+        {1 > 0 ? (
+                  <View style={styles.container}>
+                    <View style={styles.tabContainer}>
+                      <TouchableOpacity
+                        style={[styles.tab, selectedTab === 0 && styles.activeTab]}
+                        onPress={() => setSelectedTab(0)}
+                      >
+                        <Text style={styles.tabText}>My Customer</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={[styles.tab, selectedTab === 1 && styles.activeTab]}
+                        onPress={() => setSelectedTab(1)}
+                      >
+                        <Text style={styles.tabText}>Other's Customer</Text>
+                      </TouchableOpacity>
+                    </View>
+                    {selectedTab === 0 && (
+                      matchedPropertiesDetailsMine.length > 0 ? <FlatList
+                        data={matchedPropertiesDetailsMine}
+                        renderItem={ItemView}
+                        keyExtractor={(item, index) => index.toString()}
+                      /> : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 14 }}>No Matched Customer Found</Text>
+                      </View>
+                    )}
+                    {selectedTab === 1 && (
+                      matchedPropertiesDetailsOther.length > 0 ? <FlatList
+                        data={matchedPropertiesDetailsOther}
+                        renderItem={ItemView}
+                        keyExtractor={(item, index) => index.toString()}
+                      /> : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 14 }}>No Matched Customer Found</Text>
+                      </View>
+                    )}
+                    <View style={styles.fab}>
+                      <TouchableOpacity
+                        onPress={() => toggleSortingBottomNavigationView()}
+                        style={styles.fabIcon1}
+                      >
+                        <MaterialCommunityIcons name="sort" color={"#ffffff"} size={26} />
+                      </TouchableOpacity>
+                      <View style={styles.verticalLine}></View>
+                      <TouchableOpacity
+                        onPress={() => toggleBottomNavigationView()}
+                        style={styles.fabIcon2}
+                      >
+                        <MaterialCommunityIcons
+                          name="filter-variant-plus"
+                          color={"#ffffff"}
+                          size={26}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ) : (
+                  <View style={styles.container}></View>
+                )}
 
-            <View style={styles.fab}>
-              <TouchableOpacity
-                onPress={() => toggleSortingBottomNavigationView()}
-                style={styles.fabIcon1}
-              >
-                <MaterialCommunityIcons name="sort" color={"#ffffff"} size={26} />
-              </TouchableOpacity>
-              <View style={styles.verticalLine}></View>
-              <TouchableOpacity
-                onPress={() => toggleBottomNavigationView()}
-                style={styles.fabIcon2}
-              >
-                <MaterialCommunityIcons
-                  name="filter-variant-plus"
-                  color={"#ffffff"}
-                  size={26}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>)}
+
+        
         {/* Bottom for filters */}
         <BottomSheet
           visible={visible}
@@ -1140,7 +1116,29 @@ const styles = StyleSheet.create({
   },
   marginBottom10: {
     marginBottom: 10
-  }
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+    backgroundColor: "#FFFFFF",
+    paddingBottom: 15,
+    paddingTop: 10,
+    // marginBottom: 10,
+  },
+  tab: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    backgroundColor: '#f0f0f0',
+    marginLeft: 20,
+  },
+  activeTab: {
+    backgroundColor: " rgba(102, 204, 153, .9)",
+  },
+  tabText: {
+    color: '#000',
+  },
 });
 
 const mapStateToProps = state => ({

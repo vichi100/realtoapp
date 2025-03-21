@@ -21,6 +21,7 @@ import CardResidentialSell from "../CardSell";
 import CardCommercialRent from "../commercial/rent/Card";
 import CardCommercialSell from "../commercial/sell/Card";
 import {SERVER_URL} from "../../util/constant";
+import { connect } from "react-redux";
 
 const CustomerMeetingDetails = props => {
   const { navigation } = props;
@@ -39,6 +40,7 @@ const CustomerMeetingDetails = props => {
   const getCustomerAndMeetingDetails = () => {
     // console.log("reminderObj:     ", reminderObj);
     const queryObj = {
+      req_user_id: props.userDetails.works_for,
       client_id: reminderObj.client_id,
       category_ids: reminderObj.category_ids,
       category: reminderObj.category,
@@ -283,4 +285,13 @@ const CustomerMeetingDetails = props => {
   );
 };
 
-export default CustomerMeetingDetails;
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails,
+  propReminderList: state.AppReducer.propReminderList
+});
+export default connect(
+  mapStateToProps,
+  null
+)(CustomerMeetingDetails);
+
+// export default CustomerMeetingDetails;

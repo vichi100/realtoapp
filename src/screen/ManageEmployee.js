@@ -55,7 +55,7 @@ const ManageEmployee = props => {
       return;
     }
     const user = {
-      user_id: props.userDetails.works_for[0],
+      user_id: props.userDetails.works_for,
       company_name: props.userDetails.company_name,
       address: props.userDetails.address,
       city: props.userDetails.city,

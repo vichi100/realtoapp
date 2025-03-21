@@ -419,7 +419,7 @@ const ListingCommercial = props => {
   useEffect(() => {
     if (
       props.userDetails &&
-      props.userDetails.works_for[0] !== null
+      props.userDetails.works_for !== null
     ) {
       getListing();
     }
@@ -428,7 +428,7 @@ const ListingCommercial = props => {
   const getListing = () => {
     // console.log("props.userDetails4 " + JSON.stringify(props.userDetails));
     const user = {
-      agent_id: props.userDetails.works_for[0]
+      agent_id: props.userDetails.works_for
     };
     setLoading(true);
 

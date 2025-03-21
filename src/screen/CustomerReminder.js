@@ -32,7 +32,7 @@ const CustomerReminder = props => {
       return;
     }
     const agentId = {
-      agent_id: props.userDetails.works_for,
+      req_user_id: props.userDetails.works_for,
       // customer_id: item.customer_id
     };
     axios

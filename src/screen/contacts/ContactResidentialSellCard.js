@@ -103,7 +103,7 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
     };
 
     const messageDetails = {
-      // agent_id: props.userDetails.works_for[0]
+      // agent_id: props.userDetails.works_for
       sender_details: sender_details,
       receiver_details: receiver_details,
       subject: subject,

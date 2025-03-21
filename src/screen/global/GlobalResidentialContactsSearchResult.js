@@ -333,7 +333,7 @@ const GlobalResidentialContactsSearchResult = props => {
     // const agentDetailsX = getAgentDetails();
     // console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
     const user = {
-      agent_id: props.userDetails.works_for[0]
+      agent_id: props.userDetails.works_for
     };
     // console.log(JSON.stringify(user));
     axios(SERVER_URL + "/residentialCustomerList", {

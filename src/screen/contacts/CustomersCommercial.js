@@ -377,7 +377,7 @@ const CustomersCommercial = props => {
   const getListing = () => {
     // console.log("props.userDetails4 " + JSON.stringify(props.userDetails));
     const user = {
-      agent_id: props.userDetails.works_for[0]// here we get null pointer excpetion when user is created first time
+      agent_id: props.userDetails.works_for// here we get null pointer excpetion when user is created first time
     };
 
     setLoading(true);

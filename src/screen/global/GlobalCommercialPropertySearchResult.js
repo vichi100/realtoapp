@@ -418,7 +418,7 @@ const GlobalCommercialPropertySearchResult = props => {
   const getListing = () => {
     console.log("props.userDetails4 " + JSON.stringify(props.userDetails));
     const user = {
-      agent_id: props.userDetails.works_for[0]
+      agent_id: props.userDetails.works_for
     };
 
     axios(SERVER_URL + "/commercialPropertyListings", {

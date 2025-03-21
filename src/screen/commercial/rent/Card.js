@@ -97,7 +97,7 @@ const Card = props => {
     };
 
     const messageDetails = {
-      // agent_id: props.userDetails.works_for[0]
+      // agent_id: props.userDetails.works_for
       sender_details: sender_details,
       receiver_details: receiver_details,
       subject: subject,

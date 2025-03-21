@@ -58,6 +58,7 @@ const Reminder = props => {
 
 const getReminderListById = (customerData) =>{
   const customerDatax = {
+    req_user_id: props.userDetails.works_for,
     customer_id: customerData.customer_id,
     property_type: customerData.customer_locality.property_type,// Residential, commercial
     property_for: customerData.customer_locality.property_for,// Rent, sell
@@ -109,7 +110,7 @@ const getReminderListById = (customerData) =>{
 
   const getReminderList = () =>{
     const agentId = {
-      agent_id: props.userDetails.works_for[0]
+      req_user_id: props.userDetails.works_for,
     };
     axios
       .post(

@@ -340,11 +340,11 @@ const ContactsResidential = props => {
   useEffect(() => {
     // // console.log(
     //   "props.userDetail33 " +
-    //     JSON.stringify(props.userDetails.works_for[0])
+    //     JSON.stringify(props.userDetails.works_for)
     // );
     if (
       props.userDetails &&
-      props.userDetails.works_for[0] !== null
+      props.userDetails.works_for !== null
     ) {
       getListing();
     }

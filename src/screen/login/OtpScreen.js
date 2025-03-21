@@ -28,7 +28,7 @@ const OtpScreen = (props) => {
 
 	useEffect(() => {
 		setLoading(true);
-		const otpX = Math.floor(Math.random() * 900000) + 100000;
+		const otpX = "999999";//Math.floor(Math.random() * 900000) + 100000;
 		const mobileX = props.userMobileNumber;
 		generateOTP(otpX, mobileX);
 	}, []);

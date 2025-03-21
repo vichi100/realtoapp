@@ -76,7 +76,7 @@ const Home = props => {
 
   const getTotalListingSummary = () => {
     const agent = {
-      agent_id: props.userDetails.works_for[0]
+      agent_id: props.userDetails.works_for
     };
     axios(SERVER_URL + "/getTotalListingSummary", {
       method: "post",

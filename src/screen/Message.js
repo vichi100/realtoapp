@@ -37,7 +37,8 @@ const Message = props => {
   const getMessagesList = () => {
     console.log("agent_id: ", props.userDetails);
     const agentId = {
-      agent_id: props.userDetails.works_for[0]
+      req_user_id: props.userDetails.works_for,
+      // customer_id: item.customer_id
     };
     axios
       .post(
@@ -63,7 +64,7 @@ const Message = props => {
     // subject is property or customer
     console.log("item: ", item);
     //   const agentId = {
-    //       agent_id: props.userDetails.works_for[0]
+    //       agent_id: props.userDetails.works_for
     //   };
     axios
       .post(
