@@ -55,6 +55,7 @@ const ManageEmployee = props => {
       return;
     }
     const user = {
+      req_user_id: props.userDetails.works_for,
       user_id: props.userDetails.works_for,
       company_name: props.userDetails.company_name,
       address: props.userDetails.address,
@@ -96,7 +97,8 @@ const ManageEmployee = props => {
 
   const getEmployeeList = () => {
     // console.log("user_id: " + JSON.stringify(props.userDetails));
-    const user = { user_id: props.userDetails.id };
+    const user = { req_user_id: props.userDetails.works_for,
+      user_id: props.userDetails.id };
     axios(SERVER_URL+"/getEmployeeList", {
       method: "post",
       headers: {

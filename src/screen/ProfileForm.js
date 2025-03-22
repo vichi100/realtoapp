@@ -47,6 +47,7 @@ const ProfileForm = props => {
     }
     // // console.log("0");
     const profileDetails = {
+      req_user_id: props.userDetails.works_for,
       user_id: props.userDetails.id,
       name: name.trim(),
       company: company.trim(),

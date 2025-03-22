@@ -357,6 +357,7 @@ const ContactsResidential = props => {
     // const agentDetailsX = getAgentDetails();
     // console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
     const property = {
+      req_user_id: props.userDetails.works_for,
       property_id: matchedProprtyItem.property_id,
     };
     setLoading(true);

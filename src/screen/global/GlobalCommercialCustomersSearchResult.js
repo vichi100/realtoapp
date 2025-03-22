@@ -370,6 +370,7 @@ const GlobalCommercialCustomersSearchResult = props => {
   const getListing = () => {
     // console.log("props.userDetails4 " + JSON.stringify(props.userDetails));
     const user = {
+      req_user_id: props.userDetails.works_for,
       agent_id: props.userDetails.works_for
     };
 

@@ -96,6 +96,7 @@ const Profile = props => {
 
   const deleteAgentAccount = () => {
     const agent = {
+      req_user_id: props.userDetails.works_for,
       agent_id: props.userDetails.id
     };
     axios(SERVER_URL + "/deleteAgentAccount", {

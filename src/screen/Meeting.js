@@ -232,7 +232,7 @@ const Meeting = props => {
         // client_mobile: clientMobile.trim(),
         // meeting_date: newDate.trim(),
         // meeting_time: newTime.trim(), // newTime.trim(),
-
+        req_user_id: props.userDetails.works_for,
         user_id: props.userDetails.works_for,
         user_id_secondary: item.agent_id, // in case of other agent_id
         category: category,
@@ -281,6 +281,7 @@ const Meeting = props => {
   const getPropReminders = () => {
     // console.log("item getPropReminders: " + propertyIdX);
     const propertyId = {
+      req_user_id: props.userDetails.works_for,
       property_id: propertyIdX
     };
     setLoading(true);

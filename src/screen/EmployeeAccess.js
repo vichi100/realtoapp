@@ -45,6 +45,7 @@ const EmployeeAccess = props => {
 
   const removeEmployee = empIdToBeRemoved => {
     const user = {
+      req_user_id: props.userDetails.works_for,
       agent_id: props.userDetails.works_for,
       employee_id: empIdToBeRemoved
     };
@@ -74,6 +75,7 @@ const EmployeeAccess = props => {
 
   const updateEmployeeEditRights = employeeId => {
     const user = {
+      req_user_id: props.userDetails.works_for,
       employee_id: employeeId,
       access_rights: isEditEnabled ? "read" : "edit"
     };

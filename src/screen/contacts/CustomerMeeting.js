@@ -253,6 +253,7 @@ const CustomerMeeting = props => {
   const getCustomerReminderList = () => {
     // console.log("item getPropReminders: " + propertyIdX);
     const propertyId = {
+      req_user_id: props.userDetails.works_for,
       customer_id: item.customer_id
     };
     setLoading(true);

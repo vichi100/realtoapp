@@ -38,6 +38,7 @@ const CustomerMeetingDetails = props => {
   const getCustomerAndMeetingDetails = () => {
     // console.log("reminderObj:     ", reminderObj);
     const queryObj = {
+      req_user_id: props.userDetails.works_for,
       client_id: reminderObj.client_id,
       category_ids: reminderObj.category_ids,
       category: reminderObj.category,

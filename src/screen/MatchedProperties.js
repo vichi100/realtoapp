@@ -425,6 +425,7 @@ const ListingResidential = props => {
     // const agentDetailsX = getAgentDetails();
     // console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
     const customer = {
+      req_user_id: props.userDetails.works_for,
       customer_id: matchedCustomerItem.customer_id,
     };
     let finalURL;

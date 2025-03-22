@@ -76,6 +76,7 @@ const Home = props => {
 
   const getTotalListingSummary = () => {
     const agent = {
+      req_user_id: props.userDetails.works_for,
       agent_id: props.userDetails.works_for
     };
     axios(SERVER_URL + "/getTotalListingSummary", {
@@ -98,6 +99,7 @@ const Home = props => {
 
   const reactivateAccount = () => {
     const agent = {
+      req_user_id: props.userDetails.works_for,
       agent_id: props.userDetails.id
     };
     axios(SERVER_URL + "/reactivateAccount", {

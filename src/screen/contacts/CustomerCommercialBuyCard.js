@@ -103,6 +103,7 @@ const CustomerCommercialBuyCard = props => {
 
     const messageDetails = {
       // agent_id: props.userDetails.works_for
+      req_user_id: props.userDetails.works_for,
       sender_details: sender_details,
       receiver_details: receiver_details,
       subject: subject,

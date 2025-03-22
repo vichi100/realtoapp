@@ -62,8 +62,13 @@ const Message = props => {
 
   const getSubjectDetails = item => {
     // subject is property or customer
+
+    /// CHECK THIS THIS DONT HAVE req_user_id: props.userDetails.works_for,
+
+
     console.log("item: ", item);
     //   const agentId = {
+    // req_user_id: props.userDetails.works_for,
     //       agent_id: props.userDetails.works_for
     //   };
     axios

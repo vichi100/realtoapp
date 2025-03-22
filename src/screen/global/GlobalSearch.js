@@ -174,6 +174,7 @@ const GlobalSearch = props => {
     today.setDate(today.getDate() + daysFromReqWithin);
    
     const queryObject = {
+      req_user_id: props.userDetails.works_for,
       city: city.trim(),
       selectedLocationArray: selectedLocationArray,
       lookingFor: lookingFor,
