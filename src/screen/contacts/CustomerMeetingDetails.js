@@ -20,7 +20,7 @@ import CardResidentialSell from "../CardSell";
 
 import CardCommercialRent from "../commercial/rent/Card";
 import CardCommercialSell from "../commercial/sell/Card";
-import {SERVER_URL} from "../../util/constant";
+import {SERVER_URL} from "../../util/Constant";
 import { connect } from "react-redux";
 
 const CustomerMeetingDetails = props => {

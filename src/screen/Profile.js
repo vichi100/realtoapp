@@ -31,7 +31,7 @@ import {
   setPropReminderList
 } from "../reducers/Action";
 import axios from "axios";
-import { SERVER_URL } from "../util/constant";
+import { SERVER_URL } from "../util/Constant";
 import Home from "../screen/Home"
 
 // import Share from "react-native-share";

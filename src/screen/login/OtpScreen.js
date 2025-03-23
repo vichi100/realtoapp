@@ -18,7 +18,7 @@ import { setUserDetails } from '../../reducers/Action';
 import { OtpInput } from "react-native-otp-entry";
 // import OTPTextView from './OTPTextView';
 // import OTPInputView from '@twotalltotems/react-native-otp-input';
-import { SERVER_URL } from '../../util/constant';
+import { SERVER_URL } from '../../util/Constant';
 
 const OtpScreen = (props) => {
 	const { navigation } = props;

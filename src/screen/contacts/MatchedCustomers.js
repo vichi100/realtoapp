@@ -31,7 +31,7 @@ import ContactCommercialRentCard from "./CustomerCommercialRentCard";
 import ContactCommercialBuyCard from "./CustomerCommercialBuyCard";
 
 import axios from "axios";
-import { SERVER_URL } from "../../util/constant";
+import { SERVER_URL } from "../../util/Constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import {
   setResidentialCustomerList,

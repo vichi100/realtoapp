@@ -6,7 +6,7 @@ import { ButtonGroup } from "@rneui/themed";
 import { connect } from 'react-redux';
 import axios from 'axios';
 // import { setUserDetails } from '../../reducers/Action';
-// import { SERVER_URL } from '../../util/constant';
+// import { SERVER_URL } from '../../util/Constant';
 
 const options = [
 	{

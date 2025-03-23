@@ -13,7 +13,7 @@ import {
   Dimensions
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { SERVER_URL } from "../util/constant"
+import { SERVER_URL } from "../util/Constant"
 // https://github.com/kamalpandey/react-native-image-slider-show
 
 const reactNativePackage = require("react-native/package.json");

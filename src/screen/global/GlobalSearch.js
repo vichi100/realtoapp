@@ -19,7 +19,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Snackbar from "../../components/SnackbarComponent";
 import CustomButtonGroup from "../../components/CustomButtonGroup";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/constant";
+import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/Constant";
 import Slider from "../../components/Slider";
 import { connect } from "react-redux";
 import { setPropertyType, setPropertyDetails, setCustomerDetails, setResidentialPropertyList,
@@ -28,7 +28,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import axios from "axios";
 
-// import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/constant";
+// import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/Constant";
 
 // import Button from "../../components/Button";
 // Dynamic query

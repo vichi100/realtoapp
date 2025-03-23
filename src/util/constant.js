@@ -12,4 +12,20 @@ export const SERVER_URL = SERVER_URL_DEV;
 // export const SERVER_URL = "http://192.168.0.100:3000/";// Prod
 
 
+export const APP_NAME = "Realto";
+export const APP_VERSION = "1.0.0";
+export const APP_BUILD = "1";
+export const APP_BUILD_DATE = "2021-09-01";
+export const APP_BUILD_TIME = "10:00:00";
+export const APP_BUILD_TIMESTAMP = "20210901100000";
+export const APP_BUILD_TIMESTAMP_LONG = "2021-09-01 10:00:00";
+export const APP_BUILD_TIMESTAMP_LONG_FORMAT = "YYYY-MM-DD HH:mm:ss";
+export const APP_BUILD_TIMESTAMP_SHORT_FORMAT = "YYYY-MM-DD";
+export const APP_BUILD_TIMESTAMP_TIME_FORMAT = "HH:mm:ss";
+export const APP_BUILD_TIMESTAMP_DATE_FORMAT = "YYYY-MM-DD";
+export const APP_BUILD_TIMESTAMP_DATE_TIME_FORMAT = "YYYY-MM-DD HH:mm:ss";
+export const APP_BUILD_TIMESTAMP_DATE_TIME_FORMAT_LONG = "YYYY-MM-DD HH:mm:ss";
+export const APP_BUILD_TIMESTAMP_DATE_TIME_FORMAT_SHORT = "YYYY-MM-DD HH:mm:ss";    
+
+
 // 9685065678

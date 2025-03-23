@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 import { setAnyItemDetails } from "../reducers/Action";
-import {SERVER_URL} from "../util/constant";
+import {SERVER_URL} from "../util/Constant";
 
 const Message = props => {
   const { navigation } = props;

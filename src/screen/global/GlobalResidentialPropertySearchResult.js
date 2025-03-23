@@ -27,7 +27,7 @@ import SliderX from "../../components/SliderX";
 import CardResidentialRent from "../Card"; //"./Card";
 import CardResidentialSell from "../CardSell";
 import axios from "axios";
-import { SERVER_URL } from "../../util/constant";
+import { SERVER_URL } from "../../util/Constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import { setResidentialPropertyList } from "../../reducers/Action";
 import { addDays, numDifferentiation } from "../../util/methods";

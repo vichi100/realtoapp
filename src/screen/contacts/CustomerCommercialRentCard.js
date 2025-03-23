@@ -23,7 +23,7 @@ import { Avatar } from "@rneui/themed";
 import axios from "axios";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { numDifferentiation } from "../../util/methods";
-import { SERVER_URL } from "../../util/constant";
+import { SERVER_URL } from "../../util/Constant";
 import {
   setUserMobile,
   setUserDetails,

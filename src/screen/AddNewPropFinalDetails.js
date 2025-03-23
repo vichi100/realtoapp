@@ -11,7 +11,7 @@ import {
 import Slideshow from "../components/Slideshow";
 import Button from "../components/Button";
 import axios from "axios";
-import { SERVER_URL } from "../util/constant";
+import { SERVER_URL } from "../util/Constant";
 import { numDifferentiation } from "../util/methods";
 import Snackbar from "../components/SnackbarComponent";
 import { setPropertyDetails, setResidentialPropertyList, setStartNavigationPoint } from "../reducers/Action";

@@ -10,7 +10,7 @@ import {
 import Slideshow from "../components/Slideshow";
 import Button from "../components/Button";
 import axios from "axios";
-import { SERVER_URL } from "../util/constant";
+import { SERVER_URL } from "../util/Constant";
 import { numDifferentiation, dateFormat } from "../util/methods";
 import { connect } from "react-redux";
 import { setPropertyDetails, setCommercialPropertyList, setStartNavigationPoint } from "../reducers/Action";

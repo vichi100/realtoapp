@@ -35,7 +35,7 @@ import { Divider } from "react-native-paper";
 import { SocialIcon } from "@rneui/themed";
 import Slider from "../components/Slider";
 import axios from "axios";
-import { SERVER_URL } from "../util/constant";
+import { SERVER_URL } from "../util/Constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 
 CustomerListForMeeting = props => {
@@ -70,7 +70,8 @@ CustomerListForMeeting = props => {
       req_user_id: props.userDetails.works_for,
       agent_id: props.userDetails.works_for,
       property_type: propertyType,
-      property_for: propertyFor
+      property_for: propertyFor,
+      property_id: props.propertyDetails.property_id
     };
     // console.log(JSON.stringify(queryObj));
     axios(SERVER_URL + "/getCustomerListForMeeting", {

@@ -25,7 +25,7 @@ import { ButtonGroup } from "@rneui/themed";
 import Slideshow from "../components/Slideshow";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { numDifferentiation } from "../util/methods";
-import { SERVER_URL, WEB_APP_URL } from "../util/constant";
+import { SERVER_URL, WEB_APP_URL } from "../util/Constant";
 import { MaterialIcons } from "@expo/vector-icons";
 import {
   setUserMobile,

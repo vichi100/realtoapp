@@ -16,7 +16,7 @@ import {
 import { setUserDetails, setPropReminderList } from "../reducers/Action";
 import axios from "axios";
 import { connect } from "react-redux";
-import { SERVER_URL } from "../util/constant";
+import { SERVER_URL } from "../util/Constant";
 
 // rezar
 // rezo

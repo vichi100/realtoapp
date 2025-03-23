@@ -19,7 +19,7 @@ import { ButtonGroup } from "@rneui/themed";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../../components/SnackbarComponent";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/constant";
+import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/Constant";
 import { connect } from "react-redux";
 import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
 

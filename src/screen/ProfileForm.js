@@ -16,7 +16,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Snackbar from "../components/SnackbarComponent";
 import { setUserDetails } from "../reducers/Action";
 import { connect } from "react-redux";
-import {SERVER_URL} from "../util/constant";
+import {SERVER_URL} from "../util/Constant";
 
 import axios from "axios";
 

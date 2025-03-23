@@ -25,7 +25,7 @@ import { SocialIcon } from "@rneui/themed";
 import CustomerCommercialRentCard from "./CustomerCommercialRentCard";
 import CustomerCommercialBuyCard from "./CustomerCommercialBuyCard";
 import axios from "axios";
-import { SERVER_URL } from "../../util/constant";
+import { SERVER_URL } from "../../util/Constant";
 import Slider from "../../components/Slider";
 import SliderX from "../../components/SliderX";
 import {

@@ -24,7 +24,7 @@ import SliderX from "../../components/SliderX";
 import CardRent from "../commercial/rent/Card";
 import CardSell from "../commercial/sell/Card";
 import axios from "axios";
-import { SERVER_URL } from "../../util/constant";
+import { SERVER_URL } from "../../util/Constant";
 import { setCommercialPropertyList } from "../../reducers/Action";
 import { addDays, numDifferentiation } from "../../util/methods";
 import Snackbar from "../../components/SnackbarComponent";

@@ -32,7 +32,7 @@ import CardResidentialSell from "./CardSell";
 import CardCommercialRent from "../screen/commercial/rent/Card";
 import CardCommercialSell from "../screen/commercial/sell/Card";
 import axios from "axios";
-import { SERVER_URL } from "../util/constant";
+import { SERVER_URL } from "../util/Constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import {
   setResidentialPropertyList,

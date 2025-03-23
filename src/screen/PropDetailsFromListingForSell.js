@@ -16,7 +16,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import AccordionListItem from '../components/AccordionListItem';
 import { MaterialIcons } from "@expo/vector-icons";
 import PropertyReminder from './PropertyReminder';
-import { SERVER_URL } from "../util/constant";
+import { SERVER_URL } from "../util/Constant";
 import axios from "axios";
 
 const PropDetailsFromListingForSell = props => {

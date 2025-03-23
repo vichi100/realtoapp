@@ -14,7 +14,7 @@ import { Avatar } from "@rneui/themed";
 import { setEmployeeList } from "../reducers/Action";
 import { connect } from "react-redux";
 import axios from "axios";
-import { SERVER_URL } from "../util/constant";
+import { SERVER_URL } from "../util/Constant";
 
 const EmployeeAccess = props => {
   const [isReadEnabled, setIsReadEnabled] = useState(false);

@@ -21,7 +21,7 @@ import { Avatar } from "@rneui/themed";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { CheckBox } from "@rneui/themed";
 import { numDifferentiation } from "../../util/methods";
-import { SERVER_URL } from "../../util/constant";
+import { SERVER_URL } from "../../util/Constant";
 import { connect } from "react-redux";
 import {
   setUserMobile,

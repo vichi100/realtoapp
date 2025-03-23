@@ -17,7 +17,7 @@ import {
 import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
-import { SERVER_URL } from "../util/constant";
+import { SERVER_URL } from "../util/Constant";
 import { useIsFocused } from '@react-navigation/native';
 
 const Reminder = props => {

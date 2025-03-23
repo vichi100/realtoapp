@@ -31,7 +31,7 @@ import {
   setCustomerDetailsForMeeting
 } from "../reducers/Action";
 import PropertyReminder from "./PropertyReminder";
-import { SERVER_URL } from "../util/constant";
+import { SERVER_URL } from "../util/Constant";
 import DatePicker, { RangeOutput, SingleOutput } from 'react-native-neat-date-picker';
 
 const reminderForArray = ["Call", "Meeting", "Property Visit"];
@@ -243,6 +243,7 @@ const Meeting = props => {
         client_name: clientName.trim(),
         client_mobile: clientMobile.trim(),
         client_id: clientId,
+        agent_id_of_client: props.customerDetailsForMeeting.agent_id,
         meeting_date: newDate.trim(),
         meeting_time: newTime.trim() // newTime.trim()
       };

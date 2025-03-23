@@ -24,7 +24,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Snackbar from "../../components/SnackbarComponent";
 import axios from "axios";
 import { dateFormat } from "../../util/methods";
-import { SERVER_URL } from "../../util/constant";
+import { SERVER_URL } from "../../util/Constant";
 import {
   setUserMobile,
   setUserDetails,
@@ -219,6 +219,7 @@ const CustomerMeeting = props => {
       client_name: clientName.trim(),
       client_mobile: clientMobile.trim(),
       client_id: item.customer_id,
+      agent_id_of_client: item.agent_id,
       meeting_date: newDate.trim(),
       meeting_time: newTime.trim() // newTime.trim()
     };

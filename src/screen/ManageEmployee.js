@@ -21,7 +21,7 @@ import EmployeeList from "./EmployeeList";
 import axios from "axios";
 import { setEmployeeList } from "../reducers/Action";
 import { connect } from "react-redux";
-import {SERVER_URL} from "../util/constant";
+import {SERVER_URL} from "../util/Constant";
 
 const ManageEmployee = props => {
   const { navigation } = props;

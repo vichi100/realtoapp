@@ -17,7 +17,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { ButtonGroup } from "@rneui/themed";
 import Button from "../../components/Button";
 import axios from "axios";
-import {SERVER_URL} from "../../util/constant";
+import {SERVER_URL} from "../../util/Constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import {
   setResidentialPropertyList,

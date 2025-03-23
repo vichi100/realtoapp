@@ -162,5 +162,11 @@ realtodb>
 
 16) when sharing any property deatils make sure you replace original owner deatils
 
+### Remider create logic
+1) I m creating reminder for my property with my customer then I should be able to see both proerty and customer original deatils
+2) I m creating reminder for my property but with Other customer then I should be able to see my property details but I should not
+   be able to customer original details but should see customer Agent details
+3) I m creating reminder for my customer but with other property then I should be able to see my customer original deatils but not able to see
+   property original addess deatils and owner details , owner details should be replace with agent details
 
 
