@@ -22,6 +22,7 @@ import CardCommercialRent from "../commercial/rent/Card";
 import CardCommercialSell from "../commercial/sell/Card";
 import {SERVER_URL} from "../../util/Constant";
 import { connect } from "react-redux";
+import AppConstant from "../../util/AppConstant";
 
 const CustomerMeetingDetails = props => {
   const { navigation } = props;

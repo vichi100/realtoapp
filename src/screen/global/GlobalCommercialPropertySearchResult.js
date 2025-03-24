@@ -28,6 +28,7 @@ import { SERVER_URL } from "../../util/Constant";
 import { setCommercialPropertyList } from "../../reducers/Action";
 import { addDays, numDifferentiation } from "../../util/methods";
 import Snackbar from "../../components/SnackbarComponent";
+import AppConstant from "../../util/AppConstant";
 
 const buildingTypeArray = [
   "Businesses park ",

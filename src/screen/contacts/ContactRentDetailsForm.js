@@ -159,7 +159,7 @@ const ContactRentDetailsForm = props => {
               // label="Expected Rent*"
               placeholder="Max Rent"
               value={expectedRent}
-              keyboardType={"numeric"}
+              // keyboardType={"numeric"}
               onChangeText={text => setExpectedRent(text)}
               onFocus={() => setIsVisible(false)}
               theme={{
@@ -185,7 +185,7 @@ const ContactRentDetailsForm = props => {
               // label="Expected Deposit*"
               placeholder="Max Deposit"
               value={expectedDeposit}
-              keyboardType={"numeric"}
+              // keyboardType={"numeric"}
               onChangeText={text => setExpectedDeposit(text)}
               onFocus={() => setIsVisible(false)}
               theme={{

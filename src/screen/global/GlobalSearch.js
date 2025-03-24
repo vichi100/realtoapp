@@ -25,6 +25,7 @@ import { connect } from "react-redux";
 import { setPropertyType, setPropertyDetails, setCustomerDetails, setResidentialPropertyList,
   setAnyItemDetails, setGlobalSearchResult } from "../../reducers/Action";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import AppConstant from "../../util/AppConstant";
 
 import axios from "axios";
 

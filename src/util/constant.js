@@ -1,5 +1,5 @@
 
-export const SERVER_URL_DEV = "http://192.168.1.5:7002";  // "http://192.168.1.104:7000"; //"http://209.145.57.26:7000"; 
+export const SERVER_URL_DEV = "http://192.168.1.3:7002";  // "http://192.168.1.104:7000"; //"http://209.145.57.26:7000"; 
 export const SERVER_URL_PROD = 'http://realtoapp.com:7000';//"http://192.168.0.100:7000";
 export const WEB_APP_URL_DEV = "http://192.168.0.100:7006";//"http://192.168.1.104:7006";
 export const WEB_APP_URL_PROD = "http://realtoapp.com:7006";//"http://192.168.1.104:7006";
@@ -25,7 +25,4 @@ export const APP_BUILD_TIMESTAMP_TIME_FORMAT = "HH:mm:ss";
 export const APP_BUILD_TIMESTAMP_DATE_FORMAT = "YYYY-MM-DD";
 export const APP_BUILD_TIMESTAMP_DATE_TIME_FORMAT = "YYYY-MM-DD HH:mm:ss";
 export const APP_BUILD_TIMESTAMP_DATE_TIME_FORMAT_LONG = "YYYY-MM-DD HH:mm:ss";
-export const APP_BUILD_TIMESTAMP_DATE_TIME_FORMAT_SHORT = "YYYY-MM-DD HH:mm:ss";    
-
-
-// 9685065678
+export const APP_BUILD_TIMESTAMP_DATE_TIME_FORMAT_SHORT = "YYYY-MM-DD HH:mm:ss";

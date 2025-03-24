@@ -30,6 +30,7 @@ import SliderX from "../../components/SliderX";
 import { setCommercialCustomerList } from "../../reducers/Action";
 import { addDays, numDifferentiation } from "../../util/methods";
 import Snackbar from "../../components/SnackbarComponent";
+import AppConstant from "../../util/Constant";
 
 const buildingTypeArray = [
   "Businesses park ",

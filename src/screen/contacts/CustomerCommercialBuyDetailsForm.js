@@ -123,7 +123,7 @@ const CustomerCommercialBuyDetailsForm = props => {
               }
               placeholder="Expected Buy Price*"
               value={expectedSellPrice}
-              keyboardType={"numeric"}
+              // keyboardType={"numeric"}
               onChangeText={text => setExpectedSellPrice(text)}
               onFocus={() => setIsVisible(false)}
               theme={{

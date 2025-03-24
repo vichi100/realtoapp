@@ -20,6 +20,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import PropertyReminder from './PropertyReminder';
 import { SERVER_URL } from "../util/Constant";
 import axios from "axios";
+import AppConstant from "../util/AppConstant";
 
 const PropDetailsFromListing = props => {
   const { navigation } = props;

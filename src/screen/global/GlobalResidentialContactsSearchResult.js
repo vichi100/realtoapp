@@ -31,6 +31,7 @@ import { getBottomSpace } from "react-native-iphone-x-helper";
 import { setResidentialCustomerList } from "../../reducers/Action";
 import { addDays, numDifferentiation } from "../../util/methods";
 import Snackbar from "../../components/SnackbarComponent";
+import AppConstant from "../../util/AppConstant";
 
 const lookingForArray = ["Rent", "Buy"];
 const homeTypeArray = ["Apartment", "Villa", "Independent House"];
