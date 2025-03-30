@@ -72,7 +72,8 @@ const PropertyListForMeeting = props => {
       agent_id: props.userDetails.works_for,
       property_type: propertyType,
       property_for: propertyFor,
-      customer_id: props.customerDetails.customer_id
+      customer_id: props.customerDetails.customer_id,
+      customer_agent_id: props.customerDetails.agent_id,
     };
     // console.log(JSON.stringify(user));
     axios(SERVER_URL + "/getPropertyListingForMeeting", {

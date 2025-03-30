@@ -656,13 +656,13 @@ const ListingResidential = props => {
                         style={[styles.tab, selectedTab === 0 && styles.activeTab]}
                         onPress={() => setSelectedTab(0)}
                       >
-                        <Text style={styles.tabText}>My Customer</Text>
+                        <Text style={styles.tabText}>My Properties</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={[styles.tab, selectedTab === 1 && styles.activeTab]}
                         onPress={() => setSelectedTab(1)}
                       >
-                        <Text style={styles.tabText}>Other's Customer</Text>
+                        <Text style={styles.tabText}>Other's Properties</Text>
                       </TouchableOpacity>
                     </View>
                     {selectedTab === 0 && (

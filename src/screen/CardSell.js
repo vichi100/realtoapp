@@ -270,7 +270,7 @@ const Card = props => {
           }}>
             <TouchableOpacity onPress={() => getMatched(item)}>
               <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
-                <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count}</Text>
+                <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? 0 : item.match_count}</Text>
               </View>
               <View style={{
                 position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],

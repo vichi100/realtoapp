@@ -111,6 +111,8 @@ const AddNewPropCommercialRentFinalDetails = props => {
             props.setPropertyDetails(null);
             props.setCommercialPropertyList([...props.commercialPropertyList, response.data])
             // navigation.navigate("Listing");
+            // Dont understand why else part is here
+            console.log("props.startNavigationPoint: "+props.startNavigationPoint);
             if (props.startNavigationPoint === null) {
               navigation.navigate("Listing");
 

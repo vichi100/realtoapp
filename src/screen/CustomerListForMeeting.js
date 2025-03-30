@@ -43,6 +43,7 @@ CustomerListForMeeting = props => {
   // console.log("props.propertyDetails.property_type: ", props.propertyDetails.property_type)
   const propertyType = props.propertyDetails.property_type;
   const propertyFor = props.propertyDetails.property_for;
+  const propertyAgentId = props.propertyDetails.agent_id;
   const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
@@ -71,7 +72,8 @@ CustomerListForMeeting = props => {
       agent_id: props.userDetails.works_for,
       property_type: propertyType,
       property_for: propertyFor,
-      property_id: props.propertyDetails.property_id
+      property_id: props.propertyDetails.property_id,
+      property_agent_id: propertyAgentId
     };
     // console.log(JSON.stringify(queryObj));
     axios(SERVER_URL + "/getCustomerListForMeeting", {

@@ -8,7 +8,8 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
-  AsyncStorage
+  AsyncStorage,
+  TouchableOpacity
 } from "react-native";
 import axios from "axios";
 import ContactResidentialRentCard from "./ContactResidentialRentCard";
@@ -20,9 +21,13 @@ import CardResidentialSell from "../CardSell";
 
 import CardCommercialRent from "../commercial/rent/Card";
 import CardCommercialSell from "../commercial/sell/Card";
-import {SERVER_URL} from "../../util/Constant";
+import { SERVER_URL } from "../../util/Constant";
 import { connect } from "react-redux";
 import AppConstant from "../../util/AppConstant";
+import {
+  setPropertyDetails
+} from "../../reducers/Action"; // import { setPropertyDetails } from "../../reducers/Action"; // import { setPropertyDetails } from "../../
+
 
 const CustomerMeetingDetails = props => {
   const { navigation } = props;
@@ -50,7 +55,7 @@ const CustomerMeetingDetails = props => {
     };
     axios
       .post(
-        SERVER_URL+"/getCustomerAndMeetingDetails",
+        SERVER_URL + "/getCustomerAndMeetingDetails",
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
@@ -67,7 +72,7 @@ const CustomerMeetingDetails = props => {
                 image.url = SERVER_URL + image.url
               })
             })
-            
+
             setCustomerMeetingDetailsObj(response.data);
           }
         },
@@ -122,17 +127,25 @@ const CustomerMeetingDetails = props => {
                 </View>
 
                 {customerMeetingDetailsObj.property_details.map(item => (
-                  <View>
-                    <CardResidentialRent
-                      navigation={navigation}
-                      item={item}
-                      disableDrawer={true}
-                      displayCheckBox={false}
-                    />
-                  </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      props.setPropertyDetails(item);
+                      navigation.navigate("PropDetailsFromListing", item)
+                    
+                    }}
+                  >
+                    <View>
+                      <CardResidentialRent
+                        navigation={navigation}
+                        item={item}
+                        disableDrawer={true}
+                        displayCheckBox={false}
+                      />
+                    </View>
+                  </TouchableOpacity>
                 ))}
               </View>
-            ) : item.category_for === "Buy" ? (
+            ) : item.category_for === "Buy" || item.category_for === "Sell"? (
               <View>
                 <ContactResidentialSellCard
                   navigation={navigation}
@@ -170,14 +183,25 @@ const CustomerMeetingDetails = props => {
                 </View>
 
                 {customerMeetingDetailsObj.property_details.map(item => (
-                  <View>
-                    <CardResidentialSell
-                      navigation={navigation}
-                      item={item}
-                      disableDrawer={true}
-                      displayCheckBox={false}
-                    />
-                  </View>
+                  <TouchableOpacity
+                    onPress={() =>
+                    {
+                      props.setPropertyDetails(item);
+                      navigation.navigate("PropDetailsFromListingForSell", item)
+
+                    }
+                      
+                    }
+                  >
+                    <View>
+                      <CardResidentialSell
+                        navigation={navigation}
+                        item={item}
+                        disableDrawer={true}
+                        displayCheckBox={false}
+                      />
+                    </View>
+                  </TouchableOpacity>
                 ))}
               </View>
             ) : null
@@ -220,16 +244,25 @@ const CustomerMeetingDetails = props => {
                 </View>
 
                 {customerMeetingDetailsObj.property_details.map(item => (
-                  <View>
-                    <CardCommercialRent
-                      navigation={navigation}
-                      item={item}
-                      disableDrawer={true}
-                      displayCheckBox={false}
-                    />
-                  </View>
+                  <TouchableOpacity
+                    onPress={() =>{
+                      props.setPropertyDetails(item)
+                      navigation.navigate("CommercialRentPropDetails", item)
+                    }
+                    }
+                  >
+                    <View>
+                      <CardCommercialRent
+                        navigation={navigation}
+                        item={item}
+                        disableDrawer={true}
+                        displayCheckBox={false}
+                      />
+                    </View>
+                  </TouchableOpacity>
                 ))}
               </View>
+
             ) : (
               <View>
                 <CustomerCommercialBuyCard
@@ -268,14 +301,22 @@ const CustomerMeetingDetails = props => {
                 </View>
 
                 {customerMeetingDetailsObj.property_details.map(item => (
-                  <View>
-                    <CardCommercialSell
-                      navigation={navigation}
-                      item={item}
-                      disableDrawer={true}
-                      displayCheckBox={false}
-                    />
-                  </View>
+                  <TouchableOpacity
+                    onPress={() =>{
+                      props.setPropertyDetails(item);
+                      navigation.navigate("CommercialSellPropDetails", item)
+                    }
+                    }
+                  >
+                    <View>
+                      <CardCommercialSell
+                        navigation={navigation}
+                        item={item}
+                        disableDrawer={true}
+                        displayCheckBox={false}
+                      />
+                    </View>
+                  </TouchableOpacity>
                 ))}
               </View>
             )
@@ -290,9 +331,12 @@ const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
   propReminderList: state.AppReducer.propReminderList
 });
+const mapDispatchToProps = {
+  setPropertyDetails
+};
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(CustomerMeetingDetails);
 
 // export default CustomerMeetingDetails;
