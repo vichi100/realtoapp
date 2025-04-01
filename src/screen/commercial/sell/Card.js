@@ -49,7 +49,8 @@ const Card = props => {
     disableDrawer,
     displayCheckBox,
     displayChat,
-    deleteMe
+    deleteMe,
+    displayMatchCount=true
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -254,9 +255,9 @@ const Card = props => {
             marginTop: -5,
             marginBottom: 5,
           }}>
-            <TouchableOpacity onPress={() => getMatched(item)}>
+            {displayMatchCount && <TouchableOpacity onPress={() => getMatched(item)}>
               <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
-                <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? 0 : item.match_count}</Text>
+                <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
               </View>
               <View style={{
                 position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
@@ -265,7 +266,7 @@ const Card = props => {
               }}>
                 <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity>}
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
               <View style={{
                 flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: 40, paddingRight: 20,

@@ -14,8 +14,11 @@ import Reminder from "../Reminder";
 
 const CustomerDetailsCommercialRentFromList = props => {
   const { navigation } = props;
-  // const item = route.params;
+  const itemX = route.params;
   const item = props.anyItemDetails;
+  if(!item){
+    item = itemX
+  }
 
   const [location, setLocation] = useState([])
 
@@ -89,14 +92,14 @@ const CustomerDetailsCommercialRentFromList = props => {
             backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', right: 0, top: 0, alignItems: 'center', justifyContent: 'center',
             width: 38, height: 20, marginRight: 0
           }}>
-            <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 0 }}>{item.match_count}</Text>
+            <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 0 }}>{item.match_count ? item.match_count : 0}</Text>
           </View>
           <View style={{
             position: 'absolute', right: 0, top: 20, transform: [{ rotate: '270deg' }],
             backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
             width: 70, height: 35, padding: 0, marginRight: -15, marginTop: 20, marginBottom: 15,
           }}>
-            <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Matched</Text>
+            <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
           </View>
 
 

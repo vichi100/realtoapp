@@ -52,6 +52,7 @@ const CustomerCommercialBuyCard = props => {
     deleteMe,
     showMatched = true,
     navigatedFrom = "none",
+    displayMatchCount=false
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -195,7 +196,8 @@ const CustomerCommercialBuyCard = props => {
     const customerObj = {
       name: item.customer_details.name,
       mobile: item.customer_details.mobile1,
-      customer_id: item.customer_id
+      customer_id: item.customer_id,
+      agent_id: item.agent_id
     };
 
     props.setCustomerDetailsForMeeting(customerObj);
@@ -231,11 +233,11 @@ const CustomerCommercialBuyCard = props => {
           ]}
         >
 
-          {showMatched && (
+          {showMatched && displayMatchCount === true && (
             <>
               <TouchableOpacity onPress={() => getMatched(item)}>
                 <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
-                  <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? 0 : item.match_count}</Text>
+                  <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
                 </View>
                 <View style={{
                   position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],

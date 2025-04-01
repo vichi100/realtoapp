@@ -209,8 +209,9 @@ const CustomerMeeting = props => {
     });
 
     const reminderDetails = {
-      user_id: props.userDetails.works_for,
-      user_id_secondary: item.agent_id, // in case of other agent_id
+      req_user_id: props.userDetails.works_for,
+      meeting_creator_id: props.userDetails.works_for,
+      agent_id_of_client: props.customerDetailsForMeeting.agent_id,
       category: category,
       category_ids: categoryArray,
       category_type: item.customer_locality.property_type,
@@ -219,7 +220,6 @@ const CustomerMeeting = props => {
       client_name: clientName.trim(),
       client_mobile: clientMobile.trim(),
       client_id: item.customer_id,
-      agent_id_of_client: item.agent_id,
       meeting_date: newDate.trim(),
       meeting_time: newTime.trim() // newTime.trim()
     };
@@ -255,7 +255,8 @@ const CustomerMeeting = props => {
     // console.log("item getPropReminders: " + propertyIdX);
     const propertyId = {
       req_user_id: props.userDetails.works_for,
-      customer_id: item.customer_id
+      customer_id: item.customer_id,
+      agent_id_of_client: item.agent_id
     };
     setLoading(true);
 
@@ -433,7 +434,8 @@ const CustomerMeeting = props => {
                 navigation.navigate("PropertyListForMeeting", {
                   item: item,
                   property_type: item.customer_locality.property_type,
-                  property_for: item.customer_locality.property_for
+                  property_for: item.customer_locality.property_for,
+                  displayMatchCount: false
                 })
               }
             >

@@ -194,7 +194,8 @@ const ContactResidentialRentCard = props => {
     const customerObj = {
       name: item.customer_details.name,
       mobile: item.customer_details.mobile1,
-      customer_id: item.customer_id
+      customer_id: item.customer_id,
+      agent_id: item.agent_id
     };
 
     props.setCustomerDetailsForMeeting(customerObj);

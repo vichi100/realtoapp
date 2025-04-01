@@ -223,18 +223,9 @@ const Meeting = props => {
       // console.log("item: " + JSON.stringify(item));
 
       const reminderDetails = {
-        // user_id: item.agent_id,
-        // category: category,
-        // category_id: item.property_id,
-        // category_type: item.property_type,
-        // reminder_for: reminderForArray[reminderForIndex],
-        // client_name: clientName.trim(),
-        // client_mobile: clientMobile.trim(),
-        // meeting_date: newDate.trim(),
-        // meeting_time: newTime.trim(), // newTime.trim(),
         req_user_id: props.userDetails.works_for,
-        user_id: props.userDetails.works_for,
-        user_id_secondary: item.agent_id, // in case of other agent_id
+        meeting_creator_id: props.userDetails.works_for,
+        agent_id_of_client: props.customerDetailsForMeeting.agent_id,
         category: category,
         category_ids: [item.property_id],
         category_type: item.property_type,
@@ -243,7 +234,6 @@ const Meeting = props => {
         client_name: clientName.trim(),
         client_mobile: clientMobile.trim(),
         client_id: clientId,
-        agent_id_of_client: props.customerDetailsForMeeting.agent_id,
         meeting_date: newDate.trim(),
         meeting_time: newTime.trim() // newTime.trim()
       };

@@ -113,6 +113,7 @@ CustomerListForMeeting = props => {
               item={item}
               disableDrawer={true}
               displayCheckBox={true}
+              navigatedFrom = {"dont_show_matched_count"}
             />
           </TouchableOpacity>
         );
@@ -128,6 +129,7 @@ CustomerListForMeeting = props => {
               item={item}
               disableDrawer={true}
               displayCheckBox={true}
+              navigatedFrom = {"dont_show_matched_count"}
             />
           </TouchableOpacity>
         );
@@ -148,6 +150,7 @@ CustomerListForMeeting = props => {
               item={item}
               disableDrawer={true}
               displayCheckBox={true}
+              navigatedFrom = {"dont_show_matched_count"}
             />
           </TouchableOpacity>
         );
@@ -163,6 +166,7 @@ CustomerListForMeeting = props => {
               item={item}
               disableDrawer={true}
               displayCheckBox={true}
+              navigatedFrom = {"dont_show_matched_count"}
             />
           </TouchableOpacity>
         );

@@ -96,6 +96,8 @@ const CustomerMeetingDetails = props => {
                   item={customerMeetingDetailsObj.customer_details}
                   disableDrawer={true}
                   displayCheckBox={false}
+                  displayMatchCount={false}
+                  displayMatchPercent={false}
                 />
                 <View
                   style={{
@@ -140,6 +142,8 @@ const CustomerMeetingDetails = props => {
                         item={item}
                         disableDrawer={true}
                         displayCheckBox={false}
+                        displayMatchCount={false}
+                        displayMatchPercent={true}
                       />
                     </View>
                   </TouchableOpacity>
@@ -152,6 +156,7 @@ const CustomerMeetingDetails = props => {
                   item={customerMeetingDetailsObj.customer_details}
                   disableDrawer={true}
                   displayCheckBox={false}
+                  displayMatchCount={false}
                 />
                 <View
                   style={{
@@ -199,6 +204,7 @@ const CustomerMeetingDetails = props => {
                         item={item}
                         disableDrawer={true}
                         displayCheckBox={false}
+                        displayMatchCount={false}
                       />
                     </View>
                   </TouchableOpacity>
@@ -213,6 +219,7 @@ const CustomerMeetingDetails = props => {
                   item={customerMeetingDetailsObj.customer_details}
                   disableDrawer={true}
                   displayCheckBox={false}
+                  displayMatchCount={false}
                 />
                 <View
                   style={{
@@ -257,6 +264,7 @@ const CustomerMeetingDetails = props => {
                         item={item}
                         disableDrawer={true}
                         displayCheckBox={false}
+                        displayMatchCount={false}
                       />
                     </View>
                   </TouchableOpacity>
@@ -270,6 +278,7 @@ const CustomerMeetingDetails = props => {
                   item={customerMeetingDetailsObj.customer_details}
                   disableDrawer={true}
                   displayCheckBox={false}
+                  displayMatchCount={false}
                 />
                 <View
                   style={{
@@ -314,6 +323,7 @@ const CustomerMeetingDetails = props => {
                         item={item}
                         disableDrawer={true}
                         displayCheckBox={false}
+                        displayMatchCount={false}
                       />
                     </View>
                   </TouchableOpacity>

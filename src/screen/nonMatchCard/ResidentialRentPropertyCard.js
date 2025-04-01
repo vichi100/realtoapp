@@ -53,16 +53,14 @@ const options = [
   }
 ];
 
-const Card = props => {
+const ResidentialRentPropertyCard = props => {
   const {
     navigation,
     item,
     disableDrawer,
     displayCheckBox,
     displayChat,
-    deleteMe,
-    displayMatchCount = true,
-    displayMatchPercent=true
+    deleteMe
   } = props;
 
   let animatedValue = new Animated.Value(0);
@@ -296,7 +294,7 @@ const Card = props => {
               marginTop: -5,
               marginBottom: 5,
             }}>
-              {displayMatchCount && <TouchableOpacity onPress={() => getMatched(item)}>
+              <TouchableOpacity onPress={() => getMatched(item)}>
                 <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
                   <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0 }</Text>
                 </View>
@@ -307,7 +305,7 @@ const Card = props => {
                 }}>
                   <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
                 </View>
-              </TouchableOpacity>}
+              </TouchableOpacity>
               <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
                 <View style={{
                   flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: 40, paddingRight: 20,
@@ -322,8 +320,8 @@ const Card = props => {
                   </Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: -15 }}>
-                  {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
-                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>{item.match_count ? item.match_count : 0 }% Match</Text>
+                  <MaterialIcons name="alarm" size={20} color="black" />
+                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>10:30</Text>
                 </View>
 
               </View>
@@ -619,10 +617,13 @@ const mapDispatchToProps = {
   setStartNavigationPoint,
   setPropertyDetails
 };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Card);
+)(ResidentialRentPropertyCard);
+
+
 
 const styles = StyleSheet.create({
   card: {

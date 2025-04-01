@@ -367,7 +367,7 @@ const getReminderListById = (customerData) =>{
       <ActivityIndicator animating size="large" color={'#000'} />
       {/* <ActivityIndicator animating size="large" /> */}
     </View> :
-      <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
+      <ScrollView style={{ flex: 1, backgroundColor: "#ffffff" }}>
         {reminderList.length > 0 ? (
           <View>
             <Text style={{ textAlign: "center", fontSize: 16, fontWeight: 500, marginTop: 15, marginBottom: 10 }}>
@@ -419,7 +419,7 @@ const getReminderListById = (customerData) =>{
           </View>
 
         </View>)}
-      </View>
+      </ScrollView>
   );
 };
 

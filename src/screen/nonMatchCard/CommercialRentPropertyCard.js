@@ -14,68 +14,61 @@ import {
   Linking,
   TextInput
 } from "react-native";
-import { connect } from "react-redux";
-import { CheckBox } from "@rneui/themed";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { MaterialIcons } from "@expo/vector-icons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { ButtonGroup } from "@rneui/themed";
-import { Avatar } from "@rneui/themed";
+import axios from "axios";
+import Slideshow from "../../../components/Slideshow";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { numDifferentiation } from "../../util/methods";
-import { SERVER_URL } from "../../util/Constant";
+import { numDifferentiation } from "../../../util/methods";
+import { connect } from "react-redux";
+import { CheckBox } from "@rneui/themed";
 import {
   setUserMobile,
   setUserDetails,
   setPropReminderList,
   setPropListForMeeting,
-  setCustomerDetailsForMeeting,
   setStartNavigationPoint,
-  setCustomerDetails
-} from "../../reducers/Action";
-import axios from "axios";
+  setCustomerDetailsForMeeting,
+  setPropertyDetails,
+} from "../../../reducers/Action";
+import { SERVER_URL } from "../../../util/Constant";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
 
-// const Sliding_Drawer_Width = 250;
-const Sliding_Drawer_Width = 195;
+const Sliding_Drawer_Width = 250;
 const width = Dimensions.get("window").width;
 
-const ContactResidentialSellCard = props => {// this is for customer who want to buy property dont confuse by name "sell"
+const CommercialRentPropertyCard = props => {
   const {
     navigation,
     item,
     disableDrawer,
     displayCheckBox,
     displayChat,
-    deleteMe,
-    showMatched = true,
-    navigatedFrom = "none",
-    displayMatchCount=true
+    deleteMe
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
-  let Animation = new Animated.Value(0);
-  let Sliding_Drawer_Toggle = true;
   const [disabled, setDisabled] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [index, setIndex] = React.useState(null);
   const [chatModalVisible, setChatModalVisible] = useState(false);
   // const [text, onChangeText] = React.useState("I have customer for this property. Please call me.");
   const [message, setMessage] = React.useState(
-    "I have property for this customer. Please call me. "
+    "I have customer for this property. Please call me. "
   );
-
-
-  const getMatched = (matchedCustomerItem) => {
-    navigation.navigate('MatchedProperties', { matchedCustomerItem: matchedCustomerItem },);
-  }
-
 
   const onChangeText = text => {
     console.log(text);
     setMessage(text);
   };
+
+  let Animation = new Animated.Value(0);
+
+  let Sliding_Drawer_Toggle = true;
 
   const onChat = () => {
     setChatModalVisible(true);
@@ -83,7 +76,7 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
 
   const sendMessage = () => {
     console.log("userDetails: ", props.userDetails);
-    console.log("customer details: ", item);
+    console.log("Property details: ", item);
     const sender_details = {
       id: props.userDetails.id,
       name: props.userDetails.name,
@@ -95,12 +88,12 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
       id: item.agent_id
     };
     const subject = {
-      subject_id: item.customer_id, // property_id or buyer_id
-      subject_category: "customer", // property, customer
-      subject_type: item.customer_locality.property_type, // commercial, residential
-      subject_for: item.customer_locality.property_for, // buy, sell, rent
-      city: item.customer_locality.city,
-      location_area: item.customer_locality.location_area
+      subject_id: item.property_id, // property_id or buyer_id
+      subject_category: "property", // property, customer
+      subject_type: item.property_type, // commercial, residential
+      subject_for: item.property_for, // buy, sell, rent
+      city: item.property_address.city,
+      location_area: item.property_address.location_area
     };
 
     const messageDetails = {
@@ -122,8 +115,8 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
     }).then(
       response => {
         console.log(response.data);
-        // props.setCommercialCustomerList(response.data);
-        // setData(response.data);
+        props.setCommercialCustomerList(response.data);
+        setData(response.data);
       },
       error => {
         console.log(error);
@@ -193,159 +186,157 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
   });
 
   const onClickCheckBox = item => {
-    // console.log("onClickCheckBox", item.customer_id);
-    const customerObj = {
-      name: item.customer_details.name,
-      mobile: item.customer_details.mobile1,
-      customer_id: item.customer_id,
-      agent_id: item.agent_id
+    // // console.log("onClickCheckBox", JSON.stringify(item));
+    const name =
+      item.property_for +
+      " in " +
+      item.property_address.building_name +
+      ", " +
+      item.property_address.landmark_or_street;
+
+    const obj = {
+      id: item.property_id,
+      name: name
     };
 
-    props.setCustomerDetailsForMeeting(customerObj);
+    if (props.propListForMeeting.some(y => y.id === item.property_id)) {
+      // // console.log("remove: ", checkBoxList);
+      const x = props.propListForMeeting.filter(z => z.id !== item.property_id);
+      // setCheckBoxList(x);
+      props.setPropListForMeeting(x);
+    } else {
+      const x = [obj, ...props.propListForMeeting];
+      // // console.log("add: X :  ", x);
+      // setCheckBoxList(x);
+      props.setPropListForMeeting(x);
+    }
+    // console.log(
+    //   "setPropListForMeeting: ",
+    //   JSON.stringify(props.propListForMeeting)
+    // );
   };
 
   const onClickMeeting = item => {
     props.setCustomerDetailsForMeeting(null);
     // props.setPropListForMeeting([]);
-    props.setStartNavigationPoint("PropertyListForMeeting");
-    props.setCustomerDetails(item)
-    navigation.navigate("CustomerMeeting", {
+    props.setPropertyDetails(item);
+    navigation.navigate("Meeting", {
       item: item,
-      category: "customer"
+      category: "property"
     });
+    props.setStartNavigationPoint("CustomerListForMeeting");
   };
 
+  const getMatched = (matchedProprtyItem) => {
+    navigation.navigate('MatchedCustomers', {matchedProprtyItem: matchedProprtyItem},);
+  }
+
   return (
+    // <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
     <View style={styles.card}>
-      <View>
+      <Slideshow
+        dataSource={item.image_urls}
+      />
+
+      <View style={styles.MainContainer}>
         <View
           style={[
             {
+              // backgroundColor: "rgba(245,245,245, 0.8)",
               flexDirection: "row",
-              alignItems: "flex-start",
-              // paddingRight: 16,
-              // paddingLeft: 16,
-              // paddingBottom: 16,
-              // paddingTop: 16,
-              width: "100%",
-              backgroundColor: "#ffffff"
+              // justifyContent: "space-between"
             }
-            // { backgroundColor: "rgba(245,245,245, 0.8)" }
           ]}
         >
 
-
-          {showMatched && displayMatchCount=== true && (
-            <>
-              <TouchableOpacity onPress={() => getMatched(item)}>
-                <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
-                  <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
-                </View>
-                <View style={{
-                  position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
-                  backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
-                  width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
-                }}>
-                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
-                </View>
-              </TouchableOpacity>
-            </>
-          )}
-
-          {navigatedFrom === "MatchedCustomers" || showMatched  && (
-            <>
-              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Text>62%</Text>
-                <Text>Match</Text>
+          <View style={{
+            flex: 1,
+            flexDirection: "row",
+            backgroundColor: "#ffffff",
+            marginTop: -5,
+            marginBottom: 5,
+          }}>
+            <TouchableOpacity onPress={() => getMatched(item)}>
+              <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
+                <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
               </View>
-            </>
-          )}
+              <View style={{
+                position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
+                backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
+                width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
+              }}>
+                <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
+              </View>
+            </TouchableOpacity>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
+              <View style={{
+                flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: 40, paddingRight: 20,
+                paddingBottom: 20, paddingTop: 5, minHeight: 90
+              }}>
+                <Text style={[styles.title]}>
+                  Rent In {item.property_address.building_name},{" "}
+                  {item.property_address.landmark_or_street}
+                </Text>
+                <Text style={{ paddingRight: 10 }}>
+                  {item.property_address.formatted_address}
+                </Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: -15 }}>
+                <MaterialIcons name="alarm" size={20} color="black" />
+                <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>10:30</Text>
+              </View>
 
-          <View style={{ marginLeft: { showMatched } ? 40 : 30, }}>
-
-            <Avatar
-              square
-              size={60}
-              title={
-                item.customer_details.name &&
-                item.customer_details.name.slice(0, 1)
-              }
-              activeOpacity={0.7}
-              titleStyle={{ color: "rgba(105,105,105, .9)" }}
-              // source={{
-              //   uri: props.item.photo
-              // }}
-              avatarStyle={{
-                borderWidth: 1,
-                borderColor: "rgba(127,255,212, .9)",
-                // borderTopLeftRadius: 1,
-                borderStyle: "solid"
-              }}
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              flex: 1
-            }}
-          >
-            <View style={{ paddingLeft: 20, paddingTop: 10 }}>
-              <Text style={[styles.title]}>{item.customer_details.name}</Text>
-              <Text style={[styles.subTitle]}>
-                {item.customer_details.mobile1}
-              </Text>
-              {/* <Text style={[StyleSheet.subTitle]}>
-                {item.customer_details.address}
-              </Text> */}
             </View>
 
-            {displayCheckBox ? (
+          </View>
+
+
+
+
+
+          {displayCheckBox ? (
+            <View
+              style={{
+                // backgroundColor: "rgba(108, 198, 114, 0.2)",
+                justifyContent: "center"
+              }}
+            >
+              <CheckBox
+                onPress={() => onClickCheckBox(item)}
+                center
+                // title="Select"
+                checked={
+                  props.propListForMeeting.some(s => s.id === item.property_id)
+                    ? true
+                    : false
+                }
+                containerStyle={{
+                  // backgroundColor: "rgba(108, 198, 114, 0.3)",
+                  borderWidth: 0,
+                  margin: 0,
+                  // padding: 30,
+                  borderRadius: 10
+                  // width: 60
+                }}
+              />
+            </View>
+          ) : null}
+          {displayChat ? (
+            <TouchableOpacity
+              onPress={() => onChat(item)}
+              style={{ paddingTop: 15 }}
+            >
               <View
                 style={{
                   // backgroundColor: "rgba(108, 198, 114, 0.2)",
-                  justifyContent: "center"
+                  justifyContent: "center",
+                  marginRight: 15
                 }}
               >
-                <CheckBox
-                  onPress={() => onClickCheckBox(item)}
-                  center
-                  // title="Select"
-                  checked={
-                    props.customerDetailsForMeeting &&
-                      props.customerDetailsForMeeting.customer_id ===
-                      item.customer_id
-                      ? true
-                      : false
-                  }
-                  containerStyle={{
-                    // backgroundColor: "rgba(108, 198, 114, 0.3)",
-                    borderWidth: 0,
-                    margin: 0,
-                    // padding: 30,
-                    borderRadius: 10
-                    // width: 60
-                  }}
-                />
+                <AntDesign name="message1" color={"#86b9d4"} size={30} />
               </View>
-            ) : null}
-            {displayChat ? (
-              <TouchableOpacity
-                onPress={() => onChat(item)}
-                style={{ paddingTop: 15 }}
-              >
-                <View
-                  style={{
-                    // backgroundColor: "rgba(108, 198, 114, 0.2)",
-                    justifyContent: "center",
-                    marginRight: 15
-                  }}
-                >
-                  <AntDesign name="message1" color={"#86b9d4"} size={30} />
-                </View>
-              </TouchableOpacity>
-            ) : null}
-          </View>
+            </TouchableOpacity>
+          ) : null}
         </View>
 
         {disableDrawer ? null : (
@@ -378,14 +369,16 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
                 <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
               </TouchableOpacity>
 
-              {/* <TouchableOpacity
+              <TouchableOpacity
                 onPress={() => onShare()}
                 style={{ padding: 15, backgroundColor: "#0091ea" }}
               >
                 <Ionicons name="share-social" color={"#ffffff"} size={30} />
-              </TouchableOpacity> */}
+              </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => onClickMeeting(item)}
+                onPress={() =>
+                  onClickMeeting(item)
+                }
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
               >
                 <Ionicons
@@ -399,62 +392,41 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
                 style={{ padding: 15, backgroundColor: "#00bfa5" }}
               >
                 <Ionicons name="call" color={"#ffffff"} size={30} />
-                {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text> */}
+                <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text>
               </TouchableOpacity>
             </View>
           </Animated.View>
         )}
       </View>
 
-      <View
-        style={{
-          flexDirection: "row",
-          marginLeft: 30, backgroundColor: "rgba(220,220,220, .2)"
-        }}>
-        <Ionicons
-          name="location-sharp"
-          color={"#000"}
-          size={16}
-          style={{ marginLeft: 10, marginTop: 10 }}
-        />
-        <Text style={[styles.subTitleA, { marginLeft: 10, marginRight: 10, paddingTop: 5, paddingBottom: 5 }]}>
-          {item.customer_locality.location_area.map(item => item.main_text).join(', ')}
-        </Text>
-      </View>
-
-      <View
-        style={[
-          styles.detailsContainer
-          // { backgroundColor: "rgba(192,192,192, 0.1)" }
-        ]}
-      >
+      <View style={[styles.detailsContainer]}>
         <View style={[styles.details]}>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue, { marginTop: 5 }]}>
-              {item.customer_property_details.bhk_type}
+              {item.property_details.property_used_for}
             </Text>
-            {/* <Text style={[styles.subDetailsTitle]}>BHK</Text> */}
+            <Text style={[styles.subDetailsTitle]}>Prop Type</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {numDifferentiation(item.customer_buy_details.expected_buy_price)}
+              {numDifferentiation(item.rent_details.expected_rent)}
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Buy</Text>
+            <Text style={[styles.subDetailsTitle]}>Rent</Text>
           </View>
           <View style={styles.verticalLine}></View>
-          {/* <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>
-              {item.customer_property_details.property_size}
-            </Text>
-            <Text style={[styles.subDetailsTitle]}>Buildup</Text>
-          </View> */}
-          {/* <View style={styles.verticalLine}></View> */}
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {item.customer_property_details.furnishing_status}
+              {numDifferentiation(item.rent_details.expected_deposit)}
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Furnishing</Text>
+            <Text style={[styles.subDetailsTitle]}>Deposit</Text>
+          </View>
+          <View style={styles.verticalLine}></View>
+          <View style={[styles.subDetails]}>
+            <Text style={[styles.subDetailsValue]}>
+              {item.property_details.property_size}
+            </Text>
+            <Text style={[styles.subDetailsTitle]}>Builtup</Text>
           </View>
           {/* <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
@@ -524,7 +496,8 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
         </View>
       </Modal>
 
-      {/* message modal  */}
+      {/* message property modal  */}
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -587,6 +560,7 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
         </View>
       </Modal>
     </View>
+    // </TouchableOpacity>
   );
 };
 
@@ -594,55 +568,54 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     justifyContent: "center",
-    // shadowOpacity: 0.0015 * 5 + 0.18,
-    // shadowRadius: 0.54 * 5,
-    // shadowOffset: {
-    //   height: 0.6 * 5
-    // },
+    shadowOpacity: 0.0015 * 5 + 0.18,
+    shadowRadius: 0.54 * 5,
+    shadowOffset: {
+      height: 0.6 * 5
+    },
     backgroundColor: "white",
-    borderColor: "#ffffff",
-    // borderWidth: 1,
-    marginTop: 2
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
   cardImage: {
     // alignSelf: "stretch",
     marginBottom: 16,
     flex: 1,
     width: "100%",
-    height: "auto"
+    height: "auto",
+    topborderleftRadius: 15,
+    topborderRightRadius: 15,
     // justifyContent: "center",
     // alignItems: "stretch"
   },
   headerContainer: {
-    flexDirection: "row",
+    flex: 1,
+    flexDirection: "column",
     alignItems: "flex-start",
-    paddingRight: 16,
-    paddingLeft: 16,
-    paddingBottom: 16,
-    paddingTop: 16,
-    width: "100%",
+    // paddingRight: 16,
+    // paddingLeft: 16,
+    // paddingBottom: 16,
+    // paddingTop: 16,
+    // width: "100%",
     backgroundColor: "#ffffff"
   },
   title: {
     fontSize: 16,
-    fontWeight: "600"
+    fontWeight: "600",
+    paddingRight: 15
   },
   subTitle: {
     fontSize: 14,
     fontWeight: "400",
-    color: "rgba(0,0,0, .8)"
-  },
-  subTitleA: {
-    fontSize: 14,
-    fontWeight: "400",
-    color: "rgb(0,0,0)",
-    marginTop: 5
+    color: "rgba(255 ,255 ,255 , 0.87)"
   },
   detailsContainer: {
     // borderBottomWidth: 1,
-    // borderTopColor: "#ffffff",
-    borderBottomColor: "#bdbdbd",
-    // borderTopWidth: 1,
+    borderTopColor: "#DCDCDC",
+    borderBottomColor: "#DCDCDC",
+    borderTopWidth: 1,
     borderBottomWidth: 1,
     marginBottom: 3
   },
@@ -684,7 +657,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     flexDirection: "row",
     backgroundColor: "#616161",
-    height: 63
+    height: 67
     // paddingHorizontal: 10
     // justifyContent: "center",
     // alignItems: "center"
@@ -754,29 +727,30 @@ const styles = StyleSheet.create({
     position: "absolute",
     // top: Platform.OS == "ios" ? 20 : 0,
     right: 0,
-    bottom: 0,
+    // bottom: 0,
+    alignContent: "center",
     width: Sliding_Drawer_Width,
     flexDirection: "row"
   }
 });
-
 const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
   propReminderList: state.AppReducer.propReminderList,
   propListForMeeting: state.AppReducer.propListForMeeting,
-  customerDetailsForMeeting: state.AppReducer.customerDetailsForMeeting
+  propertyDetails: state.AppReducer.propertyDetails
 });
 
 const mapDispatchToProps = {
   setUserMobile,
   setUserDetails,
   setPropReminderList,
-  setCustomerDetailsForMeeting,
   setPropListForMeeting,
   setStartNavigationPoint,
-  setCustomerDetails
+  setCustomerDetailsForMeeting,
+  setPropertyDetails,
 };
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ContactResidentialSellCard);
+)(CommercialRentPropertyCard);
+// export default Card;

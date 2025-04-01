@@ -73,7 +73,7 @@ const PropertyListForMeeting = props => {
       property_type: propertyType,
       property_for: propertyFor,
       customer_id: props.customerDetails.customer_id,
-      customer_agent_id: props.customerDetails.agent_id,
+      agent_id_of_client: props.customerDetails.agent_id,
     };
     // console.log(JSON.stringify(user));
     axios(SERVER_URL + "/getPropertyListingForMeeting", {
@@ -145,6 +145,7 @@ const PropertyListForMeeting = props => {
               item={item}
               disableDrawer={true}
               displayCheckBox={true}
+              displayMatchCount={false}
             />
           </TouchableOpacity>
         );
@@ -160,6 +161,7 @@ const PropertyListForMeeting = props => {
               item={item}
               disableDrawer={true}
               displayCheckBox={true}
+              displayMatchCount={false}
             />
           </TouchableOpacity>
         );
@@ -177,6 +179,7 @@ const PropertyListForMeeting = props => {
               item={item}
               disableDrawer={true}
               displayCheckBox={true}
+              displayMatchCount={false}
             />
           </TouchableOpacity>
         );
@@ -192,6 +195,7 @@ const PropertyListForMeeting = props => {
               item={item}
               disableDrawer={true}
               displayCheckBox={true}
+              displayMatchCount={false}
             />
           </TouchableOpacity>
         );
