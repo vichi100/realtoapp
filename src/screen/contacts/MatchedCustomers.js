@@ -50,7 +50,7 @@ const sortByNameArray = ["A First", "Z First"];
 const lookingForArraySortBy = ["Rent", "Buy"];
 const sortByPostedDateArray = ["Recent First", "Oldest Fist"];
 
-const ContactsResidential = props => {
+const MatchedCustomers = props => {
   const { navigation, route } = props;
   const matchedProprtyItem = route.params.matchedProprtyItem;
   const [isVisible, setIsVisible] = useState(false);
@@ -365,19 +365,19 @@ const ContactsResidential = props => {
     let finalURL;
 
     if (matchedProprtyItem.property_type == "Commercial") {
-      if(matchedProprtyItem.property_for == "Rent"){
+      if (matchedProprtyItem.property_for == "Rent") {
         finalURL = SERVER_URL + "/matchedCommercialCustomerRentList";
-      }else if(matchedProprtyItem.property_for == "Sell"){
+      } else if (matchedProprtyItem.property_for == "Sell") {
         finalURL = SERVER_URL + "/matchedCommercialCustomerSellList";
       }
 
-    } else if (matchedProprtyItem.property_type== "Residential") {
-      if(matchedProprtyItem.property_for == "Rent"){
+    } else if (matchedProprtyItem.property_type == "Residential") {
+      if (matchedProprtyItem.property_for == "Rent") {
         finalURL = SERVER_URL + "/matchedResidentialCustomerRentList";
-      }else if(matchedProprtyItem.property_for == "Sell"){
+      } else if (matchedProprtyItem.property_for == "Sell") {
         finalURL = SERVER_URL + "/matchedResidentialCustomerBuyList";
       }
-      
+
 
     }
 
@@ -433,12 +433,20 @@ const ContactsResidential = props => {
     }
   };
 
-  const navigateToDetails = (item, propertyFor) => {
+  const navigateToDetails = (item, property_type, propertyFor) => {
     props.setAnyItemDetails(item);
-    if (propertyFor === "Rent") {
-      navigation.navigate("CustomerDetailsResidentialRentFromList", item);
-    } else if (propertyFor === "Buy") {
-      navigation.navigate("CustomerDetailsResidentialBuyFromList", item);
+    if (property_type === "Residential") {
+      if (propertyFor === "Rent") {
+        navigation.navigate("CustomerDetailsResidentialRentFromList", { itemX: item, displayMatchCount: false, displayMatchPercent: false });
+      } else if (propertyFor === "Buy") {
+        navigation.navigate("CustomerDetailsResidentialBuyFromList", { itemX: item, displayMatchCount: false, displayMatchPercent: false });
+      }
+    }else if(property_type === "Commercial"){
+      if (propertyFor === "Rent") {
+        navigation.navigate("CustomerDetailsCommercialRentFromList", { itemX: item, displayMatchCount: false, displayMatchPercent: false });
+      } else if (propertyFor === "Buy") {
+        navigation.navigate("CustomerDetailsCommercialBuyFromList", { itemX: item, displayMatchCount: false, displayMatchPercent: false });
+      }
     }
   };
 
@@ -455,28 +463,28 @@ const ContactsResidential = props => {
     if (item.customer_locality.property_type === "Residential") {
       if (item.customer_locality.property_for === "Rent") {
         return (
-          <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <ContactResidentialRentCard navigation={navigation} item={item} deleteMe={deleteMe} showMatched={false} navigatedFrom={"MatchedCustomers"} />
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Residential", "Rent")}>
+            <ContactResidentialRentCard navigation={navigation} item={item} deleteMe={deleteMe} navigatedFrom={"MatchedCustomers"} displayMatchCount={false} displayMatchPercent={true} />
           </TouchableOpacity>
         );
       } else if (item.customer_locality.property_for === "Buy") {
         return (
-          <TouchableOpacity onPress={() => navigateToDetails(item, "Buy")}>
-            <ContactResidentialSellCard navigation={navigation} item={item} deleteMe={deleteMe} />
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Residential", "Buy")}>
+            <ContactResidentialSellCard navigation={navigation} item={item} deleteMe={deleteMe} displayMatchCount={false} displayMatchPercent={true} />
           </TouchableOpacity>
         );
       }
     } else if (item.customer_locality.property_type === "Commercial") {
       if (item.customer_locality.property_for === "Rent") {
         return (
-          <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <ContactCommercialRentCard navigation={navigation} item={item} deleteMe={deleteMe} showMatched={false} navigatedFrom={"MatchedCustomers"} />
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Commercial", "Rent")}>
+            <ContactCommercialRentCard navigation={navigation} item={item} deleteMe={deleteMe} navigatedFrom={"MatchedCustomers"} displayMatchCount={false} displayMatchPercent={true} />
           </TouchableOpacity>
         );
       } else if (item.customer_locality.property_for === "Buy") {
         return (
-          <TouchableOpacity onPress={() => navigateToDetails(item, "Buy")}>
-            <ContactCommercialBuyCard navigation={navigation} item={item} deleteMe={deleteMe} />
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Commercial", "Buy")}>
+            <ContactCommercialBuyCard navigation={navigation} item={item} deleteMe={deleteMe} displayMatchCount={false} displayMatchPercent={true} />
           </TouchableOpacity>
         );
       }
@@ -1047,6 +1055,6 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ContactsResidential);
+)(MatchedCustomers);
 
 // export default ListingResidential;

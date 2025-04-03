@@ -173,3 +173,7 @@ I be able to see there all mached property or customers which are not mine which
    property original addess deatils and owner details , owner details should be replace with agent details
 
 
+
+
+### ERROR LIST ###
+1) When create new resident sell property get error.

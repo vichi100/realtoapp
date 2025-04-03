@@ -14,8 +14,11 @@ import Reminder from "../Reminder";
 
 const CustomerDetailsCommercialBuyFromList = props => {
   const { navigation } = props;
-  // const item = route.params;
+  const { itemX, displayMatchCount, displayMatchPercent } = props.route.params;
   const item = props.anyItemDetails;
+  if (!item) {
+    item = itemX
+  }
 
   const [location, setLocation] = useState([]);
 
@@ -71,7 +74,7 @@ const CustomerDetailsCommercialBuyFromList = props => {
             borderStyle: "solid"
           }}
         />
-        <View style={{ paddingLeft: 20, paddingTop: 10, flex: 1, minHeight:95 }}>
+        <View style={{ paddingLeft: 20, paddingTop: 10, flex: 1, minHeight: 95 }}>
           <Text style={[styles.title]}>{item.customer_details.name}</Text>
           <Text style={[StyleSheet.subTitle]}>
             {item.customer_details.mobile1}
@@ -80,7 +83,7 @@ const CustomerDetailsCommercialBuyFromList = props => {
             {item.customer_details.address}
           </Text>
         </View>
-        <TouchableOpacity
+        {displayMatchCount && <TouchableOpacity
           onPress={() => getMatched(item)}
           style={{ flexDirection: 'row', marginTop: 0 }}
         >
@@ -99,7 +102,7 @@ const CustomerDetailsCommercialBuyFromList = props => {
           </View>
 
 
-        </TouchableOpacity>
+        </TouchableOpacity>}
       </View>
 
       {/* <Image
@@ -220,7 +223,7 @@ const CustomerDetailsCommercialBuyFromList = props => {
       </View>
       {/* owner details */}
       <View style={styles.margin1}></View>
-      <Reminder navigation={navigation} customerData={item} isSpecificRemider = {true}/>
+      <Reminder navigation={navigation} customerData={item} isSpecificRemider={true} />
       {/* <View style={styles.overviewContainer}>
         <View style={styles.overview}>
           <Text>Owner</Text>

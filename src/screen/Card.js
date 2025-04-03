@@ -61,8 +61,8 @@ const Card = props => {
     displayCheckBox,
     displayChat,
     deleteMe,
-    displayMatchCount = true,
-    displayMatchPercent=true
+    displayMatchCount = false,
+    displayMatchPercent=false
   } = props;
 
   let animatedValue = new Animated.Value(0);
@@ -323,7 +323,7 @@ const Card = props => {
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: -15 }}>
                   {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
-                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>{item.match_count ? item.match_count : 0 }% Match</Text>
+                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>{item.matched_percentage ? item.matched_percentage : 0 }% Match</Text>
                 </View>
 
               </View>

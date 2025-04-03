@@ -48,10 +48,9 @@ const ContactResidentialRentCard = props => {
     displayCheckBox,
     displayChat,
     deleteMe,
-    showMatched = true,
-    navigatedFrom="none",
-    displayMatchCount=true,
-    displayMatchPercent=true
+    navigatedFrom = "none",
+    displayMatchCount = false,
+    displayMatchPercent = false
   } = props;
   // console.log("ContactResidentialRentCard :    ", item);
   let animatedValue = new Animated.Value(0);
@@ -68,7 +67,7 @@ const ContactResidentialRentCard = props => {
   );
 
   const getMatched = (matchedCustomerItem) => {
-    navigation.navigate('MatchedProperties', {matchedCustomerItem: matchedCustomerItem},);
+    navigation.navigate('MatchedProperties', { matchedCustomerItem: matchedCustomerItem },);
   }
 
   const onChangeText = text => {
@@ -172,7 +171,7 @@ const ContactResidentialRentCard = props => {
   // // console.log(width);
 
   const makeCall = item => {
-    const mobile = item.customer_details.mobile1; 
+    const mobile = item.customer_details.mobile1;
     const url = "tel://" + mobile;
     Linking.openURL(url);
   };
@@ -241,33 +240,33 @@ const ContactResidentialRentCard = props => {
           ]}
         >
 
-          {showMatched && displayMatchCount === true && (
+          {displayMatchCount === true && (
             <>
-            <TouchableOpacity onPress={() => getMatched(item)}>
-              <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
-                <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
-              </View>
-              <View style={{
-                position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
-                backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
-                width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
-              }}>
-                <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
-              </View>
+              <TouchableOpacity onPress={() => getMatched(item)}>
+                <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
+                  <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
+                </View>
+                <View style={{
+                  position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
+                  backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
+                  width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
+                }}>
+                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
+                </View>
               </TouchableOpacity>
             </>
           )}
 
-          {displayMatchPercent &&(
+          {displayMatchPercent && (
             <>
-            <View style={{justifyContent:'center', alignItems:'center'}}>
-              <Text>61%</Text>
-              <Text>Match</Text>
-            </View>
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text>61%</Text>
+                <Text>Match</Text>
+              </View>
             </>
           )}
 
-          <View style={{ marginLeft: {showMatched}?40:30, }}>
+          <View style={{ marginLeft: { displayMatchCount } ? 40 : 30, }}>
             <Avatar
               square
               size={60}

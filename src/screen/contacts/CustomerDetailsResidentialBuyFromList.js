@@ -15,7 +15,7 @@ import Reminder from "../Reminder";
 
 const CustomerDetailsResidentialBuyFromList = props => {
   const { navigation } = props;
-  const itemX = route.params;
+  const {itemX, displayMatchCount, displayMatchPercent} = props.route.params;
   const item = props.anyItemDetails;
   if(!item){
     item = itemX
@@ -95,7 +95,7 @@ const CustomerDetailsResidentialBuyFromList = props => {
                     {item.customer_details.address}
                   </Text>
                 </View>
-        <TouchableOpacity
+        {displayMatchCount === true && <TouchableOpacity
           onPress={() => getMatched(item)}
           style={{ flexDirection: 'row', marginTop: 0 }}
         >
@@ -114,7 +114,7 @@ const CustomerDetailsResidentialBuyFromList = props => {
           </View>
 
 
-        </TouchableOpacity>
+        </TouchableOpacity> }
       </View>
       {/* <Image
         source={require("../../assets/images/p1.jpg")}

@@ -50,9 +50,9 @@ const CustomerCommercialRentCard = props => {
     displayCheckBox,
     displayChat,
     deleteMe,
-    showMatched = true,
-    navigatedFrom="none",
-    displayMatchCount=false
+    navigatedFrom = "none",
+    displayMatchCount = false,
+    displayMatchPercent = false
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -68,7 +68,7 @@ const CustomerCommercialRentCard = props => {
   );
 
   const getMatched = (matchedCustomerItem) => {
-    navigation.navigate('MatchedProperties', {matchedCustomerItem: matchedCustomerItem},);
+    navigation.navigate('MatchedProperties', { matchedCustomerItem: matchedCustomerItem },);
   }
 
   const onChangeText = text => {
@@ -232,7 +232,7 @@ const CustomerCommercialRentCard = props => {
             // { backgroundColor: "rgba(245,245,245, 0.8)" }
           ]}
         >
-          {showMatched && displayMatchCount === true && (
+          {displayMatchCount === true && (
             <>
               <TouchableOpacity onPress={() => getMatched(item)}>
                 <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
@@ -249,7 +249,7 @@ const CustomerCommercialRentCard = props => {
             </>
           )}
 
-          {navigatedFrom === "MatchedCustomers" && (
+          {displayMatchPercent === true && (
             <>
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text>62%</Text>
@@ -258,7 +258,7 @@ const CustomerCommercialRentCard = props => {
             </>
           )}
 
-          <View style={{ marginLeft: { showMatched } ? 40 : 30, }}>
+          <View style={{ marginLeft: { displayMatchCount } ? 40 : 30, }}>
             <Avatar
               square
               size={60}

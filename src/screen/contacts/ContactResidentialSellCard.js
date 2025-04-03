@@ -49,9 +49,9 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
     displayCheckBox,
     displayChat,
     deleteMe,
-    showMatched = true,
     navigatedFrom = "none",
-    displayMatchCount=true
+    displayMatchCount=true,
+    displayMatchPercent=true
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -235,7 +235,7 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
         >
 
 
-          {showMatched && displayMatchCount=== true && (
+          {displayMatchCount=== true && (
             <>
               <TouchableOpacity onPress={() => getMatched(item)}>
                 <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
@@ -252,7 +252,7 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
             </>
           )}
 
-          {navigatedFrom === "MatchedCustomers" || showMatched  && (
+          {displayMatchPercent === true  && (
             <>
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text>62%</Text>
@@ -261,7 +261,7 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
             </>
           )}
 
-          <View style={{ marginLeft: { showMatched } ? 40 : 30, }}>
+          <View style={{ marginLeft: { displayMatchCount } ? 40 : 30, }}>
 
             <Avatar
               square

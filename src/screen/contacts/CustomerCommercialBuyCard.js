@@ -50,9 +50,9 @@ const CustomerCommercialBuyCard = props => {
     displayCheckBox,
     displayChat,
     deleteMe,
-    showMatched = true,
     navigatedFrom = "none",
-    displayMatchCount=false
+    displayMatchCount = false,
+    displayMatchPercent = false
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -233,7 +233,7 @@ const CustomerCommercialBuyCard = props => {
           ]}
         >
 
-          {showMatched && displayMatchCount === true && (
+          {displayMatchCount === true && (
             <>
               <TouchableOpacity onPress={() => getMatched(item)}>
                 <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
@@ -250,7 +250,7 @@ const CustomerCommercialBuyCard = props => {
             </>
           )}
 
-          {navigatedFrom === "MatchedCustomers" && (
+          {displayMatchPercent === true && (
             <>
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text>62%</Text>
@@ -259,26 +259,26 @@ const CustomerCommercialBuyCard = props => {
             </>
           )}
 
- <View style={{ marginLeft: { showMatched } ? 40 : 30, }}>
-          <Avatar
-            square
-            size={60}
-            title={
-              item.customer_details.name &&
-              item.customer_details.name.slice(0, 1)
-            }
-            activeOpacity={0.7}
-            titleStyle={{ color: "rgba(105,105,105, .9)" }}
-            // source={{
-            //   uri: props.item.photo
-            // }}
-            avatarStyle={{
-              borderWidth: 1,
-              borderColor: "rgba(127,255,212, .9)",
-              // borderTopLeftRadius: 1,
-              borderStyle: "solid"
-            }}
-          />
+          <View style={{ marginLeft: { displayMatchCount } ? 40 : 30, }}>
+            <Avatar
+              square
+              size={60}
+              title={
+                item.customer_details.name &&
+                item.customer_details.name.slice(0, 1)
+              }
+              activeOpacity={0.7}
+              titleStyle={{ color: "rgba(105,105,105, .9)" }}
+              // source={{
+              //   uri: props.item.photo
+              // }}
+              avatarStyle={{
+                borderWidth: 1,
+                borderColor: "rgba(127,255,212, .9)",
+                // borderTopLeftRadius: 1,
+                borderStyle: "solid"
+              }}
+            />
           </View>
 
 
