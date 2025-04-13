@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { connect } from "react-redux";
+import DoughnutChart from "../../components/DoughnutChart";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";

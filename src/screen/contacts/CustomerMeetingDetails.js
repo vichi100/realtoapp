@@ -132,7 +132,11 @@ const CustomerMeetingDetails = props => {
                   <TouchableOpacity
                     onPress={() => {
                       props.setPropertyDetails(item);
-                      navigation.navigate("PropDetailsFromListing", {item:item})
+                      navigation.navigate("PropDetailsFromListing", {
+                        item:item,
+                        displayMatchCount: false,
+                        displayMatchPercent: true
+                      })
                     
                     }}
                   >
@@ -192,7 +196,11 @@ const CustomerMeetingDetails = props => {
                     onPress={() =>
                     {
                       props.setPropertyDetails(item);
-                      navigation.navigate("PropDetailsFromListingForSell", {item:item})
+                      navigation.navigate("PropDetailsFromListingForSell", {
+                        item:item,
+                        displayMatchCount: false,
+                        displayMatchPercent: true
+                      })
 
                     }
                       
@@ -254,7 +262,11 @@ const CustomerMeetingDetails = props => {
                   <TouchableOpacity
                     onPress={() =>{
                       props.setPropertyDetails(item)
-                      navigation.navigate("CommercialRentPropDetails", {item:item})
+                      navigation.navigate("CommercialRentPropDetails", {
+                        item:item,
+                        displayMatchCount: false,
+                        displayMatchPercent: true
+                      })
                     }
                     }
                   >
@@ -313,7 +325,11 @@ const CustomerMeetingDetails = props => {
                   <TouchableOpacity
                     onPress={() =>{
                       props.setPropertyDetails(item);
-                      navigation.navigate("CommercialSellPropDetails", {item:item})
+                      navigation.navigate("CommercialSellPropDetails", {
+                        item:item,
+                        displayMatchCount: false,
+                        displayMatchPercent: true
+                      })
                     }
                     }
                   >

@@ -32,6 +32,7 @@ import {
   setStartNavigationPoint,
   setCustomerDetails
 } from "../../reducers/Action";
+import DoughnutChart from "../../components/DoughnutChart";
 import axios from "axios";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
@@ -50,8 +51,8 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
     displayChat,
     deleteMe,
     navigatedFrom = "none",
-    displayMatchCount=true,
-    displayMatchPercent=false
+    displayMatchCount = true,
+    displayMatchPercent = false
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -235,7 +236,7 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
         >
 
 
-          {displayMatchCount=== true && (
+          {displayMatchCount === true && (
             <>
               <TouchableOpacity onPress={() => getMatched(item)}>
                 <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
@@ -252,18 +253,46 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
             </>
           )}
 
-          {displayMatchPercent === true  && (
+          {displayMatchPercent === true && (
             <>
-              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Text>62%</Text>
-                <Text>Match</Text>
-              </View>
+              {/* <View style={{ justifyContent: 'center', alignItems: 'center' }}> */}
+                
+                <DoughnutChart
+                  // data={[60, 40]}
+                  data={[
+                    // First segment (matched percentage)
+                    Math.max(0, Number(
+                      typeof item.matched_percentage === 'number'
+                        ? item.matched_percentage
+                        : typeof item.matched_percentage === 'string'
+                          ? parseFloat(item.matched_percentage) || 0
+                          : 0
+                    )),
+
+                    // Second segment (remaining percentage)
+                    100 - Math.max(0, Number(
+                      typeof item.matched_percentage === 'number'
+                        ? item.matched_percentage
+                        : typeof item.matched_percentage === 'string'
+                          ? parseFloat(item.matched_percentage) || 0
+                          : 0
+                    ))
+                  ]}
+                  radius={35}
+                  holeRadius={25}  // Adjust this to change the hole size
+                  strokeWidth={60}
+                  colors={['rgba(38, 208, 109, 0.8)', 'rgba(211, 61, 24, 0.6)']}
+                  textColor="#333"
+                  textSize={14}
+                  showPercentage={true}
+                />
+              {/* </View> */}
             </>
           )}
 
           <View style={{ marginLeft: { displayMatchCount } ? 40 : 30, }}>
 
-            <Avatar
+            {!displayMatchPercent && <Avatar
               square
               size={60}
               title={
@@ -281,7 +310,7 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
                 // borderTopLeftRadius: 1,
                 borderStyle: "solid"
               }}
-            />
+            />}
           </View>
           <View
             style={{

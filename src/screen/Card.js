@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { CheckBox } from "@rneui/themed";
+import DoughnutChart from "../components/DoughnutChart";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import axios from "axios";
 import Feather from "react-native-vector-icons/Feather";
@@ -62,7 +63,7 @@ const Card = props => {
     displayChat,
     deleteMe,
     displayMatchCount = true,
-    displayMatchPercent=false
+    displayMatchPercent = false
   } = props;
 
   let animatedValue = new Animated.Value(0);
@@ -259,348 +260,385 @@ const Card = props => {
     props.setPropertyDetails(item);
 
     if (propertyFor === "Rent") {
-      navigation.navigate("PropDetailsFromListing", {item:item});
+      navigation.navigate("PropDetailsFromListing", { item: item });
     } else if (propertyFor === "Sell") {
-      navigation.navigate("PropDetailsFromListingForSell", {item:item});
+      navigation.navigate("PropDetailsFromListingForSell", { item: item });
     }
 
   };
 
   const getMatched = (matchedProprtyItem) => {
-    navigation.navigate('MatchedCustomers', {matchedProprtyItem: matchedProprtyItem},);
+    navigation.navigate('MatchedCustomers', { matchedProprtyItem: matchedProprtyItem },);
   }
 
   return (
     // <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-      <View style={styles.card}>
-        <Slideshow
-          dataSource={item.image_urls}
-        />
+    <View style={styles.card}>
+      <Slideshow
+        dataSource={item.image_urls}
+      />
 
-        <View style={styles.MainContainer}>
-          <View
-            style={[
-              {
-                // backgroundColor: "rgba(245,245,245, 0.8)",
-                flexDirection: "row",
-                // justifyContent: "space-between"
-              }
-            ]}
-          >
-
-
-            <View style={{
-              flex: 1,
+      <View style={styles.MainContainer}>
+        <View
+          style={[
+            {
+              // backgroundColor: "rgba(245,245,245, 0.8)",
               flexDirection: "row",
-              backgroundColor: "#ffffff",
-              marginTop: -5,
-              marginBottom: 5,
-            }}>
-              {displayMatchCount && <TouchableOpacity onPress={() => getMatched(item)}>
-                <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
-                  <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0 }</Text>
-                </View>
-                <View style={{
-                  position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
-                  backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
-                  width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
-                }}>
-                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
-                </View>
-              </TouchableOpacity>}
-              <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-                <View style={{
-                  flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: 40, paddingRight: 20,
-                  paddingBottom: 20, paddingTop: 5, minHeight: 90
-                }}>
-                  <Text style={[styles.title]}>
-                    Rent In {item.property_address.building_name},{" "}
-                    {item.property_address.landmark_or_street}
-                  </Text>
-                  <Text style={{ paddingRight: 10 }}>
-                    {item.property_address.formatted_address}
-                  </Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: -15 }}>
-                  {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
-                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>{item.matched_percentage ? item.matched_percentage : 0 }% Match</Text>
-                </View>
+              // justifyContent: "space-between"
+            }
+          ]}
+        >
 
+
+          <View style={{
+            flex: 1,
+            flexDirection: "row",
+            backgroundColor: "#ffffff",
+            marginTop: -5,
+            marginBottom: 5,
+          }}>
+            {displayMatchCount && <TouchableOpacity onPress={() => getMatched(item)}>
+              <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
+                <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
+              </View>
+              <View style={{
+                position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
+                backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
+                width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
+              }}>
+                <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
+              </View>
+            </TouchableOpacity>}
+            {displayMatchPercent === true && (
+              <>
+                {/* <View style={{ justifyContent: 'center', alignItems: 'center' }}> */}
+
+                <DoughnutChart
+                  // data={[60, 40]}
+                  data={[
+                    // First segment (matched percentage)
+                    Math.max(0, Number(
+                      typeof item.matched_percentage === 'number'
+                        ? item.matched_percentage
+                        : typeof item.matched_percentage === 'string'
+                          ? parseFloat(item.matched_percentage) || 0
+                          : 0
+                    )),
+
+                    // Second segment (remaining percentage)
+                    100 - Math.max(0, Number(
+                      typeof item.matched_percentage === 'number'
+                        ? item.matched_percentage
+                        : typeof item.matched_percentage === 'string'
+                          ? parseFloat(item.matched_percentage) || 0
+                          : 0
+                    ))
+                  ]}
+                  radius={35}
+                  holeRadius={25}  // Adjust this to change the hole size
+                  strokeWidth={60}
+                  colors={['rgba(38, 208, 109, 0.8)', 'rgba(211, 61, 24, 0.6)']}
+                  textColor="#333"
+                  textSize={14}
+                  showPercentage={true}
+                />
+                {/* </View> */}
+              </>
+            )}
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
+              <View style={{
+                flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: 40, paddingRight: 20,
+                paddingBottom: 20, paddingTop: 5, minHeight: 90
+              }}>
+                <Text style={[styles.title]}>
+                  Rent In {item.property_address.building_name},{" "}
+                  {item.property_address.landmark_or_street}
+                </Text>
+                <Text style={{ paddingRight: 10 }}>
+                  {item.property_address.formatted_address}
+                </Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: -15 }}>
+                {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
+                <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>{item.matched_percentage ? item.matched_percentage : 0}% Match</Text>
               </View>
 
             </View>
 
-            {displayCheckBox ? (
+          </View>
+
+
+          {displayCheckBox ? (
+            <View
+              style={{
+                // backgroundColor: "rgba(108, 198, 114, 0.2)",
+                justifyContent: "center"
+              }}
+            >
+              <CheckBox
+                onPress={() => onClickCheckBox(item)}
+                center
+                // title="Select"
+                checked={
+                  props.propListForMeeting.some(s => s.id === item.property_id)
+                    ? true
+                    : false
+                }
+                containerStyle={{
+                  // backgroundColor: "rgba(108, 198, 114, 0.3)",
+                  borderWidth: 0,
+                  margin: 0,
+                  // padding: 30,
+                  borderRadius: 10
+                  // width: 60
+                }}
+              />
+            </View>
+          ) : null}
+          {displayChat ? (
+            <TouchableOpacity
+              onPress={() => onChat(item)}
+              style={{ paddingTop: 15 }}
+            >
               <View
                 style={{
                   // backgroundColor: "rgba(108, 198, 114, 0.2)",
-                  justifyContent: "center"
+                  justifyContent: "center",
+                  marginRight: 15
                 }}
               >
-                <CheckBox
-                  onPress={() => onClickCheckBox(item)}
-                  center
-                  // title="Select"
-                  checked={
-                    props.propListForMeeting.some(s => s.id === item.property_id)
-                      ? true
-                      : false
-                  }
-                  containerStyle={{
-                    // backgroundColor: "rgba(108, 198, 114, 0.3)",
-                    borderWidth: 0,
-                    margin: 0,
-                    // padding: 30,
-                    borderRadius: 10
-                    // width: 60
-                  }}
-                />
+                <AntDesign name="message1" color={"#86b9d4"} size={30} />
               </View>
-            ) : null}
-            {displayChat ? (
-              <TouchableOpacity
-                onPress={() => onChat(item)}
-                style={{ paddingTop: 15 }}
-              >
-                <View
-                  style={{
-                    // backgroundColor: "rgba(108, 198, 114, 0.2)",
-                    justifyContent: "center",
-                    marginRight: 15
-                  }}
-                >
-                  <AntDesign name="message1" color={"#86b9d4"} size={30} />
-                </View>
-              </TouchableOpacity>
-            ) : null}
-          </View>
-
-          {disableDrawer ? null : (
-            <Animated.View
-              style={[
-                styles.drawer,
-                { transform: [{ translateX: Animation_Interpolate }] }
-              ]}
-            >
-              <View style={styles.Main_Sliding_Drawer_Container}>
-                {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
-                <TouchableOpacity
-                  onPress={ShowSlidingDrawer}
-                  style={{ paddingTop: 20 }}
-                >
-                  <MaterialCommunityIcons
-                    name="chevron-left"
-                    color={"#ffffff"}
-                    size={30}
-                  />
-                </TouchableOpacity>
-                <View style={styles.verticalLine} />
-                <TouchableOpacity
-                  // disabled={Sliding_Drawer_Toggle}
-                  onPress={() => {
-                    setModalVisible(true);
-                  }}
-                  style={{ padding: 15, backgroundColor: "#e57373" }}
-                >
-                  <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => onShare(item)}
-                  style={{ padding: 15, backgroundColor: "#0091ea" }}
-                >
-                  <Ionicons name="share-social" color={"#ffffff"} size={30} />
-                  {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Share</Text> */}
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => onClickMeeting(item)}
-                  style={{ padding: 15, backgroundColor: "#ffd600" }}
-                >
-                  <Ionicons
-                    name="alarm-outline"
-                    color={"#ffffff"}
-                    size={30}
-                  />
-                  {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Meeting</Text> */}
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => makeCall(item.owner_details.mobile1)}
-                  style={{ padding: 15, backgroundColor: "#00bfa5" }}
-                >
-                  <Ionicons name="call" color={"#ffffff"} size={30} />
-                  {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Owner</Text> */}
-                </TouchableOpacity>
-              </View>
-            </Animated.View>
-          )}
+            </TouchableOpacity>
+          ) : null}
         </View>
 
-        <View
-          style={[
-            styles.detailsContainer,
-            { backgroundColor: "rgba(192,192,192, 0.0)" }
-          ]}
-        >
-          <View style={[styles.details]}>
-            <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue, { marginTop: 5 }]}>
-                {item.property_details.bhk_type}
-              </Text>
-              {/* <Text style={[styles.subDetailsTitle]}>BHK</Text> */}
+        {disableDrawer ? null : (
+          <Animated.View
+            style={[
+              styles.drawer,
+              { transform: [{ translateX: Animation_Interpolate }] }
+            ]}
+          >
+            <View style={styles.Main_Sliding_Drawer_Container}>
+              {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
+              <TouchableOpacity
+                onPress={ShowSlidingDrawer}
+                style={{ paddingTop: 20 }}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  color={"#ffffff"}
+                  size={30}
+                />
+              </TouchableOpacity>
+              <View style={styles.verticalLine} />
+              <TouchableOpacity
+                // disabled={Sliding_Drawer_Toggle}
+                onPress={() => {
+                  setModalVisible(true);
+                }}
+                style={{ padding: 15, backgroundColor: "#e57373" }}
+              >
+                <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => onShare(item)}
+                style={{ padding: 15, backgroundColor: "#0091ea" }}
+              >
+                <Ionicons name="share-social" color={"#ffffff"} size={30} />
+                {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Share</Text> */}
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => onClickMeeting(item)}
+                style={{ padding: 15, backgroundColor: "#ffd600" }}
+              >
+                <Ionicons
+                  name="alarm-outline"
+                  color={"#ffffff"}
+                  size={30}
+                />
+                {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Meeting</Text> */}
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => makeCall(item.owner_details.mobile1)}
+                style={{ padding: 15, backgroundColor: "#00bfa5" }}
+              >
+                <Ionicons name="call" color={"#ffffff"} size={30} />
+                {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Owner</Text> */}
+              </TouchableOpacity>
             </View>
-            <View style={styles.verticalLine}></View>
-            <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {numDifferentiation(item.rent_details.expected_rent)}
-              </Text>
-              <Text style={[styles.subDetailsTitle]}>Rent</Text>
-            </View>
-            <View style={styles.verticalLine}></View>
-            <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {numDifferentiation(item.rent_details.expected_deposit)}
-              </Text>
-              <Text style={[styles.subDetailsTitle]}>Deposit</Text>
-            </View>
-            <View style={styles.verticalLine}></View>
-            <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {item.property_details.furnishing_status}
-              </Text>
-              <Text style={[styles.subDetailsTitle]}>Furnishing</Text>
-            </View>
-            {/* <View style={styles.verticalLine}></View>
+          </Animated.View>
+        )}
+      </View>
+
+      <View
+        style={[
+          styles.detailsContainer,
+          { backgroundColor: "rgba(192,192,192, 0.0)" }
+        ]}
+      >
+        <View style={[styles.details]}>
+          <View style={[styles.subDetails]}>
+            <Text style={[styles.subDetailsValue, { marginTop: 5 }]}>
+              {item.property_details.bhk_type}
+            </Text>
+            {/* <Text style={[styles.subDetailsTitle]}>BHK</Text> */}
+          </View>
+          <View style={styles.verticalLine}></View>
+          <View style={[styles.subDetails]}>
+            <Text style={[styles.subDetailsValue]}>
+              {numDifferentiation(item.rent_details.expected_rent)}
+            </Text>
+            <Text style={[styles.subDetailsTitle]}>Rent</Text>
+          </View>
+          <View style={styles.verticalLine}></View>
+          <View style={[styles.subDetails]}>
+            <Text style={[styles.subDetailsValue]}>
+              {numDifferentiation(item.rent_details.expected_deposit)}
+            </Text>
+            <Text style={[styles.subDetailsTitle]}>Deposit</Text>
+          </View>
+          <View style={styles.verticalLine}></View>
+          <View style={[styles.subDetails]}>
+            <Text style={[styles.subDetailsValue]}>
+              {item.property_details.furnishing_status}
+            </Text>
+            <Text style={[styles.subDetailsTitle]}>Furnishing</Text>
+          </View>
+          {/* <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>800 sqft</Text>
             <Text style={[styles.subDetailsTitle]}>Buildup</Text>
           </View> */}
+        </View>
+      </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(false);
+        }}
+      >
+        <View style={styles.centeredView1}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>
+              Did you win deal for this property?
+            </Text>
+            <ButtonGroup
+              selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
+              onPress={updateIndex}
+              selectedIndex={index}
+              buttons={["Yes", "No"]}
+              // containerStyle={{ height: 30 }}
+              textStyle={{ textAlign: "center" }}
+              selectedTextStyle={{ color: "#fff" }}
+              containerStyle={{ borderRadius: 10, width: 300 }}
+              containerBorderRadius={10}
+            />
+
+            <View
+              style={{
+                position: "absolute",
+                flexDirection: "row",
+                right: 0,
+                bottom: 0,
+                marginTop: 20,
+                marginBottom: 20,
+                padding: 20
+                // justifyContent: "flex-end"
+              }}
+            >
+              <TouchableHighlight
+                style={{ ...styles.cancelButton }}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Cancel</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={{ ...styles.applyButton }}
+                onPress={() => {
+                  deleteMe(item);
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Apply</Text>
+              </TouchableHighlight>
+            </View>
           </View>
         </View>
+      </Modal>
 
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(false);
-          }}
-        >
-          <View style={styles.centeredView1}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>
-                Did you win deal for this property?
-              </Text>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Yes", "No"]}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 300 }}
-                containerBorderRadius={10}
-              />
+      {/* close property modal  */}
 
-              <View
-                style={{
-                  position: "absolute",
-                  flexDirection: "row",
-                  right: 0,
-                  bottom: 0,
-                  marginTop: 20,
-                  marginBottom: 20,
-                  padding: 20
-                  // justifyContent: "flex-end"
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={chatModalVisible}
+        onRequestClose={() => {
+          setChatModalVisible(false);
+        }}
+      >
+        <View style={styles.centeredView1}>
+          <View style={styles.modalView}>
+            <Text style={{ color: "616161", fontSize: 16 }}>
+              Enter your message
+            </Text>
+            <TextInput
+              style={{
+                height: 90,
+                width: "95%",
+                margin: 12,
+                borderWidth: 1,
+                borderColor: "rgba(191, 191, 191, 1)",
+                padding: 7,
+                color: "#616161"
+              }}
+              multiline
+              numberOfLines={10}
+              onChangeText={onChangeText}
+              value={message}
+              placeholder={message}
+            // keyboardType="numeric"
+            />
+
+            <View
+              style={{
+                position: "absolute",
+                flexDirection: "row",
+                right: 0,
+                bottom: 0,
+                marginTop: 20,
+                marginBottom: 20,
+                padding: 20
+                // justifyContent: "flex-end"
+              }}
+            >
+              <TouchableHighlight
+                style={{ ...styles.cancelButton }}
+                onPress={() => {
+                  setChatModalVisible(!chatModalVisible);
                 }}
               >
-                <TouchableHighlight
-                  style={{ ...styles.cancelButton }}
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                  }}
-                >
-                  <Text style={styles.textStyle}>Cancel</Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                  style={{ ...styles.applyButton }}
-                  onPress={() => {
-                    deleteMe(item);
-                    setModalVisible(!modalVisible);
-                  }}
-                >
-                  <Text style={styles.textStyle}>Apply</Text>
-                </TouchableHighlight>
-              </View>
-            </View>
-          </View>
-        </Modal>
-
-        {/* close property modal  */}
-
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={chatModalVisible}
-          onRequestClose={() => {
-            setChatModalVisible(false);
-          }}
-        >
-          <View style={styles.centeredView1}>
-            <View style={styles.modalView}>
-              <Text style={{ color: "616161", fontSize: 16 }}>
-                Enter your message
-              </Text>
-              <TextInput
-                style={{
-                  height: 90,
-                  width: "95%",
-                  margin: 12,
-                  borderWidth: 1,
-                  borderColor: "rgba(191, 191, 191, 1)",
-                  padding: 7,
-                  color: "#616161"
-                }}
-                multiline
-                numberOfLines={10}
-                onChangeText={onChangeText}
-                value={message}
-                placeholder={message}
-              // keyboardType="numeric"
-              />
-
-              <View
-                style={{
-                  position: "absolute",
-                  flexDirection: "row",
-                  right: 0,
-                  bottom: 0,
-                  marginTop: 20,
-                  marginBottom: 20,
-                  padding: 20
-                  // justifyContent: "flex-end"
-                }}
+                <Text style={styles.textStyle}>Cancel</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={{ ...styles.applyButton }}
+                onPress={() => sendMessage()}
               >
-                <TouchableHighlight
-                  style={{ ...styles.cancelButton }}
-                  onPress={() => {
-                    setChatModalVisible(!chatModalVisible);
-                  }}
-                >
-                  <Text style={styles.textStyle}>Cancel</Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                  style={{ ...styles.applyButton }}
-                  onPress={() => sendMessage()}
-                >
-                  <Text style={styles.textStyle}>Send</Text>
-                </TouchableHighlight>
-              </View>
+                <Text style={styles.textStyle}>Send</Text>
+              </TouchableHighlight>
             </View>
           </View>
-        </Modal>
-      </View>
+        </View>
+      </Modal>
+    </View>
     // </TouchableOpacity>
   );
 };

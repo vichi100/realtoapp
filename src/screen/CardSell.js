@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { MaterialIcons } from "@expo/vector-icons";
+import DoughnutChart from "../components/DoughnutChart";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Button from "../components/Button";
 import { ButtonGroup } from "@rneui/themed";
@@ -50,8 +51,8 @@ const Card = props => {
     displayCheckBox,
     displayChat,
     deleteMe,
-    displayMatchCount=true,
-    displayMatchPercent=false
+    displayMatchCount = true,
+    displayMatchPercent = false
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -235,19 +236,19 @@ const Card = props => {
     props.setPropertyDetails(item);
 
     if (propertyFor === "Rent") {
-      navigation.navigate("PropDetailsFromListing", {item:item});
+      navigation.navigate("PropDetailsFromListing", { item: item });
     } else if (propertyFor === "Sell") {
-      navigation.navigate("PropDetailsFromListingForSell", {item:item});
+      navigation.navigate("PropDetailsFromListingForSell", { item: item });
     }
 
   };
 
   const getMatched = (matchedProprtyItem) => {
-    navigation.navigate('MatchedCustomers', {matchedProprtyItem: matchedProprtyItem},);
+    navigation.navigate('MatchedCustomers', { matchedProprtyItem: matchedProprtyItem },);
   }
 
   return (
-  // <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
+    // <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
     <View style={styles.card}>
       <Slideshow
         dataSource={item.image_urls}
@@ -283,6 +284,42 @@ const Card = props => {
                 <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
               </View>
             </TouchableOpacity>}
+            {displayMatchPercent === true && (
+              <>
+                {/* <View style={{ justifyContent: 'center', alignItems: 'center' }}> */}
+
+                <DoughnutChart
+                  // data={[60, 40]}
+                  data={[
+                    // First segment (matched percentage)
+                    Math.max(0, Number(
+                      typeof item.matched_percentage === 'number'
+                        ? item.matched_percentage
+                        : typeof item.matched_percentage === 'string'
+                          ? parseFloat(item.matched_percentage) || 0
+                          : 0
+                    )),
+
+                    // Second segment (remaining percentage)
+                    100 - Math.max(0, Number(
+                      typeof item.matched_percentage === 'number'
+                        ? item.matched_percentage
+                        : typeof item.matched_percentage === 'string'
+                          ? parseFloat(item.matched_percentage) || 0
+                          : 0
+                    ))
+                  ]}
+                  radius={35}
+                  holeRadius={25}  // Adjust this to change the hole size
+                  strokeWidth={60}
+                  colors={['rgba(38, 208, 109, 0.8)', 'rgba(211, 61, 24, 0.6)']}
+                  textColor="#333"
+                  textSize={14}
+                  showPercentage={true}
+                />
+                {/* </View> */}
+              </>
+            )}
 
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
               <View style={{
@@ -577,8 +614,8 @@ const Card = props => {
         </View>
       </Modal>
     </View>
-  // </TouchableOpacity>
-);
+    // </TouchableOpacity>
+  );
 };
 
 const styles = StyleSheet.create({

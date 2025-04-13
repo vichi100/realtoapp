@@ -543,14 +543,14 @@ const ListingResidential = props => {
         // console.log(rentPropCount.length);
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <CardResidentialRent navigation={navigation} item={item} deleteMe={deleteMe} />
+            <CardResidentialRent navigation={navigation} item={item} deleteMe={deleteMe} displayMatchCount={false} displayMatchPercent={true}/>
           </TouchableOpacity>
         );
       } else if (item.property_for.toLowerCase() === "Sell".toLowerCase()) {
         // sellPropCount.push("1");
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
-            <CardResidentialSell navigation={navigation} item={item} deleteMe={deleteMe} />
+            <CardResidentialSell navigation={navigation} item={item} deleteMe={deleteMe} displayMatchCount={false} displayMatchPercent={true}/>
           </TouchableOpacity>
         );
       }
@@ -560,14 +560,14 @@ const ListingResidential = props => {
         // console.log(rentPropCount.length);
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <CardCommercialRent navigation={navigation} item={item} deleteMe={deleteMe} />
+            <CardCommercialRent navigation={navigation} item={item} deleteMe={deleteMe} displayMatchCount={false} displayMatchPercent={true}/>
           </TouchableOpacity>
         );
       } else if (item.property_for.toLowerCase() === "Sell".toLowerCase()) {
         // sellPropCount.push("1");
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
-            <CardCommercialSell navigation={navigation} item={item} deleteMe={deleteMe} />
+            <CardCommercialSell navigation={navigation} item={item} deleteMe={deleteMe} displayMatchCount={false} displayMatchPercent={true}/>
           </TouchableOpacity>
         );
       }

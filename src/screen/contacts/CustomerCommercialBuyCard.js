@@ -15,6 +15,7 @@ import {
   TextInput
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import DoughnutChart from "../../components/DoughnutChart";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { ButtonGroup } from "@rneui/themed";
 import { Avatar } from "@rneui/themed";
@@ -253,8 +254,35 @@ const CustomerCommercialBuyCard = props => {
           {displayMatchPercent === true && (
             <>
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Text>62%</Text>
-                <Text>Match</Text>
+              <DoughnutChart
+                  // data={[60, 40]}
+                  data={[
+                    // First segment (matched percentage)
+                    Math.max(0, Number(
+                      typeof item.matched_percentage === 'number'
+                        ? item.matched_percentage
+                        : typeof item.matched_percentage === 'string'
+                          ? parseFloat(item.matched_percentage) || 0
+                          : 0
+                    )),
+
+                    // Second segment (remaining percentage)
+                    100 - Math.max(0, Number(
+                      typeof item.matched_percentage === 'number'
+                        ? item.matched_percentage
+                        : typeof item.matched_percentage === 'string'
+                          ? parseFloat(item.matched_percentage) || 0
+                          : 0
+                    ))
+                  ]}
+                  radius={35}
+                  holeRadius={25}  // Adjust this to change the hole size
+                  strokeWidth={60}
+                  colors={['rgba(38, 208, 109, 0.8)', 'rgba(211, 61, 24, 0.6)']}
+                  textColor="#333"
+                  textSize={14}
+                  showPercentage={true}
+                />
               </View>
             </>
           )}

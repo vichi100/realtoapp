@@ -151,6 +151,7 @@ const PropertyListForMeeting = props => {
               disableDrawer={true}
               displayCheckBox={true}
               displayMatchCount={false}
+              displayMatchPercent={true}
             />
           </TouchableOpacity>
         );
@@ -171,6 +172,7 @@ const PropertyListForMeeting = props => {
               disableDrawer={true}
               displayCheckBox={true}
               displayMatchCount={false}
+              displayMatchPercent={true}
             />
           </TouchableOpacity>
         );
@@ -193,6 +195,7 @@ const PropertyListForMeeting = props => {
               disableDrawer={true}
               displayCheckBox={true}
               displayMatchCount={false}
+              displayMatchPercent={true}
             />
           </TouchableOpacity>
         );
@@ -213,6 +216,7 @@ const PropertyListForMeeting = props => {
               disableDrawer={true}
               displayCheckBox={true}
               displayMatchCount={false}
+              displayMatchPercent={true}
             />
           </TouchableOpacity>
         );
