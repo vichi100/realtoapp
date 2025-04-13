@@ -61,7 +61,7 @@ const Card = props => {
     displayCheckBox,
     displayChat,
     deleteMe,
-    displayMatchCount = false,
+    displayMatchCount = true,
     displayMatchPercent=false
   } = props;
 
@@ -259,9 +259,9 @@ const Card = props => {
     props.setPropertyDetails(item);
 
     if (propertyFor === "Rent") {
-      navigation.navigate("PropDetailsFromListing", item);
+      navigation.navigate("PropDetailsFromListing", {item:item});
     } else if (propertyFor === "Sell") {
-      navigation.navigate("PropDetailsFromListingForSell", item);
+      navigation.navigate("PropDetailsFromListingForSell", {item:item});
     }
 
   };
@@ -271,7 +271,7 @@ const Card = props => {
   }
 
   return (
-    <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
+    // <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
       <View style={styles.card}>
         <Slideshow
           dataSource={item.image_urls}
@@ -601,7 +601,8 @@ const Card = props => {
           </View>
         </Modal>
       </View>
-    </TouchableOpacity>);
+    // </TouchableOpacity>
+  );
 };
 
 const mapStateToProps = state => ({

@@ -51,7 +51,7 @@ const CustomerCommercialRentCard = props => {
     displayChat,
     deleteMe,
     navigatedFrom = "none",
-    displayMatchCount = false,
+    displayMatchCount = true,
     displayMatchPercent = false
   } = props;
   let animatedValue = new Animated.Value(0);

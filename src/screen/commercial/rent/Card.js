@@ -49,7 +49,8 @@ const Card = props => {
     displayCheckBox,
     displayChat,
     deleteMe,
-    displayMatchCount = true
+    displayMatchCount = true,
+    displayMatchPercent=false
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;

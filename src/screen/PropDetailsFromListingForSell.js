@@ -25,8 +25,17 @@ const PropDetailsFromListingForSell = props => {
   // const item = route.params;
   // console.log(item);
 
-  const { navigation } = props;
-  const item = props.propertyDetails;
+  const { navigation } = props; 
+  let { item,
+    displayMatchCount = true,
+    displayMatchPercent = true
+  } = props.route.params;
+  if (!item) {
+    item = props.propertyDetails;
+  }
+  console.log("displayMatchCount:", displayMatchCount);
+  console.log("displayMatchPercent:", displayMatchPercent);
+  
   const scrollViewRef = useRef();
   const [reminderListX, setReminderListX] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -116,7 +125,7 @@ const PropDetailsFromListingForSell = props => {
       
               </View>
       
-              <TouchableOpacity
+              {displayMatchCount && <TouchableOpacity
                 onPress={() => getMatched(item)}
                 style={{ flexDirection: 'row', marginTop: 8 }}
               >
@@ -133,9 +142,7 @@ const PropDetailsFromListingForSell = props => {
                 }}>
                   <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
                 </View>
-      
-      
-              </TouchableOpacity>
+              </TouchableOpacity>}
             </View>
       {/* <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>

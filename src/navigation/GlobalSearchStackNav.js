@@ -50,7 +50,7 @@ const GlobalSearchStackNav = () => {
         component={GlobalCommercialCustomersSearchResult}
         options={{ tabBarLabel: "Home!", tabBarVisible: false, headerShown: true }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="PropDetailsFromListing"
         component={PropDetailsFromListing}
         navigationOptions={{ tabBarVisible: false }}
@@ -58,7 +58,7 @@ const GlobalSearchStackNav = () => {
           title: "Property details",
           headerShown: true
         }}
-      />
+      /> */}
       <Stack.Screen
               name="CustomerMeetingDetails"
               component={CustomerMeetingDetails}

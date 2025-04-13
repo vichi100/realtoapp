@@ -1,4 +1,7 @@
 import React, { Component, useRef, useState, useEffect } from "react";
+
+import { useRoute } from '@react-navigation/native';
+
 import {
   StyleSheet,
   View,
@@ -24,7 +27,15 @@ import AppConstant from "../util/AppConstant";
 
 const PropDetailsFromListing = props => {
   const { navigation } = props;
-  const item = props.propertyDetails;
+  let { item,
+    displayMatchCount = true,
+    displayMatchPercent = true
+  } = props.route.params;
+  console.log("displayMatchCount:", displayMatchCount);
+  console.log("displayMatchPercent:", displayMatchPercent);
+  if (!item) {
+    item = props.propertyDetails;
+  }
   const scrollViewRef = useRef();
   const [reminderListX, setReminderListX] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -112,7 +123,7 @@ const PropDetailsFromListing = props => {
 
         </View>
 
-        <TouchableOpacity
+       {displayMatchCount && <TouchableOpacity 
           onPress={() => getMatched(item)}
           style={{ flexDirection: 'row', marginTop: 8 }}
         >
@@ -131,7 +142,7 @@ const PropDetailsFromListing = props => {
           </View>
 
 
-        </TouchableOpacity>
+        </TouchableOpacity>}
       </View>
       <Slideshow
         dataSource={item.image_urls}

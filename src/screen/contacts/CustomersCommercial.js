@@ -439,9 +439,9 @@ const CustomersCommercial = props => {
   const navigateToDetails = (item, propertyFor) => {
     props.setAnyItemDetails(item);
     if (propertyFor === "Rent") {
-      navigation.navigate("CustomerDetailsCommercialRentFromList", item);
+      navigation.navigate("CustomerDetailsCommercialRentFromList", {item:item});
     } else if (propertyFor === "Buy") {
-      navigation.navigate("CustomerDetailsCommercialBuyFromList", item);
+      navigation.navigate("CustomerDetailsCommercialBuyFromList", {item:item});
     }
   };
 

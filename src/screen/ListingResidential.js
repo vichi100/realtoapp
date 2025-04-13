@@ -482,38 +482,38 @@ const ListingResidential = props => {
     props.setPropertyDetails(item);
 
     if (propertyFor === "Rent") {
-      navigation.navigate("PropDetailsFromListing", item);
+      navigation.navigate("PropDetailsFromListing", {item:item});
     } else if (propertyFor === "Sell") {
-      navigation.navigate("PropDetailsFromListingForSell", item);
+      navigation.navigate("PropDetailsFromListingForSell", {item:item});
     }
 
   };
 
-  const deleteMe = (itemToDelete) =>{
+  const deleteMe = (itemToDelete) => {
     // console.log("props.setPropertyDetails(item: deleteMe: )", itemToDelete);
     setData((data) => data.filter((item) => item.property_id !== itemToDelete.property_id));
     //Fist delete for data
-    
+
 
   }
 
   const ItemView = ({ item }) => {
 
-    if (item.property_type.toLowerCase()  === "Residential".toLowerCase() ) {
+    if (item.property_type.toLowerCase() === "Residential".toLowerCase()) {
       if (item.property_for.toLowerCase() === "Rent".toLowerCase()) {
         // rentPropCount.push("1");
         // console.log(rentPropCount.length);
         return (
-          // <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-          <CardResidentialRent navigation={navigation} item={item} deleteMe={deleteMe}/>
-          // </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
+            <CardResidentialRent navigation={navigation} item={item} deleteMe={deleteMe} />
+          </TouchableOpacity>
         );
       } else if (item.property_for.toLowerCase() === "Sell".toLowerCase()) {
         // sellPropCount.push("1");
         return (
-          // <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
-          <CardResidentialSell navigation={navigation} item={item} deleteMe={deleteMe}/>
-          // </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
+            <CardResidentialSell navigation={navigation} item={item} deleteMe={deleteMe} />
+          </TouchableOpacity>
         );
       }
     }
@@ -578,7 +578,7 @@ const ListingResidential = props => {
     </View> :
       <View style={{ flex: 1 }}>
         <View style={styles.searchBar}>
-        <AntDesign name="search1" size={20} color="#999" style={{marginRight: 5,}} />
+          <AntDesign name="search1" size={20} color="#999" style={{ marginRight: 5, }} />
           {/* <View style={{ flexDirection: "row", margin: 10, justifyContent: "space-between" }}>
             <Text>For Rent: {rentPropCount.length}</Text>
             <Text>For Sell: {sellPropCount.length}</Text>
@@ -589,7 +589,7 @@ const ListingResidential = props => {
             value={search}
             underlineColorAndroid="transparent"
             placeholder="Search by property address, owner"
-            placeholderTextColor="#000" 
+            placeholderTextColor="#000"
           />
         </View>
         {data.length > 0 ? (
@@ -601,10 +601,10 @@ const ListingResidential = props => {
               //Item Separator View
               renderItem={ItemView}
               keyExtractor={(item, index) => index.toString()}
-              // refreshControl={
-              //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              // }
-              
+            // refreshControl={
+            //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            // }
+
             />
             <View style={styles.fab}>
               <TouchableOpacity

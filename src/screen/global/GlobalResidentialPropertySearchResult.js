@@ -450,7 +450,7 @@ const GlobalResidentialPropertySearchResult = props => {
       if (item.property_for === "Rent") {
         return (
           <TouchableOpacity
-            onPress={() => navigation.navigate("PropDetailsFromListing", item)}
+            onPress={() => navigation.navigate("PropDetailsFromListing", {item:item})}
           >
             <CardResidentialRent
               navigation={navigation}
@@ -464,7 +464,7 @@ const GlobalResidentialPropertySearchResult = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("PropDetailsFromListingForSell", item)
+              navigation.navigate("PropDetailsFromListingForSell", {item:item})
             }
           >
             <CardResidentialSell

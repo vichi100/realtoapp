@@ -520,9 +520,9 @@ const ListingResidential = props => {
     props.setPropertyDetails(item);
 
     if (propertyFor === "Rent") {
-      navigation.navigate("PropDetailsFromListing", item);
+      navigation.navigate("PropDetailsFromListing", {item:item});
     } else if (propertyFor === "Sell") {
-      navigation.navigate("PropDetailsFromListingForSell", item);
+      navigation.navigate("PropDetailsFromListingForSell", {item:item});
     }
 
   };

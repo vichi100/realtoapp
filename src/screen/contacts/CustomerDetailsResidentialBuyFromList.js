@@ -15,12 +15,12 @@ import Reminder from "../Reminder";
 
 const CustomerDetailsResidentialBuyFromList = props => {
   const { navigation } = props;
-  const {itemX, displayMatchCount, displayMatchPercent} = props.route.params;
-  const item = props.anyItemDetails;
-  if(!item){
-    item = itemX
-  }
-  // console.log(item);
+  let {item, displayMatchCount = false, displayMatchPercent = true} = props.route.params;
+  // let item = props.anyItemDetails;
+  // if(!item){
+  //   item = itemX
+  // }
+  // // console.log(item);
   const [location, setLocation] = useState([]);
 
   const getMatched = (matchedCustomerItem) => {
@@ -32,13 +32,13 @@ const CustomerDetailsResidentialBuyFromList = props => {
     // setItem(props.anyItemDetails);
 
     const locX = []
-    props.anyItemDetails.customer_locality.location_area.map(item => {
-      console.log(item.main_text);
-      locX.push(item.main_text)
+    item.customer_locality.location_area.map(itemOne => {
+      console.log(itemOne.main_text);
+      locX.push(itemOne.main_text)
     })
     setLocation(locX)
 
-  }, props.anyItemDetails)
+  }, item)
 
 
   return (

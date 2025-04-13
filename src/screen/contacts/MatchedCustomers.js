@@ -437,15 +437,15 @@ const MatchedCustomers = props => {
     props.setAnyItemDetails(item);
     if (property_type === "Residential") {
       if (propertyFor === "Rent") {
-        navigation.navigate("CustomerDetailsResidentialRentFromList", { itemX: item, displayMatchCount: false, displayMatchPercent: false });
+        navigation.navigate("CustomerDetailsResidentialRentFromList", { item: item, displayMatchCount: false, displayMatchPercent: false });
       } else if (propertyFor === "Buy") {
-        navigation.navigate("CustomerDetailsResidentialBuyFromList", { itemX: item, displayMatchCount: false, displayMatchPercent: false });
+        navigation.navigate("CustomerDetailsResidentialBuyFromList", { item: item, displayMatchCount: false, displayMatchPercent: false });
       }
     }else if(property_type === "Commercial"){
       if (propertyFor === "Rent") {
-        navigation.navigate("CustomerDetailsCommercialRentFromList", { itemX: item, displayMatchCount: false, displayMatchPercent: false });
+        navigation.navigate("CustomerDetailsCommercialRentFromList", { item: item, displayMatchCount: false, displayMatchPercent: false });
       } else if (propertyFor === "Buy") {
-        navigation.navigate("CustomerDetailsCommercialBuyFromList", { itemX: item, displayMatchCount: false, displayMatchPercent: false });
+        navigation.navigate("CustomerDetailsCommercialBuyFromList", { item: item, displayMatchCount: false, displayMatchPercent: false });
       }
     }
   };

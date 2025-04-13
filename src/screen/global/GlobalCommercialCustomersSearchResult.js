@@ -425,12 +425,13 @@ const GlobalCommercialCustomersSearchResult = props => {
   };
 
   const ItemView = ({ item }) => {
+    props.setAnyItemDetails(item);
     if (item.customer_locality.property_type === "Commercial") {
       if (item.customer_locality.property_for === "Rent") {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CustomerDetailsCommercialRentFromList", item)
+              navigation.navigate("CustomerDetailsCommercialRentFromList", {item:item})
             }
           >
             <CustomerCommercialRentCard
@@ -445,7 +446,7 @@ const GlobalCommercialCustomersSearchResult = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CustomerDetailsCommercialBuyFromList", item)
+              navigation.navigate("CustomerDetailsCommercialBuyFromList", {item:item})
             }
           >
             <CustomerCommercialBuyCard

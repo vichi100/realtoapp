@@ -177,3 +177,4 @@ I be able to see there all mached property or customers which are not mine which
 
 ### ERROR LIST ###
 1) When create new resident sell property get error.
+2) when you add customer after click "Add" button it navigate to client list 

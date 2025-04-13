@@ -50,7 +50,8 @@ const Card = props => {
     displayCheckBox,
     displayChat,
     deleteMe,
-    displayMatchCount=true
+    displayMatchCount=true,
+    displayMatchPercent=false
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -234,9 +235,9 @@ const Card = props => {
     props.setPropertyDetails(item);
 
     if (propertyFor === "Rent") {
-      navigation.navigate("PropDetailsFromListing", item);
+      navigation.navigate("PropDetailsFromListing", {item:item});
     } else if (propertyFor === "Sell") {
-      navigation.navigate("PropDetailsFromListingForSell", item);
+      navigation.navigate("PropDetailsFromListingForSell", {item:item});
     }
 
   };
@@ -245,7 +246,8 @@ const Card = props => {
     navigation.navigate('MatchedCustomers', {matchedProprtyItem: matchedProprtyItem},);
   }
 
-  return (<TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
+  return (
+  // <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
     <View style={styles.card}>
       <Slideshow
         dataSource={item.image_urls}
@@ -575,7 +577,8 @@ const Card = props => {
         </View>
       </Modal>
     </View>
-  </TouchableOpacity>);
+  // </TouchableOpacity>
+);
 };
 
 const styles = StyleSheet.create({

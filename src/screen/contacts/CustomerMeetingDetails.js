@@ -132,7 +132,7 @@ const CustomerMeetingDetails = props => {
                   <TouchableOpacity
                     onPress={() => {
                       props.setPropertyDetails(item);
-                      navigation.navigate("PropDetailsFromListing", item)
+                      navigation.navigate("PropDetailsFromListing", {item:item})
                     
                     }}
                   >
@@ -192,7 +192,7 @@ const CustomerMeetingDetails = props => {
                     onPress={() =>
                     {
                       props.setPropertyDetails(item);
-                      navigation.navigate("PropDetailsFromListingForSell", item)
+                      navigation.navigate("PropDetailsFromListingForSell", {item:item})
 
                     }
                       
@@ -254,7 +254,7 @@ const CustomerMeetingDetails = props => {
                   <TouchableOpacity
                     onPress={() =>{
                       props.setPropertyDetails(item)
-                      navigation.navigate("CommercialRentPropDetails", item)
+                      navigation.navigate("CommercialRentPropDetails", {item:item})
                     }
                     }
                   >
@@ -313,7 +313,7 @@ const CustomerMeetingDetails = props => {
                   <TouchableOpacity
                     onPress={() =>{
                       props.setPropertyDetails(item);
-                      navigation.navigate("CommercialSellPropDetails", item)
+                      navigation.navigate("CommercialSellPropDetails", {item:item})
                     }
                     }
                   >

@@ -104,7 +104,7 @@ CustomerListForMeeting = props => {
             onPress={() =>
               navigation.navigate(
                 "CustomerDetailsResidentialRentFromList",
-                item
+                {item: item}
               )
             }
           >
@@ -114,6 +114,8 @@ CustomerListForMeeting = props => {
               disableDrawer={true}
               displayCheckBox={true}
               navigatedFrom = {"dont_show_matched_count"}
+              displayMatchCount= {false}
+              displayMatchPercent= {true}
             />
           </TouchableOpacity>
         );
@@ -121,7 +123,7 @@ CustomerListForMeeting = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CustomerDetailsResidentialBuyFromList", item)
+              navigation.navigate("CustomerDetailsResidentialBuyFromList", {item: item})
             }
           >
             <ContactResidentialSellCard
@@ -130,6 +132,8 @@ CustomerListForMeeting = props => {
               disableDrawer={true}
               displayCheckBox={true}
               navigatedFrom = {"dont_show_matched_count"}
+              displayMatchCount= {false}
+              displayMatchPercent= {true}
             />
           </TouchableOpacity>
         );
@@ -140,8 +144,8 @@ CustomerListForMeeting = props => {
           <TouchableOpacity
             onPress={() =>
               navigation.navigate(
-                "CustomerDetailsResidentialRentFromList",
-                item
+                "CustomerDetailsCommercialRentFromList",
+                {item: item}
               )
             }
           >
@@ -151,6 +155,8 @@ CustomerListForMeeting = props => {
               disableDrawer={true}
               displayCheckBox={true}
               navigatedFrom = {"dont_show_matched_count"}
+              displayMatchCount= {false}
+              displayMatchPercent= {true}
             />
           </TouchableOpacity>
         );
@@ -158,7 +164,7 @@ CustomerListForMeeting = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CustomerDetailsResidentialBuyFromList", item)
+              navigation.navigate("CustomerDetailsCommercialBuyFromList", {item: item})
             }
           >
             <CustomerCommercialBuyCard
@@ -167,6 +173,8 @@ CustomerListForMeeting = props => {
               disableDrawer={true}
               displayCheckBox={true}
               navigatedFrom = {"dont_show_matched_count"}
+              displayMatchCount= {false}
+              displayMatchPercent= {true}
             />
           </TouchableOpacity>
         );

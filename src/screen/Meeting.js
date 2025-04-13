@@ -350,7 +350,10 @@ const Meeting = props => {
             </View>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("CustomerListForMeeting")
+                navigation.navigate("CustomerListForMeeting",{
+                  displayMatchCount: false,
+                  displayMatchPercent: true
+                })
               }
             >
               <View style={{ flexDirection: "row", marginTop: 10 }}>

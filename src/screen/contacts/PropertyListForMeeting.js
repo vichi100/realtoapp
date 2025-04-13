@@ -138,7 +138,12 @@ const PropertyListForMeeting = props => {
       if (item.property_for === "Rent") {
         return (
           <TouchableOpacity
-            onPress={() => navigation.navigate("PropDetailsFromListing", item)}
+            onPress={() => navigation.navigate("PropDetailsFromListing", {
+              item:item,
+              displayMatchCount: false,  
+              displayMatchPercent: true 
+            })
+          }
           >
             <CardResidentialRent
               navigation={navigation}
@@ -153,7 +158,11 @@ const PropertyListForMeeting = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("PropDetailsFromListingForSell", item)
+              navigation.navigate("PropDetailsFromListingForSell", {
+                item:item,
+                displayMatchCount: false,
+                displayMatchPercent: true
+              })
             }
           >
             <CardResidentialSell
@@ -171,7 +180,11 @@ const PropertyListForMeeting = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CommercialRentPropDetails", item)
+              navigation.navigate("CommercialRentPropDetails", {
+                item:item,
+                displayMatchCount: false,
+                displayMatchPercent: true
+              })
             }
           >
             <CardRent
@@ -187,7 +200,11 @@ const PropertyListForMeeting = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CommercialSellPropDetails", item)
+              navigation.navigate("CommercialSellPropDetails", {
+                item:item,
+                displayMatchCount: false,
+                displayMatchPercent: true
+              })
             }
           >
             <CardSell

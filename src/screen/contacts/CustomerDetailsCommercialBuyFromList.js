@@ -14,11 +14,11 @@ import Reminder from "../Reminder";
 
 const CustomerDetailsCommercialBuyFromList = props => {
   const { navigation } = props;
-  const { itemX, displayMatchCount, displayMatchPercent } = props.route.params;
-  const item = props.anyItemDetails;
-  if (!item) {
-    item = itemX
-  }
+  const { item, displayMatchCount = true, displayMatchPercent = true } = props.route.params;
+  // let item = props.anyItemDetails;
+  // if (!item) {
+  //   item = itemX
+  // }
 
   const [location, setLocation] = useState([]);
 
@@ -30,13 +30,13 @@ const CustomerDetailsCommercialBuyFromList = props => {
     // setItem(props.anyItemDetails);
 
     const locX = []
-    props.anyItemDetails.customer_locality.location_area.map(item => {
+    item.customer_locality.location_area.map(item => {
       console.log(item.main_text);
       locX.push(item.main_text)
     })
     setLocation(locX)
 
-  }, props.anyItemDetails)
+  }, item)
 
   // // console.log(item);
   return (

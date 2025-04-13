@@ -22,12 +22,14 @@ import { SERVER_URL } from "../../../util/Constant";
 import axios from "axios";
 
 const CommercialRentPropDetails = props => {
-  // const { navigation } = props;
-  // const item = route.params;
-  // // console.log(item);
-
   const { navigation } = props;
-  const item = props.propertyDetails;
+  let { item,
+    displayMatchCount = true,
+    displayMatchPercent = true
+  } = props.route.params;
+  if (!item) {
+    item = props.propertyDetails;
+  }
   const scrollViewRef = useRef();
   const [reminderListX, setReminderListX] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -117,7 +119,7 @@ const CommercialRentPropDetails = props => {
 
         </View>
 
-        <TouchableOpacity
+        {displayMatchCount && <TouchableOpacity
           onPress={() => getMatched(item)}
           style={{ flexDirection: 'row', marginTop: 8 }}
         >
@@ -136,7 +138,7 @@ const CommercialRentPropDetails = props => {
           </View>
 
 
-        </TouchableOpacity>
+        </TouchableOpacity>}
       </View>
 
       {/* <View style={[styles.headerContainer]}>

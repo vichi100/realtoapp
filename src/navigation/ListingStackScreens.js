@@ -67,7 +67,7 @@ const ListingStackScreens = ({ navigation, route }) => {
         options={{ title: "Meeting Schedules" }}
       /> */}
 
-      <Stack.Screen
+      <Stack.Screen 
         name="Meeting"
         component={Meeting}
         options={{ title: "Reminders", tabBarVisible: false }}

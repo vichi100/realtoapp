@@ -406,9 +406,9 @@ const ContactsResidential = props => {
   const navigateToDetails = (item, propertyFor) => {
     props.setAnyItemDetails(item);
     if (propertyFor === "Rent") {
-      navigation.navigate("CustomerDetailsResidentialRentFromList", item);
+      navigation.navigate("CustomerDetailsResidentialRentFromList", {item:item});
     } else if (propertyFor === "Buy") {
-      navigation.navigate("CustomerDetailsResidentialBuyFromList", item);
+      navigation.navigate("CustomerDetailsResidentialBuyFromList", {item:item});
     }
   };
 

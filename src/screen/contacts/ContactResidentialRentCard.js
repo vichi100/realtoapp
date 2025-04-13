@@ -49,7 +49,7 @@ const ContactResidentialRentCard = props => {
     displayChat,
     deleteMe,
     navigatedFrom = "none",
-    displayMatchCount = false,
+    displayMatchCount = true,
     displayMatchPercent = false
   } = props;
   // console.log("ContactResidentialRentCard :    ", item);

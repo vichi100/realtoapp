@@ -479,7 +479,7 @@ const GlobalCommercialPropertySearchResult = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CommercialRentPropDetails", item)
+              navigation.navigate("CommercialRentPropDetails", {item:item})
             }
           >
             <CardRent
@@ -495,7 +495,7 @@ const GlobalCommercialPropertySearchResult = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CommercialSellPropDetails", item)
+              navigation.navigate("CommercialSellPropDetails", {item:item})
             }
           >
             <CardSell

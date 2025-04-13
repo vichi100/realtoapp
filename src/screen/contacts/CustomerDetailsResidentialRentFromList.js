@@ -11,15 +11,15 @@ import { Avatar } from "@rneui/themed";
 import { numDifferentiation } from "../../util/methods";
 import Feather from "react-native-vector-icons/Feather";
 import { connect } from "react-redux";
-import Reminder from "../Reminder";
+import Reminder from "../Reminder"; 
 
-const CustomerDetailsResidentialRentFromList = props => {
+const CustomerDetailsResidentialRentFromList = props => {  
   const { navigation } = props;
-  const {itemX, displayMatchCount, displayMatchPercent} = props.route.params;
-  let item = props.anyItemDetails;
-  if(!item){
-    item = itemX
-  }
+  let {item, displayMatchCount = true, displayMatchPercent = true} = props.route.params;
+  // let item = props.anyItemDetails;
+  // if(!item){
+  //   item = itemX
+  // }
   // // console.log(item);
 
   // const [item, setItem] = useState(null);
@@ -29,7 +29,7 @@ const CustomerDetailsResidentialRentFromList = props => {
     navigation.navigate('MatchedProperties', {matchedCustomerItem: matchedCustomerItem},);
   }
 
-  useEffect(() => {
+  useEffect(() => {  
     // setItem(props.anyItemDetails);
 
     const locX = []
