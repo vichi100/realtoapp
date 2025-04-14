@@ -65,7 +65,15 @@ https://oblador.github.io/react-native-vector-icons/
 https://github.com/roto93/react-native-neat-date-picker/tree/main
 
 
+### START APPLICATION ON EXPO 
+
 npm start -- --clear
+
+
+### START APPLICATION ON WEB
+https://docs.expo.dev/workflow/web/
+
+npx expo start --web
 
 
 # How to login mongo db

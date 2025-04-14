@@ -211,7 +211,7 @@ const CustomerMeeting = props => {
     const reminderDetails = {
       req_user_id: props.userDetails.works_for,
       meeting_creator_id: props.userDetails.works_for,
-      agent_id_of_client: props.customerDetailsForMeeting.agent_id,
+      agent_id_of_client: item.agent_id,
       category: category,
       category_ids: categoryArray,
       category_type: item.customer_locality.property_type,

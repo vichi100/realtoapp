@@ -491,9 +491,13 @@ const ListingCommercial = props => {
     console.log("props.setPropertyDetails(item: )", item);
     props.setPropertyDetails(item);
     if (propertyFor === "Rent") {
-      navigation.navigate("CommercialRentPropDetails", {item:item});
+      navigation.navigate("CommercialRentPropDetails", {item:item,
+        displayMatchCount: true, displayMatchPercent: false
+      });
     } else if (propertyFor === "Sell") {
-      navigation.navigate("CommercialSellPropDetails", {item:item});
+      navigation.navigate("CommercialSellPropDetails", {item:item,
+        displayMatchCount: true, displayMatchPercent: false
+      });
     }
 
   };

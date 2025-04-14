@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import Svg, { Path, G } from 'react-native-svg';
 
 const DoughnutChart = ({ 
-  data, 
+  data=[2,98], 
   radius = 100, 
   holeRadius = 60, 
   strokeWidth = 30, 
@@ -21,6 +21,9 @@ const DoughnutChart = ({
   const chartColors = colors.length ? colors : defaultColors;
   
   // Calculate total and percentages
+  if(data[0] === 0 || data[1] === 0) {
+    data = [1, 98]; // Default to a non-empty chart
+  }
   const total = data.reduce((sum, value) => sum + value, 0);
   const percentages = data.map(value => (value / total) * 100);
   const mainPercentage = Math.round((data[0] / total) * 100); // First segment percentage
@@ -80,11 +83,11 @@ const DoughnutChart = ({
         {showPercentage && (
           <View style={[styles.centerTextContainer, { width: holeRadius * 2, height: holeRadius * 2 }]}>
             <Text style={[styles.centerText, { color: textColor, fontSize: textSize }]}>
-              {mainPercentage}%
+              {mainPercentage < 40 ? 0 : mainPercentage}%
             </Text>
-            {/* <Text style={[styles.centerText, { color: textColor, fontSize: textSize / 2 }]}>
+            <Text style={[styles.centerText, { color: textColor, fontSize: textSize / 1.2 }]}>
             match
-            </Text> */}
+            </Text>
           </View>
         )}
       </View>
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   centerText: {
-    // fontWeight: 'bold',
+    fontWeight: 'bold',
     textAlign: 'center',
   },
   legendContainer: {

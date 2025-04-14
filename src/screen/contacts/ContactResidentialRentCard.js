@@ -270,16 +270,20 @@ const ContactResidentialRentCard = props => {
                         ? item.matched_percentage
                         : typeof item.matched_percentage === 'string'
                           ? parseFloat(item.matched_percentage) || 0
-                          : 0
+                          : typeof item.matched_percentage === 'undefined'
+                            ? 0 // Default to 0 if undefined
+                            : 0
                     )),
-
+                
                     // Second segment (remaining percentage)
                     100 - Math.max(0, Number(
                       typeof item.matched_percentage === 'number'
                         ? item.matched_percentage
                         : typeof item.matched_percentage === 'string'
                           ? parseFloat(item.matched_percentage) || 0
-                          : 0
+                          : typeof item.matched_percentage === 'undefined'
+                            ? 0 // Default to 0 if undefined
+                            : 0
                     ))
                   ]}
                   radius={35}

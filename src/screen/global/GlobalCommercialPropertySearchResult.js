@@ -479,7 +479,9 @@ const GlobalCommercialPropertySearchResult = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CommercialRentPropDetails", {item:item})
+              navigation.navigate("CommercialRentPropDetails", {item:item,
+                displayMatchCount: true, displayMatchPercent: false
+              })
             }
           >
             <CardRent
@@ -495,7 +497,9 @@ const GlobalCommercialPropertySearchResult = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CommercialSellPropDetails", {item:item})
+              navigation.navigate("CommercialSellPropDetails", {item:item,
+                displayMatchCount: true, displayMatchPercent: false
+              })
             }
           >
             <CardSell

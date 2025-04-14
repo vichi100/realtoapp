@@ -406,9 +406,13 @@ const ContactsResidential = props => {
   const navigateToDetails = (item, propertyFor) => {
     props.setAnyItemDetails(item);
     if (propertyFor === "Rent") {
-      navigation.navigate("CustomerDetailsResidentialRentFromList", {item:item});
+      navigation.navigate("CustomerDetailsResidentialRentFromList", {item:item,
+        displayMatchCount: true, displayMatchPercent: false
+      });
     } else if (propertyFor === "Buy") {
-      navigation.navigate("CustomerDetailsResidentialBuyFromList", {item:item});
+      navigation.navigate("CustomerDetailsResidentialBuyFromList", {item:item,
+        displayMatchCount: true, displayMatchPercent: false
+      });
     }
   };
 

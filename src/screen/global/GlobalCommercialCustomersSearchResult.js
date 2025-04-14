@@ -431,7 +431,9 @@ const GlobalCommercialCustomersSearchResult = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CustomerDetailsCommercialRentFromList", {item:item})
+              navigation.navigate("CustomerDetailsCommercialRentFromList", {item:item,
+                displayMatchCount: true, displayMatchPercent: false
+              })
             }
           >
             <CustomerCommercialRentCard
@@ -446,7 +448,9 @@ const GlobalCommercialCustomersSearchResult = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CustomerDetailsCommercialBuyFromList", {item:item})
+              navigation.navigate("CustomerDetailsCommercialBuyFromList", {item:item,
+                displayMatchCount: true, displayMatchPercent: false
+              })
             }
           >
             <CustomerCommercialBuyCard
