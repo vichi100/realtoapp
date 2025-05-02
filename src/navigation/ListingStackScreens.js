@@ -86,12 +86,13 @@ const ListingStackScreens = ({ navigation, route }) => {
       <Stack.Screen
         name="MatchedCustomers"
         component={MatchedCustomers}
+        navigationOptions={{ tabBarVisible: true }}
         options={{
           title: "Matched Customers",
-          tabBarStyle: {
-            display: "none",
-          },
-          tabBarButton: () => null,
+          // tabBarStyle: {
+          //   display: "none",
+          // },
+          // tabBarButton: () => null,
         }}
 
       />

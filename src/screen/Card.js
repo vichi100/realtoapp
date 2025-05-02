@@ -268,7 +268,7 @@ const Card = props => {
   };
 
   const getMatched = (matchedProprtyItem) => {
-    navigation.navigate('MatchedCustomers', { matchedProprtyItem: matchedProprtyItem },);
+    navigation.navigate('MatchedCustomers', { matchedProprtyItem: matchedProprtyItem, },);
   }
 
   return (
@@ -297,10 +297,10 @@ const Card = props => {
             marginTop: -5,
             marginBottom: 5,
           }}>
-            {displayMatchCount && <TouchableOpacity onPress={() => getMatched(item)}>
-              <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
+            {displayMatchCount  && <TouchableOpacity onPress={() => getMatched(item)}>
+              {<View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
                 <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
-              </View>
+              </View>}
               <View style={{
                 position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
                 backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',

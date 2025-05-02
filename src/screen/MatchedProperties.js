@@ -93,7 +93,10 @@ const ListingResidential = props => {
   const [matchedPropertiesDetailsMine, setMatchedPropertiesDetailsMine] = useState([]);
   const [matchedPropertiesDetailsOther, setMatchedPropertiesDetailsOther] = useState([]);
 
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [reqUserId, setReqUserId] = useState(props.userDetails.works_for);
+  const [customerAgentId, setCustomerAgentId] = useState(matchedCustomerItem.agent_id);
+
+  const [selectedTab, setSelectedTab] = useState(reqUserId === customerAgentId ? 0 : 1);
 
   // useEffect(() => {
   //   console.log(rent)
@@ -652,17 +655,17 @@ const ListingResidential = props => {
         {1 > 0 ? (
                   <View style={styles.container}>
                     <View style={styles.tabContainer}>
-                      <TouchableOpacity
+                      {reqUserId === customerAgentId &&<TouchableOpacity
                         style={[styles.tab, selectedTab === 0 && styles.activeTab]}
                         onPress={() => setSelectedTab(0)}
                       >
                         <Text style={styles.tabText}>My Properties</Text>
-                      </TouchableOpacity>
+                      </TouchableOpacity>}
                       <TouchableOpacity
                         style={[styles.tab, selectedTab === 1 && styles.activeTab]}
                         onPress={() => setSelectedTab(1)}
                       >
-                        <Text style={styles.tabText}>Other's Properties</Text>
+                        <Text style={styles.tabText}>{reqUserId === customerAgentId ? "Other's Properties" :"My Properties"}</Text>
                       </TouchableOpacity>
                     </View>
                     {selectedTab === 0 && (

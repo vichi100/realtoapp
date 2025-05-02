@@ -8,6 +8,8 @@ import GlobalCommercialCustomersSearchResult from "../screen/global/GlobalCommer
 import PropDetailsFromListing from "../screen/PropDetailsFromListing";
 import PropDetailsFromListingForSell from "../screen/PropDetailsFromListingForSell";
 import CustomerMeetingDetails from "../screen/contacts/CustomerMeetingDetails";
+import MatchedCustomers from "../screen/contacts/MatchedCustomers";
+import MatchedProperties from "../screen/MatchedProperties";
 
 const Stack = createStackNavigator();
 
@@ -15,7 +17,7 @@ const GlobalSearchStackNav = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: false,
+        // headerShown: false,
         headerTitleAlign: "center",
         // headerTintColor: "#fff",
         headerStyle: {
@@ -28,12 +30,12 @@ const GlobalSearchStackNav = () => {
       <Stack.Screen
         name="GlobalSearch"
         component={GlobalSearch}
-        options={{ tabBarLabel: "Home!", tabBarVisible: false }}
+        options={{ title: "Global Search" , tabBarLabel: "Home!", tabBarVisible: false, headerShown: false }}
       />
       <Stack.Screen
         name="GlobalResidentialPropertySearchResult"
         component={GlobalResidentialPropertySearchResult}
-        options={{ tabBarLabel: "Home!", tabBarVisible: false, headerShown: true }}
+        options={{ title: "Results" , tabBarLabel: "Home!", tabBarVisible: false, headerShown: true }}
       />
       <Stack.Screen
         name="GlobalCommercialPropertySearchResult"
@@ -43,12 +45,12 @@ const GlobalSearchStackNav = () => {
       <Stack.Screen
         name="GlobalResidentialContactsSearchResult"
         component={GlobalResidentialContactsSearchResult}
-        options={{ tabBarLabel: "Home!", tabBarVisible: false, headerShown: true }}
+        options={{ title: "Results" , tabBarLabel: "Home!", tabBarVisible: false, headerShown: true }}
       />
       <Stack.Screen
         name="GlobalCommercialCustomersSearchResult"
         component={GlobalCommercialCustomersSearchResult}
-        options={{ tabBarLabel: "Home!", tabBarVisible: false, headerShown: true }}
+        options={{ title: "Results" , tabBarLabel: "Home!", tabBarVisible: false, headerShown: true }}
       />
       {/* <Stack.Screen
         name="PropDetailsFromListing"
@@ -64,6 +66,24 @@ const GlobalSearchStackNav = () => {
               component={CustomerMeetingDetails}
               options={{ title: "Meeting Details" ,  headerShown: true}}
             />
+
+            <Stack.Screen
+                    name="MatchedCustomers"
+                    component={MatchedCustomers}
+                    options={{
+                      title: "Matched Customers",
+                      tabBarStyle: {
+                        display: "none",
+                      },
+                      tabBarButton: () => null,
+                    }}
+            
+                  />
+                  <Stack.Screen
+                          name="MatchedProperties"
+                          component={MatchedProperties}
+                          options={{ title: "Matched Properties" }}
+                        />
     </Stack.Navigator>
   );
 };

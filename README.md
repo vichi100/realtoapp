@@ -182,6 +182,10 @@ I be able to see there all mached property or customers which are not mine which
 
 
 
+### Global search
+1) global search will show results from all agents based on filter criteria
+2) when click on "match" button it will show just those properties or customers which are mine and matching 
+3) though we show results from other agents but never show other agents properties onwner details and customer deatils.
 
 ### ERROR LIST ###
 1) When create new resident sell property get error.

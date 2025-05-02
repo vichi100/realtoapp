@@ -79,7 +79,10 @@ const MatchedCustomers = props => {
   const [lookingForIndexSortBy, setLookingForIndexSortBy] = useState(-1);
 
   const [loading, setLoading] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(0);
+  
+  const [reqUserId, setReqUserId] = useState(props.userDetails.works_for);
+  const [propertyAgentId, setPropertyAgentId] = useState(matchedProprtyItem.agent_id);
+  const [selectedTab, setSelectedTab] = useState(reqUserId === propertyAgentId ? 0 : 1);
 
   const resetSortBy = () => {
     setLookingForIndexSortBy(-1);
@@ -580,17 +583,17 @@ const MatchedCustomers = props => {
         {1 > 0 ? (
           <View style={styles.container}>
             <View style={styles.tabContainer}>
-              <TouchableOpacity
+              {reqUserId === propertyAgentId && <TouchableOpacity
                 style={[styles.tab, selectedTab === 0 && styles.activeTab]}
                 onPress={() => setSelectedTab(0)}
               >
                 <Text style={styles.tabText}>My Customer</Text>
-              </TouchableOpacity>
+              </TouchableOpacity>}
               <TouchableOpacity
                 style={[styles.tab, selectedTab === 1 && styles.activeTab]}
                 onPress={() => setSelectedTab(1)}
               >
-                <Text style={styles.tabText}>Other's Customer</Text>
+                <Text style={styles.tabText}>{reqUserId === propertyAgentId ? "Other's Customer": "My Customer"}</Text>
               </TouchableOpacity>
             </View>
             {selectedTab === 0 && (

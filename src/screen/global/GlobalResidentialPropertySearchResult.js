@@ -457,6 +457,8 @@ const GlobalResidentialPropertySearchResult = props => {
               item={item}
               disableDrawer={true}
               displayChat={true}
+              displayMatchCount={true}
+              displayMatchPercent={false}
             />
           </TouchableOpacity>
         );
@@ -472,6 +474,8 @@ const GlobalResidentialPropertySearchResult = props => {
               item={item}
               disableDrawer={true}
               displayChat={true}
+              displayMatchCount={true}
+              displayMatchPercent={false}
             />
           </TouchableOpacity>
         );
