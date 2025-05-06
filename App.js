@@ -1,5 +1,4 @@
 import "react-native-get-random-values";
-import { v4 as uuidv4 } from "uuid";
 import { registerRootComponent } from 'expo';
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";

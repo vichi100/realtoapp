@@ -96,7 +96,11 @@ const requiredForOption = [
 const GlobalSearch = props => {
   const ref = useRef();
   const { navigation } = props;
-  const [city, setCity] = useState("");// when user input city
+
+  // Ensure props.userDetails and works_for are defined
+  const reqUserId = props.userDetails?.works_for || null;
+
+  const [city, setCity] = useState(""); // when user input city
   const [area, setArea] = useState("");
   const [address, setAddress] = useState(null);
   const [gLocation, setGLocation] = useState(null);
@@ -154,6 +158,12 @@ const GlobalSearch = props => {
   }, []);
 
   const onSubmit =  () => {
+    if (!reqUserId) {
+      setErrorMessage("User details are missing");
+      setIsVisible(true);
+      return;
+    }
+
     if (city.trim() === "") {
       setErrorMessage("City is missing");
       setIsVisible(true);
@@ -175,7 +185,7 @@ const GlobalSearch = props => {
     today.setDate(today.getDate() + daysFromReqWithin);
    
     const queryObject = {
-      req_user_id: props.userDetails.works_for,
+      req_user_id: reqUserId,
       city: city.trim(),
       selectedLocationArray: selectedLocationArray,
       lookingFor: lookingFor,
@@ -242,11 +252,12 @@ const GlobalSearch = props => {
     ref.current?.setAddressText('');
   }
 
-  const removeLocation = (loc) => {
-    console.log("remove", JSON.stringify(loc))
-    const arr = selectedLocationArray.filter(item => item.main_text !== loc.main_text);
-    setSelectedLocationArray(arr)
-  }
+  const removeLocation = loc => {
+    console.log("remove", JSON.stringify(loc));
+    // Ensure selectedLocationArray is defined and is an array
+    const arr = (selectedLocationArray || []).filter(item => item.main_text !== loc.main_text);
+    setSelectedLocationArray(arr);
+  };
 
   const whatTypeButtonPress = (index, button) => {
     console.log(`Button pressed: ${button.text} (Index: ${index})`);
@@ -338,14 +349,8 @@ const GlobalSearch = props => {
               key: GOOGLE_PLACES_API_KEY,
               language: 'en', // language of the results
               components: 'country:in',
-              // types: '(cities)'
-              // types: ["address","cities", "locality", "sublocality"],
-              // types: ["establishment"],
-              // fields: ["formatted_address", "geometry", "name"],
-              // fields: ["address_components"],
-              // types: ["cities", "locality", "sublocality",]
             }}
-            // currentLocation={true}
+            predefinedPlaces={selectedLocationArray || []} // Ensure it's always an array
             isRowScrollable={true}
             fetchDetails={true}
             onPress={(data, details) => onSelectPlace(data, details)}
@@ -379,7 +384,8 @@ const GlobalSearch = props => {
           <FlatList
             horizontal
             style={{ flex: 1 }}
-            data={selectedLocationArray}
+            // Ensure selectedLocationArray is always an array
+            data={selectedLocationArray || []}
             renderItem={(item) => renderSelectedLocation(item)}
             keyExtractor={(item, index) => index.toString()}
           />
