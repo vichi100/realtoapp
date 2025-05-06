@@ -39,6 +39,8 @@ const PropDetailsFromListing = props => {
   const scrollViewRef = useRef();
   const [reminderListX, setReminderListX] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [reqUserId, setReqUserId] = useState(props.userDetails.works_for);
+  const [propertyAgentId, setPropertyAgentId] = useState(item.property_agent_id);
 
   const scrollToAccordion = () => {
     scrollViewRef.current.scrollTo({ y: 0, animated: true });
@@ -284,7 +286,7 @@ const PropDetailsFromListing = props => {
       >
         <ActivityIndicator animating size="large" color={'#000'} />
         {/* <ActivityIndicator animating size="large" /> */}
-      </View> : <PropertyReminder navigation={navigation} reminderListX={reminderListX} />}
+      </View> : reqUserId === propertyAgentId ? <PropertyReminder navigation={navigation} reminderListX={reminderListX} />: <View></View>}
       {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
         <Text style={{ color: "#000" }}>Matched Customer</Text>
         <Text style={{ color: "#000" }}>20</Text>

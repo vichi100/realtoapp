@@ -396,7 +396,7 @@ const GlobalResidentialContactsSearchResult = props => {
             onPress={() =>
               navigation.navigate(
                 "CustomerDetailsResidentialRentFromList",
-                item
+                {item:item, displayMatchCount: true, displayMatchPercent: false}
               )
             }
           >
@@ -412,7 +412,8 @@ const GlobalResidentialContactsSearchResult = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CustomerDetailsResidentialBuyFromList", item)
+              navigation.navigate("CustomerDetailsResidentialBuyFromList", 
+                {item:item, displayMatchCount: true, displayMatchPercent: false})
             }
           >
             <ContactResidentialSellCard

@@ -448,9 +448,9 @@ const GlobalCommercialCustomersSearchResult = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CustomerDetailsCommercialBuyFromList", {item:item,
-                displayMatchCount: true, displayMatchPercent: false
-              })
+              navigation.navigate("CustomerDetailsCommercialBuyFromList", 
+                {item:item, displayMatchCount: true, displayMatchPercent: false}
+              )
             }
           >
             <CustomerCommercialBuyCard
