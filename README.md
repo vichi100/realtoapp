@@ -76,6 +76,11 @@ https://docs.expo.dev/workflow/web/
 npx expo start --web
 
 
+### HOW TO INSTAL FORKED VERSION
+
+npm install jaydeep911/react-native-btr
+
+
 # How to login mongo db
 
 admin@vmi2390151:~$ mongosh

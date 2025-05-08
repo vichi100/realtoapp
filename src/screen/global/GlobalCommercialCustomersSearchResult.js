@@ -425,7 +425,7 @@ const GlobalCommercialCustomersSearchResult = props => {
   };
 
   const ItemView = ({ item }) => {
-    props.setAnyItemDetails(item);
+    // props.setAnyItemDetails(item);
     if (item.customer_locality.property_type === "Commercial") {
       if (item.customer_locality.property_for === "Rent") {
         return (

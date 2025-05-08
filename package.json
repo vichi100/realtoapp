@@ -53,7 +53,7 @@
     "react-native-elements": "^3.4.3",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-get-random-values": "^1.11.0",
-    "react-native-google-places-autocomplete": "^2.5.7",
+    "react-native-google-places-autocomplete": "github:FaridSafi/react-native-google-places-autocomplete",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-material-tabs": "^4.2.0",
     "react-native-modal": "^13.0.1",

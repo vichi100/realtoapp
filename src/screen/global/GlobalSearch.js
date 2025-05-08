@@ -35,6 +35,8 @@ import axios from "axios";
 // Dynamic query
 // https://stackoverflow.com/questions/29831164/how-to-filter-in-mongodb-dynamically#:~:text=answer%20was%20accepted%E2%80%A6-,var%20fName%3D%22John%22%2C%20fCountry%3D%22US%22,fName%7D)%3B%20%7D%20if%20(fCountry%20!%3D%3D
 
+const homePlace = { description: 'Mumbai', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }};
+
 const propertyTypeArray = ["Residential", "Commercial"];
 const assetTypeArray = ["Property", "Customer"];
 const whatTypeOptions = [
@@ -316,7 +318,7 @@ const GlobalSearch = props => {
 
       <KeyboardAwareScrollView onPress={Keyboard.dismiss} keyboardShouldPersistTaps="handled">
 
-        <ScrollView style={styles.container} keyboardShouldPersistTaps={'always'} listViewDisplayed={false}>
+        {/* <ScrollView style={styles.container} keyboardShouldPersistTaps={'always'} listViewDisplayed={false}> */}
 
           <TextInput
             label="City where you want to search*"
@@ -343,17 +345,29 @@ const GlobalSearch = props => {
               placeholderTextColor: 'rgba(90, 90, 90,1)',
               returnKeyType: "search"
             }}
+            keyboardShouldPersistTaps='handled'
             minLength={2}
             setAddressText={address}
             query={{
               key: GOOGLE_PLACES_API_KEY,
               language: 'en', // language of the results
               components: 'country:in',
+              // types: '(cities)'
+              // types: ["address","cities", "locality", "sublocality"],
+              // types: ["establishment"],
+              // fields: ["formatted_address", "geometry", "name"],
+              // fields: ["address_components"],
+              // types: ["cities", "locality", "sublocality",]
             }}
-            predefinedPlaces={selectedLocationArray || []} // Ensure it's always an array
+            // currentLocation={true}
+            // predefinedPlaces={selectedLocationArray || []} // Ensure it's always an array
+            shouldDisplayPredefinedPlaces = {false}
+            predefinedPlacesAlwaysVisible = {false}
+            predefinedPlaces={[homePlace]} // Ensure it's always an array
             isRowScrollable={true}
             fetchDetails={true}
             onPress={(data, details) => onSelectPlace(data, details)}
+            onFail={(error) => console.error(error)}
             styles={{
               textInputContainer: {
                 // backgroundColor: 'grey',
@@ -590,7 +604,7 @@ const GlobalSearch = props => {
           
 
 
-        </ScrollView>
+        {/* </ScrollView> */}
 
       </KeyboardAwareScrollView>
       {/* Fixed button at the bottom */}
