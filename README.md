@@ -69,6 +69,8 @@ https://github.com/roto93/react-native-neat-date-picker/tree/main
 
 npm start -- --clear
 
+npx expo start -c
+
 
 ### START APPLICATION ON WEB
 https://docs.expo.dev/workflow/web/
