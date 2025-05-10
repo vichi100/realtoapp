@@ -1,24 +1,18 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Switch } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 const CustomButtonGroup = ({
   buttons, // Array of button data (text, image, etc.)
-  initialSelectedIndices = [], // Initial selected indices
-  isMultiSelect: initialIsMultiSelect = false, // Initial multi-select mode
+  selectedIndices = [], // Controlled selected indices from the parent
+  isMultiSelect = false, // Multi-select mode
   buttonStyle, // Custom button styles
   selectedButtonStyle, // Custom selected button styles
   buttonTextStyle, // Custom button text styles
   selectedButtonTextStyle, // Custom selected button text styles
   buttonImageStyle, // Custom button image styles
   containerStyle, // Custom container styles
-  toggleContainerStyle, // Custom toggle container styles
-  selectedTextStyle, // Custom selected text styles
-  onButtonPress,
+  onButtonPress, // Callback to handle button press
 }) => {
-  const [isMultiSelect, setIsMultiSelect] = useState(initialIsMultiSelect);
-
-  const [selectedIndices, setSelectedIndices] = useState(initialSelectedIndices);
-
   const handlePress = (index) => {
     let newSelectedIndices;
     if (isMultiSelect) {
@@ -29,34 +23,18 @@ const CustomButtonGroup = ({
         newSelectedIndices.push(index);
       }
     } else {
-      newSelectedIndices = selectedIndices.includes(index) ? [] : [index];
+      newSelectedIndices = [index]; // Only allow one selection in single-select mode
     }
-    setSelectedIndices(newSelectedIndices);
-    console.log(`newSelectedIndices: ${newSelectedIndices}`);
-    
+
+    // Call the parent callback to update the state
     if (onButtonPress) {
-        onButtonPress(index, buttons[index]);
-      }
+      onButtonPress(index, buttons[index], newSelectedIndices);
+    }
   };
-
-
 
   return (
     <View style={[styles.container, containerStyle]}>
-      {/* Toggle for single/multi-select */}
-      {/* <View style={[styles.toggleContainer, toggleContainerStyle]}>
-        <Text>Multi-Select:</Text>
-        <Switch
-          value={isMultiSelect}
-          onValueChange={(value) => {
-            setIsMultiSelect(value);
-            setSelectedIndices([]); // Reset selection when switching modes
-          }}
-        />
-      </View> */}
-
-      {/* Button Group with flexWrap */}
-      <View style={[styles.buttonGroup, { flexWrap: 'wrap' }]}>
+       <View style={[styles.buttonGroup, { flexWrap: 'wrap' }]}>
         {buttons.map((button, index) => (
           <TouchableOpacity
             key={index}
@@ -83,11 +61,6 @@ const CustomButtonGroup = ({
           </TouchableOpacity>
         ))}
       </View>
-
-      {/* Display selected options */}
-      {/* <Text style={[styles.selectedText, selectedTextStyle]}>
-        Selected: {selectedIndices.map((i) => buttons[i].text).join(', ')}
-      </Text> */}
     </View>
   );
 };
@@ -96,6 +69,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    marginLeft: 15,
     // alignItems: 'center',
     // padding: 20,
   },

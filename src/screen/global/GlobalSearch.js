@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   StyleSheet,
   View,
@@ -22,12 +22,15 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/Constant";
 import Slider from "../../components/Slider";
 import { connect } from "react-redux";
-import { setPropertyType, setPropertyDetails, setCustomerDetails, setResidentialPropertyList,
-  setAnyItemDetails, setGlobalSearchResult } from "../../reducers/Action";
+import {
+  setPropertyType, setPropertyDetails, setCustomerDetails, setResidentialPropertyList,
+  setAnyItemDetails, setGlobalSearchResult
+} from "../../reducers/Action";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AppConstant from "../../util/AppConstant";
 
 import axios from "axios";
+import SliderCr from "../../components/SliderCr";
 
 // import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/Constant";
 
@@ -35,7 +38,7 @@ import axios from "axios";
 // Dynamic query
 // https://stackoverflow.com/questions/29831164/how-to-filter-in-mongodb-dynamically#:~:text=answer%20was%20accepted%E2%80%A6-,var%20fName%3D%22John%22%2C%20fCountry%3D%22US%22,fName%7D)%3B%20%7D%20if%20(fCountry%20!%3D%3D
 
-const homePlace = { description: 'Mumbai', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }};
+const homePlace = { description: 'Mumbai', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } } };
 
 const propertyTypeArray = ["Residential", "Commercial"];
 const assetTypeArray = ["Property", "Customer"];
@@ -56,12 +59,12 @@ const porposeForOptions = [
   { text: 'Buy' },
 ];
 
-const bhkOption=[
-  { text: '1 RK' },
-  { text: '1 BHK' },
-  { text: '2 BHK' },
-  { text: '3 BHK' },
-  { text: '3+ BHK' },
+const bhkOption = [
+  { text: '1RK' },
+  { text: '1BHK' },
+  { text: '2BHK' },
+  { text: '3BHK' },
+  { text: '4+BHK' },
 ];
 const reqWithinOptions = [
   { text: '7 Days' },
@@ -71,16 +74,18 @@ const reqWithinOptions = [
   { text: '60+ Days' },
 ];
 
+
 const tenantOptions = [
-  { text: 'Anyone' },
-  { text: 'Famliy' },
-  { text: 'Working Bachelor' },
+  { text: 'Any' },
+  { text: 'Family' },
+  { text: 'Bachelors' },
 ];
 
 const buildingTypeOption = [
+
   { text: 'Mall' },
   { text: 'Businesses Park' },
-  { text: 'Stand Alone' },
+  { text: 'StandAlone' },
   { text: 'Industrial' },
   { text: 'Shopping Complex' },
   { text: 'Commersial Complex' },
@@ -90,7 +95,8 @@ const requiredForOption = [
   { text: 'Shop' },
   { text: 'Office' },
   { text: 'Showroom' },
-  { text: ' Restaurant Cafe ' },
+  { text: ' Restaurant/Cafe' },
+  { text: 'Pub/Night Club' },
   { text: 'Clinic' },
   { text: 'Godown' },
 ];
@@ -118,16 +124,17 @@ const GlobalSearch = props => {
   const [lookingFor, setLookingFor] = useState("Property");
   const [whatType, setWhatType] = useState("Residential");
   const [purpose, setPurpose] = useState("Rent");
-  const [selectedBHK, setSelectedBHK] = useState(["1 RK".toLowerCase()]);
-  const [selectedRequiredFor, setSelectedRequiredFor] = useState(["Shop".toLowerCase()]);
-  const [selectedBuildingType, setSelectedBuildingType] = useState(["Mall".toLowerCase()]);
+  const [selectedBHK, setSelectedBHK] = useState(["1RK"]);
+  const [selectedRequiredFor, setSelectedRequiredFor] = useState(["Shop"]);
+  const [selectedBuildingType, setSelectedBuildingType] = useState(["Mall"]);
   const [priceRange, setPriceRange] = useState([]);
+  const [priceRangeCr, setPriceRangeCr] = useState([1000000, 50000000]);
   const [reqWithin, setReqWithin] = useState("7 Days".toLowerCase());
-  const [tenant, setTenant] = useState("Anyone".toLowerCase());
-  
-  
-  
-  
+  const [tenant, setTenant] = useState("Any");
+
+
+
+
 
 
   const onSelectPropType = item => {
@@ -159,7 +166,7 @@ const GlobalSearch = props => {
     // // console.log(property);
   }, []);
 
-  const onSubmit =  () => {
+  const onSubmit = () => {
     if (!reqUserId) {
       setErrorMessage("User details are missing");
       setIsVisible(true);
@@ -170,7 +177,7 @@ const GlobalSearch = props => {
       setErrorMessage("City is missing");
       setIsVisible(true);
       return;
-    } 
+    }
 
     if (selectedLocationArray.length === 0) {
       setErrorMessage("Please add a location of your city");
@@ -178,14 +185,14 @@ const GlobalSearch = props => {
       return;
     }
 
-    
+
     const match = reqWithin.match(/\d+/); // Find the number in the string
     const daysFromReqWithin = match ? parseInt(match[0], 10) : null; // Convert to integer and return
     console.log("daysFromReqWithin: ", daysFromReqWithin);
     const today = new Date(); // Get today's date
     // const newReqWithinDate = new Date(today.getDate() +daysFromReqWithin);
     today.setDate(today.getDate() + daysFromReqWithin);
-   
+
     const queryObject = {
       req_user_id: reqUserId,
       city: city.trim(),
@@ -197,6 +204,7 @@ const GlobalSearch = props => {
       selectedRequiredFor: selectedRequiredFor,
       selectedBuildingType: selectedBuildingType,
       priceRange: priceRange,
+      priceRangeCr: priceRangeCr,
       reqWithin: today,
       tenant: tenant
     };
@@ -214,19 +222,19 @@ const GlobalSearch = props => {
         setData(response.data);
         // props.setResidentialPropertyList(response.data);
         props.setGlobalSearchResult(response.data);
-                if (lookingFor.toLowerCase() === "Property".toLowerCase()) {
-                  if (whatType.toLowerCase() === "Residential".toLowerCase()) {
-                    navigation.navigate("GlobalResidentialPropertySearchResult");
-                  } else if (whatType.toLowerCase() === "Commercial".toLowerCase()) {
-                    navigation.navigate("GlobalCommercialPropertySearchResult");
-                  }
-                } else if (lookingFor.toLowerCase() == "Customer".toLowerCase()) {
-                  if (whatType.toLowerCase() === "Residential".toLowerCase()) {
-                    navigation.navigate("GlobalResidentialContactsSearchResult");
-                  } else if (whatType.toLowerCase() === "Commercial".toLowerCase()) {
-                    navigation.navigate("GlobalCommercialCustomersSearchResult");
-                  }
-                }
+        if (lookingFor.toLowerCase() === "Property".toLowerCase()) {
+          if (whatType.toLowerCase() === "Residential".toLowerCase()) {
+            navigation.navigate("GlobalResidentialPropertySearchResult");
+          } else if (whatType.toLowerCase() === "Commercial".toLowerCase()) {
+            navigation.navigate("GlobalCommercialPropertySearchResult");
+          }
+        } else if (lookingFor.toLowerCase() == "Customer".toLowerCase()) {
+          if (whatType.toLowerCase() === "Residential".toLowerCase()) {
+            navigation.navigate("GlobalResidentialContactsSearchResult");
+          } else if (whatType.toLowerCase() === "Commercial".toLowerCase()) {
+            navigation.navigate("GlobalCommercialCustomersSearchResult");
+          }
+        }
       },
       error => {
         console.log(error);
@@ -273,7 +281,19 @@ const GlobalSearch = props => {
     // Add your custom logic here
   };
 
+  const handlePriceRangeChange = useCallback((values) => {
+    // console.log(`Price range updated: ${values}`);
+    setPriceRange(values); // Update the price range state
+  }, []);
+
+  const handlePriceRangeChangeCr = useCallback((values) => {
+    // console.log(`Price range updated: ${values}`);
+    setPriceRangeCr(values); // Update the price range state
+  }, []);
+
   
+
+
 
   const renderSelectedLocation = ({ item }) => {
     console.log(JSON.stringify(item));
@@ -292,185 +312,198 @@ const GlobalSearch = props => {
     <View
       style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
     >
-      <View style={{ margin:10, flexDirection: 'row', justifyContent:'center', alignItems:'centerßßßß' }}>
+      <View style={{ margin: 10, flexDirection: 'row', justifyContent: 'center', alignItems: 'centerßßßß' }}>
         <Image
           source={require('../../../assets/images/home.png')} // Path to your image
-          style={{ width: 45, height: 45 , position: "absolute",
+          style={{
+            width: 45, height: 45, position: "absolute",
             // width: 130,
             // height: 35,
             // alignItems: "center",
             // justifyContent: "center",
             left: "2%",
             // left: 0,
-            }}
+          }}
         />
-        
-        <Text style={{ padding: 10, textAlign:'center', fontSize:24, fontWeight:500  }}>GLocal Search</Text>
+
+        <Text style={{ padding: 10, textAlign: 'center', fontSize: 24, fontWeight: 500 }}>GLocal Search</Text>
         {/* <MaterialCommunityIcons name="facebook-messenger" color={"rgba(255, 76, 48, 1)"} size={35} /> */}
-        <View style={{position: "absolute", right:"2%"}}>
-        <MaterialCommunityIcons name="heart-outline" color={"rgb(137, 135, 135)"} size={30} />
+        <View style={{ position: "absolute", right: "2%" }}>
+          <MaterialCommunityIcons name="heart-outline" color={"rgb(137, 135, 135)"} size={30} />
         </View>
-        
+
         {/* <MaterialCommunityIcons name="dots-circle" color={"rgb(108, 110, 110)"} size={30} /> */}
         {/* <Text>Realto</Text> */}
       </View>
-      
+
 
       <KeyboardAwareScrollView onPress={Keyboard.dismiss} keyboardShouldPersistTaps="handled">
 
         {/* <ScrollView style={styles.container} keyboardShouldPersistTaps={'always'} listViewDisplayed={false}> */}
 
-          <TextInput
-            label="City where you want to search*"
-            placeholder="Enter city where customer wants property"
-            value={city}
-            onChangeText={text => setCity(text)}
-            onFocus={() => setIsVisible(false)}
-            style={{ backgroundColor: "rgba(245,245,245, 0.1)", marginTop: 0 }}
-            theme={{
-              colors: {
-                // placeholder: "white",
-                // text: "white",
-                primary: "rgba(0,191,255, .9)",
-                underlineColor: "transparent",
-                background: "#ffffff"
-              }
-            }}
+        <TextInput
+          label="City where you want to search*"
+          placeholder="Enter city where customer wants property"
+          value={city}
+          onChangeText={text => setCity(text)}
+          onFocus={() => setIsVisible(false)}
+          style={{ backgroundColor: "rgba(245,245,245, 0.1)", marginTop: 0 }}
+          theme={{
+            colors: {
+              // placeholder: "white",
+              // text: "white",
+              primary: "rgba(0,191,255, .9)",
+              underlineColor: "transparent",
+              background: "#ffffff"
+            }
+          }}
+        />
+        <View style={{ marginTop: 20 }} />
+        <GooglePlacesAutocomplete
+          ref={ref}
+          placeholder="Add multiple locations within city"
+          textInputProps={{
+            placeholderTextColor: 'rgba(90, 90, 90,1)',
+            returnKeyType: "search"
+          }}
+          keyboardShouldPersistTaps='handled'
+          minLength={2}
+          setAddressText={address}
+          query={{
+            key: GOOGLE_PLACES_API_KEY,
+            language: 'en', // language of the results
+            components: 'country:in',
+            // types: '(cities)'
+            // types: ["address","cities", "locality", "sublocality"],
+            // types: ["establishment"],
+            // fields: ["formatted_address", "geometry", "name"],
+            // fields: ["address_components"],
+            // types: ["cities", "locality", "sublocality",]
+          }}
+          // currentLocation={true}
+          // predefinedPlaces={selectedLocationArray || []} // Ensure it's always an array
+          shouldDisplayPredefinedPlaces={false}
+          predefinedPlacesAlwaysVisible={false}
+          predefinedPlaces={[homePlace]} // Ensure it's always an array
+          isRowScrollable={true}
+          fetchDetails={true}
+          onPress={(data, details) => onSelectPlace(data, details)}
+          onFail={(error) => console.error(error)}
+          styles={{
+            textInputContainer: {
+              // backgroundColor: 'grey',
+              color: '#000000',
+              // backgroundColor: 'grey',
+              // borderLeftWidth: 4,
+              // borderRightWidth: 4,
+              // height: 70
+            },
+            textInput: {
+              height: 45,
+              color: '#000000',
+              fontSize: 16,
+              borderColor: "#C0C0C0",
+              backgroundColor: "rgba(245,245,245, 0.2)",
+              // borderLeftWidth: 1,
+              // borderRightWidth: 1,
+              borderBottomWidth: 1,
+              // borderTopWidth: 1
+            },
+            predefinedPlacesDescription: {
+              color: '#1faadb',
+            },
+          }}
+        // this in only required for use on the web. See https://git.io/JflFv more for details.
+        />
+        <View style={{ marginTop: 5 }} />
+        <FlatList
+          horizontal
+          style={{ flex: 1 }}
+          // Ensure selectedLocationArray is always an array
+          data={selectedLocationArray || []}
+          renderItem={(item) => renderSelectedLocation(item)}
+          keyExtractor={(item, index) => index.toString()}
+        />
+
+
+
+        <View style={{ marginTop: 15, alignContent: "flex-start" }}>
+          <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>What you are looking for</Text>
+        </View>
+        <View
+          style={[{ marginBottom: 10, marginTop: 15 }]}
+        >
+          {/* <Text>Select Property For</Text> */}
+          <CustomButtonGroup
+            buttons={lookingForOptions}
+            selectedIndices={[lookingForOptions.findIndex(option => option.text === lookingFor)]} // Dynamically map the selected value
+            isMultiSelect={false} // Enable multi-select by default
+            buttonStyle={{ backgroundColor: '#fff' }}
+            selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+            buttonTextStyle={{ color: '#000' }}
+            selectedButtonTextStyle={{ color: '#000' }}
+            onButtonPress={(index, button) => {
+              // console.log(`Button pressed: ${button.text} (Index: ${index})`);
+              setLookingFor(button.text)
+            }} // Pass the callback function
+
           />
-          <View style={{ marginTop: 20 }} />
-          <GooglePlacesAutocomplete
-            ref={ref}
-            placeholder="Add multiple locations within city"
-            textInputProps={{
-              placeholderTextColor: 'rgba(90, 90, 90,1)',
-              returnKeyType: "search"
-            }}
-            keyboardShouldPersistTaps='handled'
-            minLength={2}
-            setAddressText={address}
-            query={{
-              key: GOOGLE_PLACES_API_KEY,
-              language: 'en', // language of the results
-              components: 'country:in',
-              // types: '(cities)'
-              // types: ["address","cities", "locality", "sublocality"],
-              // types: ["establishment"],
-              // fields: ["formatted_address", "geometry", "name"],
-              // fields: ["address_components"],
-              // types: ["cities", "locality", "sublocality",]
-            }}
-            // currentLocation={true}
-            // predefinedPlaces={selectedLocationArray || []} // Ensure it's always an array
-            shouldDisplayPredefinedPlaces = {false}
-            predefinedPlacesAlwaysVisible = {false}
-            predefinedPlaces={[homePlace]} // Ensure it's always an array
-            isRowScrollable={true}
-            fetchDetails={true}
-            onPress={(data, details) => onSelectPlace(data, details)}
-            onFail={(error) => console.error(error)}
-            styles={{
-              textInputContainer: {
-                // backgroundColor: 'grey',
-                color: '#000000',
-                // backgroundColor: 'grey',
-                // borderLeftWidth: 4,
-                // borderRightWidth: 4,
-                // height: 70
-              },
-              textInput: {
-                height: 45,
-                color: '#000000',
-                fontSize: 16,
-                borderColor: "#C0C0C0",
-                backgroundColor: "rgba(245,245,245, 0.2)",
-                // borderLeftWidth: 1,
-                // borderRightWidth: 1,
-                borderBottomWidth: 1,
-                // borderTopWidth: 1
-              },
-              predefinedPlacesDescription: {
-                color: '#1faadb',
-              },
-            }}
-          // this in only required for use on the web. See https://git.io/JflFv more for details.
+        </View>
+
+        <View style={styles.header}>
+          <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>What type</Text>
+        </View>
+        <View
+          style={[{ marginBottom: 10, marginTop: 15 }]}
+        >
+          {/* <Text>Select Property For</Text> */}
+          <CustomButtonGroup
+            buttons={whatTypeOptions}
+            selectedIndices={[whatTypeOptions.findIndex(option => option.text === whatType)]} // Dynamically map the selected value
+            isMultiSelect={false} // Enable multi-select by default
+            buttonStyle={{ backgroundColor: '#fff' }}
+            selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+            buttonTextStyle={{ color: '#000' }}
+            selectedButtonTextStyle={{ color: '#000' }}
+            onButtonPress={(index, button) => {
+              console.log(`Button pressed: ${button.text} (Index: ${index})`);
+              setWhatType(button.text)
+            }} // Pass the callback function
           />
-          <View style={{ marginTop: 5 }} />
-          <FlatList
-            horizontal
-            style={{ flex: 1 }}
-            // Ensure selectedLocationArray is always an array
-            data={selectedLocationArray || []}
-            renderItem={(item) => renderSelectedLocation(item)}
-            keyExtractor={(item, index) => index.toString()}
+        </View>
+
+        <View style={styles.header}>
+          <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>What is purpose</Text>
+        </View>
+        <View
+          style={[styles.propSubSection, { marginBottom: 10, marginTop: 15 }]}
+        >
+          {/* <Text>Select Property For</Text> */}
+          <CustomButtonGroup
+            buttons={porposeForOptions}
+            selectedIndices={[porposeForOptions.findIndex(option => option.text === purpose)]} // Dynamically map the selected value
+            isMultiSelect={false} // Enable multi-select by default
+            buttonStyle={{ backgroundColor: '#fff' }}
+            selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+            buttonTextStyle={{ color: '#000' }}
+            selectedButtonTextStyle={{ color: '#000' }}
+            onButtonPress={(index, button) => {
+              console.log(`Button pressed: ${button.text} (Index: ${index})`);
+              setPurpose(button.text)
+            }} // Pass the callback function
+          // buttonStyle={styles.customButton}
+          // selectedButtonStyle={styles.customSelectedButton}
+          // buttonTextStyle={styles.customButtonText}
+          // selectedButtonTextStyle={styles.customSelectedButtonText}
+          // buttonImageStyle={styles.customButtonImage}
+          // containerStyle={styles.customContainer}
+          // toggleContainerStyle={styles.customToggleContainer}
+          // selectedTextStyle={styles.customSelectedText}
           />
+        </View>
 
-          
-
-          <View style={{ marginTop: 15, alignContent: "flex-start" }}>
-            <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>What you are looking for</Text>
-          </View>
-          <View
-            style={[{ marginBottom: 10, marginTop: 15 }]}
-          >
-            {/* <Text>Select Property For</Text> */}
-            <CustomButtonGroup
-              buttons={lookingForOptions}
-              initialSelectedIndices={[0]} // Initially select the first button
-              isMultiSelect={false} // Enable multi-select by default
-              onButtonPress={(index, button) => {
-                // console.log(`Button pressed: ${button.text} (Index: ${index})`);
-                setLookingFor(button.text.toLowerCase())
-              }} // Pass the callback function
-
-            />
-          </View>
-
+        {whatType.toLocaleLowerCase() === "Residential".toLocaleLowerCase() ? (<View>
           <View style={styles.header}>
-            <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>What type</Text>
-          </View>
-          <View
-            style={[{ marginBottom: 10, marginTop: 15 }]}
-          >
-            {/* <Text>Select Property For</Text> */}
-            <CustomButtonGroup
-              buttons={whatTypeOptions}
-              initialSelectedIndices={[0]} // Initially select the first button
-              isMultiSelect={false} // Enable multi-select by default
-              onButtonPress={(index, button) => {
-                console.log(`Button pressed: ${button.text} (Index: ${index})`);
-                setWhatType(button.text.toLowerCase())
-              }} // Pass the callback function
-            />
-          </View>
-
-          <View style={styles.header}>
-            <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>What is purpose</Text>
-          </View>
-          <View
-            style={[styles.propSubSection, { marginBottom: 10, marginTop: 15 }]}
-          >
-            {/* <Text>Select Property For</Text> */}
-            <CustomButtonGroup
-              buttons={porposeForOptions}
-              initialSelectedIndices={[0]} // Initially select the first button
-              isMultiSelect={false} // Enable multi-select by default
-              onButtonPress={(index, button) => {
-                console.log(`Button pressed: ${button.text} (Index: ${index})`);
-                setPurpose(button.text.toLowerCase())
-              }} // Pass the callback function
-            // buttonStyle={styles.customButton}
-            // selectedButtonStyle={styles.customSelectedButton}
-            // buttonTextStyle={styles.customButtonText}
-            // selectedButtonTextStyle={styles.customSelectedButtonText}
-            // buttonImageStyle={styles.customButtonImage}
-            // containerStyle={styles.customContainer}
-            // toggleContainerStyle={styles.customToggleContainer}
-            // selectedTextStyle={styles.customSelectedText}
-            />
-          </View>
-
-          {whatType.toLocaleLowerCase() === "Residential".toLocaleLowerCase() ? (<View>
-            <View style={styles.header}>
             <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>BHK Size</Text>
           </View>
           <View
@@ -479,23 +512,30 @@ const GlobalSearch = props => {
             {/* <Text>Select Property For</Text> */}
             <CustomButtonGroup
               buttons={bhkOption}
-              initialSelectedIndices={[0]} // Initially select the first button
+              // initialSelectedIndices={[0]} // Initially select the first button
               isMultiSelect={true} // Enable multi-select by default
-              onButtonPress={(index, button)=>{
-                let newSelectedIndices;
-                newSelectedIndices = [...selectedBHK];
-                if (newSelectedIndices.includes(button.text.toLowerCase())) {
-                  newSelectedIndices.splice(newSelectedIndices.indexOf(button.text.toLowerCase()), 1);
+              buttonStyle={{ backgroundColor: '#fff' }}
+              selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+              buttonTextStyle={{ color: '#000' }}
+              selectedButtonTextStyle={{ color: '#000' }}
+              selectedIndices={selectedBHK.map((item) =>
+                bhkOption.findIndex((option) => option.text === item)
+              )} // Map selectedRequiredFor to indices
+              onButtonPress={(index, button) => {
+                let newSelectedIndicesBHK;
+                newSelectedIndicesBHK = [...selectedBHK];
+                if (newSelectedIndicesBHK.includes(button.text)) {
+                  newSelectedIndicesBHK.splice(newSelectedIndicesBHK.indexOf(button.text), 1);
                 } else {
-                  newSelectedIndices.push(button.text.toLowerCase());
+                  newSelectedIndicesBHK.push(button.text);
                 }
-                setSelectedBHK(newSelectedIndices);
-                console.log(`newSelectedIndices: ${newSelectedIndices}`);
+                setSelectedBHK(newSelectedIndicesBHK);
+                console.log(`newSelectedIndices: ${newSelectedIndicesBHK}`);
               }} // Pass the callback function
             />
           </View>
-          </View>):(<View>
-            <View style={styles.header}>
+        </View>) : (<View>
+          <View style={styles.header}>
             <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>Required For</Text>
           </View>
           <View
@@ -504,18 +544,25 @@ const GlobalSearch = props => {
             {/* <Text>Select Property For</Text> */}
             <CustomButtonGroup
               buttons={requiredForOption}
-              initialSelectedIndices={[0]} // Initially select the first button
+              // initialSelectedIndices={[0]} // Initially select the first button
               isMultiSelect={true} // Enable multi-select by default
-              onButtonPress={(index, button)=>{
-                let newSelectedIndices;
-                newSelectedIndices = [...selectedRequiredFor];
-                if (newSelectedIndices.includes(button.text.toLowerCase())) {
-                  newSelectedIndices.splice(newSelectedIndices.indexOf(button.text.toLowerCase()), 1);
+              buttonStyle={{ backgroundColor: '#fff' }}
+              selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+              buttonTextStyle={{ color: '#000' }}
+              selectedButtonTextStyle={{ color: '#000' }}
+              selectedIndices={selectedRequiredFor.map((item) =>
+                requiredForOption.findIndex((option) => option.text === item)
+              )} // Map selectedRequiredFor to indices
+              onButtonPress={(index, button) => {
+                let newSelectedIndicesRequiredFor = [];
+                newSelectedIndicesRequiredFor = [...selectedRequiredFor];
+                if (newSelectedIndicesRequiredFor.includes(button.text)) {
+                  newSelectedIndicesRequiredFor.splice(newSelectedIndicesRequiredFor.indexOf(button.text), 1);
                 } else {
-                  newSelectedIndices.push(button.text.toLowerCase());
+                  newSelectedIndicesRequiredFor.push(button.text);
                 }
-                setSelectedRequiredFor(newSelectedIndices);
-                console.log(`newSelectedIndices: ${newSelectedIndices}`);
+                setSelectedRequiredFor(newSelectedIndicesRequiredFor);
+                console.log(`newSelectedIndices: ${newSelectedIndicesRequiredFor}`);
               }} // Pass the callback function
             />
           </View>
@@ -529,59 +576,73 @@ const GlobalSearch = props => {
             {/* <Text>Select Property For</Text> */}
             <CustomButtonGroup
               buttons={buildingTypeOption}
-              initialSelectedIndices={[0]} // Initially select the first button
+              // initialSelectedIndices={[0]} // Initially select the first button
               isMultiSelect={true} // Enable multi-select by default
-              onButtonPress={(index, button)=>{
-                let newSelectedIndices;
-                newSelectedIndices = [...selectedBuildingType];
-                if (newSelectedIndices.includes(button.text.toLowerCase())) {
-                  newSelectedIndices.splice(newSelectedIndices.indexOf(button.text.toLowerCase()), 1);
-                } else {
-                  newSelectedIndices.push(button.text.toLowerCase());
-                }
-                setSelectedBuildingType(newSelectedIndices);
-                console.log(`newSelectedIndices: ${newSelectedIndices}`);
-              }} // Pass the callback function
-              
-            />
-          </View>
-          </View>)}
-
-          
-          <View style={styles.header}>
-            <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>Price Range</Text>
-          </View>
-          <Slider
-            min={10000}
-            max={400000}
-            // step={10000}
-            onSlide={(values) => {
-              setPriceRange(values)
-              console.log(`values: ${values}`)
-            }}
-          />
-
-          <View style={styles.header}>
-            <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>Required with in</Text>
-          </View>
-          <View
-            style={[{ marginBottom: 10, marginTop: 15 }]}
-          >
-            {/* <Text>Select Property For</Text> */}
-            <CustomButtonGroup
-              buttons={reqWithinOptions}
-              initialSelectedIndices={[0]} // Initially select the first button
-              isMultiSelect={false} // Enable multi-select by default
+              buttonStyle={{ backgroundColor: '#fff' }}
+              selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+              buttonTextStyle={{ color: '#000' }}
+              selectedButtonTextStyle={{ color: '#000' }}
+              selectedIndices={selectedBuildingType.map((item) =>
+                buildingTypeOption.findIndex((option) => option.text === item)
+              )} // Map selectedRequiredFor to indices
               onButtonPress={(index, button) => {
-                console.log(`Button pressed: ${button.text} (Index: ${index})`);
-                setReqWithin(button.text.toLowerCase())
+                let newSelectedIndicesBuildingType = [];
+                newSelectedIndicesBuildingType = [...selectedBuildingType];
+                if (newSelectedIndicesBuildingType.includes(button.text)) {
+                  newSelectedIndicesBuildingType.splice(newSelectedIndicesBuildingType.indexOf(button.text), 1);
+                } else {
+                  newSelectedIndicesBuildingType.push(button.text);
+                }
+                setSelectedBuildingType(newSelectedIndicesBuildingType);
+                console.log(`newSelectedIndices: ${newSelectedIndicesBuildingType}`);
               }} // Pass the callback function
 
             />
           </View>
+        </View>)}
 
-          {whatType.toLowerCase() === "Residential".toLowerCase() ? (<View>
-            <View style={styles.header}>
+
+        <View style={[styles.header, { marginBottom: 20 }]}>
+          <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>Price Range</Text>
+        </View>
+        {purpose === "Rent" ?<Slider
+          min={10000}
+          max={400000}
+          // step={10000}
+          onSlide={handlePriceRangeChange} 
+        />: 
+        <SliderCr
+        min={1000000}
+        max={50000000}
+        onSlide={handlePriceRangeChangeCr} // Pass the memoized callback
+      />
+      }
+
+        <View style={styles.header}>
+          <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>Required with in</Text>
+        </View>
+        <View
+          style={[{ marginBottom: 10, marginTop: 15 }]}
+        >
+          {/* <Text>Select Property For</Text> */}
+          <CustomButtonGroup
+            buttons={reqWithinOptions}
+            selectedIndices={[reqWithinOptions.findIndex(option => option.text === reqWithin)]} // Dynamically map the selected value
+            isMultiSelect={false} // Enable multi-select by default
+            buttonStyle={{ backgroundColor: '#fff' }}
+            selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+            buttonTextStyle={{ color: '#000' }}
+            selectedButtonTextStyle={{ color: '#000' }}
+            onButtonPress={(index, button) => {
+              console.log(`Button pressed: ${button.text} (Index: ${index})`);
+              setReqWithin(button.text)
+            }} // Pass the callback function
+
+          />
+        </View>
+
+        {whatType.toLowerCase() === "Residential".toLowerCase() ? (<View>
+          <View style={styles.header}>
             <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>Preferd Tenants</Text>
           </View>
           <View
@@ -590,39 +651,43 @@ const GlobalSearch = props => {
             {/* <Text>Select Property For</Text> */}
             <CustomButtonGroup
               buttons={tenantOptions}
-              initialSelectedIndices={[0]} // Initially select the first button
+              selectedIndices={[tenantOptions.findIndex(option => option.text === tenant)]} // Dynamically map the selected value
               isMultiSelect={false} // Enable multi-select by default
+              buttonStyle={{ backgroundColor: '#fff' }}
+              selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+              buttonTextStyle={{ color: '#000' }}
+              selectedButtonTextStyle={{ color: '#000' }}
               onButtonPress={(index, button) => {
                 console.log(`Button pressed: ${button.text} (Index: ${index})`);
-                setTenant(button.text.toLowerCase())
+                setTenant(button.text)
               }} // Pass the callback function
 
             />
           </View>
-          </View>):(<View></View>)}
+        </View>) : (<View></View>)}
 
-          
+
 
 
         {/* </ScrollView> */}
 
       </KeyboardAwareScrollView>
       {/* Fixed button at the bottom */}
-      
 
-      <View style={[{ flexDirection: "column",  }]}>
-          <View
-            style={{
-              
-              marginBottom: 5,
-              marginLeft: 10,
-              marginRight: 10
-            }}
-          >
-            <Button title="Search" onPress={() => onSubmit()} />
-          </View>
+
+      <View style={[{ flexDirection: "column", }]}>
+        <View
+          style={{
+
+            marginBottom: 5,
+            marginLeft: 10,
+            marginRight: 10
+          }}
+        >
+          <Button title="Search" onPress={() => onSubmit()} />
         </View>
-      
+      </View>
+
       <Snackbar
         visible={isVisible}
         textMessage={errorMessage}

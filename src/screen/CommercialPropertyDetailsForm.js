@@ -30,14 +30,16 @@ const propertyTypeArray = [
   "Showroom",
   "Godown",
   "Restaurant/Cafe",
-  "Pub/Night Club"
+  "Pub/Night Club",
+  "Clinic",
 ];
 const buildingTypeArray = [
-  "Businesses park ",
+  "Businesses Park ",
   "Mall",
   "StandAlone",
   "Industrial",
-  "Shopping complex"
+  "Shopping Complex",
+  "Commersial Complex"
 ];
 const idealForArrayDict = [
   { name: "Shop", checked: false },
@@ -47,7 +49,8 @@ const idealForArrayDict = [
   { name: "Pub/Night Club", checked: false },
   { name: "Office", checked: false },
   { name: "Showroom", checked: false },
-  { name: "Godown", checked: false }
+  { name: "Godown", checked: false },
+  { name: "Clinic", checked: false }
 ];
 
 const parkingTypeArray = ["Public", "Private", "Both"];
@@ -67,16 +70,7 @@ const PropertyDetails = props => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [idealForSelectArray, setIdealForSelectArray] = useState([]);
-  const [idealForArray, setIdealForArray] = useState([
-    { name: "Shop", checked: false },
-    { name: "Bank", checked: false },
-    { name: "ATM", checked: false },
-    { name: "Restaurant/Cafe", checked: false },
-    { name: "Pub/Night Club", checked: false },
-    { name: "Office", checked: false },
-    { name: "Showroom", checked: false },
-    { name: "Godown", checked: false }
-  ]);
+  const [idealForArray, setIdealForArray] = useState(idealForArrayDict);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -95,7 +89,8 @@ const PropertyDetails = props => {
           { name: "Pub/Night Club", checked: false },
           { name: "Office", checked: false },
           { name: "Showroom", checked: false },
-          { name: "Godown", checked: false }
+          { name: "Godown", checked: false },
+          { name: "Clinic", checked: false }
         ])
       };
     }, [])

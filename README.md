@@ -180,6 +180,8 @@ realtodb>
 17) when I clicked on matched then go to other section I see matched count that count is total number which is matched for so if I click on count then 
 I be able to see there all mached property or customers which are not mine which I wrong I shoud only see mine and his ... not others property matched with others others 
 
+18) Land sell buy option should be also include
+
 ### Remider create logic
 1) I m creating reminder for my property with my customer then I should be able to see both proerty and customer original deatils
 2) I m creating reminder for my property but with Other customer then I should be able to see my property details but I should not

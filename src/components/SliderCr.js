@@ -12,9 +12,9 @@ const debounce = (func, delay) => {
   };
 };
 
-const Slider = (props) => {
-  const minValue = props.min;
-  const maxValue = props.max;
+const SliderCr = (props) => {
+  const minValue = props.min || 1000000; // Default to 1,000,000 if undefined
+  const maxValue = props.max || 50000000; // Default to 50,000,000 if undefined
   const [range, setRange] = useState([0, 1]);
   const [selectedRange, setSelectedRange] = useState({
     min: minValue,
@@ -23,42 +23,44 @@ const Slider = (props) => {
 
   const previousValues = useRef([minValue, maxValue]);
 
-  // Format numbers as "10k", "20k", etc., or "1L", "2.5L", etc.
+  // Format numbers as "10L", "20L", etc., or "1Cr", "2.5Cr", etc.
   const formatValue = (value) => {
-    if (value >= 100000) {
-      return `${(value / 100000).toFixed(value % 100000 === 0 ? 0 : 1)}L`; // Convert to "L" format
-    } else if (value >= 1000) {
-      return `${Math.round(value / 1000)}k`; // Convert to "k" format
+    if (value === undefined) return "N/A"; // Handle undefined values gracefully
+    if (value >= 10000000) {
+      return `${(value / 10000000).toFixed(value % 10000000 === 0 ? 0 : 1)}Cr`; // Convert to "Cr" format
+    } else if (value >= 100000) {
+      return `${Math.round(value / 100000)}L`; // Convert to "L" format
     }
     return value.toLocaleString(); // Default formatting
   };
 
   const getScaledValue = (val) => {
     const scaledValue = maxValue * Math.pow(minValue / maxValue, 1 - val);
-    if (scaledValue > 300000) {
-      return Math.round(scaledValue / 20000) * 20000;
-    } else if (scaledValue > 100000) {
-      return Math.round(scaledValue / 10000) * 10000;
+    if (scaledValue > 30000000) {
+      return Math.round(scaledValue / 2000000) * 2000000;
+    } else if (scaledValue > 10000000) {
+      return Math.round(scaledValue / 1000000) * 1000000;
     } else {
-      return Math.round(scaledValue / 1000) * 1000;
+      return Math.round(scaledValue / 100000) * 100000;
     }
   };
-    // Debounced version of props.onSlide
-    const debouncedOnSlide = useRef(
-      debounce((values) => {
-        props.onSlide(values);
-      }, 300) // 300ms debounce delay
-    ).current;
+
+  // Debounced version of props.onSlide
+  const debouncedOnSlide = useRef(
+    debounce((values) => {
+      props.onSlide(values);
+    }, 300) // 300ms debounce delay
+  ).current;
 
   const handleValuesChange = (values) => {
     const newMin = getScaledValue(values[0]);
     const newMax = getScaledValue(values[1]);
 
+    // Only update state and call props.onSlide if values have changed
     if (newMin !== previousValues.current[0] || newMax !== previousValues.current[1]) {
-      setRange(values);
-      setSelectedRange({ min: newMin, max: newMax });
-      previousValues.current = [newMin, newMax];
-      props.onSlide([newMin, newMax]);
+      setRange(values); // Update the slider range
+      setSelectedRange({ min: newMin, max: newMax }); // Update the selected range
+      previousValues.current = [newMin, newMax]; // Update previous values
       debouncedOnSlide([newMin, newMax]); // Call the debounced callback
     }
   };
@@ -96,7 +98,7 @@ const Slider = (props) => {
   );
 };
 
-export default Slider;
+export default SliderCr;
 
 const styles = StyleSheet.create({
   container: {

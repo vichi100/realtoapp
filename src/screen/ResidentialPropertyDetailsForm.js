@@ -310,7 +310,6 @@ const ResidentialPropertyDetailsForm = props => {
                 label="Total Floor*"
                 placeholder="Total Floor"
                 value={totalFloor}
-                keyboardType={"numeric"}
                 onChangeText={text => setTotalFloor(text)}
                 onFocus={() => setIsVisible(false)}
                 theme={{
@@ -357,7 +356,6 @@ const ResidentialPropertyDetailsForm = props => {
               returnKeyType={"done"}
               placeholder="Property Size"
               value={propertySize}
-              keyboardType={"numeric"}
               onChangeText={text => setPropertySize(text)}
               onFocus={() => setIsVisible(false)}
               theme={{
