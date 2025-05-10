@@ -78,6 +78,10 @@ const Profile = props => {
   const onSubmit = () => {
     navigation.navigate("ManageEmployee");
   };
+
+  const openEmployeeList = () => {
+    navigation.navigate("EmployeeList");
+  };
   const myCustomShare = async () => {
     const shareOptions = {
       message:
@@ -246,7 +250,7 @@ const Profile = props => {
               marginRight: 10
             }}
           >
-            <Button title="ADD EMPLOYEE" onPress={() => onSubmit()} />
+            <Button title="MY EMPLOYEE" onPress={() => openEmployeeList()} />
           </View>
         </View>
       ) : (

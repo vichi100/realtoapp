@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Profile from "../screen/Profile";
 import ManageEmployee from "../screen/ManageEmployee";
+import EmployeeList from "../screen/EmployeeList";
 
 const Stack = createStackNavigator();
 const ProfileStackScreens = () => {
@@ -29,6 +30,11 @@ const ProfileStackScreens = () => {
         name="ManageEmployee"
         component={ManageEmployee}
         options={{ title: "Manage Employee" }}
+      />
+      <Stack.Screen
+        name="EmployeeList"
+        component={EmployeeList}
+        options={{ title: "My Employee" }}
       />
     </Stack.Navigator>
   );

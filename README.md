@@ -196,6 +196,16 @@ I be able to see there all mached property or customers which are not mine which
 2) when click on "match" button it will show just those properties or customers which are mine and matching 
 3) though we show results from other agents but never show other agents properties onwner details and customer deatils.
 
+
+### Employee 
+1) Employee add a property/customer then that employee/customer will be added to under agent  and propertyid/customer id will be agsign to employee 
+2) employee will be able to see only those properties and customer which are assign to him.
+3) Agent will be able to block/delete his employee any time.
+4) Employee will be able to delete his account any time. but it will not impact his Agent properties/customers.
+5) Agent will be able to assign/remove properties/customer any time.
+6) Employee will not be able to delete properties/customer, only agent will able to do it.
+
+
 ### ERROR LIST ###
 1) When create new resident sell property get error.
 2) when you add customer after click "Add" button it navigate to client list 
