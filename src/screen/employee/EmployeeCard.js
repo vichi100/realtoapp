@@ -71,6 +71,17 @@ const EmployeeCard = props => {
     navigation.navigate('MatchedProperties', { matchedCustomerItem: matchedCustomerItem },);
   }
 
+  const openPropertiesList = item => {
+    navigation.navigate("PropertyListing", {item:item,
+      displayMatchCount: true, displayMatchPercent: false
+    });
+  };
+  const openCustomerList = item => {
+    navigation.navigate("ContactsListing", {item:item,
+      displayMatchCount: false, displayMatchPercent: true
+    });
+  };
+
   const onChangeText = text => {
     console.log(text);
     setMessage(text);
@@ -241,17 +252,17 @@ const EmployeeCard = props => {
           ]}
         >
 
-          
 
-          
 
-          <View style={{ marginLeft: { displayMatchCount } ? 40 : 30, }}>
+
+
+          <View style={{ marginLeft: { displayMatchCount } ? 10 : 10, }}>
             <Avatar
               square
               size={60}
               title={
-                item.customer_details.name &&
-                item.customer_details.name.slice(0, 1)
+                item.name &&
+                item.name.slice(0, 1)
               }
               activeOpacity={0.7}
               titleStyle={{ color: "rgba(105,105,105, .9)" }}
@@ -275,46 +286,17 @@ const EmployeeCard = props => {
             }}
           >
             <View style={{ paddingLeft: 20, paddingTop: 10 }}>
-              <Text style={[styles.title]}>{item.customer_details.name}</Text>
+              <Text style={[styles.title]}>{item.name}</Text>
               <Text style={[styles.subTitle]}>
-                {item.customer_details.mobile1}
+                {item.mobile}
               </Text>
               {/* <Text style={[StyleSheet.subTitle]}>
                 {item.customer_details.address}
               </Text> */}
             </View>
 
-            {displayCheckBox ? (
-              <View
-                style={{
-                  // backgroundColor: "rgba(108, 198, 114, 0.2)",
-                  justifyContent: "center",
-                  // height: "100%"
-                }}
-              >
-                <CheckBox
-                  onPress={() => onClickCheckBox(item)}
-                  center
-                  // title="Select"
-                  checked={
-                    props.customerDetailsForMeeting &&
-                      props.customerDetailsForMeeting.customer_id ===
-                      item.customer_id
-                      ? true
-                      : false
-                  }
-                  containerStyle={{
-                    // backgroundColor: "rgba(108, 198, 114, 0.3)",
-                    // borderWidth: 0,
-                    // margin: 0,
-                    // padding: 10,
-                    // borderRadius: 10
-                    // width: 60
-                  }}
-                />
-              </View>
-            ) : null}
-            
+
+
           </View>
         </View>
 
@@ -388,7 +370,7 @@ const EmployeeCard = props => {
           style={{ marginLeft: 10, marginTop: 10 }}
         />
         <Text style={[styles.subTitleA, { marginLeft: 10, marginRight: 10, paddingTop: 5, paddingBottom: 5 }]}>
-          {item.customer_locality.location_area.map(item => item.main_text).join(', ')}
+          {item.company_name}
         </Text>
       </View>
 
@@ -398,39 +380,53 @@ const EmployeeCard = props => {
           // { backgroundColor: "rgba(192,192,192, 0.1)" }
         ]}
       >
-        <View style={[styles.details]}>
-          <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue, { marginTop: 5 }]}>
-              {item.customer_property_details.bhk_type}
-            </Text>
-            {/* <Text style={[styles.subDetailsTitle]}>BHK</Text> */}
+        <View style={[styles.details, { marginLeft: 10, marginRight: 10, marginBottom: 10 }]}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={[styles.subDetails,]}>
+              <Text style={[styles.subDetailsValue, { marginTop: 0 }]}>
+                Properties
+              </Text>
+              <Text style={[styles.subDetailsTitle]}>5</Text>
+            </View>
+            <TouchableOpacity
+                // disabled={Sliding_Drawer_Toggle}
+                onPress={() => {
+                  openPropertiesList(item);
+                }}
+                // style={{ padding: 15, backgroundColor: "#e57373" }}
+              >
+            <AntDesign
+              name="pluscircleo"
+              color={"rgba(34, 167, 240, 1)"}
+              size={30}
+              style={{ marginLeft: 30, marginTop: 0 }}
+            />
+            </TouchableOpacity>
           </View>
+
           <View style={styles.verticalLine}></View>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <TouchableOpacity
+                // disabled={Sliding_Drawer_Toggle}
+                onPress={() => {
+                  openCustomerList(item);
+                }}
+                // style={{ padding: 15, backgroundColor: "#e57373" }}
+              >
+          <AntDesign
+              name="pluscircleo"
+              color={"rgba(63, 195, 128, 1)"}
+              size={30}
+              style={{ marginRight: 30, marginTop: 0 }}
+            />
+            </TouchableOpacity>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
-              {numDifferentiation(item.customer_rent_details.expected_rent)}
+              Customers
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Rent</Text>
+            <Text style={[styles.subDetailsTitle]}>3</Text>
           </View>
-          <View style={styles.verticalLine}></View>
-          <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>
-              {numDifferentiation(item.customer_rent_details.expected_deposit)}
-            </Text>
-            <Text style={[styles.subDetailsTitle]}>Deposit</Text>
           </View>
-          <View style={styles.verticalLine}></View>
-          <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>
-              {item.customer_property_details.furnishing_status}
-            </Text>
-            <Text style={[styles.subDetailsTitle]}>Furnishing</Text>
-          </View>
-          {/* <View style={styles.verticalLine}></View>
-          <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>800 sqft</Text>
-            <Text style={[styles.subDetailsTitle]}>Buildup</Text>
-          </View> */}
         </View>
       </View>
 
@@ -642,6 +638,7 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: "row",
     justifyContent: "space-between"
+    // justifyContent:"space-evenly"
   },
   subDetailsTitle: {
     fontSize: 12,

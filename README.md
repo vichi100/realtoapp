@@ -204,8 +204,23 @@ I be able to see there all mached property or customers which are not mine which
 4) Employee will be able to delete his account any time. but it will not impact his Agent properties/customers.
 5) Agent will be able to assign/remove properties/customer any time.
 6) Employee will not be able to delete properties/customer, only agent will able to do it.
+7) employee will not able to add a another employee and see other employee details
 
 
 ### ERROR LIST ###
 1) When create new resident sell property get error.
 2) when you add customer after click "Add" button it navigate to client list 
+
+
+### Expo / react native debugger not recognizing new file additions
+
+OMG that was 4 weeks of hell for such a rookie mistake!!
+
+Turns out if you create a file (e.g. a component) but don't import it into another file and use it.....the file won't register in chrome dev tools Sources.
+
+What happened with me was that the code in my file had errors the first time I built it....and because of this, it wasn't being used in app and thus wasn't showing in Sources. I was thinking "how am I supposed to debug if I cant even see the file in Sources?".
+
+Guess the answer is to make sure that when you create a new file, you build it right away when the code is simple....then chrome will recognize the file and you can debug. If you write a whole bunch of code then build and it fails you won't be able to debug.
+
+
+### 

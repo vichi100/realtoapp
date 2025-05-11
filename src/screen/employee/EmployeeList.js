@@ -23,10 +23,9 @@ import { SocialIcon } from "@rneui/themed";
 import axios from "axios";
 import { SERVER_URL } from "../../util/Constant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
-import {
-  setResidentialCustomerList,
-  setAnyItemDetails
-} from "../../reducers/Action";
+
+import { setEmployeeList } from "../../reducers/Action";
+import EmployeeCard from "../employee/EmployeeCard";
 
 const EmployeeList = props => {
   const { navigation } = props;
@@ -71,7 +70,7 @@ const EmployeeList = props => {
       response => {
         // console.log(response.data);
         setData(response.data);
-        props.setResidentialCustomerList(response.data);
+        props.setEmployeeList(response.data);
         setLoading(false);
       },
       error => {
@@ -131,22 +130,11 @@ const EmployeeList = props => {
   }
 
   const ItemView = ({ item }) => {
-    // // console.log(item);
-    if (item.customer_locality.property_type === "Residential") {
-      if (item.customer_locality.property_for === "Rent") {
-        return (
-          <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <ContactResidentialRentCard navigation={navigation} item={item} deleteMe={deleteMe}/>
-          </TouchableOpacity>
-        );
-      } else if (item.customer_locality.property_for === "Buy") {
-        return (
-          <TouchableOpacity onPress={() => navigateToDetails(item, "Buy")}>
-            <ContactResidentialSellCard navigation={navigation} item={item} deleteMe={deleteMe}/>
-          </TouchableOpacity>
-        );
-      }
-    }
+    return (
+      <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
+        <EmployeeCard navigation={navigation} item={item} deleteMe={deleteMe}/>
+      </TouchableOpacity>
+    );
   };
 
   const ItemSeparatorView = () => {
@@ -159,7 +147,7 @@ const EmployeeList = props => {
   };
 
   const navigateTo = () => {
-    navigation.navigate("AddNewCustomerStack");
+    navigation.navigate("ManageEmployee");
   };
 
 
@@ -247,25 +235,7 @@ const EmployeeList = props => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.fab}>
-              <TouchableOpacity
-                onPress={() => toggleSortingBottomNavigationView()}
-                style={styles.fabIcon1}
-              >
-                <MaterialCommunityIcons name="sort" color={"#ffffff"} size={26} />
-              </TouchableOpacity>
-              <View style={styles.verticalLine}></View>
-              <TouchableOpacity
-                onPress={() => toggleBottomNavigationView()}
-                style={styles.fabIcon2}
-              >
-                <MaterialCommunityIcons
-                  name="filter-variant-plus"
-                  color={"#ffffff"}
-                  size={26}
-                />
-              </TouchableOpacity>
-            </View>
+            
           </View>)}
         <TouchableOpacity
           style={{
@@ -278,10 +248,10 @@ const EmployeeList = props => {
             bottom: 15,
             right: 10,
             // height: 40,
-            backgroundColor: "rgba(0,191,255, .5)",
+            backgroundColor: "rgba(255, 148, 112, 1)",
             borderRadius: 100
           }}
-          onPress={() => navigation.navigate("AddNewCustomerStack")}
+          onPress={() => navigation.navigate("ManageEmployee")}
         >
           <AntDesign name="pluscircleo" size={40} color="#ffffff" />
           {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
@@ -403,8 +373,7 @@ const mapStateToProps = state => ({
   residentialCustomerList: state.AppReducer.residentialCustomerList
 });
 const mapDispatchToProps = {
-  setResidentialCustomerList,
-  setAnyItemDetails
+  setEmployeeList
 };
 export default connect(
   mapStateToProps,

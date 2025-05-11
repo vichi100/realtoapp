@@ -17,7 +17,6 @@ import { ButtonGroup } from "@rneui/themed";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../components/SnackbarComponent";
-import EmployeeList from "./EmployeeList";
 import axios from "axios";
 import { setEmployeeList } from "../reducers/Action";
 import { connect } from "react-redux";
@@ -55,13 +54,13 @@ const ManageEmployee = props => {
       return;
     }
     const user = {
-      req_user_id: props.userDetails.works_for,
-      user_id: props.userDetails.works_for,
+      req_user_id: props.userDetails.works_for,// agent_id
+      agent_id: props.userDetails.works_for,
       company_name: props.userDetails.company_name,
       address: props.userDetails.address,
       city: props.userDetails.city,
-      name: employeeName.trim(),
-      mobile: employeeMobile.trim(),
+      emp_name: employeeName.trim(),
+      emp_mobile: employeeMobile.trim(),
       access_rights: isEditEnabled ? "edit" : "read"
     };
     axios(SERVER_URL+"/addEmployee", {
@@ -75,14 +74,9 @@ const ManageEmployee = props => {
       response => {
         // console.log(response.data);
         if (response.data) {
-          const empObj = {
-            id: response.data,
-            name: employeeName.trim(),
-            mobile: employeeMobile.trim(),
-            access_rights: isEditEnabled ? "edit" : "read"
-          };
-          const x = [empObj, ...props.employeeList];
+          const x = [response.data, ...props.employeeList];
           props.setEmployeeList(x);
+          navigation.navigate("EmployeeList");
         }
       },
       error => {
@@ -219,7 +213,7 @@ const ManageEmployee = props => {
           </View>
           {/* Property releted reminder list */}
 
-          <EmployeeList employeeList={props.employeeList} />
+          {/* <EmployeeList employeeList={props.employeeList} /> */}
         </ScrollView>
       </KeyboardAwareScrollView>
       <Snackbar
