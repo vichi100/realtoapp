@@ -71,7 +71,7 @@ const BottomTabScreen = () => {
 
       <Tab.Screen
         // lazy={false}
-        name="Listing"
+        name="ListingStackScreens"
         component={ListingStackScreens}
         title="My Properties"
         options={{
@@ -128,7 +128,7 @@ const BottomTabScreen = () => {
       />
 
       <Tab.Screen
-        name="Profile"
+        name="ProfileStackScreens"
         component={ProfileStackScreens}
         options={{
           tabBarLabel: "",

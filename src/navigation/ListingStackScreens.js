@@ -26,6 +26,7 @@ import CustomerDetailsResidentialRentFromList from "../screen/contacts/CustomerD
 import CustomerDetailsResidentialBuyFromList from "../screen/contacts/CustomerDetailsResidentialBuyFromList";
 import CustomerDetailsCommercialRentFromList from "../screen/contacts/CustomerDetailsCommercialRentFromList";
 import CustomerDetailsCommercialBuyFromList from "../screen/contacts/CustomerDetailsCommercialBuyFromList";
+import EmployeeList from "../screen/employee/EmployeeList";
 
 const Stack = createStackNavigator();
 export const hideTabBarComponents = ["ProductDetails"];
@@ -202,6 +203,12 @@ const ListingStackScreens = ({ navigation, route }) => {
         options={{ title: "Property List", tabBarVisible: false }}
         navigationOptions={{ tabBarVisible: false }}
       />
+
+      <Stack.Screen
+              name="EmployeeListOfListing"
+              component={EmployeeList}
+              options={{ title: "Employee" }}
+            />
 
     </Stack.Navigator>
   );

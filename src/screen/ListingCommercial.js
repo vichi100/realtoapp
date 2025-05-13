@@ -59,6 +59,7 @@ const lookingForArraySortBy = ["Rent", "Sell"];
 
 const ListingCommercial = props => {
   const { navigation } = props;
+  const { displayCheckBox, disableDrawer } = props.route.params || {};
   const [search, setSearch] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -515,13 +516,13 @@ const ListingCommercial = props => {
       if (item.property_for.toLowerCase() === "Rent".toLowerCase()) {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <CardRent navigation={navigation} item={item} deleteMe={deleteMe}/>
+            <CardRent navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox} disableDrawer={disableDrawer}/>
           </TouchableOpacity>
         );
       } else if (item.property_for.toLowerCase() === "Sell".toLowerCase()) {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
-            <CardSell navigation={navigation} item={item} deleteMe={deleteMe}/>
+            <CardSell navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox} disableDrawer={disableDrawer}/>
           </TouchableOpacity>
         );
       }

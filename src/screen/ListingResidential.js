@@ -59,6 +59,7 @@ const ListingResidential = props => {
   const rent = useRef(0);;
   const sell = useRef(0);;
   const { navigation } = props;
+  const { displayCheckBox, disableDrawer } = props.route.params || {};
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [search, setSearch] = useState("");
@@ -509,14 +510,15 @@ const ListingResidential = props => {
         // console.log(rentPropCount.length);
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <CardResidentialRent navigation={navigation} item={item} deleteMe={deleteMe} />
+            <CardResidentialRent navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox} disableDrawer={disableDrawer}/>
+           
           </TouchableOpacity>
         );
       } else if (item.property_for.toLowerCase() === "Sell".toLowerCase()) {
         // sellPropCount.push("1");
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
-            <CardResidentialSell navigation={navigation} item={item} deleteMe={deleteMe} />
+            <CardResidentialSell navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox} disableDrawer={disableDrawer}/>
           </TouchableOpacity>
         );
       }

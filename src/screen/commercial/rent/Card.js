@@ -46,8 +46,8 @@ const Card = props => {
   const {
     navigation,
     item,
-    disableDrawer,
-    displayCheckBox,
+    disableDrawer = false,
+    displayCheckBox = false,
     displayChat,
     deleteMe,
     displayMatchCount = true,
@@ -378,7 +378,7 @@ const Card = props => {
           ) : null}
         </View>
 
-        {disableDrawer ? null : (
+        {!disableDrawer && (
           <Animated.View
             style={[
               styles.drawer,

@@ -29,6 +29,7 @@ import EmployeeCard from "../employee/EmployeeCard";
 
 const EmployeeList = props => {
   const { navigation } = props;
+  const{item, displayDrawable} = props.route;
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
 

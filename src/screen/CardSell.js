@@ -15,6 +15,9 @@ import {
   TextInput
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Feather from "react-native-vector-icons/Feather";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+
 import { MaterialIcons } from "@expo/vector-icons";
 import DoughnutChart from "../components/DoughnutChart";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -47,8 +50,8 @@ const Card = props => {
   const {
     navigation,
     item,
-    disableDrawer,
-    displayCheckBox,
+    disableDrawer = false,
+    displayCheckBox = false,
     displayChat,
     deleteMe,
     displayMatchCount = true,
@@ -134,6 +137,15 @@ const Card = props => {
     // outputRange: ["250%", "100%"]
     outputRange: [Sliding_Drawer_Width - 33, -15]
   });
+
+  const gotoEmployeeList = item => {
+    console.log("gotoEmployeeList: ", item);
+    props.setPropertyDetails(item);
+    navigation.navigate("EmployeeListOfListing", {
+      item: item,
+      displayDrawable:false
+    });
+  }
 
   const onClickMeeting = item => {
     console.log("hi")
@@ -335,10 +347,16 @@ const Card = props => {
                   {item.property_address.formatted_address}
                 </Text>
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: -15 }}>
-                <MaterialIcons name="alarm" size={20} color="black" />
-                <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>10:30</Text>
-              </View>
+              <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginBottom: 10, marginTop: 0, marginLeft: 20 }}>
+                  {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
+                  <Feather name="user-plus" size={20} color="black" />
+                  {/* <FontAwesome5 name="user-minus" size={20} color="rgb(70, 69, 69)" />  */}
+                  {/* <FontAwesome5 name="user-plus" size={20} color="rgb(111, 104, 104)" /> */}
+                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>Removed top, </Text>
+                  {/* <SimpleLineIcons name="user-unfollow" size={20} color="black" /> */}
+                </View>
+              </TouchableOpacity>
 
             </View>
 
@@ -398,7 +416,7 @@ const Card = props => {
             </TouchableOpacity>
           ) : null}
         </View>
-        {disableDrawer ? null : (
+        {!disableDrawer && (
           <Animated.View
             style={[
               styles.drawer,

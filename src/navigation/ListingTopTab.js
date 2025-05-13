@@ -14,7 +14,10 @@ import {
 
 const Tab = createMaterialTopTabNavigator();
 
-const ListingTopTab = () => {
+const ListingTopTab = ({ route })  => {
+
+  const { displayCheckBox, disableDrawer } = route.params || {};
+
   return (
    
     <View style={{ flex: 1 }}>
@@ -49,6 +52,10 @@ const ListingTopTab = () => {
         <Tab.Screen
           name="Residential"
           component={ListingResidential}
+          initialParams={{
+            displayCheckBox: displayCheckBox, // Pass your argument here
+            disableDrawer: disableDrawer,
+          }}
           // color={"rgba(50, 195, 77, 0.59)"}
           options={{
             tabBarLabel: () => (
@@ -79,6 +86,10 @@ const ListingTopTab = () => {
         <Tab.Screen
           name="Commercial"
           component={ListingCommercial}
+          initialParams={{
+            displayCheckBox: displayCheckBox, // Pass your argument here
+            disableDrawer: disableDrawer,
+          }}
           options={{
             tabBarLabel: () => (
               <View style={{ flexDirection: "row" }}>

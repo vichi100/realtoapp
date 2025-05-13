@@ -13,6 +13,8 @@ import {
   Dimensions
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+
 import { SERVER_URL } from "../util/Constant"
 // https://github.com/kamalpandey/react-native-image-slider-show
 
@@ -217,12 +219,14 @@ export default class Slideshow extends Component {
                   <TouchableHighlight onPress={() => {
                     console.log("Image liked")
                   }}>
-                <MaterialCommunityIcons name="heart-outline" color={"rgb(245, 239, 239)"} size={30} />
+                {/* <MaterialCommunityIcons name="heart-outline" color={"rgb(245, 239, 239)"} size={30} /> */}
+                <SimpleLineIcons name="user-follow" color={"rgb(245, 239, 239)"} size={25} />
+                
                 </TouchableHighlight>
                 </View>
                 <Image
                   source={imageObject}
-                  style={{ height, width, }}
+                  style={{ height, width }}
                   resizeMode="cover"
                 />
                 {textComponent}

@@ -54,6 +54,10 @@ const ProfileStackScreens = () => {
       <Stack.Screen
         name="PropertyListing"
         component={ListingTopTab}
+        initialParams={{
+          displayCheckBox: true, // Pass your argument here
+          disableDrawer: true,
+        }}
         options={{ title: "Properties", headerShown: true, tabBarLabel: "Home!" }}
       />
       <Stack.Screen
@@ -93,6 +97,10 @@ const ProfileStackScreens = () => {
         name="ContactsListing"
         component={ContactsTopTab}
         options={{ title: "Customers", headerShown: true, tabBarLabel: "Home!" }}
+        initialParams={{
+          displayCheckBox: true, // Pass your argument here
+          disableDrawer: true,
+        }}
       // options={{ tabBarLabel: "Home!" }}
       />
       <Stack.Screen
