@@ -45,13 +45,14 @@ const EmployeeCard = props => {
   const {
     navigation,
     item,
-    disableDrawer,
-    displayCheckBox,
+    disableDrawer = false,
+    displayCheckBox = false,
     displayChat,
     deleteMe,
     navigatedFrom = "none",
     displayMatchCount = true,
-    displayMatchPercent = false
+    displayMatchPercent = false,
+    itemForAddEmplyee = null,
   } = props;
   // console.log("ContactResidentialRentCard :    ", item);
   let animatedValue = new Animated.Value(0);
@@ -70,6 +71,63 @@ const EmployeeCard = props => {
   const getMatched = (matchedCustomerItem) => {
     navigation.navigate('MatchedProperties', { matchedCustomerItem: matchedCustomerItem },);
   }
+
+  // check if item type is customer or property
+  // check it item is for rent or sell/Buy
+  // check if item is commercial or residential
+  // check this item id is in employee agssigned list
+  // if it is then return true else return false
+
+  const isChecked = (item) => {
+    const {
+      assigned_residential_rent_properties,
+      assigned_residential_sell_properties,
+      assigned_commercial_rent_properties,
+      assigned_commercial_sell_properties,
+      assigned_residential_rent_customers,
+      assigned_residential_buy_customers,
+      assigned_commercial_rent_customers,
+      assigned_commercial_buy_customers,
+    } = props.employeeList; // Assuming employeeList contains the assigned lists
+  
+    // Determine if the item is a property or a customer
+    const isProperty = itemForAddEmplyee.type === "property";
+    const isCustomer = itemForAddEmplyee.type === "customer";
+  
+    // Determine if the item is for rent or sell/buy
+    const isForRent = itemForAddEmplyee.property_for === "rent";
+    const isForSell = itemForAddEmplyee.property_for === "sell" || itemForAddEmplyee.property_for === "buy";
+  
+    // Determine if the item is commercial or residential
+    const isCommercial = itemForAddEmplyee.property_type === "commercial";
+    const isResidential = itemForAddEmplyee.property_type === "residential";
+  
+    // Check if the item ID exists in the appropriate assigned list
+    if (isProperty) {
+      if (isResidential && isForRent) {
+        return assigned_residential_rent_properties.includes(item.id);
+      } else if (isResidential && isForSell) {
+        return assigned_residential_sell_properties.includes(item.id);
+      } else if (isCommercial && isForRent) {
+        return assigned_commercial_rent_properties.includes(item.id);
+      } else if (isCommercial && isForSell) {
+        return assigned_commercial_sell_properties.includes(item.id);
+      }
+    } else if (isCustomer) {
+      if (isResidential && isForRent) {
+        return assigned_residential_rent_customers.includes(item.id);
+      } else if (isResidential && isForSell) {
+        return assigned_residential_buy_customers.includes(item.id);
+      } else if (isCommercial && isForRent) {
+        return assigned_commercial_rent_customers.includes(item.id);
+      } else if (isCommercial && isForSell) {
+        return assigned_commercial_buy_customers.includes(item.id);
+      }
+    }
+  
+    // If none of the conditions match, return false
+    return false;
+  };
 
   const openPropertiesList = item => {
     navigation.navigate("PropertyListing", {item:item,
@@ -211,14 +269,14 @@ const EmployeeCard = props => {
 
   const onClickCheckBox = item => {
     // console.log("onClickCheckBox", item.customer_id);
-    const customerObj = {
-      name: item.customer_details.name,
-      mobile: item.customer_details.mobile1,
-      customer_id: item.customer_id,
-      agent_id: item.agent_id
+    const empObj = {
+      name: item.name,
+      mobile: item.mobile,
+      customer_id: item.id,
+      // agent_id: item.agent_id
     };
 
-    props.setCustomerDetailsForMeeting(customerObj);
+    props.setCustomerDetailsForMeeting(empObj);
   };
 
   const onClickMeeting = item => {
@@ -300,7 +358,29 @@ const EmployeeCard = props => {
           </View>
         </View>
 
-        {disableDrawer ? null : (
+        {displayCheckBox ? (
+          <View
+            style={{
+              position: "absolute", // Use absolute positioning
+              top: 10, // Adjust top margin
+              right: 10, // Adjust right margin
+              zIndex: 1000, // Ensure it appears above other elements
+            }}
+          >
+            <CheckBox
+              onPress={() => onClickCheckBox(item)}
+              center
+              checked={isChecked(item)}
+              containerStyle={{
+                backgroundColor: "transparent", // Transparent background
+                borderWidth: 0, // Remove border
+                padding: 0, // Remove padding
+              }}
+            />
+          </View>
+        ) : null}
+
+        {!disableDrawer &&  (
           <Animated.View
             style={[
               styles.drawer,
@@ -560,7 +640,8 @@ const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
   propReminderList: state.AppReducer.propReminderList,
   propListForMeeting: state.AppReducer.propListForMeeting,
-  customerDetailsForMeeting: state.AppReducer.customerDetailsForMeeting
+  customerDetailsForMeeting: state.AppReducer.customerDetailsForMeeting,
+  employeeList: state.AppReducer.employeeList,
 });
 
 const mapDispatchToProps = {

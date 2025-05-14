@@ -29,7 +29,7 @@ import EmployeeCard from "../employee/EmployeeCard";
 
 const EmployeeList = props => {
   const { navigation } = props;
-  const{item, displayDrawable} = props.route;
+  const{itemForAddEmplyee, disableDrawer, displayCheckBox} = props.route.params;
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
 
@@ -86,16 +86,10 @@ const EmployeeList = props => {
     if (text) {
       // Inserted text is not blank
       // Filter the masterDataSource and update FilteredDataSource
-      const newData = props.residentialCustomerList.filter(function (item) {
+      const newData = props.employeeList.filter(function (item) {
         // Applying filter for the inserted text in search bar
         console.log(item)
-        const itemData =
-          item.customer_details.name +
-          item.customer_details.address +
-          item.customer_details.mobile1 +
-          item.customer_locality.location_area.map(item => item.main_text).join(', ')
-        // item.customer_locality.location_area;
-
+        const itemData = item.name
         const textData = text.toUpperCase();
         return itemData.toUpperCase().indexOf(textData) > -1;
       });
@@ -110,7 +104,7 @@ const EmployeeList = props => {
   };
 
   const navigateToDetails = (item, propertyFor) => {
-    props.setAnyItemDetails(item);
+    // props.setAnyItemDetails(item);
     if (propertyFor === "Rent") {
       navigation.navigate("CustomerDetailsResidentialRentFromList", {item:item,
         displayMatchCount: true, displayMatchPercent: false
@@ -133,7 +127,7 @@ const EmployeeList = props => {
   const ItemView = ({ item }) => {
     return (
       <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-        <EmployeeCard navigation={navigation} item={item} deleteMe={deleteMe}/>
+        <EmployeeCard navigation={navigation} item={item} itemForAddEmplyee={itemForAddEmplyee} deleteMe={deleteMe} disableDrawer={disableDrawer} displayCheckBox={displayCheckBox}/>
       </TouchableOpacity>
     );
   };
@@ -371,7 +365,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   userDetails: state.AppReducer.userDetails,
-  residentialCustomerList: state.AppReducer.residentialCustomerList
+  residentialCustomerList: state.AppReducer.residentialCustomerList,
+  employeeList: state.AppReducer.employeeList
 });
 const mapDispatchToProps = {
   setEmployeeList

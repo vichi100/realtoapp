@@ -6,6 +6,7 @@ const initialState = {
   userDetails: null,
   customerDetails: null,
   countryCode: "+91",
+  employeeList:[],
   propReminderList: [],
   propListForMeeting: [],
   customerDetailsForMeeting: null,
@@ -46,6 +47,13 @@ const AppReducer = (state = initialState, action) => {
       return {
         ...state,
         propReminderList: action.payload
+      };
+
+      case ACTION_TYPES.SET_EMPLOYEE_LIST:
+      // // console.log("SET_PROP_LIST_FOR_MEETING");
+      return {
+        ...state,
+        employeeList: action.payload
       };
 
     case ACTION_TYPES.SET_PROP_LIST_FOR_MEETING:

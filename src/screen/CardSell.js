@@ -138,12 +138,13 @@ const Card = props => {
     outputRange: [Sliding_Drawer_Width - 33, -15]
   });
 
-  const gotoEmployeeList = item => {
-    console.log("gotoEmployeeList: ", item);
-    props.setPropertyDetails(item);
+  const gotoEmployeeList = itemForAddEmplyee => {
+    console.log("gotoEmployeeList: ", itemForAddEmplyee);
+    props.setPropertyDetails(itemForAddEmplyee);
     navigation.navigate("EmployeeListOfListing", {
-      item: item,
-      displayDrawable:false
+      itemForAddEmplyee: itemForAddEmplyee,
+      disableDrawer:true,
+      displayCheckBox: true,
     });
   }
 
