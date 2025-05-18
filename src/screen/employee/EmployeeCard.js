@@ -158,13 +158,15 @@ const EmployeeCard = props => {
   const openPropertiesList = item => {
     navigation.navigate("PropertyListing", {
       item: item,
-      displayMatchCount: true, displayMatchPercent: false
+      displayMatchCount: true, 
+      displayMatchPercent: false
     });
   };
   const openCustomerList = item => {
     navigation.navigate("ContactsListing", {
       item: item,
-      displayMatchCount: false, displayMatchPercent: true
+      displayMatchCount: false, 
+      displayMatchPercent: true
     });
   };
 
@@ -526,9 +528,12 @@ const EmployeeCard = props => {
             }}
           >
             <CheckBox
-              onPress={() => onClickCheckBox(item)}
+              onPress={() => {
+                onClickCheckBox(item);
+                setRefresh(!refresh); // Trigger re-render
+              }}
               center
-              checked={isChecked(item)}
+              checked={isChecked(item)} // Ensure this is tied to the isChecked function
               containerStyle={{
                 backgroundColor: "transparent", // Transparent background
                 borderWidth: 0, // Remove border

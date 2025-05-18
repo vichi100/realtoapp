@@ -16,7 +16,7 @@ const Tab = createMaterialTopTabNavigator();
 
 const ListingTopTab = ({ route })  => {
 
-  const { displayCheckBox, disableDrawer } = route.params || {};
+  const { displayCheckBox, disableDrawer, displayCheckBoxForEmployee, item} = route.params || {};
 
   return (
    
@@ -55,6 +55,8 @@ const ListingTopTab = ({ route })  => {
           initialParams={{
             displayCheckBox: displayCheckBox, // Pass your argument here
             disableDrawer: disableDrawer,
+            displayCheckBoxForEmployee: displayCheckBoxForEmployee,
+            employeeObj: item,
           }}
           // color={"rgba(50, 195, 77, 0.59)"}
           options={{
@@ -89,6 +91,8 @@ const ListingTopTab = ({ route })  => {
           initialParams={{
             displayCheckBox: displayCheckBox, // Pass your argument here
             disableDrawer: disableDrawer,
+            displayCheckBoxForEmployee: displayCheckBoxForEmployee,
+            employeeObj: item,
           }}
           options={{
             tabBarLabel: () => (

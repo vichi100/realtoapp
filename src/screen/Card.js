@@ -57,13 +57,15 @@ const options = [
 const Card = props => {
   const {
     navigation,
-    item,
+    item = null,
     disableDrawer = false,
     displayCheckBox = false,
     displayChat,
     deleteMe,
     displayMatchCount = true,
-    displayMatchPercent = false
+    displayMatchPercent = false,
+    displayCheckBoxForEmployee = false,
+    employeeObj=null,
   } = props;
 
   let animatedValue = new Animated.Value(0);
@@ -160,6 +162,27 @@ const Card = props => {
     );
     setChatModalVisible(false);
   };
+
+  const isAssetChecked = (item) => {
+    // console.log("Checking if asset is assigned:", JSON.stringify(item));
+    console.log("Employee Object:", JSON.stringify(employeeObj));
+  
+    // Check if the assigned_to_employee array exists and contains the employee ID
+    if (item.assigned_to_employee && Array.isArray(item.assigned_to_employee)) {
+      return item.assigned_to_employee.includes(employeeObj.id);
+    }
+  
+    // If assigned_to_employee does not exist or is not an array, return false
+    return false;
+  };
+
+  const onClickCheckBoxForEmployee = item => {
+    console.log("onClickCheckBox", JSON.stringify(item));
+
+    console.log("onClickCheckBox", JSON.stringify(employeeObj));
+    
+  }
+
 
   const onClickCheckBox = item => {
     // // console.log("onClickCheckBox", JSON.stringify(item));
@@ -417,6 +440,32 @@ const Card = props => {
               />
             </View>
           ) : null}
+
+          {displayCheckBoxForEmployee ? (
+            <View
+              style={{
+                // backgroundColor: "rgba(108, 198, 114, 0.2)",
+                justifyContent: "center"
+              }}
+            >
+              <CheckBox
+                onPress={() => onClickCheckBoxForEmployee(item)}
+                center
+                // title="Select"
+                checked={isAssetChecked(item)}
+                containerStyle={{
+                  // backgroundColor: "rgba(108, 198, 114, 0.3)",
+                  borderWidth: 0,
+                  margin: 0,
+                  // padding: 30,
+                  borderRadius: 10
+                  // width: 60
+                }}
+              />
+            </View>
+          ) : null}
+
+
           {displayChat ? (
             <TouchableOpacity
               onPress={() => onChat(item)}

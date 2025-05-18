@@ -24,7 +24,8 @@ import CustomerDetailsCommercialBuyFromList from "../screen/contacts/CustomerDet
 
 const Stack = createStackNavigator();
 
-const ProfileStackScreens = () => {
+const ProfileStackScreens = ({ route }) => {
+  const { displayCheckBox, disableDrawer, displayCheckBoxForEmployee, item } = route.params || {};
   return (
     <Stack.Navigator
       screenOptions={{
@@ -55,8 +56,10 @@ const ProfileStackScreens = () => {
         name="PropertyListing"
         component={ListingTopTab}
         initialParams={{
-          displayCheckBox: true, // Pass your argument here
+          displayCheckBox: false, // Pass your argument here
           disableDrawer: true,
+          displayCheckBoxForEmployee: true,
+          // employeeObj: item,
         }}
         options={{ title: "Properties", headerShown: true, tabBarLabel: "Home!" }}
       />

@@ -35,30 +35,6 @@ const EmployeeList = props => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   const unsubscribe = navigation.addListener('beforeRemove', (e) => {
-  //     // Prevent default behavior of leaving the screen
-  //     e.preventDefault();
-
-  //     // Remove the listener before navigating back to avoid recursion
-  //     unsubscribe();
-
-  //     // Your custom back handling logic
-  //     console.log('Back button pressed!');
-
-  //     // Navigate to the previous screen
-  //     navigation.goBack();
-  //   });
-
-  //   // Return the unsubscribe function for cleanup
-  //   return () => {
-  //     console.log('Removing navigation listener');
-  //     unsubscribe();
-  //   };
-  // }, [navigation]);
-
-  // The rest of your component code remains the same
-
   useEffect(() => {
     if (
       props.userDetails &&
