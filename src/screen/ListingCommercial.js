@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   FlatList,
   View,
@@ -34,6 +34,7 @@ import {
 } from "../reducers/Action";
 import { addDays, numDifferentiation } from "../util/methods";
 import Snackbar from "../components/SnackbarComponent";
+import { useFocusEffect } from '@react-navigation/native';
 
 const buildingTypeArray = [
   "Businesses park ",
@@ -83,6 +84,21 @@ const ListingCommercial = props => {
   const [sortByPostedDateIndex, setSortByPostedDateIndex] = useState(-1);
   const [lookingForIndexSortBy, setLookingForIndexSortBy] = useState(-1);
   const [loading, setLoading] = useState(false);
+
+  useFocusEffect(
+      useCallback(() => {
+        // This function will be called when Screen A comes into focus
+        console.log("useFocusEffect")
+        getListing();
+  
+        // Optional: Return a cleanup function if needed
+        return () => {
+          // This function will be called when Screen A loses focus
+          // You can perform cleanup here if necessary
+        };
+      }, []) // Re-run the effect if fetchData function changes (unlikely here)
+    );
+  
 
   const resetSortBy = () => {
     setLookingForIndexSortBy(-1);

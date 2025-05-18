@@ -20,6 +20,7 @@ import AddNewPropStackScreens from "./AddNewPropStackScreens";
 import MatchedProperties from "../screen/MatchedProperties";
 import MatchedCustomers from "../screen/contacts/MatchedCustomers";
 import CustomerListForMeeting from "../screen/CustomerListForMeeting";
+import EmployeeList from "../screen/employee/EmployeeList";
 
 const Stack = createStackNavigator();
 export const hideTabBarComponents = ["ProductDetails"];
@@ -188,6 +189,12 @@ const ContactsStackScreens = () => {
         name="CustomerListForMeeting"
         component={CustomerListForMeeting}
         options={{ title: "Client List" }}
+      />
+
+      <Stack.Screen
+        name="EmployeeListOfListing"
+        component={EmployeeList}
+        options={{ title: "Employee" }}
       />
 
 

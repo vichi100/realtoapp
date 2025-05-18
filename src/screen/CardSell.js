@@ -140,10 +140,10 @@ const Card = props => {
 
   const gotoEmployeeList = itemForAddEmplyee => {
     console.log("gotoEmployeeList: ", itemForAddEmplyee);
-    props.setPropertyDetails(itemForAddEmplyee);
+    // props.setPropertyDetails(itemForAddEmplyee);
     navigation.navigate("EmployeeListOfListing", {
       itemForAddEmplyee: itemForAddEmplyee,
-      disableDrawer:true,
+      disableDrawer: true,
       displayCheckBox: true,
     });
   }
@@ -354,7 +354,9 @@ const Card = props => {
                   <Feather name="user-plus" size={20} color="black" />
                   {/* <FontAwesome5 name="user-minus" size={20} color="rgb(70, 69, 69)" />  */}
                   {/* <FontAwesome5 name="user-plus" size={20} color="rgb(111, 104, 104)" /> */}
-                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>Removed top, </Text>
+                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>{Array.isArray(item.assigned_to_employee_name)
+                    ? item.assigned_to_employee_name.join(", ")
+                    : item.assigned_to_employee_name || "No employees assigned"}</Text>
                   {/* <SimpleLineIcons name="user-unfollow" size={20} color="black" /> */}
                 </View>
               </TouchableOpacity>

@@ -80,7 +80,11 @@ const Profile = props => {
   };
 
   const openEmployeeList = () => {
-    navigation.navigate("EmployeeList");
+    navigation.navigate("EmployeeList", {
+      itemForAddEmplyee: null,
+      disableDrawer: false,
+      displayCheckBox: false
+    });
   };
   const myCustomShare = async () => {
     const shareOptions = {

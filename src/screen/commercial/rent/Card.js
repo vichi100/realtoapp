@@ -35,6 +35,7 @@ import {
   setPropertyDetails,
 } from "../../../reducers/Action";
 import { SERVER_URL } from "../../../util/Constant";
+import Feather from "react-native-vector-icons/Feather";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -51,7 +52,7 @@ const Card = props => {
     displayChat,
     deleteMe,
     displayMatchCount = true,
-    displayMatchPercent=false
+    displayMatchPercent = false
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -60,6 +61,18 @@ const Card = props => {
   const [index, setIndex] = React.useState(null);
   const [chatModalVisible, setChatModalVisible] = useState(false);
   // const [text, onChangeText] = React.useState("I have customer for this property. Please call me.");
+
+  const gotoEmployeeList = itemForAddEmplyee => {
+    // console.log("gotoEmployeeList: ", itemForAddEmplyee);
+    props.setPropertyDetails(itemForAddEmplyee);
+    navigation.navigate("EmployeeListOfListing", {
+      itemForAddEmplyee: itemForAddEmplyee,
+      disableDrawer: true,
+      displayCheckBox: true,
+    });
+  }
+
+
   const [message, setMessage] = React.useState(
     "I have customer for this property. Please call me. "
   );
@@ -231,7 +244,7 @@ const Card = props => {
   };
 
   const getMatched = (matchedProprtyItem) => {
-    navigation.navigate('MatchedCustomers', {matchedProprtyItem: matchedProprtyItem},);
+    navigation.navigate('MatchedCustomers', { matchedProprtyItem: matchedProprtyItem },);
   }
 
   return (
@@ -320,10 +333,18 @@ const Card = props => {
                   {item.property_address.formatted_address}
                 </Text>
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: -15 }}>
-                <MaterialIcons name="alarm" size={20} color="black" />
-                <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>10:30</Text>
-              </View>
+              <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginBottom: 10, marginTop: 0, marginLeft: 20 }}>
+                  {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
+                  <Feather name="user-plus" size={20} color="black" />
+                  {/* <FontAwesome5 name="user-minus" size={20} color="rgb(70, 69, 69)" />  */}
+                  {/* <FontAwesome5 name="user-plus" size={20} color="rgb(111, 104, 104)" /> */}
+                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>{Array.isArray(item.assigned_to_employee_name)
+                    ? item.assigned_to_employee_name.join(", ")
+                    : item.assigned_to_employee_name || "No employees assigned"}</Text>
+                  {/* <SimpleLineIcons name="user-unfollow" size={20} color="black" /> */}
+                </View>
+              </TouchableOpacity>
 
             </View>
 

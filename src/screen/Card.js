@@ -58,8 +58,8 @@ const Card = props => {
   const {
     navigation,
     item,
-    disableDrawer=false,
-    displayCheckBox=false,
+    disableDrawer = false,
+    displayCheckBox = false,
     displayChat,
     deleteMe,
     displayMatchCount = true,
@@ -73,6 +73,20 @@ const Card = props => {
   const [index, setIndex] = React.useState(null);
   const [checkBoxList, setCheckBoxList] = useState([]);
   const [chatModalVisible, setChatModalVisible] = useState(false);
+
+
+
+  const gotoEmployeeList = itemForAddEmplyee => {
+    console.log("gotoEmployeeList: ", itemForAddEmplyee);
+    // props.setPropertyDetails(itemForAddEmplyee);
+    navigation.navigate("EmployeeListOfListing", {
+      itemForAddEmplyee: itemForAddEmplyee,
+      disableDrawer: true,
+      displayCheckBox: true,
+    });
+  }
+
+
   // const [text, onChangeText] = React.useState("I have customer for this property. Please call me.");
   const [message, setMessage] = React.useState(
     "I have customer for this property. Please call me. "
@@ -297,7 +311,7 @@ const Card = props => {
             marginTop: -5,
             marginBottom: 5,
           }}>
-            {displayMatchCount  && <TouchableOpacity onPress={() => getMatched(item)}>
+            {displayMatchCount && <TouchableOpacity onPress={() => getMatched(item)}>
               {<View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
                 <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
               </View>}
@@ -358,10 +372,18 @@ const Card = props => {
                   {item.property_address.formatted_address}
                 </Text>
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: -15 }}>
-                {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
-                <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>{item.matched_percentage ? item.matched_percentage : 0}% Match</Text>
-              </View>
+              <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginBottom: 10, marginTop: 0, marginLeft: 20 }}>
+                  {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
+                  <Feather name="user-plus" size={20} color="black" />
+                  {/* <FontAwesome5 name="user-minus" size={20} color="rgb(70, 69, 69)" />  */}
+                  {/* <FontAwesome5 name="user-plus" size={20} color="rgb(111, 104, 104)" /> */}
+                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>{Array.isArray(item.assigned_to_employee_name)
+                    ? item.assigned_to_employee_name.join(", ")
+                    : item.assigned_to_employee_name || "No employees assigned"}</Text>
+                  {/* <SimpleLineIcons name="user-unfollow" size={20} color="black" /> */}
+                </View>
+              </TouchableOpacity>
 
             </View>
 

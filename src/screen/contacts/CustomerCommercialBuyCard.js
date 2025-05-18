@@ -34,6 +34,7 @@ import {
   setCustomerDetails
 } from "../../reducers/Action";
 import axios from "axios";
+import Feather from "react-native-vector-icons/Feather";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -64,6 +65,18 @@ const CustomerCommercialBuyCard = props => {
   const [index, setIndex] = React.useState(null);
   const [chatModalVisible, setChatModalVisible] = useState(false);
   // const [text, onChangeText] = React.useState("I have customer for this property. Please call me.");
+
+  const gotoEmployeeList = itemForAddEmplyee => {
+    // console.log("gotoEmployeeList: ", itemForAddEmplyee);
+    // props.setPropertyDetails(itemForAddEmplyee);
+    navigation.navigate("EmployeeListOfListing", {
+      itemForAddEmplyee: itemForAddEmplyee,
+      disableDrawer: true,
+      displayCheckBox: true,
+    });
+  }
+
+  
   const [message, setMessage] = React.useState(
     "I have property for this customer. Please call me. "
   );
@@ -449,6 +462,19 @@ const CustomerCommercialBuyCard = props => {
           {item.customer_locality.location_area.map(item => item.main_text).join(', ')}
         </Text>
       </View>
+
+      <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: 10, marginLeft: 20 }}>
+          {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
+          <Feather name="user-plus" size={20} color="black" />
+          {/* <FontAwesome5 name="user-minus" size={20} color="rgb(70, 69, 69)" />  */}
+          {/* <FontAwesome5 name="user-plus" size={20} color="rgb(111, 104, 104)" /> */}
+          <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>{Array.isArray(item.assigned_to_employee_name)
+            ? item.assigned_to_employee_name.join(", ")
+            : item.assigned_to_employee_name || "No employees assigned"}</Text>
+          {/* <SimpleLineIcons name="user-unfollow" size={20} color="black" /> */}
+        </View>
+      </TouchableOpacity>
 
       <View style={[styles.detailsContainer]}>
         <View style={[styles.details]}>

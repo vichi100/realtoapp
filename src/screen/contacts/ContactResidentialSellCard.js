@@ -23,6 +23,7 @@ import { Avatar } from "@rneui/themed";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { numDifferentiation } from "../../util/methods";
 import { SERVER_URL } from "../../util/Constant";
+import Feather from "react-native-vector-icons/Feather";
 import {
   setUserMobile,
   setUserDetails,
@@ -63,6 +64,18 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
   const [index, setIndex] = React.useState(null);
   const [chatModalVisible, setChatModalVisible] = useState(false);
   // const [text, onChangeText] = React.useState("I have customer for this property. Please call me.");
+
+  const gotoEmployeeList = itemForAddEmplyee => {
+    // console.log("gotoEmployeeList: ", itemForAddEmplyee);
+    // props.setPropertyDetails(itemForAddEmplyee);
+    navigation.navigate("EmployeeListOfListing", {
+      itemForAddEmplyee: itemForAddEmplyee,
+      disableDrawer: true,
+      displayCheckBox: true,
+    });
+  }
+
+
   const [message, setMessage] = React.useState(
     "I have property for this customer. Please call me. "
   );
@@ -450,6 +463,19 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
           {item.customer_locality.location_area.map(item => item.main_text).join(', ')}
         </Text>
       </View>
+
+      <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: 10, marginLeft: 20 }}>
+          {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
+          <Feather name="user-plus" size={20} color="black" />
+          {/* <FontAwesome5 name="user-minus" size={20} color="rgb(70, 69, 69)" />  */}
+          {/* <FontAwesome5 name="user-plus" size={20} color="rgb(111, 104, 104)" /> */}
+          <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>{Array.isArray(item.assigned_to_employee_name)
+            ? item.assigned_to_employee_name.join(", ")
+            : item.assigned_to_employee_name || "No employees assigned"}</Text>
+          {/* <SimpleLineIcons name="user-unfollow" size={20} color="black" /> */}
+        </View>
+      </TouchableOpacity>
 
       <View
         style={[

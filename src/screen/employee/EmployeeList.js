@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   FlatList,
   View,
@@ -11,6 +11,7 @@ import {
   AsyncStorage,
   ActivityIndicator,
 } from "react-native";
+
 import { connect } from "react-redux";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -29,37 +30,50 @@ import EmployeeCard from "../employee/EmployeeCard";
 
 const EmployeeList = props => {
   const { navigation } = props;
-  const{itemForAddEmplyee, disableDrawer, displayCheckBox} = props.route.params;
+  const { itemForAddEmplyee, disableDrawer, displayCheckBox } = props.route.params;
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
-
   const [loading, setLoading] = useState(false);
 
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+  //     // Prevent default behavior of leaving the screen
+  //     e.preventDefault();
+
+  //     // Remove the listener before navigating back to avoid recursion
+  //     unsubscribe();
+
+  //     // Your custom back handling logic
+  //     console.log('Back button pressed!');
+
+  //     // Navigate to the previous screen
+  //     navigation.goBack();
+  //   });
+
+  //   // Return the unsubscribe function for cleanup
+  //   return () => {
+  //     console.log('Removing navigation listener');
+  //     unsubscribe();
+  //   };
+  // }, [navigation]);
+
+  // The rest of your component code remains the same
+
   useEffect(() => {
-    // // console.log(
-    //   "props.userDetail33 " +
-    //     JSON.stringify(props.userDetails.works_for)
-    // );
     if (
       props.userDetails &&
       props.userDetails.works_for !== null
     ) {
       getListing();
     }
-    // console.log("residential Listing useEffect");
   }, [props.userDetails]);
 
- 
-
   const getListing = () => {
-    // const agentDetailsX = getAgentDetails();
-    // console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
     const user = {
       req_user_id: props.userDetails.works_for,
       agent_id: props.userDetails.works_for
     };
     setLoading(true);
-    // console.log(JSON.stringify(user));
     axios(SERVER_URL + "/employeeList", {
       method: "post",
       headers: {
@@ -69,7 +83,6 @@ const EmployeeList = props => {
       data: user
     }).then(
       response => {
-        // console.log(response.data);
         setData(response.data);
         props.setEmployeeList(response.data);
         setLoading(false);
@@ -82,75 +95,47 @@ const EmployeeList = props => {
   };
 
   const searchFilterFunction = text => {
-    // Check if searched text is not blank
     if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource and update FilteredDataSource
       const newData = props.employeeList.filter(function (item) {
-        // Applying filter for the inserted text in search bar
-        console.log(item)
-        const itemData = item.name
+        const itemData = item.name;
         const textData = text.toUpperCase();
         return itemData.toUpperCase().indexOf(textData) > -1;
       });
       setData(newData);
       setSearch(text);
     } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
       setData(props.residentialCustomerList);
       setSearch(text);
     }
   };
 
-  const navigateToDetails = (item, propertyFor) => {
-    // props.setAnyItemDetails(item);
-    if (propertyFor === "Rent") {
-      navigation.navigate("CustomerDetailsResidentialRentFromList", {item:item,
-        displayMatchCount: true, displayMatchPercent: false
-      });
-    } else if (propertyFor === "Buy") {
-      navigation.navigate("CustomerDetailsResidentialBuyFromList", {item:item,
-        displayMatchCount: true, displayMatchPercent: false
-      });
-    }
-  };
-
-  const deleteMe = (itemToDelete) =>{
-    // console.log("props.setPropertyDetails(item: deleteMe: )", itemToDelete);
+  const deleteMe = (itemToDelete) => {
     setData((data) => data.filter((item) => item.customer_id !== itemToDelete.customer_id));
-    //Fist delete for data
-    
-
   }
 
-  const ItemView = ({ item }) => {
-    return (
-      <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-        <EmployeeCard navigation={navigation} item={item} itemForAddEmplyee={itemForAddEmplyee} deleteMe={deleteMe} disableDrawer={disableDrawer} displayCheckBox={displayCheckBox}/>
-      </TouchableOpacity>
-    );
-  };
+  const ItemView = ({ item }) => (
+    <EmployeeCard
+      navigation={navigation}
+      item={item}
+      itemForAddEmplyee={itemForAddEmplyee}
+      deleteMe={deleteMe}
+      disableDrawer={disableDrawer}
+      displayCheckBox={displayCheckBox}
+    />
+  );
 
-  const ItemSeparatorView = () => {
-    return (
-      //Item Separator
-      <View
-        style={{ height: 0.5, width: "100%", backgroundColor: "#C8C8C8" }}
-      />
-    );
-  };
+  const ItemSeparatorView = () => (
+    <View style={{ height: 0.5, width: "100%", backgroundColor: "#C8C8C8" }} />
+  );
 
   const navigateTo = () => {
     navigation.navigate("ManageEmployee");
   };
 
-
   useEffect(() => {
     if (props.residentialCustomerList.length > 0) {
       setData(props.residentialCustomerList)
     }
-
   }, [props.residentialCustomerList])
 
   return (
@@ -163,42 +148,36 @@ const EmployeeList = props => {
       }}
     >
       <ActivityIndicator animating size="large" color={'#000'} />
-      {/* <ActivityIndicator animating size="large" /> */}
     </View> :
       <View style={{ flex: 1 }}>
-        
         <View style={styles.searchBar}>
-        <AntDesign name="search1" size={20} color="#999" style={{marginRight: 5,}} />
-          
+          <AntDesign name="search1" size={20} color="#999" style={{ marginRight: 5, }} />
           <TextInput
             style={styles.textInputStyle}
             onChangeText={text => searchFilterFunction(text)}
             value={search}
             underlineColorAndroid="transparent"
             placeholder="Search by name, location"
-            placeholderTextColor="#000" 
+            placeholderTextColor="#000"
           />
         </View>
         {data.length > 0 ? (
           <View style={styles.container}>
             <FlatList
               data={data}
-              //data defined in constructor
-              // ItemSeparatorComponent={ItemSeparatorView}
-              //Item Separator View
               renderItem={ItemView}
               keyExtractor={(item, index) => index.toString()}
             />
             <View style={styles.fab}>
               <TouchableOpacity
-                onPress={() => toggleSortingBottomNavigationView()}
+                onPress={() => console.log("Sort")}
                 style={styles.fabIcon1}
               >
                 <MaterialCommunityIcons name="sort" color={"#ffffff"} size={26} />
               </TouchableOpacity>
               <View style={styles.verticalLine}></View>
               <TouchableOpacity
-                onPress={() => toggleBottomNavigationView()}
+                onPress={() => console.log("Filter")}
                 style={styles.fabIcon2}
               >
                 <MaterialCommunityIcons
@@ -230,34 +209,13 @@ const EmployeeList = props => {
                 </Text>
               </TouchableOpacity>
             </View>
-            
           </View>)}
         <TouchableOpacity
-          style={{
-            // borderWidth: 1,
-            // borderColor: "rgba(0,0,0,0.2)",
-            alignItems: "center",
-            justifyContent: "center",
-            // width: 40,
-            position: "absolute",
-            bottom: 15,
-            right: 10,
-            // height: 40,
-            backgroundColor: "rgba(255, 148, 112, 1)",
-            borderRadius: 100
-          }}
+          style={styles.addButton}
           onPress={() => navigation.navigate("ManageEmployee")}
         >
           <AntDesign name="pluscircleo" size={40} color="#ffffff" />
-          {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
         </TouchableOpacity>
-        {/* <Snackbar
-        visible={isVisible}
-        textMessage={errorMessage}
-        position={"top"}
-        actionHandler={() => dismissSnackBar()}
-        actionText="OK"
-      /> */}
       </View>
   );
 };
@@ -266,7 +224,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 5
-    // alignContent: "center"
   },
   searchBar: {
     flexDirection: 'row',
@@ -289,7 +246,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     right: "33%",
-    // left: 0,
     bottom: 10,
     backgroundColor: "rgba(128,128,128, 0.8)",
     borderRadius: 30,
@@ -306,61 +262,23 @@ const styles = StyleSheet.create({
   fabIcon2: {
     paddingLeft: 20
   },
-  bottomNavigationView: {
-    backgroundColor: "#fff",
-    width: "100%",
-    height: "70%",
-    borderRadius: 5,
-    justifyContent: "center",
+  addButton: {
     alignItems: "center",
-    marginTop: 30
-  },
-  sortingBottomNavigationView: {
-    backgroundColor: "#fff",
-    width: "100%",
-    height: "40%",
-    borderRadius: 5,
     justifyContent: "center",
-    alignItems: "center"
-  },
-  propSubSection: {
-    marginBottom: 20
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: "600"
-  },
-  bottomNavigationViewHeader: {
     position: "absolute",
-    width: 130,
-    // height: 35,
-    alignItems: "center",
-    justifyContent: "center",
-    right: "33%",
-    // left: 0,
-    top: 10,
-    marginBottom: 30
-  },
-  horizontal: {
-    borderBottomColor: "black",
-    borderBottomWidth: 5,
-    marginLeft: 5,
-    marginRight: 5
+    bottom: 15,
+    right: 10,
+    backgroundColor: "rgba(255, 148, 112, 1)",
+    borderRadius: 100
   },
   textInputStyle: {
     width: "98%",
     height: 40,
-    // borderWidth: 1,
     paddingLeft: 20,
     margin: 5,
-    // marginBottom: 5,
     borderRadius: 10,
-    // borderColor: "#009688",
     backgroundColor: "#FFFFFF"
   },
-  marginBottom10: {
-    marginBottom: 10
-  }
 });
 
 const mapStateToProps = state => ({
@@ -375,5 +293,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(EmployeeList);
-
-// export default ListingResidential;

@@ -12,7 +12,7 @@ import {
   Dimensions,
   Share,
   Linking,
-  TextInput
+  TextInput,
 } from "react-native";
 import { connect } from "react-redux";
 import DoughnutChart from "../../components/DoughnutChart";
@@ -63,6 +63,8 @@ const EmployeeCard = props => {
   const [modalVisible, setModalVisible] = useState(false);
   const [index, setIndex] = React.useState(null);
   const [chatModalVisible, setChatModalVisible] = useState(false);
+  const [refresh, setRefresh] = useState(false); // Add a state to trigger re-render
+
   // const [text, onChangeText] = React.useState("I have customer for this property. Please call me.");
   const [message, setMessage] = React.useState(
     "I have property for this customer. Please call me. "
@@ -71,6 +73,8 @@ const EmployeeCard = props => {
   const getMatched = (matchedCustomerItem) => {
     navigation.navigate('MatchedProperties', { matchedCustomerItem: matchedCustomerItem },);
   }
+
+
 
   // check if item type is customer or property
   // check it item is for rent or sell/Buy
@@ -87,55 +91,79 @@ const EmployeeCard = props => {
       assigned_residential_rent_customers,
       assigned_residential_buy_customers,
       assigned_commercial_rent_customers,
-      assigned_commercial_buy_customers,
-    } = props.employeeList; // Assuming employeeList contains the assigned lists
-  
-    // Determine if the item is a property or a customer
-    const isProperty = itemForAddEmplyee.type === "property";
-    const isCustomer = itemForAddEmplyee.type === "customer";
-  
-    // Determine if the item is for rent or sell/buy
-    const isForRent = itemForAddEmplyee.property_for === "rent";
-    const isForSell = itemForAddEmplyee.property_for === "sell" || itemForAddEmplyee.property_for === "buy";
-  
-    // Determine if the item is commercial or residential
-    const isCommercial = itemForAddEmplyee.property_type === "commercial";
-    const isResidential = itemForAddEmplyee.property_type === "residential";
-  
+      assigned_commercial_buy_customers
+    } = item; // Assuming employeeList contains the assigned lists
+
+    // // Determine if the item is a property or a customer
+    let isProperty = false;
+    let isCustomer = false;
+    if (!itemForAddEmplyee || !itemForAddEmplyee.property_id) {
+      // isProperty = false; // Return false if property_id is missing
+      isCustomer = true;
+    }
+    else if (!itemForAddEmplyee || !itemForAddEmplyee.customer_id) {
+      isProperty = true; // Return false if property_id is missing
+      // isCustomer = false;
+    }
+
+
+    let isForRent = false;
+    let isForSell = false;
+    let isCommercial = false;
+    let isResidential = false;
+
+
     // Check if the item ID exists in the appropriate assigned list
     if (isProperty) {
+      // Determine if the item is for rent or sell/buy
+      isForRent = itemForAddEmplyee.property_for === "Rent";
+      isForSell = itemForAddEmplyee.property_for === "Sell" || itemForAddEmplyee.property_for === "Buy";
+
+      // Determine if the item is commercial or residential
+      isCommercial = itemForAddEmplyee.property_type === "Commercial";
+      isResidential = itemForAddEmplyee.property_type === "Residential";
+
       if (isResidential && isForRent) {
-        return assigned_residential_rent_properties.includes(item.id);
+        return assigned_residential_rent_properties.includes(itemForAddEmplyee.property_id);
       } else if (isResidential && isForSell) {
-        return assigned_residential_sell_properties.includes(item.id);
+        return assigned_residential_sell_properties && assigned_residential_sell_properties.includes(itemForAddEmplyee.property_id);
       } else if (isCommercial && isForRent) {
-        return assigned_commercial_rent_properties.includes(item.id);
+        return assigned_commercial_rent_properties.includes(itemForAddEmplyee.property_id);
       } else if (isCommercial && isForSell) {
-        return assigned_commercial_sell_properties.includes(item.id);
+        return assigned_commercial_sell_properties.includes(itemForAddEmplyee.property_id);
       }
     } else if (isCustomer) {
+      // Determine if the item is for rent or sell/buy
+      isForRent = itemForAddEmplyee.customer_locality.property_for === "Rent";
+      isForSell = itemForAddEmplyee.customer_locality.property_for === "Sell" || itemForAddEmplyee.customer_locality.property_for === "Buy";
+
+      // Determine if the item is commercial or residential
+      isCommercial = itemForAddEmplyee.customer_locality.property_type === "Commercial";
+      isResidential = itemForAddEmplyee.customer_locality.property_type === "Residential";
       if (isResidential && isForRent) {
-        return assigned_residential_rent_customers.includes(item.id);
+        return assigned_residential_rent_customers.includes(itemForAddEmplyee.customer_id);
       } else if (isResidential && isForSell) {
-        return assigned_residential_buy_customers.includes(item.id);
+        return assigned_residential_buy_customers.includes(itemForAddEmplyee.customer_id);
       } else if (isCommercial && isForRent) {
-        return assigned_commercial_rent_customers.includes(item.id);
+        return assigned_commercial_rent_customers.includes(itemForAddEmplyee.customer_id);
       } else if (isCommercial && isForSell) {
-        return assigned_commercial_buy_customers.includes(item.id);
+        return assigned_commercial_buy_customers.includes(itemForAddEmplyee.customer_id);
       }
     }
-  
+
     // If none of the conditions match, return false
     return false;
   };
 
   const openPropertiesList = item => {
-    navigation.navigate("PropertyListing", {item:item,
+    navigation.navigate("PropertyListing", {
+      item: item,
       displayMatchCount: true, displayMatchPercent: false
     });
   };
   const openCustomerList = item => {
-    navigation.navigate("ContactsListing", {item:item,
+    navigation.navigate("ContactsListing", {
+      item: item,
       displayMatchCount: false, displayMatchPercent: true
     });
   };
@@ -267,16 +295,146 @@ const EmployeeCard = props => {
     }
   };
 
-  const onClickCheckBox = item => {
-    // console.log("onClickCheckBox", item.customer_id);
-    const empObj = {
-      name: item.name,
-      mobile: item.mobile,
-      customer_id: item.id,
-      // agent_id: item.agent_id
-    };
+  const onClickCheckBox = (item) => {
+    const wasChecked = isChecked(item); // Check the current state
+    console.log("Checkbox was", wasChecked ? "selected" : "unselected");
+    let operation = "add";
+    if (wasChecked) {
+      operation = "remove";
+    }
 
-    props.setCustomerDetailsForMeeting(empObj);
+
+
+    const {
+      assigned_residential_rent_properties,
+      assigned_residential_sell_properties,
+      assigned_commercial_rent_properties,
+      assigned_commercial_sell_properties,
+      assigned_residential_rent_customers,
+      assigned_residential_buy_customers,
+      assigned_commercial_rent_customers,
+      assigned_commercial_buy_customers,
+    } = item;
+
+    let isProperty = false;
+    let isCustomer = false;
+    if (!itemForAddEmplyee || !itemForAddEmplyee.property_id) {
+      // isProperty = false;
+      isCustomer = true;
+    } else if (!itemForAddEmplyee || !itemForAddEmplyee.customer_id) {
+      isProperty = true;
+      // isCustomer = false;
+    }
+
+    let isForRent = false;
+    let isForSell = false;
+    let isCommercial = false;
+    let isResidential = false;
+
+    if (isProperty) {
+      isForRent = itemForAddEmplyee.property_for === "Rent";
+      isForSell = itemForAddEmplyee.property_for === "Sell" || itemForAddEmplyee.property_for === "Buy";
+
+      isCommercial = itemForAddEmplyee.property_type === "Commercial";
+      isResidential = itemForAddEmplyee.property_type === "Residential";
+
+      if (isResidential && isForRent) {
+        toggleSelection(assigned_residential_rent_properties, itemForAddEmplyee.property_id);
+      } else if (isResidential && isForSell) {
+        toggleSelection(assigned_residential_sell_properties, itemForAddEmplyee.property_id);
+      } else if (isCommercial && isForRent) {
+        toggleSelection(assigned_commercial_rent_properties, itemForAddEmplyee.property_id);
+      } else if (isCommercial && isForSell) {
+        toggleSelection(assigned_commercial_sell_properties, itemForAddEmplyee.property_id);
+      }
+    } else if (isCustomer) {
+      isForRent = itemForAddEmplyee.customer_locality.property_for === "Rent";
+      isForSell = itemForAddEmplyee.customer_locality.property_for === "Sell" || itemForAddEmplyee.customer_locality.property_for === "Buy";
+
+      isCommercial = itemForAddEmplyee.customer_locality.property_type === "Commercial";
+      isResidential = itemForAddEmplyee.customer_locality.property_type === "Residential";
+
+      if (isResidential && isForRent) {
+        toggleSelection(assigned_residential_rent_customers, itemForAddEmplyee.customer_id);
+      } else if (isResidential && isForSell) {
+        toggleSelection(assigned_residential_buy_customers, itemForAddEmplyee.customer_id);
+      } else if (isCommercial && isForRent) {
+        toggleSelection(assigned_commercial_rent_customers, itemForAddEmplyee.customer_id);
+      } else if (isCommercial && isForSell) {
+        toggleSelection(assigned_commercial_buy_customers, itemForAddEmplyee.customer_id);
+      }
+    }
+    //whatToUpdateData: will be used to add employee to property or customer assigned list
+    const whatToUpdateData = {
+      isProperty: isProperty,
+      isCustomer: isCustomer,
+      isForRent: isForRent,
+      isForSell: isForSell,
+      isCommercial: isCommercial,
+      isResidential: isResidential,
+      customer_id: itemForAddEmplyee.customer_id || null,
+      property_id: itemForAddEmplyee.property_id || null,
+    }
+    const isUpdated = updatePropertiesForEmployee(item, whatToUpdateData, operation);
+    if (!isUpdated) {
+      toggleSelection(assigned_residential_rent_properties, itemForAddEmplyee.property_id);
+      itemForAddEmplyee.assigned_to_employee.push(item.id);
+      itemForAddEmplyee.assigned_to_employee_name.push(item.name);
+    }
+
+    setRefresh(!refresh); // Trigger re-render
+  };
+
+  // Helper function to toggle selection
+  const toggleSelection = (list, id) => {
+    const index = list.indexOf(id);
+    if (index > -1) {
+      // If the item is already selected, remove it
+      list.splice(index, 1);
+    } else {
+      // If the item is not selected, add it
+      list.push(id);
+    }
+  };
+
+  const updatePropertiesForEmployee = async (item, whatToUpdateData, operation) => {
+    // setLoading(true);
+    const userObj = {
+      req_user_id: props.userDetails.works_for,
+      employee_id: item.id,
+      employee_name: item.name,
+      operation: operation,
+      what_to_update_data: whatToUpdateData,
+      user_data: item,
+    }
+    try {
+      axios(SERVER_URL + "/updatePropertiesForEmployee", {
+        method: "post",
+        headers: {
+          "Content-type": "Application/json",
+          Accept: "Application/json"
+        },
+        data: userObj
+      }).then(
+        response => {
+          if (response.data === "success") {
+            console.log("Properties updated successfully");
+            return true;
+          } else {
+            return false;
+          }
+        },
+        error => {
+          // console.log(error);
+          // setLoading(false);
+          console.log(error);
+        }
+      );
+    } catch (error) {
+      console.error('Failed to fetch user:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onClickMeeting = item => {
@@ -380,7 +538,7 @@ const EmployeeCard = props => {
           </View>
         ) : null}
 
-        {!disableDrawer &&  (
+        {!disableDrawer && (
           <Animated.View
             style={[
               styles.drawer,
@@ -469,43 +627,43 @@ const EmployeeCard = props => {
               <Text style={[styles.subDetailsTitle]}>5</Text>
             </View>
             <TouchableOpacity
-                // disabled={Sliding_Drawer_Toggle}
-                onPress={() => {
-                  openPropertiesList(item);
-                }}
-                // style={{ padding: 15, backgroundColor: "#e57373" }}
-              >
-            <AntDesign
-              name="pluscircleo"
-              color={"rgba(34, 167, 240, 1)"}
-              size={30}
-              style={{ marginLeft: 30, marginTop: 0 }}
-            />
+              // disabled={Sliding_Drawer_Toggle}
+              onPress={() => {
+                openPropertiesList(item);
+              }}
+            // style={{ padding: 15, backgroundColor: "#e57373" }}
+            >
+              <MaterialCommunityIcons
+                name="bank-plus"
+                color={"rgba(34, 167, 240, .5)"}
+                size={25}
+                style={{ marginLeft: 30, marginTop: 0 }}
+              />
             </TouchableOpacity>
           </View>
 
           <View style={styles.verticalLine}></View>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <TouchableOpacity
-                // disabled={Sliding_Drawer_Toggle}
-                onPress={() => {
-                  openCustomerList(item);
-                }}
-                // style={{ padding: 15, backgroundColor: "#e57373" }}
-              >
-          <AntDesign
-              name="pluscircleo"
-              color={"rgba(63, 195, 128, 1)"}
-              size={30}
-              style={{ marginRight: 30, marginTop: 0 }}
-            />
+            <TouchableOpacity
+              // disabled={Sliding_Drawer_Toggle}
+              onPress={() => {
+                openCustomerList(item);
+              }}
+            // style={{ padding: 15, backgroundColor: "#e57373" }}
+            >
+              <MaterialCommunityIcons
+                name="account-plus-outline"
+                color={"rgba(63, 195, 128, .6)"}
+                size={27}
+                style={{ marginRight: 30, marginTop: 0 }}
+              />
             </TouchableOpacity>
-          <View style={[styles.subDetails]}>
-            <Text style={[styles.subDetailsValue]}>
-              Customers
-            </Text>
-            <Text style={[styles.subDetailsTitle]}>3</Text>
-          </View>
+            <View style={[styles.subDetails]}>
+              <Text style={[styles.subDetailsValue]}>
+                Customers
+              </Text>
+              <Text style={[styles.subDetailsTitle]}>3</Text>
+            </View>
           </View>
         </View>
       </View>
@@ -709,6 +867,7 @@ const styles = StyleSheet.create({
   detailsContainer: {
     // borderBottomWidth: 1,
     // borderTopColor: "#ffffff",
+    borderBottomColor: "#bdbdbd",
     borderBottomColor: "#bdbdbd",
     // borderTopWidth: 1,
     borderBottomWidth: 1,
