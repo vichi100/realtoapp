@@ -176,11 +176,6 @@ const Card = props => {
     return false;
   };
 
-  // const onClickCheckBoxForEmployee = item => {
-  //   console.log("onClickCheckBox", JSON.stringify(item));// property
-  //   console.log("onClickCheckBox", JSON.stringify(employeeObj));
-  // }
-
   const onClickCheckBoxForEmployee = (itemForAddEmplyee) => {
     const wasChecked = isAssetChecked(itemForAddEmplyee); // Check the current state
     console.log("Checkbox was", wasChecked ? "selected" : "unselected");
@@ -278,13 +273,7 @@ const Card = props => {
 
   const toggleSelection = (employeeObj, itemForAddEmplyee) => {
     // console.log("Checking if asset is assigned:", JSON.stringify(item));
-    console.log("Employee Object:", JSON.stringify(employeeObj));
-    // itemForAddEmplyee.assigned_to_employee
-
-    // // Check if the assigned_to_employee array exists and contains the employee ID
-    // if (item.assigned_to_employee && Array.isArray(item.assigned_to_employee)) {
-    //   return item.assigned_to_employee.includes(employeeObj.id);
-    // }
+    // console.log("Employee Object:", JSON.stringify(employeeObj));
 
     const list = itemForAddEmplyee.assigned_to_employee;
     const id = employeeObj.id;

@@ -53,7 +53,9 @@ const Card = props => {
     displayChat,
     deleteMe,
     displayMatchCount = true,
-    displayMatchPercent = false
+    displayMatchPercent = false,
+    displayCheckBoxForEmployee = false,
+    employeeObj = null,
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -63,6 +65,7 @@ const Card = props => {
   const [modalVisible, setModalVisible] = useState(false);
   const [index, setIndex] = React.useState(null);
   const [chatModalVisible, setChatModalVisible] = useState(false);
+  const [refresh, setRefresh] = useState(false); // Add a state to trigger re-render
   // const [text, onChangeText] = React.useState("I have customer for this property. Please call me.");
 
   const gotoEmployeeList = itemForAddEmplyee => {
@@ -199,6 +202,173 @@ const Card = props => {
     // outputRange: ["250%", "100%"]
     outputRange: [Sliding_Drawer_Width - 33, -15]
   });
+
+
+  const isAssetChecked = (item) => {
+    // console.log("Checking if asset is assigned:", JSON.stringify(item));
+    console.log("Employee Object:", JSON.stringify(employeeObj));
+
+    // Check if the assigned_to_employee array exists and contains the employee ID
+    if (item.assigned_to_employee && Array.isArray(item.assigned_to_employee)) {
+      return item.assigned_to_employee.includes(employeeObj.id);
+    }
+
+    // If assigned_to_employee does not exist or is not an array, return false
+    return false;
+  };
+
+  const onClickCheckBoxForEmployee = (itemForAddEmplyee) => {
+    const wasChecked = isAssetChecked(itemForAddEmplyee); // Check the current state
+    console.log("Checkbox was", wasChecked ? "selected" : "unselected");
+    console.log("onClickCheckBox", JSON.stringify(itemForAddEmplyee));// property
+    console.log("onClickCheckBox", JSON.stringify(employeeObj));
+
+    const item = employeeObj;
+
+    let operation = "add";
+    if (wasChecked) {
+      operation = "remove";
+    }
+
+
+
+    const {
+      assigned_residential_rent_properties,
+      assigned_residential_sell_properties,
+      assigned_commercial_rent_properties,
+      assigned_commercial_sell_properties,
+      assigned_residential_rent_customers,
+      assigned_residential_buy_customers,
+      assigned_commercial_rent_customers,
+      assigned_commercial_buy_customers,
+    } = item;
+
+    let isProperty = false;
+    let isCustomer = false;
+    if (!itemForAddEmplyee || !itemForAddEmplyee.property_id) {
+      // isProperty = false;
+      isCustomer = true;
+    } else if (!itemForAddEmplyee || !itemForAddEmplyee.customer_id) {
+      isProperty = true;
+      // isCustomer = false;
+    }
+
+    let isForRent = false;
+    let isForSell = false;
+    let isCommercial = false;
+    let isResidential = false;
+
+    if (isProperty) {
+      isForRent = itemForAddEmplyee.property_for === "Rent";
+      isForSell = itemForAddEmplyee.property_for === "Sell" || itemForAddEmplyee.property_for === "Buy";
+
+      isCommercial = itemForAddEmplyee.property_type === "Commercial";
+      isResidential = itemForAddEmplyee.property_type === "Residential";
+
+      if (isResidential && isForRent) {
+        toggleSelection(employeeObj, itemForAddEmplyee);
+      } else if (isResidential && isForSell) {
+        toggleSelection(employeeObj, itemForAddEmplyee);
+      } else if (isCommercial && isForRent) {
+        toggleSelection(employeeObj, itemForAddEmplyee);
+      } else if (isCommercial && isForSell) {
+        toggleSelection(employeeObj, itemForAddEmplyee);
+      }
+    } else if (isCustomer) {
+      isForRent = itemForAddEmplyee.customer_locality.property_for === "Rent";
+      isForSell = itemForAddEmplyee.customer_locality.property_for === "Sell" || itemForAddEmplyee.customer_locality.property_for === "Buy";
+
+      isCommercial = itemForAddEmplyee.customer_locality.property_type === "Commercial";
+      isResidential = itemForAddEmplyee.customer_locality.property_type === "Residential";
+
+      if (isResidential && isForRent) {
+        toggleSelection(employeeObj, itemForAddEmplyee);
+      } else if (isResidential && isForSell) {
+        toggleSelection(employeeObj, itemForAddEmplyee);
+      } else if (isCommercial && isForRent) {
+        toggleSelection(employeeObj, itemForAddEmplyee);
+      } else if (isCommercial && isForSell) {
+        toggleSelection(employeeObj, itemForAddEmplyee);
+      }
+    }
+    //whatToUpdateData: will be used to add employee to property or customer assigned list
+    const whatToUpdateData = {
+      isProperty: isProperty,
+      isCustomer: isCustomer,
+      isForRent: isForRent,
+      isForSell: isForSell,
+      isCommercial: isCommercial,
+      isResidential: isResidential,
+      customer_id: itemForAddEmplyee.customer_id || null,
+      property_id: itemForAddEmplyee.property_id || null,
+    }
+    const isUpdated = updatePropertiesForEmployee(item, whatToUpdateData, operation);
+    if (!isUpdated) {
+      toggleSelection(assigned_residential_rent_properties, itemForAddEmplyee.property_id);
+      itemForAddEmplyee.assigned_to_employee.push(item.id);
+      itemForAddEmplyee.assigned_to_employee_name.push(item.name);
+    }
+
+    setRefresh(!refresh); // Trigger re-render
+  };
+
+  const toggleSelection = (employeeObj, itemForAddEmplyee) => {
+    // console.log("Checking if asset is assigned:", JSON.stringify(item));
+    // console.log("Employee Object:", JSON.stringify(employeeObj));
+
+    const list = itemForAddEmplyee.assigned_to_employee;
+    const id = employeeObj.id;
+    const index = list.indexOf(id);
+    if (index > -1) {
+      // If the item is already selected, remove it
+      list.splice(index, 1);
+    } else {
+      // If the item is not selected, add it
+      list.push(id);
+    }
+  };
+
+
+  const updatePropertiesForEmployee = async (item, whatToUpdateData, operation) => {
+    // setLoading(true);
+    const userObj = {
+      req_user_id: props.userDetails.works_for,
+      employee_id: item.id,
+      employee_name: item.name,
+      operation: operation,
+      what_to_update_data: whatToUpdateData,
+      user_data: item,
+    }
+    try {
+      axios(SERVER_URL + "/updatePropertiesForEmployee", {
+        method: "post",
+        headers: {
+          "Content-type": "Application/json",
+          Accept: "Application/json"
+        },
+        data: userObj
+      }).then(
+        response => {
+          if (response.data === "success") {
+            console.log("Properties updated successfully");
+            return true;
+          } else {
+            return false;
+          }
+        },
+        error => {
+          // console.log(error);
+          // setLoading(false);
+          console.log(error);
+        }
+      );
+    } catch (error) {
+      console.error('Failed to fetch user:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   const onClickCheckBox = item => {
     // // console.log("onClickCheckBox", JSON.stringify(item));
@@ -385,6 +555,32 @@ const Card = props => {
               />
             </View>
           ) : null}
+
+          {displayCheckBoxForEmployee ? (
+            <View
+              style={{
+                // backgroundColor: "rgba(108, 198, 114, 0.2)",
+                justifyContent: "center"
+              }}
+            >
+              <CheckBox
+                onPress={() => onClickCheckBoxForEmployee(item)}
+                center
+                // title="Select"
+                checked={isAssetChecked(item)}
+                containerStyle={{
+                  // backgroundColor: "rgba(108, 198, 114, 0.3)",
+                  borderWidth: 0,
+                  margin: 0,
+                  // padding: 30,
+                  borderRadius: 10
+                  // width: 60
+                }}
+              />
+            </View>
+          ) : null}
+
+
           {displayChat ? (
             <TouchableOpacity
               onPress={() => onChat(item)}
