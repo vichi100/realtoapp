@@ -27,6 +27,7 @@ import { getBottomSpace } from "react-native-iphone-x-helper";
 
 import { setEmployeeList } from "../../reducers/Action";
 import EmployeeCard from "../employee/EmployeeCard";
+import { useFocusEffect } from '@react-navigation/native';
 
 const EmployeeList = props => {
   const { navigation } = props;
@@ -34,6 +35,22 @@ const EmployeeList = props => {
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+
+
+  useFocusEffect(
+      useCallback(() => {
+        // This function will be called when Screen A comes into focus
+        console.log("useFocusEffect")
+        getListing();
+  
+        // Optional: Return a cleanup function if needed
+        return () => {
+          // This function will be called when Screen A loses focus
+          // You can perform cleanup here if necessary
+        };
+      }, []) // Re-run the effect if fetchData function changes (unlikely here)
+    );
+
 
   useEffect(() => {
     if (

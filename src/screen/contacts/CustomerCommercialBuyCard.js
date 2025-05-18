@@ -54,7 +54,9 @@ const CustomerCommercialBuyCard = props => {
     deleteMe,
     navigatedFrom = "none",
     displayMatchCount = true,
-    displayMatchPercent = false
+    displayMatchPercent = false,
+    displayCheckBoxForEmployee = false,
+    employeeObj = null,
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;

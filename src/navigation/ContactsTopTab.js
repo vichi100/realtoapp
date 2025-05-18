@@ -10,7 +10,10 @@ import ListingCommercial from "../screen/ListingCommercial";
 
 const Tab = createMaterialTopTabNavigator();
 
-const ContactsTopTab = () => {
+const ContactsTopTab = ({ route }) => {
+
+  const { displayCheckBox, disableDrawer, displayCheckBoxForEmployee, item} = route.params || {};
+
   return (
     <View style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
       {/* <View style={styles.searchBarContainer}>
@@ -58,6 +61,12 @@ const ContactsTopTab = () => {
         <Tab.Screen
           name="Residential"
           component={ContactsResidential}
+          initialParams={{
+            displayCheckBox: displayCheckBox, // Pass your argument here
+            disableDrawer: disableDrawer,
+            displayCheckBoxForEmployee: displayCheckBoxForEmployee,
+            employeeObj: item,
+          }}
           options={{
             tabBarLabel: () => (
               <View style={{ flexDirection: "row" }}>
@@ -87,6 +96,12 @@ const ContactsTopTab = () => {
         <Tab.Screen
           name="Commercial"
           component={CustomersCommercial}
+          initialParams={{
+            displayCheckBox: displayCheckBox, // Pass your argument here
+            disableDrawer: disableDrawer,
+            displayCheckBoxForEmployee: displayCheckBoxForEmployee,
+            employeeObj: item,
+          }}
           options={{
             tabBarLabel: () => (
               <View style={{ flexDirection: "row" }}>

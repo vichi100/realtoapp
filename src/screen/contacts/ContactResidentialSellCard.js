@@ -53,7 +53,9 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
     deleteMe,
     navigatedFrom = "none",
     displayMatchCount = true,
-    displayMatchPercent = false
+    displayMatchPercent = false,
+    displayCheckBoxForEmployee = false,
+    employeeObj = null,
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;

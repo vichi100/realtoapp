@@ -165,8 +165,8 @@ const EmployeeCard = props => {
   const openCustomerList = item => {
     navigation.navigate("ContactsListing", {
       item: item,
-      displayMatchCount: false, 
-      displayMatchPercent: true
+      displayMatchCount: true, 
+      displayMatchPercent: false
     });
   };
 

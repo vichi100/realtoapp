@@ -101,8 +101,10 @@ const ProfileStackScreens = ({ route }) => {
         component={ContactsTopTab}
         options={{ title: "Customers", headerShown: true, tabBarLabel: "Home!" }}
         initialParams={{
-          displayCheckBox: true, // Pass your argument here
+          displayCheckBox: false, // Pass your argument here
           disableDrawer: true,
+          displayCheckBoxForEmployee: true,
+          // employeeObj: item,
         }}
       // options={{ tabBarLabel: "Home!" }}
       />

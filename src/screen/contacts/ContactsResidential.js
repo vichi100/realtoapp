@@ -49,6 +49,7 @@ const sortByPostedDateArray = ["Recent First", "Oldest Fist"];
 
 const ContactsResidential = props => {
   const { navigation } = props;
+  const { displayCheckBox, disableDrawer, displayCheckBoxForEmployee, employeeObj, } = props.route.params || {};
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [search, setSearch] = useState("");
@@ -445,13 +446,15 @@ const ContactsResidential = props => {
       if (item.customer_locality.property_for === "Rent") {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <ContactResidentialRentCard navigation={navigation} item={item} deleteMe={deleteMe}/>
+            <ContactResidentialRentCard navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox} 
+            disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj}/>
           </TouchableOpacity>
         );
       } else if (item.customer_locality.property_for === "Buy") {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Buy")}>
-            <ContactResidentialSellCard navigation={navigation} item={item} deleteMe={deleteMe}/>
+            <ContactResidentialSellCard navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox} 
+            disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj}/>
           </TouchableOpacity>
         );
       }
