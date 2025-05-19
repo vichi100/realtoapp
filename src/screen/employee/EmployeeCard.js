@@ -629,7 +629,9 @@ const EmployeeCard = props => {
               <Text style={[styles.subDetailsValue, { marginTop: 0 }]}>
                 Properties
               </Text>
-              <Text style={[styles.subDetailsTitle]}>5</Text>
+              <Text style={[styles.subDetailsTitle]}>{item.assigned_residential_rent_properties.length
+              +item.assigned_residential_sell_properties.length+item.assigned_commercial_rent_properties.length
+              +item.assigned_commercial_sell_properties.length}</Text>
             </View>
             <TouchableOpacity
               // disabled={Sliding_Drawer_Toggle}
@@ -667,7 +669,9 @@ const EmployeeCard = props => {
               <Text style={[styles.subDetailsValue]}>
                 Customers
               </Text>
-              <Text style={[styles.subDetailsTitle]}>3</Text>
+              <Text style={[styles.subDetailsTitle]}>{item.assigned_residential_rent_customers.length
+              +item.assigned_residential_buy_customers.length+item.assigned_commercial_rent_customers.length
+              +item.assigned_commercial_buy_customers.length}</Text>
             </View>
           </View>
         </View>

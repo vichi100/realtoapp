@@ -67,7 +67,7 @@ const ContactResidentialRentCard = props => {
   const [index, setIndex] = React.useState(null);
   const [chatModalVisible, setChatModalVisible] = useState(false);
   const [refresh, setRefresh] = useState(false); // Add a state to trigger re-render
-  
+
 
   const gotoEmployeeList = itemForAddEmplyee => {
     console.log("gotoEmployeeList: ", itemForAddEmplyee);
@@ -552,23 +552,23 @@ const ContactResidentialRentCard = props => {
             ) : null}
 
             {displayCheckBoxForEmployee ? (
-                        <View
-                          style={{
-                            justifyContent: "center",
-                          }}
-                        >
-                          <CheckBox
-                            onPress={() => onClickCheckBoxForEmployee(item)}
-                            center
-                            checked={isAssetChecked(item)} // Ensure this is tied to the isAssetChecked function
-                            containerStyle={{
-                              borderWidth: 0,
-                              margin: 0,
-                              borderRadius: 10,
-                            }}
-                          />
-                        </View>
-                      ) : null}
+              <View
+                style={{
+                  justifyContent: "center",
+                }}
+              >
+                <CheckBox
+                  onPress={() => onClickCheckBoxForEmployee(item)}
+                  center
+                  checked={isAssetChecked(item)} // Ensure this is tied to the isAssetChecked function
+                  containerStyle={{
+                    borderWidth: 0,
+                    margin: 0,
+                    borderRadius: 10,
+                  }}
+                />
+              </View>
+            ) : null}
 
 
             {displayChat ? (
@@ -666,14 +666,12 @@ const ContactResidentialRentCard = props => {
 
       <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: 10, marginLeft: 20 }}>
-          {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
           <Feather name="user-plus" size={20} color="black" />
-          {/* <FontAwesome5 name="user-minus" size={20} color="rgb(70, 69, 69)" />  */}
-          {/* <FontAwesome5 name="user-plus" size={20} color="rgb(111, 104, 104)" /> */}
-          <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>{Array.isArray(item.assigned_to_employee_name)
-            ? item.assigned_to_employee_name.join(", ")
-            : item.assigned_to_employee_name || "No employees assigned"}</Text>
-          {/* <SimpleLineIcons name="user-unfollow" size={20} color="black" /> */}
+          <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>
+            {Array.isArray(item.assigned_to_employee_name) && item.assigned_to_employee_name.length > 0
+              ? item.assigned_to_employee_name.join(", ")
+              : "No employees assigned"}
+          </Text>
         </View>
       </TouchableOpacity>
 
