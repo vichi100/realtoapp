@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   StyleSheet,
   View,
@@ -10,13 +10,15 @@ import {
   AsyncStorage,
   Modal,
   TouchableHighlight,
-  StatusBar
+  StatusBar,
+  ActivityIndicator
 } from "react-native";
 
 import { setUserDetails, setPropReminderList } from "../reducers/Action";
 import axios from "axios";
 import { connect } from "react-redux";
 import { SERVER_URL } from "../util/Constant";
+import { useFocusEffect } from '@react-navigation/native';
 
 // rezar
 // rezo
@@ -53,6 +55,24 @@ const chartWidth = Dimensions.get("window").width;
 const Home = props => {
   const { navigation } = props;
   const [modalVisible, setModalVisible] = useState(false);
+  const [listingData, setListingData] = useState(null); // for chart
+  const [isLoading, setIsLoading] = useState(true);
+
+  useFocusEffect(
+    useCallback(() => {
+      // This function will be called when Screen A comes into focus
+      console.log("useFocusEffect")
+      getTotalListingSummary();
+
+      // Optional: Return a cleanup function if needed
+      return () => {
+        // This function will be called when Screen A loses focus
+        // You can perform cleanup here if necessary
+      };
+    }, []) // Re-run the effect if fetchData function changes (unlikely here)
+  );
+
+
 
   useEffect(() => {
     console.log("home1: " + JSON.stringify(props.userDetails));
@@ -75,9 +95,10 @@ const Home = props => {
   }, []);
 
   const getTotalListingSummary = () => {
+    setIsLoading(true); // Set loading to true
     const agent = {
       req_user_id: props.userDetails.works_for,
-      agent_id: props.userDetails.works_for
+      agent_id: props.userDetails.id
     };
     axios(SERVER_URL + "/getTotalListingSummary", {
       method: "post",
@@ -89,10 +110,15 @@ const Home = props => {
     }).then(
       response => {
         if (response.data) {
+          console.log("getTotalListingSummary: " + JSON.stringify(response.data));
+          setListingData(response.data);
+          setIsLoading(false); // Set loading to false
+
         }
       },
       error => {
-        // console.log(error);
+        console.error(error);
+        setIsLoading(false); // Set loading to false
       }
     );
   };
@@ -135,8 +161,20 @@ const Home = props => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#ffffff", marginTop: StatusBar.currentHeight }}>
-      {/* <ScrollView> */}
+    isLoading ? <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(245,245,245, .4)'
+      }}
+    >
+      <ActivityIndicator animating size="large" color={'#000'} />
+      {/* <ActivityIndicator animating size="large" /> */}
+    </View> :
+
+      <View style={{ flex: 1, backgroundColor: "#ffffff", marginTop: StatusBar.currentHeight }}>
+        {/* <ScrollView> */}
         <View style={styles.container}>
           <View
             style={[
@@ -145,7 +183,7 @@ const Home = props => {
             ]}
           >
             <View style={styles.bar}>
-              <Text style={styles.barHeader}>Listing Summary</Text>
+              <Text style={styles.barHeader}>Residential Listing Summary</Text>
             </View>
             <View
               style={[
@@ -154,30 +192,34 @@ const Home = props => {
               ]}
             >
               <View style={styles.card}>
-                <Text style={styles.cardHeader1}>Residential</Text>
+                <View style={{ alignItems: "center", justifyContent: "center" }}>
+                  <Text style={[styles.cardHeader1, { textAlign: "center" }]}>Properties</Text>
+                </View>
                 <View style={styles.cardContent}>
                   <View style={styles.innerCard}>
-                    <Text>20</Text>
+                    <Text>{listingData?.residentialPropertyRentCount || 0}</Text>
                     <Text>Rent</Text>
                   </View>
                   <View style={styles.space} />
                   <View style={styles.innerCard}>
-                    <Text>10</Text>
+                    <Text>{listingData?.residentialPropertySellCount || 0}</Text>
                     <Text>Sell</Text>
                   </View>
                 </View>
               </View>
 
               <View style={styles.card}>
-                <Text style={styles.cardHeader2}>Commercial</Text>
+                <View style={{ alignItems: "center", justifyContent: "center" }}>
+                  <Text style={styles.cardHeader2}>Customers</Text>
+                </View>
                 <View style={styles.cardContent}>
                   <View style={styles.innerCard}>
-                    <Text>20</Text>
+                    <Text>{listingData.residentialPropertyCustomerRentCount}</Text>
                     <Text>Rent</Text>
                   </View>
                   <View style={styles.space} />
                   <View style={styles.innerCard}>
-                    <Text>10</Text>
+                    <Text>{listingData.residentialPropertyCustomerBuyCount}</Text>
                     <Text>Sell</Text>
                   </View>
                 </View>
@@ -186,8 +228,59 @@ const Home = props => {
           </View>
 
 
+          <View
+            style={[
+              styles.componentContainer,
+              { marginLeft: 10, marginRight: 10 }
+            ]}
+          >
+            <View style={styles.bar}>
+              <Text style={styles.barHeader}>Commercial Listing Summary</Text>
+            </View>
+            <View
+              style={[
+                styles.cardContainer,
+                { marginLeft: 10, marginRight: 10 }
+              ]}
+            >
+              <View style={styles.card}>
+              <View style={{ alignItems: "center", justifyContent: "center" }}>
+                <Text style={styles.cardHeader1}>Properties</Text>
+              </View>
+                <View style={styles.cardContent}>
+                  <View style={styles.innerCard}>
+                    <Text>{listingData.commercialPropertyRentCount}</Text>
+                    <Text>Rent</Text>
+                  </View>
+                  <View style={styles.space} />
+                  <View style={styles.innerCard}>
+                    <Text>{listingData.commercialPropertySellCount}</Text>
+                    <Text>Sell</Text>
+                  </View>
+                </View>
+              </View>
 
-          <Text
+              <View style={styles.card}>
+              <View style={{ alignItems: "center", justifyContent: "center" }}>
+                <Text style={styles.cardHeader2}>Customers</Text>
+              </View>
+                <View style={styles.cardContent}>
+                  <View style={styles.innerCard}>
+                    <Text>{listingData.commercialPropertyCustomerRentCount}</Text>
+                    <Text>Rent</Text>
+                  </View>
+                  <View style={styles.space} />
+                  <View style={styles.innerCard}>
+                    <Text>{listingData.commercialPropertyCustomerBuyCount}</Text>
+                    <Text>Sell</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+
+
+          {/* <Text
             style={{
               fontSize: 16,
               fontWeight: "500",
@@ -209,7 +302,7 @@ const Home = props => {
             }}
           >
             Deal Summary / Months
-          </Text>
+          </Text> */}
         </View>
         <Modal
           animationType="slide"
@@ -262,8 +355,9 @@ const Home = props => {
             </View>
           </View>
         </Modal>
-      {/* </ScrollView> */}
-    </View>
+        {/* </ScrollView> */}
+      </View>
+
   );
 };
 
@@ -349,6 +443,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     alignContent: "center",
+    justifyContent: "center",
     textAlign: "right"
   },
   text: {

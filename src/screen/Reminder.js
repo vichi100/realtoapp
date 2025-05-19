@@ -109,8 +109,9 @@ const getReminderListById = (customerData) =>{
 }
 
   const getReminderList = () =>{
-    const agentId = {
-      req_user_id: props.userDetails.works_for,
+    const userData = {
+      req_user_id: props.userDetails.id,
+      agent_id: props.userDetails.works_for
     };
     axios
       .post(
@@ -118,7 +119,7 @@ const getReminderListById = (customerData) =>{
         // SERVER_URL + "/addNewResidentialRentProperty",
         // await AsyncStorage.getItem("property")
         // JSON.stringify({ vichi: "vchi" })
-        agentId
+        userData
       )
       .then(
         response => {

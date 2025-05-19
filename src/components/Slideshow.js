@@ -219,12 +219,12 @@ const Slideshow = (props) => {
           );
           const imageComponent = (
             <View key={index}>
-              <View style={{position:"absolute", top:5, right:15, zIndex:1000, justifyContent:"center", alignItems:"center", shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.8, shadowRadius: 2 }}>
-                <TouchableHighlight onPress={() => {
+              <View style={{ position: "absolute", top: 5, right: 15, zIndex: 1000, justifyContent: "center", alignItems: "center", shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.8, shadowRadius: 2 }}>
+                {/* <TouchableHighlight onPress={() => {
                   console.log("Image liked")
                 }}>
-              <SimpleLineIcons name="user-follow" color={"rgb(245, 239, 239)"} size={25} />
-                </TouchableHighlight>
+                  <SimpleLineIcons name="user-follow" color={"rgb(245, 239, 239)"} size={25} />
+                </TouchableHighlight> */}
               </View>
               <Image
                 source={imageObject}

@@ -51,7 +51,8 @@ const PropDetailsFromListingForSell = props => {
   const getPropReminders = () => {
     // console.log("item getPropReminders: " + propertyIdX);
     const propertyId = {
-      req_user_id: props.userDetails.works_for,
+      req_user_id: props.userDetails.id,
+      agent_id: props.userDetails.works_for,
       property_id: item.property_id
     };
     setLoading(true);

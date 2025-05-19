@@ -223,8 +223,8 @@ const Meeting = props => {
       // console.log("item: " + JSON.stringify(item));
 
       const reminderDetails = {
-        req_user_id: props.userDetails.works_for,
-        meeting_creator_id: props.userDetails.works_for,
+        req_user_id: props.userDetails.works_for,// agent_id
+        meeting_creator_id: props.userDetails.id,// user id
         agent_id_of_client: props.customerDetailsForMeeting.agent_id,
         category: category,
         category_ids: [item.property_id],
@@ -272,7 +272,8 @@ const Meeting = props => {
   const getPropReminders = () => {
     // console.log("item getPropReminders: " + propertyIdX);
     const propertyId = {
-      req_user_id: props.userDetails.works_for,
+      req_user_id: props.userDetails.id,
+      agent_id: props.userDetails.works_for,
       property_id: propertyIdX
     };
     setLoading(true);
