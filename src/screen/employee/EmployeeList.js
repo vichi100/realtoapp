@@ -35,6 +35,7 @@ const EmployeeList = props => {
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false); // Add a state to trigger re-render
 
 
   useFocusEffect(
@@ -102,8 +103,37 @@ const EmployeeList = props => {
     }
   };
 
-  const deleteMe = (itemToDelete) => {
-    setData((data) => data.filter((item) => item.customer_id !== itemToDelete.customer_id));
+  // delete employee
+  const deleteMe = (empObj) => {
+    const user = {
+      req_user_id: props.userDetails.id,
+      agent_id: props.userDetails.works_for,
+      employee_id: empObj.id
+    };
+    axios(SERVER_URL + "/deleteEmployee", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: user
+    }).then(
+      response => {
+        // console.log(response.data);
+        if (response.data === "success") {
+          const x = props.employeeList.filter(function (el) {
+            return el.id !== empObj.id;
+          });
+          props.setEmployeeList([...x]);
+        }
+        // setData(response.data);
+      },
+      error => {
+        // console.log(error);
+      }
+    );
+    setData((data) => data.filter((item) => item.id !== empObj.id));
+    setRefresh(!refresh); // Trigger re-render
   }
 
   const ItemView = ({ item }) => (

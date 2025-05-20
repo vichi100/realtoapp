@@ -38,7 +38,7 @@ import axios from "axios";
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
 
-const Sliding_Drawer_Width = 195;
+const Sliding_Drawer_Width = 140;
 const width = Dimensions.get("window").width;
 
 const EmployeeCard = props => {
@@ -74,7 +74,16 @@ const EmployeeCard = props => {
     navigation.navigate('MatchedProperties', { matchedCustomerItem: matchedCustomerItem },);
   }
 
-
+  const {
+    assigned_residential_rent_properties = [],
+    assigned_residential_sell_properties = [],
+    assigned_commercial_rent_properties = [],
+    assigned_commercial_sell_properties = [],
+    assigned_residential_rent_customers = [],
+    assigned_residential_buy_customers = [],
+    assigned_commercial_rent_customers = [],
+    assigned_commercial_buy_customers = [],
+  } = item || {}; // Ensure item is not null or undefined
 
   // check if item type is customer or property
   // check it item is for rent or sell/Buy
@@ -158,14 +167,14 @@ const EmployeeCard = props => {
   const openPropertiesList = item => {
     navigation.navigate("PropertyListing", {
       item: item,
-      displayMatchCount: true, 
+      displayMatchCount: true,
       displayMatchPercent: false
     });
   };
   const openCustomerList = item => {
     navigation.navigate("ContactsListing", {
       item: item,
-      displayMatchCount: true, 
+      displayMatchCount: true,
       displayMatchPercent: false
     });
   };
@@ -579,7 +588,7 @@ const EmployeeCard = props => {
               >
                 <Ionicons name="share-social" color={"#ffffff"} size={30} />
               </TouchableOpacity> */}
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => onClickMeeting(item)}
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
               >
@@ -588,7 +597,7 @@ const EmployeeCard = props => {
                   color={"#ffffff"}
                   size={30}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TouchableOpacity
                 onPress={() => makeCall(item)}
                 style={{ padding: 15, backgroundColor: "#00bfa5" }}
@@ -630,8 +639,8 @@ const EmployeeCard = props => {
                 Properties
               </Text>
               <Text style={[styles.subDetailsTitle]}>{item.assigned_residential_rent_properties.length
-              +item.assigned_residential_sell_properties.length+item.assigned_commercial_rent_properties.length
-              +item.assigned_commercial_sell_properties.length}</Text>
+                + item.assigned_residential_sell_properties.length + item.assigned_commercial_rent_properties.length
+                + item.assigned_commercial_sell_properties.length}</Text>
             </View>
             <TouchableOpacity
               // disabled={Sliding_Drawer_Toggle}
@@ -670,8 +679,8 @@ const EmployeeCard = props => {
                 Customers
               </Text>
               <Text style={[styles.subDetailsTitle]}>{item.assigned_residential_rent_customers.length
-              +item.assigned_residential_buy_customers.length+item.assigned_commercial_rent_customers.length
-              +item.assigned_commercial_buy_customers.length}</Text>
+                + item.assigned_residential_buy_customers.length + item.assigned_commercial_rent_customers.length
+                + item.assigned_commercial_buy_customers.length}</Text>
             </View>
           </View>
         </View>
@@ -689,7 +698,10 @@ const EmployeeCard = props => {
         <View style={styles.centeredView1}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>
-              Did you win deal for this property?
+              Sure want to delete this employee?
+            </Text>
+            <Text style={styles.modalTextSub}>
+              This action can not be undone and remove this employee reference from every where.
             </Text>
             <ButtonGroup
               selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
@@ -985,7 +997,14 @@ const styles = StyleSheet.create({
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
+    textAlign: "center",
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  modalTextSub: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 14,
   },
   drawer: {
     position: "absolute",
