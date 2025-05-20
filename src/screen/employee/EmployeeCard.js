@@ -52,7 +52,7 @@ const EmployeeCard = props => {
     navigatedFrom = "none",
     displayMatchCount = true,
     displayMatchPercent = false,
-    itemForAddEmplyee = null,
+    itemForAddEmplyee = null,// this will pass value from property or customer card
   } = props;
   // console.log("ContactResidentialRentCard :    ", item);
   let animatedValue = new Animated.Value(0);
@@ -125,21 +125,37 @@ const EmployeeCard = props => {
     // Check if the item ID exists in the appropriate assigned list
     if (isProperty) {
       // Determine if the item is for rent or sell/buy
-      isForRent = itemForAddEmplyee.property_for === "Rent";
-      isForSell = itemForAddEmplyee.property_for === "Sell" || itemForAddEmplyee.property_for === "Buy";
+      if (!itemForAddEmplyee || itemForAddEmplyee.property_for === undefined || itemForAddEmplyee.property_for === null) {
+        isForRent = false;
+      } else {
+        isForRent = itemForAddEmplyee.property_for === "Rent";
+      }
+      if (!itemForAddEmplyee || itemForAddEmplyee.property_for === undefined || itemForAddEmplyee.property_for === null) {
+        isForSell = false;
+      } else {
+        isForSell = itemForAddEmplyee.property_for === "Sell" || itemForAddEmplyee.property_for === "Buy";
+      }
 
       // Determine if the item is commercial or residential
-      isCommercial = itemForAddEmplyee.property_type === "Commercial";
-      isResidential = itemForAddEmplyee.property_type === "Residential";
+      if (!itemForAddEmplyee || itemForAddEmplyee.property_type === undefined || itemForAddEmplyee.property_type === null) {
+        isCommercial = false;
+      } else {
+        isCommercial = itemForAddEmplyee.property_type === "Commercial";
+      }
+      if (!itemForAddEmplyee || itemForAddEmplyee.property_type === undefined || itemForAddEmplyee.property_type === null) {
+        isResidential = false;
+      } else {
+        isResidential = itemForAddEmplyee.property_type === "Residential";
+      }
 
       if (isResidential && isForRent) {
-        return assigned_residential_rent_properties.includes(itemForAddEmplyee.property_id);
+        return Array.isArray(assigned_residential_rent_properties) && assigned_residential_rent_properties.includes(itemForAddEmplyee.property_id);
       } else if (isResidential && isForSell) {
-        return assigned_residential_sell_properties && assigned_residential_sell_properties.includes(itemForAddEmplyee.property_id);
+        return Array.isArray(assigned_residential_sell_properties) && assigned_residential_sell_properties.includes(itemForAddEmplyee.property_id);
       } else if (isCommercial && isForRent) {
-        return assigned_commercial_rent_properties.includes(itemForAddEmplyee.property_id);
+        return Array.isArray(assigned_commercial_rent_properties) && assigned_commercial_rent_properties.includes(itemForAddEmplyee.property_id);
       } else if (isCommercial && isForSell) {
-        return assigned_commercial_sell_properties.includes(itemForAddEmplyee.property_id);
+        return Array.isArray(assigned_commercial_sell_properties) && assigned_commercial_sell_properties.includes(itemForAddEmplyee.property_id);
       }
     } else if (isCustomer) {
       // Determine if the item is for rent or sell/buy
@@ -150,13 +166,13 @@ const EmployeeCard = props => {
       isCommercial = itemForAddEmplyee.customer_locality.property_type === "Commercial";
       isResidential = itemForAddEmplyee.customer_locality.property_type === "Residential";
       if (isResidential && isForRent) {
-        return assigned_residential_rent_customers.includes(itemForAddEmplyee.customer_id);
+        return Array.isArray(assigned_residential_rent_customers) && assigned_residential_rent_customers.includes(itemForAddEmplyee.customer_id);
       } else if (isResidential && isForSell) {
-        return assigned_residential_buy_customers.includes(itemForAddEmplyee.customer_id);
+        return Array.isArray(assigned_residential_buy_customers) && assigned_residential_buy_customers.includes(itemForAddEmplyee.customer_id);
       } else if (isCommercial && isForRent) {
-        return assigned_commercial_rent_customers.includes(itemForAddEmplyee.customer_id);
+        return Array.isArray(assigned_commercial_rent_customers) && assigned_commercial_rent_customers.includes(itemForAddEmplyee.customer_id);
       } else if (isCommercial && isForSell) {
-        return assigned_commercial_buy_customers.includes(itemForAddEmplyee.customer_id);
+        return Array.isArray(assigned_commercial_buy_customers) && assigned_commercial_buy_customers.includes(itemForAddEmplyee.customer_id);
       }
     }
 
@@ -343,11 +359,27 @@ const EmployeeCard = props => {
     let isResidential = false;
 
     if (isProperty) {
-      isForRent = itemForAddEmplyee.property_for === "Rent";
-      isForSell = itemForAddEmplyee.property_for === "Sell" || itemForAddEmplyee.property_for === "Buy";
+      if (!itemForAddEmplyee || itemForAddEmplyee.property_for === undefined || itemForAddEmplyee.property_for === null) {
+        isForRent = false;
+      } else {
+        isForRent = itemForAddEmplyee.property_for === "Rent";
+      }
+      if (!itemForAddEmplyee || itemForAddEmplyee.property_for === undefined || itemForAddEmplyee.property_for === null) {
+        isForSell = false;
+      } else {
+        isForSell = itemForAddEmplyee.property_for === "Sell" || itemForAddEmplyee.property_for === "Buy";
+      }
 
-      isCommercial = itemForAddEmplyee.property_type === "Commercial";
-      isResidential = itemForAddEmplyee.property_type === "Residential";
+      if (!itemForAddEmplyee || itemForAddEmplyee.property_type === undefined || itemForAddEmplyee.property_type === null) {
+        isCommercial = false;
+      } else {
+        isCommercial = itemForAddEmplyee.property_type === "Commercial";
+      }
+      if (!itemForAddEmplyee || itemForAddEmplyee.property_type === undefined || itemForAddEmplyee.property_type === null) {
+        isResidential = false;
+      } else {
+        isResidential = itemForAddEmplyee.property_type === "Residential";
+      }
 
       if (isResidential && isForRent) {
         toggleSelection(assigned_residential_rent_properties, itemForAddEmplyee.property_id);
@@ -638,9 +670,9 @@ const EmployeeCard = props => {
               <Text style={[styles.subDetailsValue, { marginTop: 0 }]}>
                 Properties
               </Text>
-              <Text style={[styles.subDetailsTitle]}>{item.assigned_residential_rent_properties.length
-                + item.assigned_residential_sell_properties.length + item.assigned_commercial_rent_properties.length
-                + item.assigned_commercial_sell_properties.length}</Text>
+              <Text style={[styles.subDetailsTitle]}>{assigned_residential_rent_properties?.length
+                + assigned_residential_sell_properties?.length + assigned_commercial_rent_properties?.length
+                + assigned_commercial_sell_properties?.length}</Text>
             </View>
             <TouchableOpacity
               // disabled={Sliding_Drawer_Toggle}
@@ -678,9 +710,9 @@ const EmployeeCard = props => {
               <Text style={[styles.subDetailsValue]}>
                 Customers
               </Text>
-              <Text style={[styles.subDetailsTitle]}>{item.assigned_residential_rent_customers.length
-                + item.assigned_residential_buy_customers.length + item.assigned_commercial_rent_customers.length
-                + item.assigned_commercial_buy_customers.length}</Text>
+              <Text style={[styles.subDetailsTitle]}>{assigned_residential_rent_customers?.length
+                + assigned_residential_buy_customers?.length + assigned_commercial_rent_customers?.length
+                + assigned_commercial_buy_customers?.length}</Text>
             </View>
           </View>
         </View>

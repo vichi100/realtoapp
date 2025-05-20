@@ -76,7 +76,11 @@ const ManageEmployee = props => {
         if (response.data) {
           const x = [response.data, ...props.employeeList];
           props.setEmployeeList(x);
-          navigation.navigate("EmployeeList");
+          navigation.navigate("EmployeeList",{
+            itemForAddEmplyee: null,
+            disableDrawer: false,
+            displayCheckBox: false
+          });
         }
       },
       error => {
@@ -116,7 +120,7 @@ const ManageEmployee = props => {
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
         <ScrollView style={styles.container}>
           <View>
-            <Text style={{ marginTop: 10, marginBottom: 10, fontSize: 14 }}>
+            <Text style={{ marginTop: 10, marginBottom: 10, fontSize: 14, fontWeight: 500 }}>
               Add employees so they can have access/edit rights for your
               properties listing, you can any time change any employees rights
             </Text>

@@ -31,7 +31,11 @@ import { useFocusEffect } from '@react-navigation/native';
 
 const EmployeeList = props => {
   const { navigation } = props;
-  const { itemForAddEmplyee, disableDrawer, displayCheckBox } = props.route.params;
+  const { 
+    itemForAddEmplyee = null, // this will pass value from property or customer card
+    disableDrawer = false, 
+    displayCheckBox = false 
+  } = props.route.params || {}; // Add null check and default values
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
