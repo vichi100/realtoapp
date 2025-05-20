@@ -655,7 +655,7 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
         </Text>
       </View>
 
-      <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
+      {props.userDetails.works_for === props.userDetails.id && item.agent_id === props.userDetails.id && <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: 10, marginLeft: 20 }}>
           <Feather name="user-plus" size={20} color="black" />
           <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>
@@ -664,7 +664,7 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
               : "No employees assigned"}
           </Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity>}
 
       <View
         style={[

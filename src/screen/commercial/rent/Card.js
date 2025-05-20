@@ -503,7 +503,7 @@ const Card = props => {
                   {item.property_address.formatted_address}
                 </Text>
               </View>
-              <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
+              {props.userDetails.works_for === props.userDetails.id && item.agent_id === props.userDetails.id && <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginBottom: 10, marginTop: 0, marginLeft: 20 }}>
                   {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
                   <Feather name="user-plus" size={20} color="black" />
@@ -514,7 +514,7 @@ const Card = props => {
                     : item.assigned_to_employee_name || "No employees assigned"}</Text>
                   {/* <SimpleLineIcons name="user-unfollow" size={20} color="black" /> */}
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> }
 
             </View>
 

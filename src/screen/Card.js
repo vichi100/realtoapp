@@ -497,6 +497,7 @@ const Card = props => {
                 {/* </View> */}
               </>
             )}
+
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
               <View style={{
                 flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: 40, paddingRight: 20,
@@ -510,7 +511,7 @@ const Card = props => {
                   {item.property_address.formatted_address}
                 </Text>
               </View>
-              {props.userDetails.works_for === props.userDetails.id && <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
+              {props.userDetails.works_for === props.userDetails.id && item.agent_id === props.userDetails.id && <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginBottom: 10, marginTop: 0, marginLeft: 20 }}>
                   {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
                   <Feather name="user-plus" size={20} color="black" />
