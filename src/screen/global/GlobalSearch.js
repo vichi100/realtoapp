@@ -219,6 +219,11 @@ const GlobalSearch = props => {
     }).then(
       response => {
         console.log("response.data:      ", response.data);
+        response.data.map(item => {
+          item.image_urls.map(image => {
+            image.url = SERVER_URL + image.url
+          })
+        })
         setData(response.data);
         // props.setResidentialPropertyList(response.data);
         props.setGlobalSearchResult(response.data);
@@ -291,7 +296,7 @@ const GlobalSearch = props => {
     setPriceRangeCr(values); // Update the price range state
   }, []);
 
-  
+
 
 
 
@@ -605,18 +610,18 @@ const GlobalSearch = props => {
         <View style={[styles.header, { marginBottom: 20 }]}>
           <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>Price Range</Text>
         </View>
-        {purpose === "Rent" ?<Slider
+        {purpose === "Rent" ? <Slider
           min={10000}
           max={400000}
           // step={10000}
-          onSlide={handlePriceRangeChange} 
-        />: 
-        <SliderCr
-        min={1000000}
-        max={50000000}
-        onSlide={handlePriceRangeChangeCr} // Pass the memoized callback
-      />
-      }
+          onSlide={handlePriceRangeChange}
+        /> :
+          <SliderCr
+            min={1000000}
+            max={50000000}
+            onSlide={handlePriceRangeChangeCr} // Pass the memoized callback
+          />
+        }
 
         <View style={styles.header}>
           <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>Required with in</Text>
