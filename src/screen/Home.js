@@ -75,6 +75,11 @@ const Home = props => {
 
 
   useEffect(() => {
+    if (props.userDetails === null) {
+      setModalVisible(false);
+      setListingData([]);
+      return;
+    }
     console.log("home1: " + JSON.stringify(props.userDetails));
     if (
       props.userDetails.user_status === "suspend" &&
@@ -95,6 +100,11 @@ const Home = props => {
   }, []);
 
   const getTotalListingSummary = () => {
+    if (props.userDetails === null) {
+      setIsLoading(false); // Set loading to false
+      setListingData([]);
+      return;
+    }
     setIsLoading(true); // Set loading to true
     const agent = {
       req_user_id: props.userDetails.works_for,

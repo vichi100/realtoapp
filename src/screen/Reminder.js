@@ -21,11 +21,11 @@ import { SERVER_URL } from "../util/Constant";
 import { useIsFocused } from '@react-navigation/native';
 
 const Reminder = props => {
-  const { 
+  const {
     navigation,
     customerData,
     isSpecificRemider = false,
-   } = props;
+  } = props;
   const [reminderList, setReminderList] = useState([]);
   const [futureReminderList, setFutureReminderList] = useState([]);
   const [pastReminderList, setPastReminderList] = useState([]);
@@ -43,72 +43,79 @@ const Reminder = props => {
     // }
     setLoading(true);
 
-    if(customerData != null ){
+    if (customerData != null) {
       getReminderListById(customerData)
 
-    }else if(!isSpecificRemider){
+    } else if (!isSpecificRemider) {
 
       getReminderList();
 
     }
     setLoading(false);
 
-    
+
   }, [isFocused]);
 
-const getReminderListById = (customerData) =>{
-  const customerDatax = {
-    req_user_id: props.userDetails.works_for,
-    customer_id: customerData.customer_id,
-    property_type: customerData.customer_locality.property_type,// Residential, commercial
-    property_for: customerData.customer_locality.property_for,// Rent, sell
+  const getReminderListById = (customerData) => {
+    const customerDatax = {
+      req_user_id: props.userDetails.works_for,
+      customer_id: customerData.customer_id,
+      property_type: customerData.customer_locality.property_type,// Residential, commercial
+      property_for: customerData.customer_locality.property_for,// Rent, sell
 
-  };
-  axios
-    .post(
-      SERVER_URL + "/getReminderListByCustomerId",
-      // SERVER_URL + "/addNewResidentialRentProperty",
-      // await AsyncStorage.getItem("property")
-      // JSON.stringify({ vichi: "vchi" })
-      customerDatax
-    )
-    .then(
-      response => {
-        const dataArr = response.data;
-        const future = [];
-        const past = [];
-        for (const value of dataArr) {
-          console.log(value);
-          const todayDate = new Date();
-          const meetingDate = new Date(value.meeting_date.toString());
-          if (todayDate < meetingDate) {
-            // console.log("date1 is earlier than date2");
-            future.push(value);
-          } else if (todayDate > meetingDate) {
-            // console.log("date1 is later than date2");
-            past.push(value);
-          } else {
-            // console.log("Both dates are equal");
-            future.push(value);
+    };
+    axios
+      .post(
+        SERVER_URL + "/getReminderListByCustomerId",
+        // SERVER_URL + "/addNewResidentialRentProperty",
+        // await AsyncStorage.getItem("property")
+        // JSON.stringify({ vichi: "vchi" })
+        customerDatax
+      )
+      .then(
+        response => {
+          const dataArr = response.data;
+          const future = [];
+          const past = [];
+          for (const value of dataArr) {
+            console.log(value);
+            const todayDate = new Date();
+            const meetingDate = new Date(value.meeting_date.toString());
+            if (todayDate < meetingDate) {
+              // console.log("date1 is earlier than date2");
+              future.push(value);
+            } else if (todayDate > meetingDate) {
+              // console.log("date1 is later than date2");
+              past.push(value);
+            } else {
+              // console.log("Both dates are equal");
+              future.push(value);
+            }
+
           }
+          // console.log("getReminderList:   ", response.data);
+          setFutureReminderList(future);
+          setPastReminderList(past);
+          setReminderList(response.data);
+          setLoading(false);
+          // navigation.navigate("CardDetails");
+        },
+        error => {
+          setLoading(false);
+          console.log(error);
 
         }
-        // console.log("getReminderList:   ", response.data);
-        setFutureReminderList(future);
-        setPastReminderList(past);
-        setReminderList(response.data);
-        setLoading(false);
-        // navigation.navigate("CardDetails");
-      },
-      error => {
-        setLoading(false);
-        console.log(error);
+      );
+  }
 
-      }
-    );
-}
+  const getReminderList = () => {
+    if (props.userDetails === null) {
+      setFutureReminderList([]);
+      setPastReminderList([]);
+      setReminderList([]);
+      return;
+    }
 
-  const getReminderList = () =>{
     const userData = {
       req_user_id: props.userDetails.id,
       agent_id: props.userDetails.works_for

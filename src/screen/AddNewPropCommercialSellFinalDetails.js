@@ -5,7 +5,8 @@ import {
   Image,
   Text,
   ScrollView,
-  AsyncStorage
+  Modal,
+  TouchableHighlight
 } from "react-native";
 import Slideshow from "../components/Slideshow";
 import Button from "../components/Button";
@@ -25,6 +26,7 @@ const AddNewPropCommercialSellFinalDetails = props => {
   const [bhk, setBHK] = useState(null);
   const [possessionDate, setPossessionDate] = useState(null);
   const [loading, setLoading] = useState(false);
+   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     getPropFinalDetails();
@@ -68,8 +70,21 @@ const AddNewPropCommercialSellFinalDetails = props => {
     return [date.getFullYear(), mnth, day].join("-");
   };
 
+  const login = async () => {
+    navigation.navigate("Login");
+    setModalVisible(false);
+  }
+
   const send = async () => {
+    if (props.userDetails === null) {
+      // console.log("You are not logged in, please login");
+      // setErrorMessage("You are not logged in, please login");
+      // setIsVisible(true);
+      setModalVisible(true);
+      return;
+    }
     setLoading(true)
+    propertyFinalDetails.agent_id = props.userDetails.works_for;
     const data = new FormData();
     propertyFinalDetails.image_urls.forEach((element, i) => {
       const newFile = {
@@ -270,6 +285,57 @@ const AddNewPropCommercialSellFinalDetails = props => {
         <Button title="ADD" onPress={() => send()} />
       </View>
       <ModalActivityIndicator visible={loading} size='large' color='#A9A9A9' />
+
+      <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                // Alert.alert("Modal has been closed.");
+                setModalVisible(false);
+              }}
+            >
+              <View style={styles.centeredView1}>
+                <View style={styles.modalView}>
+                  <Text style={styles.modalText}>
+                    You are not logged in, please login.
+                  </Text>
+      
+      
+                  <View
+                    style={{
+                      position: "absolute",
+                      flexDirection: "row",
+                      right: 0,
+                      bottom: 0,
+                      marginTop: 20,
+                      marginBottom: 20,
+                      padding: 20
+                      // justifyContent: "flex-end"
+                    }}
+                  >
+                    <TouchableHighlight
+                      style={{ ...styles.cancelButton }}
+                      onPress={() => {
+                        setModalVisible(!modalVisible);
+                      }}
+                    >
+                      <Text style={styles.textStyle}>Cancel</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                      style={{ ...styles.applyButton }}
+                      onPress={() => {
+                        login();
+                        setModalVisible(!modalVisible);
+                      }}
+                    >
+                      <Text style={styles.textStyle}>Login</Text>
+                    </TouchableHighlight>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+
     </ScrollView>
   ) : null;
 };
@@ -381,7 +447,62 @@ const styles = StyleSheet.create({
   ownerDetails: {
     paddingTop: 10,
     paddingBottom: 10
-  }
+  },
+  centeredView1: {
+    flex: 1,
+    justifyContent: "center",
+    alignContent: "center",
+    marginTop: 22,
+    marginBottom: 20
+  },
+  modalView: {
+    margin: 20,
+    height: 150,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  applyButton: {
+    // backgroundColor: "#F194FF",
+    // width: 150,
+    // textAlign: "center",
+    // borderRadius: 20,
+    // paddingLeft: 60,
+    // paddingRight: 20,
+    // paddingTop: 10,
+    // paddingBottom: 10,
+    // elevation: 2,
+    marginLeft: 10,
+    marginRight: 10
+  },
+
+  cancelButton: {
+    // backgroundColor: "#F194FF",
+    // width: 150,
+    // textAlign: "center",
+    // borderRadius: 20,
+    // paddingLeft: 55,
+    // paddingRight: 20,
+    // paddingTop: 10,
+    // paddingBottom: 10,
+    // elevation: 2,
+    marginLeft: 10,
+    marginRight: 30
+  },
+  modalText: {
+    marginBottom: 16,
+    fontWeight: "600",
+    textAlign: "center"
+  },
 });
 
 const mapStateToProps = state => ({

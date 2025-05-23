@@ -75,18 +75,18 @@ const ContactsResidential = props => {
   const [loading, setLoading] = useState(false);
 
   useFocusEffect(
-      useCallback(() => {
-        // This function will be called when Screen A comes into focus
-        console.log("useFocusEffect")
-        getListing();
-  
-        // Optional: Return a cleanup function if needed
-        return () => {
-          // This function will be called when Screen A loses focus
-          // You can perform cleanup here if necessary
-        };
-      }, []) // Re-run the effect if fetchData function changes (unlikely here)
-    );
+    useCallback(() => {
+      // This function will be called when Screen A comes into focus
+      console.log("useFocusEffect")
+      getListing();
+
+      // Optional: Return a cleanup function if needed
+      return () => {
+        // This function will be called when Screen A loses focus
+        // You can perform cleanup here if necessary
+      };
+    }, []) // Re-run the effect if fetchData function changes (unlikely here)
+  );
 
   const resetSortBy = () => {
     setLookingForIndexSortBy(-1);
@@ -359,11 +359,18 @@ const ContactsResidential = props => {
     // console.log("residential Listing useEffect");
   }, [props.userDetails]);
 
- 
+
 
   const getListing = () => {
     // const agentDetailsX = getAgentDetails();
     // console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
+    if (props.userDetails === null) {
+      setData([]);
+      props.setResidentialCustomerList([]);
+      return;
+    }
+
+
     const user = {
       req_user_id: props.userDetails.id,
       agent_id: props.userDetails.works_for
@@ -422,21 +429,23 @@ const ContactsResidential = props => {
   const navigateToDetails = (item, propertyFor) => {
     props.setAnyItemDetails(item);
     if (propertyFor === "Rent") {
-      navigation.navigate("CustomerDetailsResidentialRentFromList", {item:item,
+      navigation.navigate("CustomerDetailsResidentialRentFromList", {
+        item: item,
         displayMatchCount: true, displayMatchPercent: false
       });
     } else if (propertyFor === "Buy") {
-      navigation.navigate("CustomerDetailsResidentialBuyFromList", {item:item,
+      navigation.navigate("CustomerDetailsResidentialBuyFromList", {
+        item: item,
         displayMatchCount: true, displayMatchPercent: false
       });
     }
   };
 
-  const deleteMe = (itemToDelete) =>{
+  const deleteMe = (itemToDelete) => {
     // console.log("props.setPropertyDetails(item: deleteMe: )", itemToDelete);
     setData((data) => data.filter((item) => item.customer_id !== itemToDelete.customer_id));
     //Fist delete for data
-    
+
 
   }
 
@@ -446,15 +455,15 @@ const ContactsResidential = props => {
       if (item.customer_locality.property_for === "Rent") {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <ContactResidentialRentCard navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox} 
-            disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj}/>
+            <ContactResidentialRentCard navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox}
+              disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} />
           </TouchableOpacity>
         );
       } else if (item.customer_locality.property_for === "Buy") {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Buy")}>
-            <ContactResidentialSellCard navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox} 
-            disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj}/>
+            <ContactResidentialSellCard navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox}
+              disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} />
           </TouchableOpacity>
         );
       }
@@ -532,7 +541,7 @@ const ContactsResidential = props => {
           />
         </View> */}
         <View style={styles.searchBar}>
-        <AntDesign name="search1" size={20} color="#999" style={{marginRight: 5,}} />
+          <AntDesign name="search1" size={20} color="#999" style={{ marginRight: 5, }} />
           {/* <View style={{ flexDirection: "row", margin: 10, justifyContent: "space-between" }}>
             <Text>For Rent: {rentPropCount.length}</Text>
             <Text>For Sell: {sellPropCount.length}</Text>
@@ -543,7 +552,7 @@ const ContactsResidential = props => {
             value={search}
             underlineColorAndroid="transparent"
             placeholder="Search by name, location"
-            placeholderTextColor="#000" 
+            placeholderTextColor="#000"
           />
         </View>
         {data.length > 0 ? (

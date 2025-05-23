@@ -86,19 +86,19 @@ const ListingCommercial = props => {
   const [loading, setLoading] = useState(false);
 
   useFocusEffect(
-      useCallback(() => {
-        // This function will be called when Screen A comes into focus
-        console.log("useFocusEffect")
-        getListing();
-  
-        // Optional: Return a cleanup function if needed
-        return () => {
-          // This function will be called when Screen A loses focus
-          // You can perform cleanup here if necessary
-        };
-      }, []) // Re-run the effect if fetchData function changes (unlikely here)
-    );
-  
+    useCallback(() => {
+      // This function will be called when Screen A comes into focus
+      console.log("useFocusEffect")
+      getListing();
+
+      // Optional: Return a cleanup function if needed
+      return () => {
+        // This function will be called when Screen A loses focus
+        // You can perform cleanup here if necessary
+      };
+    }, []) // Re-run the effect if fetchData function changes (unlikely here)
+  );
+
 
   const resetSortBy = () => {
     setLookingForIndexSortBy(-1);
@@ -443,6 +443,11 @@ const ListingCommercial = props => {
   }, []);
 
   const getListing = () => {
+    if (props.userDetails === null) {
+      setData([]);
+      props.setCommercialPropertyList([]);
+      return;
+    }
     // console.log("props.userDetails4 " + JSON.stringify(props.userDetails));
     const user = {
       req_user_id: props.userDetails.id,
@@ -508,22 +513,24 @@ const ListingCommercial = props => {
     console.log("props.setPropertyDetails(item: )", item);
     props.setPropertyDetails(item);
     if (propertyFor === "Rent") {
-      navigation.navigate("CommercialRentPropDetails", {item:item,
+      navigation.navigate("CommercialRentPropDetails", {
+        item: item,
         displayMatchCount: true, displayMatchPercent: false
       });
     } else if (propertyFor === "Sell") {
-      navigation.navigate("CommercialSellPropDetails", {item:item,
+      navigation.navigate("CommercialSellPropDetails", {
+        item: item,
         displayMatchCount: true, displayMatchPercent: false
       });
     }
 
   };
 
-  const deleteMe = (itemToDelete) =>{
+  const deleteMe = (itemToDelete) => {
     // console.log("props.setPropertyDetails(item: deleteMe: )", itemToDelete);
     setData((data) => data.filter((item) => item.property_id !== itemToDelete.property_id));
     //Fist delete for data
-    
+
 
   }
 
@@ -532,15 +539,15 @@ const ListingCommercial = props => {
       if (item.property_for.toLowerCase() === "Rent".toLowerCase()) {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <CardRent navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox} 
-            disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} />
+            <CardRent navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox}
+              disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} />
           </TouchableOpacity>
         );
       } else if (item.property_for.toLowerCase() === "Sell".toLowerCase()) {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
-            <CardSell navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox} 
-            disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj}/>
+            <CardSell navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox}
+              disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} />
           </TouchableOpacity>
         );
       }
@@ -596,7 +603,7 @@ const ListingCommercial = props => {
     </View> :
       <View style={{ flex: 1, backgroundColor: "#ffffff", marginTop: StatusBar.currentHeight }}>
         <View style={styles.searchBar}>
-        <AntDesign name="search1" size={20} color="#999" style={{marginRight: 5,}} />
+          <AntDesign name="search1" size={20} color="#999" style={{ marginRight: 5, }} />
           {/* <View style={{ flexDirection: "row", margin: 10, justifyContent: "space-between" }}>
             <Text>For Rent: {rentPropCount.length}</Text>
             <Text>For Sell: {sellPropCount.length}</Text>
@@ -607,7 +614,7 @@ const ListingCommercial = props => {
             value={search}
             underlineColorAndroid="transparent"
             placeholder="Search by property address, owner"
-            placeholderTextColor="#000" 
+            placeholderTextColor="#000"
           />
         </View>
         {data.length > 0 ? (

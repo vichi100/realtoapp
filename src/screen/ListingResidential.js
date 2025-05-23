@@ -57,8 +57,8 @@ const sortByPostedDateArray = ["Recent First", "Oldest Fist"];
 
 const ListingResidential = props => {
 
-  const rent = useRef(0);;
-  const sell = useRef(0);;
+  // const rent = useRef(0);;
+  // const sell = useRef(0);;
   const { navigation } = props;
   const { displayCheckBox, disableDrawer, displayCheckBoxForEmployee, employeeObj, } = props.route.params || {};
   const [isVisible, setIsVisible] = useState(false);
@@ -431,9 +431,14 @@ const ListingResidential = props => {
   const getListing = () => {
     // const agentDetailsX = getAgentDetails();
     // console.log("props.userDetail3 " + JSON.stringify(props.userDetails));
+    if (props.userDetails === null) {
+      setData([]);
+      props.setResidentialPropertyList([]);
+      return;
+    }
     const user = {
       req_user_id: props.userDetails.id,
-      agent_id: props.userDetails.works_for, 
+      agent_id: props.userDetails.works_for,
     };
     setLoading(true);
     // // console.log(JSON.stringify(user));
@@ -498,11 +503,13 @@ const ListingResidential = props => {
     props.setPropertyDetails(item);
 
     if (propertyFor === "Rent") {
-      navigation.navigate("PropDetailsFromListing", {item:item,
+      navigation.navigate("PropDetailsFromListing", {
+        item: item,
         displayMatchCount: true, displayMatchPercent: false
       });
     } else if (propertyFor === "Sell") {
-      navigation.navigate("PropDetailsFromListingForSell", {item:item,
+      navigation.navigate("PropDetailsFromListingForSell", {
+        item: item,
         displayMatchCount: true, displayMatchPercent: false
       });
     }
@@ -525,17 +532,17 @@ const ListingResidential = props => {
         // console.log(rentPropCount.length);
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <CardResidentialRent navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox} 
-            disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj}/>
-           
+            <CardResidentialRent navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox}
+              disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} />
+
           </TouchableOpacity>
         );
       } else if (item.property_for.toLowerCase() === "Sell".toLowerCase()) {
         // sellPropCount.push("1");
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
-            <CardResidentialSell navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox} 
-            disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj}/>
+            <CardResidentialSell navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox}
+              disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} />
           </TouchableOpacity>
         );
       }

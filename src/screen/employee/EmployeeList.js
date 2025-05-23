@@ -95,7 +95,7 @@ const EmployeeList = props => {
   const searchFilterFunction = text => {
     if (text) {
       const newData = props.employeeList.filter(function (item) {
-        const itemData = item.name;
+        const itemData = item.name+item.mobile;
         const textData = text.toUpperCase();
         return itemData.toUpperCase().indexOf(textData) > -1;
       });
@@ -184,7 +184,7 @@ const EmployeeList = props => {
             onChangeText={text => searchFilterFunction(text)}
             value={search}
             underlineColorAndroid="transparent"
-            placeholder="Search by name, location"
+            placeholder="Search by name, mobile"
             placeholderTextColor="#000"
           />
         </View>

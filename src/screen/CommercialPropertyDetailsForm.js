@@ -75,6 +75,7 @@ const PropertyDetails = props => {
   useFocusEffect(
     React.useCallback(() => {
       // Do something when the screen is focused
+      setIdealForSelectArray([]);
 
       return () => {
         // Do something when the screen is unfocused

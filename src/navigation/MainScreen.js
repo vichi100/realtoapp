@@ -76,14 +76,14 @@ const MainScreen = (props) => {
                 headerBackTitleVisible: false
               }}
             />
-            {props.userDetails && <RootStack.Screen
+            <RootStack.Screen
               name="BottomTabScreen"
               component={BottomTabScreen}
               options={{
                 headerShown: false,
                 headerBackTitleVisible: false
               }}
-            />}
+            />
 
             <RootStack.Screen
               name="OtpScreen"

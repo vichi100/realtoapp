@@ -104,9 +104,9 @@ const Profile = props => {
 
   const deleteMe = () => {
     const user = props.userDetails;
-    if(user.user_type === "employee"){
+    if (user.user_type === "employee") {
       deleteEmployee(user);
-    }else if(user.user_type === "agent"){
+    } else if (user.user_type === "agent") {
       deleteAgentAccount(user);
     }
   }
@@ -261,8 +261,9 @@ const Profile = props => {
           <Icon name="phone" color="#777777" size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>
             +91{" "}
-            {" " + props.userDetails &&
-              props.userDetails.mobile}
+            {props.userDetails && props.userDetails.mobile
+              ? props.userDetails.mobile
+              : "Add Mobile Number"}
           </Text>
         </View>
         {/* <View style={styles.row}>
