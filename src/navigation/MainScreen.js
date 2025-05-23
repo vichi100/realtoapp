@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Button, Text, StyleSheet } from "react-native";
 import {
   SafeAreaProvider,
@@ -15,10 +15,17 @@ import OtpScreen from "../screen/login/OtpScreen";
 import BottomTabScreen from "./BottomTabScreen";
 import ProfileForm from "../screen/ProfileForm";
 import { DefaultTheme, Provider } from 'react-native-paper';
+import {
+  setUserDetails
+} from "../reducers/Action";
+import { connect } from "react-redux";
 
 {/* <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 20 : 0 }} /> */ }
 
-export default function MainScreen() {
+const MainScreen = (props) => {
+  const { navigation, userDetails } = props;
+  const [refresh, setRefresh] = useState(false);
+
   const RootStack = createStackNavigator();
   // const theme = {
   //   ...DefaultTheme,
@@ -30,6 +37,14 @@ export default function MainScreen() {
   //     styleflex:0
   //   }
   // };
+
+  useEffect(() => {
+      // Navigate to BottomTabScreen only after userDetails is set
+      console.log("userDetails changed:", userDetails);
+      if (userDetails) {
+        setRefresh(!refresh);
+      }
+      }, [userDetails]); // Triggered when userDetails changes
 
   return (
     
@@ -61,14 +76,14 @@ export default function MainScreen() {
                 headerBackTitleVisible: false
               }}
             />
-            <RootStack.Screen
+            {props.userDetails && <RootStack.Screen
               name="BottomTabScreen"
               component={BottomTabScreen}
               options={{
                 headerShown: false,
                 headerBackTitleVisible: false
               }}
-            />
+            />}
 
             <RootStack.Screen
               name="OtpScreen"
@@ -102,6 +117,22 @@ export default function MainScreen() {
   );
 }
 
+
+const mapStateToProps = state => ({
+  userDetails: state.AppReducer.userDetails
+});
+
+const mapDispatchToProps = {
+  // setUserMobile,
+  setUserDetails,
+  // setPropReminderList
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MainScreen);
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -110,3 +141,5 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   }
 });
+
+

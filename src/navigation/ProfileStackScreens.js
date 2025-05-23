@@ -21,6 +21,8 @@ import CustomerDetailsResidentialRentFromList from "../screen/contacts/CustomerD
 import CustomerDetailsResidentialBuyFromList from "../screen/contacts/CustomerDetailsResidentialBuyFromList";
 import CustomerDetailsCommercialRentFromList from "../screen/contacts/CustomerDetailsCommercialRentFromList";
 import CustomerDetailsCommercialBuyFromList from "../screen/contacts/CustomerDetailsCommercialBuyFromList";
+import MainScreen from "../navigation/MainScreen";
+import Login from "../screen/login/Login";
 
 const Stack = createStackNavigator();
 
@@ -127,6 +129,16 @@ const ProfileStackScreens = ({ route }) => {
         name="CustomerDetailsCommercialBuyFromList"
         component={CustomerDetailsCommercialBuyFromList}
         options={{ title: "Customer Details" }}
+      />
+
+
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{
+          headerShown: false, // Hide the header (optional)
+          gestureEnabled: false, // Disable swipe back gesture
+        }}
       />
 
 

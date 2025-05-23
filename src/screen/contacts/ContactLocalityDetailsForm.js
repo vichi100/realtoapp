@@ -24,6 +24,8 @@ import { connect } from "react-redux";
 import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
 
 
+const homePlace = { description: 'Mumbai', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } } };
+
 const options = [
   {
     key: "Residential",
@@ -100,45 +102,27 @@ const ContactLocalityDetailsForm = props => {
   }, []);
 
   const onSubmit = async () => {
-    if (city.trim() === "") {
-      setErrorMessage("City is missing");
-      setIsVisible(true);
-      return;
-    } else if (gLocation === null) {
-      setErrorMessage("Area is missing");
-      setIsVisible(true);
-      return;
-    } else if (selectedPropType === null) {
-      setErrorMessage("Select Property type missing");
-      setIsVisible(true);
-      return;
-    } else if (propertyForIndex === -1) {
-      setErrorMessage("Select Property for missing");
+    if (!props.customerDetails) {
+      setErrorMessage("Customer details are missing");
       setIsVisible(true);
       return;
     }
-
-    // const customer = JSON.parse(await AsyncStorage.getItem("customer"));
-    const customer = props.customerDetails
-    // const propertyType = property.property_type;
-    // // console.log(property);
-
+  
+    const customer = { ...props.customerDetails }; // Create a copy to avoid modifying undefined
     const customer_locality = {
       city: city.trim(),
       location_area: SelectedLocationArray,
-      property_type: selectedPropType.key,
-      property_for: propertyForArray[propertyForIndex],
+      property_type: selectedPropType?.key || "",
+      property_for: propertyForArray[propertyForIndex] || "",
       pin: "123",
-      preferred_tenants: requiredForArray[requiredForIndex],
+      preferred_tenants: requiredForArray[requiredForIndex] || "",
     };
-
+  
     customer["customer_locality"] = customer_locality;
-    // // console.log(property_address);
-    const propertyType = selectedPropType.key;
-    // AsyncStorage.setItem("customer", JSON.stringify(customer));
     props.setCustomerDetails(customer);
-    // console.log(JSON.stringify(customer));
-    if (propertyType.toLowerCase() === "Residential".toLowerCase()) {
+  
+    const propertyType = selectedPropType?.key || "";
+    if (propertyType.toLowerCase() === "residential") {
       navigation.navigate("ContactResidentialPropertyDetailsForm");
     } else {
       navigation.navigate("CustomerCommercialPropertyDetailsForm");
@@ -206,56 +190,62 @@ const ContactLocalityDetailsForm = props => {
             }}
           />
           <View style={{ marginTop: 20 }} />
-          <GooglePlacesAutocomplete
-            ref={ref}
-            placeholder="Add multiple locations"
-            textInputProps={{
-              placeholderTextColor: 'rgba(90, 90, 90,1)',
-              returnKeyType: "search"
-            }}
-            minLength={2}
-            setAddressText={address}
-            query={{
-              key: GOOGLE_PLACES_API_KEY,
-              language: 'en', // language of the results
-              components: 'country:in',
-              // types: '(cities)'
-              // types: ["address","cities", "locality", "sublocality"],
-              // types: ["establishment"],
-              // fields: ["formatted_address", "geometry", "name"],
-              // fields: ["address_components"],
-              // types: ["cities", "locality", "sublocality",]
-            }}
-            // currentLocation={true}
-            isRowScrollable={true}
-            fetchDetails={true}
-            onPress={(data, details) => onSelectPlace(data, details)}
-            styles={{
-              textInputContainer: {
-                // backgroundColor: 'grey',
-                color: '#000000',
-                // backgroundColor: 'grey',
-                // borderLeftWidth: 4,
-                // borderRightWidth: 4,
-                // height: 70
-              },
-              textInput: {
-                height: 45,
-                color: '#000000',
-                fontSize: 16,
-                borderColor: "#C0C0C0",
-                backgroundColor: "rgba(245,245,245, 0.2)",
-                // borderLeftWidth: 1,
-                // borderRightWidth: 1,
-                borderBottomWidth: 1,
-                // borderTopWidth: 1
-              },
-              predefinedPlacesDescription: {
-                color: '#1faadb',
-              },
-            }}
-          // this in only required for use on the web. See https://git.io/JflFv more for details.
-          />
+           <GooglePlacesAutocomplete
+                      ref={ref}
+                      placeholder="Add multiple locations within city"
+                      textInputProps={{
+                        placeholderTextColor: 'rgba(90, 90, 90,1)',
+                        returnKeyType: "search"
+                      }}
+                      keyboardShouldPersistTaps='handled'
+                      minLength={2}
+                      setAddressText={address}
+                      query={{
+                        key: GOOGLE_PLACES_API_KEY,
+                        language: 'en', // language of the results
+                        components: 'country:in',
+                        // types: '(cities)'
+                        // types: ["address","cities", "locality", "sublocality"],
+                        // types: ["establishment"],
+                        // fields: ["formatted_address", "geometry", "name"],
+                        // fields: ["address_components"],
+                        // types: ["cities", "locality", "sublocality",]
+                      }}
+                      // currentLocation={true}
+                      // predefinedPlaces={selectedLocationArray || []} // Ensure it's always an array
+                      shouldDisplayPredefinedPlaces={false}
+                      predefinedPlacesAlwaysVisible={false}
+                      predefinedPlaces={[homePlace]} // Ensure it's always an array
+                      isRowScrollable={true}
+                      fetchDetails={true}
+                      onPress={(data, details) => onSelectPlace(data, details)}
+                      onFail={(error) => console.error(error)}
+                      styles={{
+                        textInputContainer: {
+                          // backgroundColor: 'grey',
+                          color: '#000000',
+                          // backgroundColor: 'grey',
+                          // borderLeftWidth: 4,
+                          // borderRightWidth: 4,
+                          // height: 70
+                        },
+                        textInput: {
+                          height: 45,
+                          color: '#000000',
+                          fontSize: 16,
+                          borderColor: "#C0C0C0",
+                          backgroundColor: "rgba(245,245,245, 0.2)",
+                          // borderLeftWidth: 1,
+                          // borderRightWidth: 1,
+                          borderBottomWidth: 1,
+                          // borderTopWidth: 1
+                        },
+                        predefinedPlacesDescription: {
+                          color: '#1faadb',
+                        },
+                      }}
+                    // this in only required for use on the web. See https://git.io/JflFv more for details.
+                    />
           <View style={{ marginTop: 5 }} />
           <FlatList
             horizontal

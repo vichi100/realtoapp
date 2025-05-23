@@ -102,6 +102,56 @@ const Profile = props => {
     }
   };
 
+  const deleteMe = () => {
+    const user = props.userDetails;
+    if(user.user_type === "employee"){
+      deleteEmployee(user);
+    }else if(user.user_type === "agent"){
+      deleteAgentAccount(user);
+    }
+  }
+
+
+  // delete employee
+  const deleteEmployee = (empObj) => {
+    const user = {
+      req_user_id: props.userDetails.id,
+      agent_id: props.userDetails.works_for,
+      employee_id: empObj.id
+    };
+    axios(SERVER_URL + "/deleteEmployee", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: user
+    }).then(
+      response => {
+        // console.log(response.data);
+        if (response.data === "success") {
+          setModalVisible(false);
+          setUserDetails(null);
+          props.userDetails = null
+          navigation.navigate("Login");
+        }
+      }
+    ).catch((error) => {
+      if (error.response && error.response.status === 409) {
+        // Check for the custom error code
+        if (error.response.data.errorCode === "EMPLOYEE_EXISTS") {
+          setErrorMessage(error.response.data.message); // Display the error message
+          setIsVisible(true);
+        }
+      } else {
+        console.error("Error deleting employee:", error);
+        setErrorMessage("An unexpected error occurred. Please try again.");
+        setIsVisible(true);
+      }
+    });;
+
+  }
+
   const deleteAgentAccount = () => {
     const agent = {
       req_user_id: props.userDetails.works_for,
@@ -244,6 +294,25 @@ const Profile = props => {
       ) : null}
 
       {props.userDetails &&
+        props.userDetails.user_type === "employee" ? (
+        <View
+          style={{
+            flexDirection: "row",
+            // flex: 1,
+            justifyContent: "space-between",
+            marginLeft: 40,
+            marginRight: 40,
+            marginBottom: 10
+          }}
+        >
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Icon name="account-off" color="#777777" size={20} />
+          </TouchableOpacity>
+
+        </View>
+      ) : null}
+
+      {props.userDetails &&
         props.userDetails.user_type === "agent" ? (
         <View style={[{ flexDirection: "column", marginTop: 20 }]}>
           <View
@@ -295,7 +364,7 @@ const Profile = props => {
           </View>
         </TouchableRipple>
       </View>
-      <Home/>
+      <Home />
       <Modal
         animationType="slide"
         transparent={true}
@@ -339,7 +408,7 @@ const Profile = props => {
               <TouchableHighlight
                 style={{ ...styles.applyButton }}
                 onPress={() => {
-                  deleteAgentAccount();
+                  deleteMe();
                 }}
               >
                 <Text style={styles.textStyle}>Yes</Text>
@@ -358,7 +427,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   // setUserMobile,
-  // setUserDetails,
+  setUserDetails,
   // setPropReminderList
 };
 export default connect(

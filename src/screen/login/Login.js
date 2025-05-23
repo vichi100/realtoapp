@@ -59,7 +59,9 @@ const Login = props => {
   const onNext = () => {
     // console.log(mobileNumber);
     props.setUserMobile(mobileNumber);
-    navigation.navigate("OtpScreen");
+    navigation.navigate("OtpScreen", {
+      needToEnterOTP: true
+    });
   };
 
   return (

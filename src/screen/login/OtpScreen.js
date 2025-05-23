@@ -19,12 +19,24 @@ import { OtpInput } from "react-native-otp-entry";
 // import OTPTextView from './OTPTextView';
 // import OTPInputView from '@twotalltotems/react-native-otp-input';
 import { SERVER_URL } from '../../util/Constant';
+import { en } from 'react-native-paper-dates';
 
 const OtpScreen = (props) => {
-	const { navigation } = props;
+	const { navigation, userDetails } = props;
+	const { needToEnterOTP: initialNeedToEnterOTP = false } = props.route.params; // Get initial value from route params
+  const [needToEnterOTP, setNeedToEnterOTP] = useState(initialNeedToEnterOTP); // Manage as state
+  
 	const [otp, setOTP] = useState(null);
 	const otpInput = useRef(null);
 	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		// Navigate to BottomTabScreen only after userDetails is set
+		console.log("userDetails changed:", userDetails);
+		if (!needToEnterOTP && userDetails) {
+		  navigation.navigate("BottomTabScreen");
+		}
+	  }, [userDetails, needToEnterOTP]); // Triggered when userDetails changes
 
 	useEffect(() => {
 		setLoading(true);
@@ -91,7 +103,7 @@ const OtpScreen = (props) => {
 					console.log('response: ' + JSON.stringify(response));
 					console.log('response.data: ' + JSON.stringify(response.data));
 					save(response.data);
-					navigation.navigate('BottomTabScreen');
+					// navigation.navigate('BottomTabScreen');
 				},
 				(error) => {
 					console.log(error);
@@ -101,7 +113,9 @@ const OtpScreen = (props) => {
 
 	const save = (userData) => {
 		console.log('userData: ' + JSON.stringify(userData));
+		setNeedToEnterOTP(false); // Update state
 		props.setUserDetails(userData);
+		
 		// await AsyncStorage.setItem('user_details', JSON.stringify(userData));
 
 	};
@@ -204,9 +218,10 @@ const OtpScreen = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-	userMobileNumber: state.AppReducer.userMobileNumber,
+	userDetails: state.AppReducer.userDetails,
 	country: state.AppReducer.country,
-	countryCode: state.AppReducer.countryCode
+	countryCode: state.AppReducer.countryCode,
+	userMobileNumber: state.AppReducer.userMobileNumber
 });
 const mapDispatchToProps = {
 	setUserDetails

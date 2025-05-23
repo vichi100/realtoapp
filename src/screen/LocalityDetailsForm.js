@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -20,8 +20,10 @@ import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../util/Constant";
 import { connect } from "react-redux";
 import { setPropertyType, setPropertyDetails } from "../reducers/Action";
 
+const homePlace = { description: 'Mumbai', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } } };
 
 const LocalityDetailsForm = props => {
+  const ref = useRef();
   const { navigation } = props;
   const [city, setCity] = useState("");
   const [gLocation, setGLocation] = useState(null);
@@ -30,6 +32,8 @@ const LocalityDetailsForm = props => {
   const [landmark, setLandmark] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const [address, setAddress] = useState(null);
 
   const dismissSnackBar = () => {
     setIsVisible(false);
@@ -50,7 +54,12 @@ const LocalityDetailsForm = props => {
       setErrorMessage("Area is missing");
       setIsVisible(true);
       return;
-    } else if (props.propertyDetails && props.propertyDetails.property_type && props.propertyDetails.property_type.toLowerCase() === "residential" && flatNumber.trim() === "") {
+    } else if (
+      props.propertyDetails &&
+      props.propertyDetails.property_type &&
+      props.propertyDetails.property_type.toLowerCase() === "residential" &&
+      flatNumber.trim() === ""
+    ) {
       setErrorMessage("Flat Number is missing");
       setIsVisible(true);
       return;
@@ -63,9 +72,9 @@ const LocalityDetailsForm = props => {
       setIsVisible(true);
       return;
     }
-    // const property = JSON.parse(await AsyncStorage.getItem("property"));
-    const property = props.propertyDetails
-    const propertyType = property.property_type;
+
+    const property = props.propertyDetails || {}; // Default to an empty object
+    const propertyType = property.property_type || ""; // Default to an empty string
     console.log("gLocation: ", gLocation);
 
     const property_address = {
@@ -74,15 +83,13 @@ const LocalityDetailsForm = props => {
       flat_number: flatNumber.trim(),
       building_name: buildingName.trim(),
       landmark_or_street: landmark.trim(),
-      pin: "123"
+      pin: "123",
     };
 
     property["property_address"] = property_address;
-    // // console.log(property_address);
-    // AsyncStorage.setItem("property", JSON.stringify(property));
     props.setPropertyDetails(property);
-    // console.log(JSON.stringify(property));
-    if (propertyType.toLowerCase() === "Residential".toLowerCase()) {
+
+    if (propertyType.toLowerCase() === "residential") {
       navigation.navigate("ResidentialPropertyDetailsForm");
     } else {
       navigation.navigate("CommercialPropertyDetailsForm");
@@ -90,7 +97,10 @@ const LocalityDetailsForm = props => {
   };
 
   const onSelectPlace = (data, details) => {
-    console.log("details: ", JSON.stringify(details.geometry.location))
+    console.log("details: ", JSON.stringify(details.geometry.location));
+    console.log("details: ", JSON.stringify(details))
+    console.log("Lat Long: ", JSON.stringify(details.geometry.location))
+    console.log("data: ", JSON.stringify(data))
     // console.log("data: ", JSON.stringify(dataX))
 
     const gLocation = {
@@ -130,12 +140,15 @@ const LocalityDetailsForm = props => {
           />
           <View style={{ marginTop: 25 }} />
           <GooglePlacesAutocomplete
-            placeholder="Area / Location"
+            ref={ref}
+            placeholder="Add multiple locations within city"
             textInputProps={{
               placeholderTextColor: 'rgba(90, 90, 90,1)',
               returnKeyType: "search"
             }}
+            keyboardShouldPersistTaps='handled'
             minLength={2}
+            setAddressText={address}
             query={{
               key: GOOGLE_PLACES_API_KEY,
               language: 'en', // language of the results
@@ -148,9 +161,14 @@ const LocalityDetailsForm = props => {
               // types: ["cities", "locality", "sublocality",]
             }}
             // currentLocation={true}
+            // predefinedPlaces={selectedLocationArray || []} // Ensure it's always an array
+            shouldDisplayPredefinedPlaces={false}
+            predefinedPlacesAlwaysVisible={false}
+            predefinedPlaces={[homePlace]} // Ensure it's always an array
             isRowScrollable={true}
             fetchDetails={true}
             onPress={(data, details) => onSelectPlace(data, details)}
+            onFail={(error) => console.error(error)}
             styles={{
               textInputContainer: {
                 // backgroundColor: 'grey',

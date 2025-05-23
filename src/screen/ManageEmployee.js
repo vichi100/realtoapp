@@ -82,11 +82,20 @@ const ManageEmployee = props => {
             displayCheckBox: false
           });
         }
-      },
-      error => {
-        // console.log(error);
       }
-    );
+    ).catch((error) => {
+      if (error.response && error.response.status === 409) {
+        // Check for the custom error code
+        if (error.response.data.errorCode === "EMPLOYEE_EXISTS") {
+          setErrorMessage(error.response.data.message); // Display the error message
+          setIsVisible(true);
+        }
+      } else {
+        console.error("Error adding employee:", error);
+        setErrorMessage("An unexpected error occurred. Please try again.");
+        setIsVisible(true);
+      }
+    });
   };
 
   useEffect(() => {
