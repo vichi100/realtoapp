@@ -9,7 +9,8 @@ import {
   SafeAreaView,
   ScrollView,
   Keyboard,
-  AsyncStorage,
+  Modal,
+  TouchableHighlight,
   FlatList,
   Image
 } from "react-native";
@@ -31,6 +32,7 @@ import AppConstant from "../../util/AppConstant";
 
 import axios from "axios";
 import SliderCr from "../../components/SliderCr";
+import ModalActivityIndicator from 'react-native-modal-activityindicator';
 
 // import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/Constant";
 
@@ -106,7 +108,7 @@ const GlobalSearch = props => {
   const { navigation } = props;
 
   // Ensure props.userDetails and works_for are defined
-  const reqUserId = props.userDetails?.works_for || null;
+  // const reqUserId = props.userDetails?.works_for || null;
 
   const [city, setCity] = useState(""); // when user input city
   const [area, setArea] = useState("");
@@ -131,6 +133,10 @@ const GlobalSearch = props => {
   const [priceRangeCr, setPriceRangeCr] = useState([1000000, 50000000]);
   const [reqWithin, setReqWithin] = useState("7 Days".toLowerCase());
   const [tenant, setTenant] = useState("Any");
+
+  const [loading, setLoading] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
+  
 
 
 
@@ -166,12 +172,19 @@ const GlobalSearch = props => {
     // // console.log(property);
   }, []);
 
+  const login = async () => { 
+    navigation.navigate("Login");
+    setModalVisible(false);
+  }
+
   const onSubmit = () => {
-    if (!reqUserId) {
-      setErrorMessage("User details are missing");
-      setIsVisible(true);
-      return;
-    }
+
+    
+    // if (!reqUserId) {
+    //   setErrorMessage("You are not logged in, please login");
+    //   setIsVisible(true);
+    //   return;
+    // }
 
     if (city.trim() === "") {
       setErrorMessage("City is missing");
@@ -185,6 +198,14 @@ const GlobalSearch = props => {
       return;
     }
 
+    if (props.userDetails === null) {
+      console.log("You are not logged in, please login");
+      // setErrorMessage("You are not logged in, please login");
+      // setIsVisible(true);
+      setModalVisible(true);
+      return;
+    }
+
 
     const match = reqWithin.match(/\d+/); // Find the number in the string
     const daysFromReqWithin = match ? parseInt(match[0], 10) : null; // Convert to integer and return
@@ -193,8 +214,10 @@ const GlobalSearch = props => {
     // const newReqWithinDate = new Date(today.getDate() +daysFromReqWithin);
     today.setDate(today.getDate() + daysFromReqWithin);
 
+    setLoading(true);
+
     const queryObject = {
-      req_user_id: reqUserId,
+      req_user_id: props.userDetails?.works_for,
       city: city.trim(),
       selectedLocationArray: selectedLocationArray,
       lookingFor: lookingFor,
@@ -693,6 +716,58 @@ const GlobalSearch = props => {
         </View>
       </View>
 
+      <ModalActivityIndicator visible={loading} size='large' color='#A9A9A9' />
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          // Alert.alert("Modal has been closed.");
+          setModalVisible(false);
+        }}
+      >
+        <View style={styles.centeredView1}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>
+              You are not logged in, please login.
+            </Text>
+
+
+            <View
+              style={{
+                position: "absolute",
+                flexDirection: "row",
+                right: 0,
+                bottom: 0,
+                marginTop: 20,
+                marginBottom: 20,
+                padding: 20
+                // justifyContent: "flex-end"
+              }}
+            >
+              <TouchableHighlight
+                style={{ ...styles.cancelButton }}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Cancel</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={{ ...styles.applyButton }}
+                onPress={() => {
+                  login();
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Login</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
       <Snackbar
         visible={isVisible}
         textMessage={errorMessage}
@@ -762,6 +837,61 @@ const styles = StyleSheet.create({
     left: 20, // Distance from the left
     right: 20, // Distance from the right
     alignItems: 'center', // Center the button horizontally
+  },
+  centeredView1: {
+    flex: 1,
+    justifyContent: "center",
+    alignContent: "center",
+    marginTop: 22,
+    marginBottom: 20
+  },
+  modalView: {
+    margin: 20,
+    height: 150,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  applyButton: {
+    // backgroundColor: "#F194FF",
+    // width: 150,
+    // textAlign: "center",
+    // borderRadius: 20,
+    // paddingLeft: 60,
+    // paddingRight: 20,
+    // paddingTop: 10,
+    // paddingBottom: 10,
+    // elevation: 2,
+    marginLeft: 10,
+    marginRight: 10
+  },
+
+  cancelButton: {
+    // backgroundColor: "#F194FF",
+    // width: 150,
+    // textAlign: "center",
+    // borderRadius: 20,
+    // paddingLeft: 55,
+    // paddingRight: 20,
+    // paddingTop: 10,
+    // paddingBottom: 10,
+    // elevation: 2,
+    marginLeft: 10,
+    marginRight: 30
+  },
+  modalText: {
+    marginBottom: 16,
+    fontWeight: "600",
+    textAlign: "center"
   },
 });
 

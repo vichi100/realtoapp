@@ -5,7 +5,6 @@ import {
   Image,
   Text,
   ScrollView,
-  AsyncStorage,
   Modal,
   TouchableHighlight
   // ActivityIndicator
