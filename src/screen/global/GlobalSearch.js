@@ -214,7 +214,7 @@ const GlobalSearch = props => {
     // const newReqWithinDate = new Date(today.getDate() +daysFromReqWithin);
     today.setDate(today.getDate() + daysFromReqWithin);
 
-    setLoading(true);
+    // setLoading(true);
 
     const queryObject = {
       req_user_id: props.userDetails?.works_for,
