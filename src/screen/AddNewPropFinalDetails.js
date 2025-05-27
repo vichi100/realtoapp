@@ -133,10 +133,10 @@ const AddNewPropFinalDetails = props => {
             // navigation.navigate("Listing");
             console.log("props.startNavigationPoint: ", props.startNavigationPoint)
             if (props.startNavigationPoint === null) {
-              navigation.navigate("Listing");
+              navigation.navigate("Listing", { didDbCall: true });
 
             } else {
-              navigation.navigate("PropertyListForMeeting");
+              navigation.navigate("PropertyListForMeeting", { didDbCall: true });
             }
             props.setStartNavigationPoint(null);
             setLoading(false);

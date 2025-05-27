@@ -24,6 +24,8 @@ import CardCommercialSell from "../commercial/sell/Card";
 import { SERVER_URL } from "../../util/Constant";
 import { connect } from "react-redux";
 import AppConstant from "../../util/AppConstant";
+import { useNavigation } from '@react-navigation/native';
+import { BackHandler } from 'react-native';
 import {
   setPropertyDetails
 } from "../../reducers/Action"; // import { setPropertyDetails } from "../../reducers/Action"; // import { setPropertyDetails } from "../../
@@ -31,8 +33,8 @@ import {
 
 const CustomerMeetingDetails = props => {
   const { navigation } = props;
-  const item = props.route.params.item;
-  const category = props.route.params.category;
+  const {item, updateDbCall, category} = props.route.params;
+  // const category = props.route.params.category;
 
   const [reminderObj, setReminderObj] = useState(item);
   const [customerMeetingDetailsObj, setCustomerMeetingDetailsObj] = useState(
@@ -42,6 +44,27 @@ const CustomerMeetingDetails = props => {
     // console.log("item useEffect:     ", item);
     getCustomerAndMeetingDetails();
   }, [reminderObj]);
+
+
+  // const navigation = useNavigation();
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+      // Prevent default back action (optional)
+      // e.preventDefault();
+
+      // Call your function here
+      myBackFunction();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const myBackFunction = () => {
+    console.log('Back navigation detected!');
+    updateDbCall(false); 
+    // Do something (e.g., show confirmation, save data)
+  };
 
   const getCustomerAndMeetingDetails = () => {
     // console.log("reminderObj:     ", reminderObj);

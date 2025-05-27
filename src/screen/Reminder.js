@@ -27,50 +27,61 @@ const Reminder = props => {
     customerData,
     isSpecificRemider = false,
   } = props;
+  const { didDbCall = true } = props.route.params || {};
   const [reminderList, setReminderList] = useState([]);
   const [futureReminderList, setFutureReminderList] = useState([]);
   const [pastReminderList, setPastReminderList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [ dbCall, setDbCall ] = useState(didDbCall);
 
-  const isFocused = useIsFocused();
+  const updateDbCall = useCallback((value) => {
+    // console.log(`Function 'a' in Screen A called with value: ${value}`);
+    setDbCall(value); // Update state to show the effect
+    // Perform any other actions needed in Screen A
+  }, []); // useCallback ensures this function remains stable across re-renders
+
+  
 
   useFocusEffect(
       useCallback(() => {
         // This function will be called when Screen A comes into focus
         console.log("useFocusEffect")
-        
-        getReminderList();
+        if (dbCall) {
+          getReminderList();
+          
+        }
   
         // Optional: Return a cleanup function if needed
         return () => {
           // This function will be called when Screen A loses focus
           // You can perform cleanup here if necessary
+          setDbCall(true); // Set dbCall to false after fetching data
         };
-      }, []) // Re-run the effect if fetchData function changes (unlikely here)
+      }, [dbCall]) // Re-run the effect if fetchData function changes (unlikely here)
     );
 
 
-  // useEffect(() => {
-  //   if (!isFocused) {
-  //     return
-  //   }
-  //   // if (reminderList.length > 0) {
-  //   //   return;
-  //   // }
-  //   // setLoading(true);
+  useEffect(() => {
+    // if (!isFocused) {
+    //   return
+    // }
+    // if (reminderList.length > 0) {
+    //   return;
+    // }
+    // setLoading(true);
 
-  //   if (customerData != null) {
-  //     getReminderListById(customerData)
+    if (customerData != null) {
+      getReminderListById(customerData)
 
-  //   } else if (!isSpecificRemider) {
+    } else if (!isSpecificRemider) {
 
-  //     getReminderList();
+      getReminderList();
 
-  //   }
-  //   setLoading(false);
+    }
+    setLoading(false);
 
 
-  // }, [isFocused]);
+  }, [props.userDetails]);
 
   const getReminderListById = (customerData) => {
 
@@ -216,7 +227,8 @@ const Reminder = props => {
           onPress={() =>
             navigation.navigate("CustomerMeetingDetails", {
               item: item,
-              category: "property"
+              category: "property",
+              updateDbCall: updateDbCall
             })
           }
           style={{
@@ -274,7 +286,8 @@ const Reminder = props => {
           onPress={() =>
             navigation.navigate("CustomerMeetingDetails", {
               item: item,
-              category: "property"
+              category: "property",
+              updateDbCall: updateDbCall
             })
           }
           style={{
@@ -333,7 +346,8 @@ const Reminder = props => {
           onPress={() =>
             navigation.navigate("CustomerMeetingDetails", {
               item: item,
-              category: "property"
+              category: "property",
+              updateDbCall: updateDbCall
             })
           }
           style={{

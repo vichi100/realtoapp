@@ -223,4 +223,6 @@ What happened with me was that the code in my file had errors the first time I b
 Guess the answer is to make sure that when you create a new file, you build it right away when the code is simple....then chrome will recognize the file and you can debug. If you write a whole bunch of code then build and it fails you won't be able to debug.
 
 
-### 
+### Meeting from global search
+1) if the property/customer belong to user then user can create meeting with their customer on properties
+2) if the property/customer dont belong to user then he can only create meeting with the agent

@@ -60,7 +60,7 @@ const lookingForArraySortBy = ["Rent", "Sell"];
 
 const ListingCommercial = props => {
   const { navigation } = props;
-  const { displayCheckBox, disableDrawer, displayCheckBoxForEmployee, employeeObj, } = props.route.params || {};
+  const { displayCheckBox, disableDrawer, displayCheckBoxForEmployee, employeeObj, didDbCall = false } = props.route.params || {};
   const [search, setSearch] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -89,7 +89,9 @@ const ListingCommercial = props => {
     useCallback(() => {
       // This function will be called when Screen A comes into focus
       console.log("useFocusEffect")
-      getListing();
+      if (didDbCall) {
+        getListing();
+      }
 
       // Optional: Return a cleanup function if needed
       return () => {
