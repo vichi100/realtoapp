@@ -456,8 +456,8 @@ const GlobalResidentialPropertySearchResult = props => {
             <CardResidentialRent
               navigation={navigation}
               item={item}
-              disableDrawer={true}
-              displayChat={true}
+              disableDrawer={false}
+              displayChat={false}
               displayMatchCount={true}
               displayMatchPercent={false}
             />
@@ -474,8 +474,8 @@ const GlobalResidentialPropertySearchResult = props => {
             <CardResidentialSell
               navigation={navigation}
               item={item}
-              disableDrawer={true}
-              displayChat={true}
+              disableDrawer={false}
+              displayChat={false}
               displayMatchCount={true}
               displayMatchPercent={false}
             />

@@ -10,7 +10,6 @@ import {
   Image,
   FlatList,
   Platform,
-  AsyncStorage,
   Dimensions
 } from "react-native";
 // import Image from 'react-native-scalable-image';

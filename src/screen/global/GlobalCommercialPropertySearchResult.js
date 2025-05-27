@@ -487,8 +487,8 @@ const GlobalCommercialPropertySearchResult = props => {
             <CardRent
               navigation={navigation}
               item={item}
-              displayChat={true}
-              disableDrawer={true}
+              displayChat={false}
+              disableDrawer={false}
               displayCheckBox={false}
             />
           </TouchableOpacity>

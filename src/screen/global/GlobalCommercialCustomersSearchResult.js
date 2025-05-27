@@ -439,8 +439,8 @@ const GlobalCommercialCustomersSearchResult = props => {
             <CustomerCommercialRentCard
               navigation={navigation}
               item={item}
-              disableDrawer={true}
-              displayChat={true}
+              disableDrawer={false}
+              displayChat={false}
             />
           </TouchableOpacity>
         );
@@ -456,8 +456,8 @@ const GlobalCommercialCustomersSearchResult = props => {
             <CustomerCommercialBuyCard
               navigation={navigation}
               item={item}
-              disableDrawer={true}
-              displayChat={true}
+              disableDrawer={false}
+              displayChat={false}
             />
           </TouchableOpacity>
         );

@@ -66,7 +66,8 @@ const Login = props => {
 
   return (
     // ../../assets/images/rbg.jpeg
-
+<View style={{ flex: 1, backgroundColor: "#ffffff" }}>
+  
     <ImageBackground source={require("../../../assets/images/rbg.jpeg")} resizeMode="cover" style={{
       flex: 1,
     }}>
@@ -179,7 +180,7 @@ const Login = props => {
       </TouchableOpacity>
     </ImageBackground>
 
-
+    </View>
 
   );
 };

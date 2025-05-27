@@ -242,11 +242,15 @@ const GlobalSearch = props => {
     }).then(
       response => {
         console.log("response.data:      ", response.data);
-        response.data.map(item => {
-          item.image_urls.map(image => {
-            image.url = SERVER_URL + image.url
-          })
-        })
+        response.data.forEach(item => {
+          if (Array.isArray(item.image_urls)) { // Ensure image_urls is an array
+            item.image_urls.forEach(image => {
+              image.url = SERVER_URL + image.url;
+            });
+          } else {
+            console.warn("image_urls is not an array for item:", item);
+          }
+        });
         setData(response.data);
         // props.setResidentialPropertyList(response.data);
         props.setGlobalSearchResult(response.data);

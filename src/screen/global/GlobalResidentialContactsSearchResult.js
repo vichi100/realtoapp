@@ -403,8 +403,8 @@ const GlobalResidentialContactsSearchResult = props => {
             <ContactResidentialRentCard
               navigation={navigation}
               item={item}
-              disableDrawer={true}
-              displayChat={true}
+              disableDrawer={false}
+              displayChat={false}
             />
           </TouchableOpacity>
         );
@@ -419,8 +419,8 @@ const GlobalResidentialContactsSearchResult = props => {
             <ContactResidentialSellCard
               navigation={navigation}
               item={item}
-              disableDrawer={true}
-              displayChat={true}
+              disableDrawer={false}
+              displayChat={false}
             />
           </TouchableOpacity>
         );

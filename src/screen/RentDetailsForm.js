@@ -41,14 +41,7 @@ const RentDetailsForm = props => {
   const [nonvegAllowedIndex, setNonvegAllowedIndex] = useState(-1);
   const [visible, setVisible] = React.useState(false);
 
-  // useEffect(() => {
-  //   init();
-  // }, [propertyDetailsX]);
 
-  // const init = async () => {
-  //   const property = JSON.parse(await AsyncStorage.getItem("property"));
-  //   setPropertyDetailsX(property);
-  // };
 
   const dismissSnackBar = () => {
     setIsVisible(false);
@@ -123,11 +116,8 @@ const RentDetailsForm = props => {
       preferred_tenants: preferredTenantsArray[preferredTenantsIndex],
       non_veg_allowed: nonvegAllowedArray[nonvegAllowedIndex]
     };
-    // const property = JSON.parse(await AsyncStorage.getItem("property"));
     const property = props.propertyDetails;
     property["rent_details"] = rent_details;
-
-    // AsyncStorage.setItem("property", JSON.stringify(property));
     props.setPropertyDetails(property);
     // console.log(JSON.stringify(property));
 

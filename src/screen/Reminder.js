@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   StyleSheet,
   View,
@@ -19,6 +19,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 import { SERVER_URL } from "../util/Constant";
 import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Reminder = props => {
   const {
@@ -33,30 +34,53 @@ const Reminder = props => {
 
   const isFocused = useIsFocused();
 
-
-  useEffect(() => {
-    if (!isFocused) {
-      return
-    }
-    // if (reminderList.length > 0) {
-    //   return;
-    // }
-    setLoading(true);
-
-    if (customerData != null) {
-      getReminderListById(customerData)
-
-    } else if (!isSpecificRemider) {
-
-      getReminderList();
-
-    }
-    setLoading(false);
+  useFocusEffect(
+      useCallback(() => {
+        // This function will be called when Screen A comes into focus
+        console.log("useFocusEffect")
+        
+        getReminderList();
+  
+        // Optional: Return a cleanup function if needed
+        return () => {
+          // This function will be called when Screen A loses focus
+          // You can perform cleanup here if necessary
+        };
+      }, []) // Re-run the effect if fetchData function changes (unlikely here)
+    );
 
 
-  }, [isFocused]);
+  // useEffect(() => {
+  //   if (!isFocused) {
+  //     return
+  //   }
+  //   // if (reminderList.length > 0) {
+  //   //   return;
+  //   // }
+  //   // setLoading(true);
+
+  //   if (customerData != null) {
+  //     getReminderListById(customerData)
+
+  //   } else if (!isSpecificRemider) {
+
+  //     getReminderList();
+
+  //   }
+  //   setLoading(false);
+
+
+  // }, [isFocused]);
 
   const getReminderListById = (customerData) => {
+
+    if (props.userDetails === null) {
+      setFutureReminderList([]);
+      setPastReminderList([]);
+      setReminderList([]);
+      return;
+    }
+
     const customerDatax = {
       req_user_id: props.userDetails.works_for,
       customer_id: customerData.customer_id,
@@ -64,6 +88,9 @@ const Reminder = props => {
       property_for: customerData.customer_locality.property_for,// Rent, sell
 
     };
+
+    setLoading(true);
+
     axios
       .post(
         SERVER_URL + "/getReminderListByCustomerId",
@@ -120,6 +147,8 @@ const Reminder = props => {
       req_user_id: props.userDetails.id,
       agent_id: props.userDetails.works_for
     };
+    setLoading(true);
+
     axios
       .post(
         SERVER_URL + "/getReminderList",
@@ -364,84 +393,124 @@ const Reminder = props => {
   };
 
   return (
-    loading ? <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(245,245,245, .4)'
-      }}
-    >
-      <ActivityIndicator animating size="large" color={'#000'} />
-      {/* <ActivityIndicator animating size="large" /> */}
-    </View> :
-      <ScrollView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    loading ? (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "rgba(245,245,245, .4)",
+        }}
+      >
+        <ActivityIndicator animating size="large" color={"#000"} />
+      </View>
+    ) : (
+      <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: "#ffffff" }}>
         {reminderList.length > 0 ? (
           <View>
-            <Text style={{ textAlign: "center", fontSize: 16, fontWeight: 500, marginTop: 15, marginBottom: 10 }}>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 16,
+                fontWeight: "500",
+                marginTop: 15,
+                marginBottom: 10,
+              }}
+            >
               Upcoming Meetings
             </Text>
-            {futureReminderList.length > 0 ? <FlatList
-              data={futureReminderList}
-              //data defined in constructor
-              ItemSeparatorComponent={ItemSeparatorView}
-              //Item Separator View
-              renderItem={ItemView}
-              keyExtractor={(item, index) => index.toString()}
-            /> : <View style={{ alignContent: 'center', justifyContent: 'center', backgroundColor: "rgba(239, 239, 240, .9)" }}>
-              <Text style={{ textAlign: "center", fontSize: 15, fontWeight: 300, marginTop: 0, marginBottom: 20, marginTop: 20 }}>
-                No Meetings
-              </Text>
-            </View>}
-            <Text style={{ textAlign: "center", fontSize: 16, fontWeight: 500, marginTop: 15, marginBottom: 10 }}>
+            {futureReminderList.length > 0 ? (
+              <FlatList
+                data={futureReminderList}
+                ItemSeparatorComponent={ItemSeparatorView}
+                renderItem={ItemView}
+                keyExtractor={(item, index) => index.toString()}
+              />
+            ) : (
+              <View
+                style={{
+                  alignContent: "center",
+                  justifyContent: "center",
+                  backgroundColor: "rgba(239, 239, 240, .9)",
+                }}
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 15,
+                    fontWeight: "300",
+                    marginTop: 20,
+                    marginBottom: 20,
+                  }}
+                >
+                  No Meetings
+                </Text>
+              </View>
+            )}
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 16,
+                fontWeight: "500",
+                marginTop: 15,
+                marginBottom: 10,
+              }}
+            >
               Past Meetings
             </Text>
-            {pastReminderList.length > 0 ? <FlatList
-              data={pastReminderList}
-              //data defined in constructor
-              ItemSeparatorComponent={ItemSeparatorView}
-              //Item Separator View
-              renderItem={ItemView}
-              keyExtractor={(item, index) => index.toString()}
-            /> : <View style={{ alignContent: 'center', justifyContent: 'center', backgroundColor: "rgba(239, 239, 240, .9)" }}>
-              <Text style={{ textAlign: "center", fontSize: 15, fontWeight: 300, marginTop: 0, marginBottom: 20, marginTop: 20 }}>
-                No Meetings
-              </Text>
-            </View>}
+            {pastReminderList.length > 0 ? (
+              <FlatList
+                data={pastReminderList}
+                ItemSeparatorComponent={ItemSeparatorView}
+                renderItem={ItemView}
+                keyExtractor={(item, index) => index.toString()}
+              />
+            ) : (
+              <View
+                style={{
+                  alignContent: "center",
+                  justifyContent: "center",
+                  backgroundColor: "rgba(239, 239, 240, .9)",
+                }}
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 15,
+                    fontWeight: "300",
+                    marginTop: 20,
+                    marginBottom: 20,
+                  }}
+                >
+                  No Meetings
+                </Text>
+              </View>
+            )}
           </View>
-
-
-        ) : (<View style={styles.container}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              textAlign: "center"
-            }}
-          >
-            <Text style={{ textAlign: "center" }}>
+        ) : (
+          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <Text style={{ textAlign: "center", fontSize: 16, color: "#777777" }}>
               You have no reminder
             </Text>
-
           </View>
-
-        </View>)}
+        )}
       </ScrollView>
+    )
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 5
-    // alignContent: "center"
+    justifyContent: "center", // Center vertically
+    alignItems: "center", // Center horizontally
+    margin: 5,
   },
   verticalLine: {
     height: "100%",
     width: 2,
-    backgroundColor: "#ffffff"
-  }
+    backgroundColor: "#ffffff",
+  },
 });
 
 const mapStateToProps = state => ({

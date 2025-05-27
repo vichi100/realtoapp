@@ -132,7 +132,8 @@ const Profile = props => {
         if (response.data === "success") {
           setModalVisible(false);
           setUserDetails(null);
-          props.userDetails = null
+          // props.userDetails = null
+          props.setUserDetails(null);
           navigation.navigate("Login");
         }
       }
@@ -148,7 +149,7 @@ const Profile = props => {
         setErrorMessage("An unexpected error occurred. Please try again.");
         setIsVisible(true);
       }
-    });;
+    });
 
   }
 
@@ -168,17 +169,28 @@ const Profile = props => {
       response => {
         if (response.data === "success") {
           // console.log("1: " + JSON.stringify(props.userDetails));
-          props.userDetails["user_status"] = "suspend";
-
+          // props.userDetails["user_status"] = "suspend";
+          setUserDetails(null);
+          // props.userDetails = null;
+          props.setUserDetails(null);
           setModalVisible(!modalVisible);
-          updateAsyncStorageData();
-          // navigation.navigate("Profile");
+          navigation.navigate("Login");
+
         }
-      },
-      error => {
-        // console.log(error);
       }
-    );
+    ).catch((error) => {
+      if (error.response && error.response.status === 409) {
+        // Check for the custom error code
+        if (error.response.data.errorCode === "Unauthorized") {
+          setErrorMessage(error.response.data.message); // Display the error message
+          setIsVisible(true);
+        }
+      } else {
+        console.error("Error deleting user, agent:", error);
+        setErrorMessage("An unexpected error occurred. Please try again.");
+        setIsVisible(true);
+      }
+    });;
   };
 
   const updateAsyncStorageData = async () => {
@@ -377,13 +389,11 @@ const Profile = props => {
       >
         <View style={styles.centeredView1}>
           <View style={styles.modalView}>
-            <Text style={{ color: "rgba(255,0,0, .9)", marginBottom: 10 }}>
-              Do you really want to delete your account ?
+            <Text style={{ color: "rgba(255,0,0, .9)", marginBottom: 10, fontSize: 17, fontWeight: "500" }}>
+              Do you really want to DELETE your account ?
             </Text>
-            <Text style={styles.modalText}>
-              Your account will be in suspended mode for 15 days after that it
-              will be permanently removed. Please note once it removed, it can
-              not be recovered.
+            <Text style={[styles.modalText, { marginTop: 10, fontSize: 15 }]}>
+              Please note once its removed, it can not be recovered.
             </Text>
 
             <View
@@ -412,7 +422,7 @@ const Profile = props => {
                   deleteMe();
                 }}
               >
-                <Text style={styles.textStyle}>Yes</Text>
+                <Text style={styles.textStyle}>YES, DELETE NOW</Text>
               </TouchableHighlight>
             </View>
           </View>

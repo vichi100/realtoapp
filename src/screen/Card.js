@@ -41,7 +41,7 @@ import {
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
 
-const Sliding_Drawer_Width = 250;
+// const Sliding_Drawer_Width = 250;
 const width = Dimensions.get("window").width;
 const options = [
   {
@@ -76,6 +76,16 @@ const Card = props => {
   const [checkBoxList, setCheckBoxList] = useState([]);
   const [chatModalVisible, setChatModalVisible] = useState(false);
   const [refresh, setRefresh] = useState(false); // Add a state to trigger re-render
+  const [Sliding_Drawer_Width, setSlidingDrawerWidth] = useState(250);
+
+  useEffect(() => {
+    // Dynamically update the sliding drawer width based on the condition
+    if (item && item.agent_id === props.userDetails.works_for) {
+      setSlidingDrawerWidth(250); // Increase width
+    } else {
+      setSlidingDrawerWidth(200); // Default width if dont want to see delete option
+    }
+  }, [item, props.userDetails.works_for]);
 
 
   const gotoEmployeeList = itemForAddEmplyee => {
@@ -604,12 +614,12 @@ const Card = props => {
 
         {!disableDrawer && (
           <Animated.View
-            style={[
-              styles.drawer,
-              { transform: [{ translateX: Animation_Interpolate }] }
-            ]}
+          style={[
+            styles.drawer,
+            { width: Sliding_Drawer_Width, transform: [{ translateX: Animation_Interpolate }] },
+          ]}
           >
-            <View style={styles.Main_Sliding_Drawer_Container}>
+           <View style={[styles.Main_Sliding_Drawer_Container, { width: Sliding_Drawer_Width, paddingHorizontal: 0 }]}>
               {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
               <TouchableOpacity
                 onPress={ShowSlidingDrawer}
@@ -622,7 +632,7 @@ const Card = props => {
                 />
               </TouchableOpacity>
               <View style={styles.verticalLine} />
-              <TouchableOpacity
+              {item.agent_id === props.userDetails.works_for && <TouchableOpacity
                 // disabled={Sliding_Drawer_Toggle}
                 onPress={() => {
                   setModalVisible(true);
@@ -630,7 +640,7 @@ const Card = props => {
                 style={{ padding: 15, backgroundColor: "#e57373" }}
               >
                 <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
-              </TouchableOpacity>
+              </TouchableOpacity>}
 
               <TouchableOpacity
                 onPress={() => onShare(item)}
@@ -938,7 +948,7 @@ const styles = StyleSheet.create({
     // left: 0,
     // bottom: 0,
     // top: Platform.OS == "ios" ? 20 : 0,
-    width: Sliding_Drawer_Width
+    // width: Sliding_Drawer_Width
   },
 
   Main_Sliding_Drawer_Container: {
@@ -1017,7 +1027,7 @@ const styles = StyleSheet.create({
     right: 0,
     // bottom: 0,
     alignContent: "center",
-    width: Sliding_Drawer_Width,
+    // width: Sliding_Drawer_Width,
     flexDirection: "row"
   }
 });
