@@ -120,7 +120,7 @@ const AddNewPropCommercialSellFinalDetails = props => {
             // Dont understand why else part is here
             console.log("props.startNavigationPoint: "+props.startNavigationPoint);
             if (props.startNavigationPoint === null) {
-              navigation.navigate("Listing");
+              navigation.navigate("Listing", { didDbCall: true });
 
             } else {
               navigation.navigate("PropertyListForMeeting");

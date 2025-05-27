@@ -128,7 +128,7 @@ const AddNewCustomerRentResidentialFinalDetails = props => {
             props.setCustomerDetails(null);
             props.setResidentialCustomerList([...props.residentialCustomerList, response.data])
             if (props.startNavigationPoint === null) {
-              navigation.navigate("Contacts");
+              navigation.navigate("Contacts", { didDbCall: true });
 
             } else {
               navigation.navigate("CustomerListForMeeting");

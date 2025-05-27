@@ -127,7 +127,7 @@ const AddNewPropSellFinalDetails = props => {
             props.setResidentialPropertyList([...props.residentialPropertyList, response.data])
             // navigation.navigate("Listing");
             if (props.startNavigationPoint === null) {
-              navigation.navigate("Listing");
+              navigation.navigate("Listing", { didDbCall: true });
 
             } else {
               navigation.navigate("PropertyListForMeeting");

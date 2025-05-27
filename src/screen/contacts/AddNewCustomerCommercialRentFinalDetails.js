@@ -110,7 +110,7 @@ const AddNewCustomerCommercialRentFinalDetails = props => {
             props.setCustomerDetails(null);
             props.setCommercialCustomerList([...props.commercialCustomerList, response.data])
             if (props.startNavigationPoint === null) {
-              navigation.navigate("Contacts");
+              navigation.navigate("Contacts", { didDbCall: true });
 
             } else {
               navigation.navigate("CustomerListForMeeting");

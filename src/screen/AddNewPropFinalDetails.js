@@ -136,7 +136,7 @@ const AddNewPropFinalDetails = props => {
               navigation.navigate("Listing", { didDbCall: true });
 
             } else {
-              navigation.navigate("PropertyListForMeeting", { didDbCall: true });
+              navigation.navigate("PropertyListForMeeting");
             }
             props.setStartNavigationPoint(null);
             setLoading(false);
