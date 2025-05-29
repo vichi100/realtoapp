@@ -11,6 +11,8 @@ import { Avatar } from "@rneui/themed";
 import { numDifferentiation, dateFormat } from "../../util/methods";
 import { connect } from "react-redux";
 import Reminder from "../Reminder";
+import { formatIsoDateToCustomString } from "../../util/methods";
+
 
 const CustomerDetailsCommercialBuyFromList = props => {
   const { navigation } = props;
@@ -191,7 +193,7 @@ const CustomerDetailsCommercialBuyFromList = props => {
           <View style={styles.overviewRightColumn}>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {dateFormat(item.customer_buy_details.available_from)}
+                {formatIsoDateToCustomString(item.customer_buy_details.available_from)}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Possession</Text>
             </View>

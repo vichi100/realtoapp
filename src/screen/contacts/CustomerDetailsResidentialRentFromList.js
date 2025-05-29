@@ -12,6 +12,7 @@ import { numDifferentiation } from "../../util/methods";
 import Feather from "react-native-vector-icons/Feather";
 import { connect } from "react-redux";
 import Reminder from "../Reminder"; 
+import { formatIsoDateToCustomString } from "../../util/methods";
 
 const CustomerDetailsResidentialRentFromList = props => {  
   const { navigation } = props;
@@ -198,7 +199,7 @@ const CustomerDetailsResidentialRentFromList = props => {
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {item.customer_rent_details.available_from}
+                {formatIsoDateToCustomString(item.customer_rent_details.available_from)}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Possession</Text>
             </View>

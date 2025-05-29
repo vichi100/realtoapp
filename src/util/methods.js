@@ -19,3 +19,27 @@ export const addDays = (theDate, days) => {
     return new Date(theDate.getTime() + days*24*60*60*1000);
 }
 
+// Function to format the date
+export const formatIsoDateToCustomString = (isoString) => {
+  // 1. Create a Date object from the ISO string
+  const date = new Date(isoString);
+
+  // Check if the date is valid
+  if (isNaN(date.getTime())) {
+    console.error("Invalid date string provided:", isoString);
+    return "Invalid Date";
+  }
+
+  // 2. Get day of the week, month, day of the month, and year
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  const dayOfWeek = days[date.getDay()];
+  const month = months[date.getMonth()];
+  const dayOfMonth = date.getDate();
+  const year = date.getFullYear();
+
+  // 3. Construct the desired string format
+  return `${dayOfWeek} ${month} ${dayOfMonth} ${year}`;
+};
+

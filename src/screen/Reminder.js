@@ -20,6 +20,7 @@ import axios from "axios";
 import { SERVER_URL } from "../util/Constant";
 import { useIsFocused } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
+import {formatIsoDateToCustomString} from "../util/methods"; // Assuming this is the correct path to your method
 
 const Reminder = props => {
   const {
@@ -27,7 +28,7 @@ const Reminder = props => {
     customerData,
     isSpecificRemider = false,
   } = props;
-  const { didDbCall = true } = props.route.params || {};
+  const { didDbCall = true } = props.route?.params || {}; // Use optional chaining and fallback
   const [reminderList, setReminderList] = useState([]);
   const [futureReminderList, setFutureReminderList] = useState([]);
   const [pastReminderList, setPastReminderList] = useState([]);
@@ -46,7 +47,7 @@ const Reminder = props => {
       useCallback(() => {
         // This function will be called when Screen A comes into focus
         console.log("useFocusEffect")
-        if (dbCall) {
+        if (dbCall && !isSpecificRemider && customerData == null) {
           getReminderList();
           
         }
@@ -253,7 +254,7 @@ const Reminder = props => {
             <View style={{ padding: 10 }}>
               <Text>{item.reminder_for}</Text>
               <Text>{item.meeting_time}</Text>
-              <Text>{item.meeting_date}</Text>
+              <Text>{formatIsoDateToCustomString(item.meeting_date)}</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -312,7 +313,7 @@ const Reminder = props => {
             <View style={{ padding: 10 }}>
               <Text>{item.reminder_for}</Text>
               <Text>{item.meeting_time}</Text>
-              <Text>{item.meeting_date}</Text>
+              <Text>{formatIsoDateToCustomString(item.meeting_date)}</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -378,7 +379,7 @@ const Reminder = props => {
             <View style={{ padding: 10 }}>
               <Text>{item.reminder_for}</Text>
               <Text>{item.meeting_time}</Text>
-              <Text>{item.meeting_date}</Text>
+              <Text>{formatIsoDateToCustomString(item.meeting_date)}</Text>
             </View>
           </View>
         </TouchableOpacity>

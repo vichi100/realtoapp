@@ -19,6 +19,7 @@ import PropertyReminder from './PropertyReminder';
 import { SERVER_URL } from "../util/Constant";
 import axios from "axios";
 import AppConstant from "../util/AppConstant";
+import { formatIsoDateToCustomString } from "../util/methods";
 
 const PropDetailsFromListingForSell = props => {
   // const { navigation } = props;
@@ -219,7 +220,7 @@ const PropDetailsFromListingForSell = props => {
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {dateFormat(item.sell_details.available_from)}
+                {formatIsoDateToCustomString(item.sell_details.available_from)}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Possession</Text>
             </View>

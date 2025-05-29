@@ -20,6 +20,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import PropertyReminder from '../../PropertyReminder';
 import { SERVER_URL } from "../../../util/Constant";
 import axios from "axios";
+import { formatIsoDateToCustomString } from "../../../util/methods";
 
 
 const CommercialSellPropDetails = props => {
@@ -224,7 +225,7 @@ const CommercialSellPropDetails = props => {
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {dateFormat(item.sell_details.available_from)}
+                {formatIsoDateToCustomString(item.sell_details.available_from)}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Possession</Text>
             </View>

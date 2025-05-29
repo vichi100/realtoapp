@@ -12,6 +12,7 @@ import { numDifferentiation, dateFormat } from "../../util/methods";
 import Feather from "react-native-vector-icons/Feather";
 import { connect } from "react-redux";
 import Reminder from "../Reminder";
+import { formatIsoDateToCustomString } from "../../util/methods";
 
 const CustomerDetailsResidentialBuyFromList = props => {
   const { navigation } = props;
@@ -192,7 +193,7 @@ const CustomerDetailsResidentialBuyFromList = props => {
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {dateFormat(item.customer_buy_details.available_from)}
+                {formatIsoDateToCustomString(item.customer_buy_details.available_from)}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Possession</Text>
             </View>
@@ -240,7 +241,7 @@ const CustomerDetailsResidentialBuyFromList = props => {
       </View>
       {/* owner details */}
       <View style={styles.margin1}></View>
-      <Reminder navigation={navigation} customerData={item} isSpecificRemider = {true}/>
+      <Reminder navigation={navigation} customerData={item} isSpecificRemider = {true} didDbCall = {false }/>
       {/* <View style={styles.overviewContainer}>
         <View style={styles.overview}>
           <Text>Owner</Text>
