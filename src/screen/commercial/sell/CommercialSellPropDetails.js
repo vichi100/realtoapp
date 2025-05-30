@@ -21,6 +21,7 @@ import PropertyReminder from '../../PropertyReminder';
 import { SERVER_URL } from "../../../util/Constant";
 import axios from "axios";
 import { formatIsoDateToCustomString } from "../../../util/methods";
+import Feather from "react-native-vector-icons/Feather";
 
 
 const CommercialSellPropDetails = props => {
@@ -41,6 +42,16 @@ const CommercialSellPropDetails = props => {
   const scrollViewRef = useRef();
   const [reminderListX, setReminderListX] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const gotoEmployeeList = itemForAddEmplyee => {
+    console.log("gotoEmployeeList: ", itemForAddEmplyee);
+    // props.setPropertyDetails(itemForAddEmplyee);
+    navigation.navigate("EmployeeListOfListing", {
+      itemForAddEmplyee: itemForAddEmplyee,
+      disableDrawer: true,
+      displayCheckBox: true,
+    });
+  }
 
   const scrollToAccordion = () => {
     scrollViewRef.current.scrollTo({ y: 0, animated: true });
@@ -121,12 +132,20 @@ const CommercialSellPropDetails = props => {
               {item.property_address.formatted_address}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: 10 }}>
-            <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Next Meeting </Text>
-            <MaterialIcons name="alarm" size={20} color="black" />
-            <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}> 10:30</Text>
-          </View>
-
+          {props.userDetails.works_for === props.userDetails.id && item.agent_id === props.userDetails.id && <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: 10 }}>
+              {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
+              <Feather name="user-plus" size={20} color="black" />
+              {/* <FontAwesome5 name="user-minus" size={20} color="rgb(70, 69, 69)" />  */}
+              {/* <FontAwesome5 name="user-plus" size={20} color="rgb(111, 104, 104)" /> */}
+              <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>
+                {Array.isArray(item.assigned_to_employee_name) && item.assigned_to_employee_name.length > 0
+                  ? item.assigned_to_employee_name.join(", ")
+                  : "No employees assigned"}
+              </Text>
+              {/* <SimpleLineIcons name="user-unfollow" size={20} color="black" /> */}
+            </View>
+          </TouchableOpacity>}
         </View>
 
         {displayMatchCount && <TouchableOpacity
