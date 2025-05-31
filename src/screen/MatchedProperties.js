@@ -635,21 +635,7 @@ const ListingResidential = props => {
       {/* <ActivityIndicator animating size="large" /> */}
     </View> :
       <View style={{ flex: 1 }}>
-        {/* <View style={styles.searchBar}>
-          <AntDesign name="search1" size={20} color="#999" style={{ marginRight: 5, }} /> */}
-          {/* <View style={{ flexDirection: "row", margin: 10, justifyContent: "space-between" }}>
-            <Text>For Rent: {rentPropCount.length}</Text>
-            <Text>For Sell: {sellPropCount.length}</Text>
-          </View> */}
-          {/* <TextInput
-            style={styles.textInputStyle}
-            onChangeText={text => searchFilterFunction(text)}
-            value={search}
-            underlineColorAndroid="transparent"
-            placeholder="Search by property address, owner"
-            placeholderTextColor="#000"
-          /> */}
-        {/* </View> */}
+        
 
 
         {1 > 0 ? (

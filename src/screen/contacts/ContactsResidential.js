@@ -412,6 +412,7 @@ const ContactsResidential = props => {
           item.customer_details.name +
           item.customer_details.address +
           item.customer_details.mobile1 +
+          item.customer_id +
           item.customer_locality.location_area.map(item => item.main_text).join(', ')
         // item.customer_locality.location_area;
 
@@ -553,7 +554,7 @@ const ContactsResidential = props => {
             onChangeText={text => searchFilterFunction(text)}
             value={search}
             underlineColorAndroid="transparent"
-            placeholder="Search by name, location"
+            placeholder="Search by name, address, id, mobile"
             placeholderTextColor="#000"
           />
         </View>

@@ -484,7 +484,8 @@ const ListingResidential = props => {
           item.property_address.landmark_or_street +
           item.property_address.formatted_address +
           item.owner_details.name +
-          item.owner_details.mobile1;
+          item.owner_details.mobile1+
+          item.property_id;
 
         const textData = text.toUpperCase();
         return itemData.toUpperCase().indexOf(textData) > -1;
@@ -620,7 +621,7 @@ const ListingResidential = props => {
             onChangeText={text => searchFilterFunction(text)}
             value={search}
             underlineColorAndroid="transparent"
-            placeholder="Search by property address, owner"
+            placeholder="Search by name, address, id, mobile"
             placeholderTextColor="#000"
           />
         </View>

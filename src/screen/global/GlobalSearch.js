@@ -34,12 +34,6 @@ import axios from "axios";
 import SliderCr from "../../components/SliderCr";
 import ModalActivityIndicator from 'react-native-modal-activityindicator';
 
-// import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/Constant";
-
-// import Button from "../../components/Button";
-// Dynamic query
-// https://stackoverflow.com/questions/29831164/how-to-filter-in-mongodb-dynamically#:~:text=answer%20was%20accepted%E2%80%A6-,var%20fName%3D%22John%22%2C%20fCountry%3D%22US%22,fName%7D)%3B%20%7D%20if%20(fCountry%20!%3D%3D
-
 const homePlace = { description: 'Mumbai', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } } };
 
 const propertyTypeArray = ["Residential", "Commercial"];
@@ -53,8 +47,6 @@ const lookingForOptions = [
   { text: 'Property' },
   { text: 'Customer' },
 ];
-
-
 
 const porposeForOptions = [
   { text: 'Rent' },
@@ -76,7 +68,6 @@ const reqWithinOptions = [
   { text: '60+ Days' },
 ];
 
-
 const tenantOptions = [
   { text: 'Any' },
   { text: 'Family' },
@@ -84,7 +75,6 @@ const tenantOptions = [
 ];
 
 const buildingTypeOption = [
-
   { text: 'Mall' },
   { text: 'Businesses Park' },
   { text: 'StandAlone' },
@@ -107,10 +97,7 @@ const GlobalSearch = props => {
   const ref = useRef();
   const { navigation } = props;
 
-  // Ensure props.userDetails and works_for are defined
-  // const reqUserId = props.userDetails?.works_for || null;
-
-  const [city, setCity] = useState(""); // when user input city
+  const [city, setCity] = useState("");
   const [area, setArea] = useState("");
   const [address, setAddress] = useState(null);
   const [gLocation, setGLocation] = useState(null);
@@ -120,8 +107,7 @@ const GlobalSearch = props => {
   const [selectedPropType, setSelectedPropType] = useState(null);
   const [data, setData] = useState([]);
 
-
-  const [selectedLocationArray, setSelectedLocationArray] = useState([]);// when add multiple location
+  const [selectedLocationArray, setSelectedLocationArray] = useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState([]);
   const [lookingFor, setLookingFor] = useState("Property");
   const [whatType, setWhatType] = useState("Residential");
@@ -131,35 +117,76 @@ const GlobalSearch = props => {
   const [selectedBuildingType, setSelectedBuildingType] = useState(["Mall"]);
   const [priceRange, setPriceRange] = useState([]);
   const [priceRangeCr, setPriceRangeCr] = useState([1000000, 50000000]);
-  const [reqWithin, setReqWithin] = useState("7 Days".toLowerCase());
+  const [reqWithin, setReqWithin] = useState("7 Days");
   const [tenant, setTenant] = useState("Any");
+  const [query, setQuery] = useState("I am looking for a Property for a Residential property to Rent");
 
   const [loading, setLoading] = useState(false);
-    const [modalVisible, setModalVisible] = useState(false);
-  
+  const [modalVisible, setModalVisible] = useState(false);
 
+  const updateQuery = useCallback(() => {
+    // let newQuery = `I am looking for a ${lookingFor.toLowerCase()} for a ${whatType.toLowerCase()} purpose`;
+    let newQuery = `I am looking for a ${lookingFor.toLowerCase()} `;
 
+    if (purpose && lookingFor.toLowerCase() === "customer") {
+      console.log("purpose: ", purpose);
+      newQuery += `to ${purpose.toLowerCase()} a ${whatType.toLowerCase()} property for`;
+    }else if (purpose && lookingFor.toLowerCase() === "property") {
+      newQuery += `to ${purpose.toLowerCase()}`;
+    }
 
+    if (whatType.toLowerCase() === "residential") {
+      if (selectedBHK.length > 0) {
+        newQuery += ` ${selectedBHK.join(', ')}`;
+      }
+      if (tenant) {
+        // newQuery += ` for ${tenant} tenants`;
+      }
+    } else if (whatType.toLowerCase() === "commercial") {
+      if (selectedRequiredFor.length > 0) {
+        newQuery += `  ${selectedRequiredFor.join(', ')}`;
+      }
+      if (selectedBuildingType.length > 0) {
+        newQuery += ` in building type ${selectedBuildingType.join(', ')}`;
+      }
+    }
 
+    if (reqWithin) {
+      newQuery += ` within ${reqWithin}`;
+    }
 
+    setQuery(newQuery);
+  }, [lookingFor, whatType, purpose, selectedBHK, selectedRequiredFor, selectedBuildingType, reqWithin, tenant]);
+
+  useEffect(() => {
+    updateQuery();
+  }, [lookingFor, whatType, purpose, selectedBHK, selectedRequiredFor, selectedBuildingType, reqWithin, tenant, updateQuery]);
 
   const onSelectPropType = item => {
-    // // console.log(item);
+    console.log(1);
     if (selectedPropType && selectedPropType.key === item.key) {
       setSelectedPropType(null);
     } else {
       setSelectedPropType(item);
     }
+    // The logic below seems redundant given the updateQuery useEffect
+    // if (index === 0) {
+    //   setQuery("I want a residential property ");
+    // } else if (index === 1) {
+    //   setQuery("I am looking for a customer for residential property ");
+    // }
     setIsVisible(false);
   };
 
-
-
   const selectPropertyForIndex = index => {
-    // // console.log(index);
-    // // console.log(propertyForArray[index]);
     setPropertyForIndex(index);
     setIsVisible(false);
+    // The logic below seems redundant given the updateQuery useEffect
+    // if (index === 0) {
+    //   setQuery(`I am looking for a ${lookingFor.toLowerCase()} `);
+    // } else if (index === 1) {
+    //   setQuery(`I am looking for a ${lookingFor.toLowerCase()} `);
+    // }
   };
 
   const dismissSnackBar = () => {
@@ -168,24 +195,14 @@ const GlobalSearch = props => {
 
   useEffect(() => {
     // console.log("useEffect");
-    // const property = await AsyncStorage.getItem("property");
-    // // console.log(property);
   }, []);
 
-  const login = async () => { 
+  const login = async () => {
     navigation.navigate("Login");
     setModalVisible(false);
   }
 
   const onSubmit = () => {
-
-    
-    // if (!reqUserId) {
-    //   setErrorMessage("You are not logged in, please login");
-    //   setIsVisible(true);
-    //   return;
-    // }
-
     if (city.trim() === "") {
       setErrorMessage("City is missing");
       setIsVisible(true);
@@ -200,21 +217,17 @@ const GlobalSearch = props => {
 
     if (props.userDetails === null) {
       console.log("You are not logged in, please login");
-      // setErrorMessage("You are not logged in, please login");
-      // setIsVisible(true);
       setModalVisible(true);
       return;
     }
-
 
     const match = reqWithin.match(/\d+/); // Find the number in the string
     const daysFromReqWithin = match ? parseInt(match[0], 10) : null; // Convert to integer and return
     console.log("daysFromReqWithin: ", daysFromReqWithin);
     const today = new Date(); // Get today's date
-    // const newReqWithinDate = new Date(today.getDate() +daysFromReqWithin);
     today.setDate(today.getDate() + daysFromReqWithin);
 
-    // setLoading(true);
+    // setLoading(true); // Uncomment to enable loading indicator
 
     const queryObject = {
       req_user_id: props.userDetails?.works_for,
@@ -231,7 +244,6 @@ const GlobalSearch = props => {
       reqWithin: today,
       tenant: tenant
     };
-    // // console.log(JSON.stringify(user));
     axios(SERVER_URL + "/getGlobalSearchResult", {
       method: "post",
       headers: {
@@ -252,7 +264,6 @@ const GlobalSearch = props => {
           }
         });
         setData(response.data);
-        // props.setResidentialPropertyList(response.data);
         props.setGlobalSearchResult(response.data);
         if (lookingFor.toLowerCase() === "Property".toLowerCase()) {
           if (whatType.toLowerCase() === "Residential".toLowerCase()) {
@@ -270,6 +281,7 @@ const GlobalSearch = props => {
       },
       error => {
         console.log(error);
+        // setLoading(false); // Uncomment to hide loading indicator on error
       }
     );
   };
@@ -278,7 +290,6 @@ const GlobalSearch = props => {
     console.log("details: ", JSON.stringify(details))
     console.log("Lat Long: ", JSON.stringify(details.geometry.location))
     console.log("data: ", JSON.stringify(data))
-    const tempArray = []
     const gLocation = {
       location: {
         type: "Point",
@@ -286,46 +297,49 @@ const GlobalSearch = props => {
       },
       main_text: data.structured_formatting.main_text
     }
-
-    // tempArray.push(gLocation);
     setSelectedLocationArray([...selectedLocationArray, gLocation])
-
     setGLocation(gLocation);
     ref.current?.setAddressText('');
   }
 
   const removeLocation = loc => {
     console.log("remove", JSON.stringify(loc));
-    // Ensure selectedLocationArray is defined and is an array
     const arr = (selectedLocationArray || []).filter(item => item.main_text !== loc.main_text);
     setSelectedLocationArray(arr);
   };
 
-  const whatTypeButtonPress = (index, button) => {
-    console.log(`Button pressed: ${button.text} (Index: ${index})`);
-    setWhatType(button.text)
-    // Add your custom logic here
-  };
+  const selectBHK = (index, button) => {
+    let newSelectedIndicesBHK;
+    newSelectedIndicesBHK = [...selectedBHK];
+    if (newSelectedIndicesBHK.includes(button.text)) {
+      newSelectedIndicesBHK.splice(newSelectedIndicesBHK.indexOf(button.text), 1);
+    } else {
+      newSelectedIndicesBHK.push(button.text);
+    }
+    setSelectedBHK(newSelectedIndicesBHK);
+    console.log(`newSelectedIndices: ${newSelectedIndicesBHK}`);
+    // Query update is handled by useEffect after state change
+  }
 
-  const handleButtonPress = (index, button) => {
+  const selectWhatYouLookingFor = (index, button) => {
     console.log(`Button pressed: ${button.text} (Index: ${index})`);
-    // setWhatType(button.text)
-    // Add your custom logic here
-  };
+    setLookingFor(button.text);
+    // Query update is handled by useEffect after state change
+  }
+
+  const selectWhatType = (index, button) => {
+    console.log(`Button pressed: ${button.text} (Index: ${index})`);
+    setWhatType(button.text);
+    // Query update is handled by useEffect after state change
+  }
 
   const handlePriceRangeChange = useCallback((values) => {
-    // console.log(`Price range updated: ${values}`);
-    setPriceRange(values); // Update the price range state
+    setPriceRange(values);
   }, []);
 
   const handlePriceRangeChangeCr = useCallback((values) => {
-    // console.log(`Price range updated: ${values}`);
-    setPriceRangeCr(values); // Update the price range state
+    setPriceRangeCr(values);
   }, []);
-
-
-
-
 
   const renderSelectedLocation = ({ item }) => {
     console.log(JSON.stringify(item));
@@ -335,43 +349,47 @@ const GlobalSearch = props => {
         <Text style={{ color: "red", position: "absolute", right: 10, top: 8, marginLeft: 10, fontSize: 16 }}>x</Text>
       </TouchableOpacity>
     )
-
-
-
   }
 
   return (
     <View
       style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
     >
-      <View style={{ margin: 10, flexDirection: 'row', justifyContent: 'center', alignItems: 'centerßßßß' }}>
+      {/* <View style={{ margin: 10, flexDirection: 'row', justifyContent: 'center', alignItems: 'centerßßßß' }}>
         <Image
           source={require('../../../assets/images/home.png')} // Path to your image
           style={{
             width: 45, height: 45, position: "absolute",
-            // width: 130,
-            // height: 35,
-            // alignItems: "center",
-            // justifyContent: "center",
             left: "2%",
-            // left: 0,
           }}
         />
-
-        <Text style={{ padding: 10, textAlign: 'center', fontSize: 24, fontWeight: 500 }}>GLocal Search</Text>
-        {/* <MaterialCommunityIcons name="facebook-messenger" color={"rgba(255, 76, 48, 1)"} size={35} /> */}
+        <Text style={{ padding: 10, textAlign: 'center', fontSize: 24, fontWeight: '500' }}>GLocal Search</Text>
         <View style={{ position: "absolute", right: "2%" }}>
           <MaterialCommunityIcons name="heart-outline" color={"rgb(137, 135, 135)"} size={30} />
         </View>
-
-        {/* <MaterialCommunityIcons name="dots-circle" color={"rgb(108, 110, 110)"} size={30} /> */}
-        {/* <Text>Realto</Text> */}
+      </View> */}
+      {/* Sticky Header */}
+      <View style={styles.stickyHeader}>
+        <View style={{ margin: 10, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+          <Image
+            source={require('../../../assets/images/home.png')} // Path to your image
+            style={{
+              width: 45, height: 45, position: "absolute",
+              left: "2%",
+            }}
+          />
+          <Text style={{ padding: 10, textAlign: 'center', fontSize: 24, fontWeight: '500' }}>GLocal Search</Text>
+          <View style={{ position: "absolute", right: "2%" }}>
+            <MaterialCommunityIcons name="heart-outline" color={"rgb(137, 135, 135)"} size={30} />
+          </View>
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', 
+          backgroundColor: 'rgba(63, 195, 128, .2)', }}>
+          <Text style={{ marginTop: 15, marginBottom: 15, marginLeft: 10, marginRight: 10, fontSize: 16 }}>Hi, {query}</Text>
+        </View>
       </View>
 
-
       <KeyboardAwareScrollView onPress={Keyboard.dismiss} keyboardShouldPersistTaps="handled">
-
-        {/* <ScrollView style={styles.container} keyboardShouldPersistTaps={'always'} listViewDisplayed={false}> */}
 
         <TextInput
           label="City where you want to search*"
@@ -382,8 +400,6 @@ const GlobalSearch = props => {
           style={{ backgroundColor: "rgba(245,245,245, 0.1)", marginTop: 0 }}
           theme={{
             colors: {
-              // placeholder: "white",
-              // text: "white",
               primary: "rgba(0,191,255, .9)",
               underlineColor: "transparent",
               background: "#ffffff"
@@ -403,32 +419,19 @@ const GlobalSearch = props => {
           setAddressText={address}
           query={{
             key: GOOGLE_PLACES_API_KEY,
-            language: 'en', // language of the results
+            language: 'en',
             components: 'country:in',
-            // types: '(cities)'
-            // types: ["address","cities", "locality", "sublocality"],
-            // types: ["establishment"],
-            // fields: ["formatted_address", "geometry", "name"],
-            // fields: ["address_components"],
-            // types: ["cities", "locality", "sublocality",]
           }}
-          // currentLocation={true}
-          // predefinedPlaces={selectedLocationArray || []} // Ensure it's always an array
           shouldDisplayPredefinedPlaces={false}
           predefinedPlacesAlwaysVisible={false}
-          predefinedPlaces={[homePlace]} // Ensure it's always an array
+          predefinedPlaces={[homePlace]}
           isRowScrollable={true}
           fetchDetails={true}
           onPress={(data, details) => onSelectPlace(data, details)}
           onFail={(error) => console.error(error)}
           styles={{
             textInputContainer: {
-              // backgroundColor: 'grey',
               color: '#000000',
-              // backgroundColor: 'grey',
-              // borderLeftWidth: 4,
-              // borderRightWidth: 4,
-              // height: 70
             },
             textInput: {
               height: 45,
@@ -436,22 +439,17 @@ const GlobalSearch = props => {
               fontSize: 16,
               borderColor: "#C0C0C0",
               backgroundColor: "rgba(245,245,245, 0.2)",
-              // borderLeftWidth: 1,
-              // borderRightWidth: 1,
               borderBottomWidth: 1,
-              // borderTopWidth: 1
             },
             predefinedPlacesDescription: {
               color: '#1faadb',
             },
           }}
-        // this in only required for use on the web. See https://git.io/JflFv more for details.
         />
         <View style={{ marginTop: 5 }} />
         <FlatList
           horizontal
           style={{ flex: 1 }}
-          // Ensure selectedLocationArray is always an array
           data={selectedLocationArray || []}
           renderItem={(item) => renderSelectedLocation(item)}
           keyExtractor={(item, index) => index.toString()}
@@ -462,75 +460,56 @@ const GlobalSearch = props => {
         <View style={{ marginTop: 15, alignContent: "flex-start" }}>
           <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>What you are looking for</Text>
         </View>
-        <View
-          style={[{ marginBottom: 10, marginTop: 15 }]}
-        >
-          {/* <Text>Select Property For</Text> */}
+        <View style={[{ marginBottom: 10, marginTop: 15 }]}>
           <CustomButtonGroup
             buttons={lookingForOptions}
-            selectedIndices={[lookingForOptions.findIndex(option => option.text === lookingFor)]} // Dynamically map the selected value
-            isMultiSelect={false} // Enable multi-select by default
+            selectedIndices={[lookingForOptions.findIndex(option => option.text === lookingFor)]}
+            isMultiSelect={false}
             buttonStyle={{ backgroundColor: '#fff' }}
             selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
             buttonTextStyle={{ color: '#000' }}
             selectedButtonTextStyle={{ color: '#000' }}
             onButtonPress={(index, button) => {
-              // console.log(`Button pressed: ${button.text} (Index: ${index})`);
-              setLookingFor(button.text)
-            }} // Pass the callback function
-
+              selectWhatYouLookingFor(index, button);
+            }}
           />
         </View>
 
         <View style={styles.header}>
           <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>What type</Text>
         </View>
-        <View
-          style={[{ marginBottom: 10, marginTop: 15 }]}
-        >
-          {/* <Text>Select Property For</Text> */}
+        <View style={[{ marginBottom: 10, marginTop: 15 }]}>
           <CustomButtonGroup
             buttons={whatTypeOptions}
-            selectedIndices={[whatTypeOptions.findIndex(option => option.text === whatType)]} // Dynamically map the selected value
-            isMultiSelect={false} // Enable multi-select by default
+            selectedIndices={[whatTypeOptions.findIndex(option => option.text === whatType)]}
+            isMultiSelect={false}
             buttonStyle={{ backgroundColor: '#fff' }}
             selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
             buttonTextStyle={{ color: '#000' }}
             selectedButtonTextStyle={{ color: '#000' }}
             onButtonPress={(index, button) => {
-              console.log(`Button pressed: ${button.text} (Index: ${index})`);
-              setWhatType(button.text)
-            }} // Pass the callback function
+              selectWhatType(index, button);
+            }}
           />
         </View>
 
         <View style={styles.header}>
           <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>What is purpose</Text>
         </View>
-        <View
-          style={[styles.propSubSection, { marginBottom: 10, marginTop: 15 }]}
-        >
-          {/* <Text>Select Property For</Text> */}
+        <View style={[styles.propSubSection, { marginBottom: 10, marginTop: 15 }]}>
           <CustomButtonGroup
             buttons={porposeForOptions}
-            selectedIndices={[porposeForOptions.findIndex(option => option.text === purpose)]} // Dynamically map the selected value
-            isMultiSelect={false} // Enable multi-select by default
+            selectedIndices={[porposeForOptions.findIndex(option => option.text === purpose)]}
+            isMultiSelect={false}
             buttonStyle={{ backgroundColor: '#fff' }}
             selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
             buttonTextStyle={{ color: '#000' }}
             selectedButtonTextStyle={{ color: '#000' }}
             onButtonPress={(index, button) => {
               console.log(`Button pressed: ${button.text} (Index: ${index})`);
-              setPurpose(button.text)
-            }} // Pass the callback function
-          // buttonStyle={styles.customButton}
-          // selectedButtonStyle={styles.customSelectedButton}
-          // buttonTextStyle={styles.customButtonText}
-          // selectedButtonTextStyle={styles.customSelectedButtonText}
-          // buttonImageStyle={styles.customButtonImage}
-          // containerStyle={styles.customContainer}
-          // toggleContainerStyle={styles.customToggleContainer}
-          // selectedTextStyle={styles.customSelectedText}
+              setPurpose(button.text);
+              // Query update is handled by useEffect after state change
+            }}
           />
         </View>
 
@@ -538,53 +517,37 @@ const GlobalSearch = props => {
           <View style={styles.header}>
             <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>BHK Size</Text>
           </View>
-          <View
-            style={[{ marginBottom: 10, marginTop: 15 }]}
-          >
-            {/* <Text>Select Property For</Text> */}
+          <View style={[{ marginBottom: 10, marginTop: 15 }]}>
             <CustomButtonGroup
               buttons={bhkOption}
-              // initialSelectedIndices={[0]} // Initially select the first button
-              isMultiSelect={true} // Enable multi-select by default
+              isMultiSelect={true}
               buttonStyle={{ backgroundColor: '#fff' }}
               selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
               buttonTextStyle={{ color: '#000' }}
               selectedButtonTextStyle={{ color: '#000' }}
               selectedIndices={selectedBHK.map((item) =>
                 bhkOption.findIndex((option) => option.text === item)
-              )} // Map selectedRequiredFor to indices
+              )}
               onButtonPress={(index, button) => {
-                let newSelectedIndicesBHK;
-                newSelectedIndicesBHK = [...selectedBHK];
-                if (newSelectedIndicesBHK.includes(button.text)) {
-                  newSelectedIndicesBHK.splice(newSelectedIndicesBHK.indexOf(button.text), 1);
-                } else {
-                  newSelectedIndicesBHK.push(button.text);
-                }
-                setSelectedBHK(newSelectedIndicesBHK);
-                console.log(`newSelectedIndices: ${newSelectedIndicesBHK}`);
-              }} // Pass the callback function
+                selectBHK(index, button);
+              }}
             />
           </View>
         </View>) : (<View>
           <View style={styles.header}>
             <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>Required For</Text>
           </View>
-          <View
-            style={[{ marginBottom: 10, marginTop: 15 }]}
-          >
-            {/* <Text>Select Property For</Text> */}
+          <View style={[{ marginBottom: 10, marginTop: 15 }]}>
             <CustomButtonGroup
               buttons={requiredForOption}
-              // initialSelectedIndices={[0]} // Initially select the first button
-              isMultiSelect={true} // Enable multi-select by default
+              isMultiSelect={true}
               buttonStyle={{ backgroundColor: '#fff' }}
               selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
               buttonTextStyle={{ color: '#000' }}
               selectedButtonTextStyle={{ color: '#000' }}
               selectedIndices={selectedRequiredFor.map((item) =>
                 requiredForOption.findIndex((option) => option.text === item)
-              )} // Map selectedRequiredFor to indices
+              )}
               onButtonPress={(index, button) => {
                 let newSelectedIndicesRequiredFor = [];
                 newSelectedIndicesRequiredFor = [...selectedRequiredFor];
@@ -595,28 +558,25 @@ const GlobalSearch = props => {
                 }
                 setSelectedRequiredFor(newSelectedIndicesRequiredFor);
                 console.log(`newSelectedIndices: ${newSelectedIndicesRequiredFor}`);
-              }} // Pass the callback function
+                // Query update is handled by useEffect after state change
+              }}
             />
           </View>
 
           <View style={styles.header}>
             <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>Building type</Text>
           </View>
-          <View
-            style={[{ marginBottom: 10, marginTop: 15 }]}
-          >
-            {/* <Text>Select Property For</Text> */}
+          <View style={[{ marginBottom: 10, marginTop: 15 }]}>
             <CustomButtonGroup
               buttons={buildingTypeOption}
-              // initialSelectedIndices={[0]} // Initially select the first button
-              isMultiSelect={true} // Enable multi-select by default
+              isMultiSelect={true}
               buttonStyle={{ backgroundColor: '#fff' }}
               selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
               buttonTextStyle={{ color: '#000' }}
               selectedButtonTextStyle={{ color: '#000' }}
               selectedIndices={selectedBuildingType.map((item) =>
                 buildingTypeOption.findIndex((option) => option.text === item)
-              )} // Map selectedRequiredFor to indices
+              )}
               onButtonPress={(index, button) => {
                 let newSelectedIndicesBuildingType = [];
                 newSelectedIndicesBuildingType = [...selectedBuildingType];
@@ -627,12 +587,11 @@ const GlobalSearch = props => {
                 }
                 setSelectedBuildingType(newSelectedIndicesBuildingType);
                 console.log(`newSelectedIndices: ${newSelectedIndicesBuildingType}`);
-              }} // Pass the callback function
-
+                // Query update is handled by useEffect after state change
+              }}
             />
           </View>
         </View>)}
-
 
         <View style={[styles.header, { marginBottom: 20 }]}>
           <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>Price Range</Text>
@@ -640,36 +599,32 @@ const GlobalSearch = props => {
         {purpose === "Rent" ? <Slider
           min={10000}
           max={400000}
-          // step={10000}
           onSlide={handlePriceRangeChange}
         /> :
           <SliderCr
             min={1000000}
             max={50000000}
-            onSlide={handlePriceRangeChangeCr} // Pass the memoized callback
+            onSlide={handlePriceRangeChangeCr}
           />
         }
 
         <View style={styles.header}>
           <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>Required with in</Text>
         </View>
-        <View
-          style={[{ marginBottom: 10, marginTop: 15 }]}
-        >
-          {/* <Text>Select Property For</Text> */}
+        <View style={[{ marginBottom: 10, marginTop: 15 }]}>
           <CustomButtonGroup
             buttons={reqWithinOptions}
-            selectedIndices={[reqWithinOptions.findIndex(option => option.text === reqWithin)]} // Dynamically map the selected value
-            isMultiSelect={false} // Enable multi-select by default
+            selectedIndices={[reqWithinOptions.findIndex(option => option.text === reqWithin)]}
+            isMultiSelect={false}
             buttonStyle={{ backgroundColor: '#fff' }}
             selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
             buttonTextStyle={{ color: '#000' }}
             selectedButtonTextStyle={{ color: '#000' }}
             onButtonPress={(index, button) => {
               console.log(`Button pressed: ${button.text} (Index: ${index})`);
-              setReqWithin(button.text)
-            }} // Pass the callback function
-
+              setReqWithin(button.text);
+              // Query update is handled by useEffect after state change
+            }}
           />
         </View>
 
@@ -677,40 +632,28 @@ const GlobalSearch = props => {
           <View style={styles.header}>
             <Text style={{ padding: 10, backgroundColor: "rgba(229, 228, 226, .6)" }}>Preferd Tenants</Text>
           </View>
-          <View
-            style={[{ marginBottom: 5, marginTop: 15 }]}
-          >
-            {/* <Text>Select Property For</Text> */}
+          <View style={[{ marginBottom: 5, marginTop: 15 }]}>
             <CustomButtonGroup
               buttons={tenantOptions}
-              selectedIndices={[tenantOptions.findIndex(option => option.text === tenant)]} // Dynamically map the selected value
-              isMultiSelect={false} // Enable multi-select by default
+              selectedIndices={[tenantOptions.findIndex(option => option.text === tenant)]}
+              isMultiSelect={false}
               buttonStyle={{ backgroundColor: '#fff' }}
               selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
               buttonTextStyle={{ color: '#000' }}
               selectedButtonTextStyle={{ color: '#000' }}
               onButtonPress={(index, button) => {
                 console.log(`Button pressed: ${button.text} (Index: ${index})`);
-                setTenant(button.text)
-              }} // Pass the callback function
-
+                setTenant(button.text);
+                // Query update is handled by useEffect after state change
+              }}
             />
           </View>
         </View>) : (<View></View>)}
-
-
-
-
-        {/* </ScrollView> */}
-
       </KeyboardAwareScrollView>
-      {/* Fixed button at the bottom */}
-
 
       <View style={[{ flexDirection: "column", }]}>
         <View
           style={{
-
             marginBottom: 5,
             marginLeft: 10,
             marginRight: 10
@@ -727,7 +670,6 @@ const GlobalSearch = props => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          // Alert.alert("Modal has been closed.");
           setModalVisible(false);
         }}
       >
@@ -736,8 +678,6 @@ const GlobalSearch = props => {
             <Text style={styles.modalText}>
               You are not logged in, please login.
             </Text>
-
-
             <View
               style={{
                 position: "absolute",
@@ -747,7 +687,6 @@ const GlobalSearch = props => {
                 marginTop: 20,
                 marginBottom: 20,
                 padding: 20
-                // justifyContent: "flex-end"
               }}
             >
               <TouchableHighlight
@@ -783,8 +722,6 @@ const GlobalSearch = props => {
   );
 };
 
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -801,18 +738,15 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   propSubSection: {
-    // marginTop: 50,
     marginBottom: 10,
     marginLeft: 10
   },
   customButton: {
     backgroundColor: '#ffffff',
-    // borderColor: '#999',
   },
   customSelectedButton: {
     backgroundColor: 'rgba(0, 163, 108, .2)',
     borderColor: 'rgba(0, 163, 108, .9)'
-
   },
   customButtonText: {
     color: '#000',
@@ -836,11 +770,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   buttonContainer: {
-    position: 'absolute', // Position the button absolutely
-    bottom: 0, // Distance from the bottom
-    left: 20, // Distance from the left
-    right: 20, // Distance from the right
-    alignItems: 'center', // Center the button horizontally
+    position: 'absolute',
+    bottom: 0,
+    left: 20,
+    right: 20,
+    alignItems: 'center',
   },
   centeredView1: {
     flex: 1,
@@ -866,29 +800,10 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   applyButton: {
-    // backgroundColor: "#F194FF",
-    // width: 150,
-    // textAlign: "center",
-    // borderRadius: 20,
-    // paddingLeft: 60,
-    // paddingRight: 20,
-    // paddingTop: 10,
-    // paddingBottom: 10,
-    // elevation: 2,
     marginLeft: 10,
     marginRight: 10
   },
-
   cancelButton: {
-    // backgroundColor: "#F194FF",
-    // width: 150,
-    // textAlign: "center",
-    // borderRadius: 20,
-    // paddingLeft: 55,
-    // paddingRight: 20,
-    // paddingTop: 10,
-    // paddingBottom: 10,
-    // elevation: 2,
     marginLeft: 10,
     marginRight: 30
   },
@@ -915,5 +830,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(GlobalSearch);
-
-// export default ListingResidential;
