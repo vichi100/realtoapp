@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 import { makeCall } from "../util/methods";
+import {formatIsoDateToCustomString} from "../util/methods"; 
 
 const PropertyReminder = props => {
   const {
@@ -133,7 +134,7 @@ const PropertyReminder = props => {
             <View style={{ padding: 10 }}>
               <Text>{item.reminder_for}</Text>
               <Text>{item.meeting_time}</Text>
-              <Text>{item.meeting_date}</Text>
+              <Text>{formatIsoDateToCustomString(item.meeting_date)}</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -191,7 +192,7 @@ const PropertyReminder = props => {
             <View style={{ padding: 10 }}>
               <Text>{item.reminder_for}</Text>
               <Text>{item.meeting_time}</Text>
-              <Text>{item.meeting_date}</Text>
+              <Text>{formatIsoDateToCustomString(item.meeting_date)}</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -249,7 +250,7 @@ const PropertyReminder = props => {
             <View style={{ padding: 10 }}>
               <Text>{item.reminder_for}</Text>
               <Text>{item.meeting_time}</Text>
-              <Text>{item.meeting_date}</Text>
+              <Text>{formatIsoDateToCustomString(item.meeting_date)}</Text>
             </View>
           </View>
         </TouchableOpacity>

@@ -18,6 +18,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 import { SERVER_URL } from "../util/Constant";
 import { makeCall } from "../util/methods";
+import {formatIsoDateToCustomString} from "../util/methods"; 
 
 const CustomerReminder = props => {
   const { navigation, item } = props;
@@ -106,7 +107,7 @@ const CustomerReminder = props => {
             <View style={{ padding: 10 }}>
               <Text>{item.reminder_for}</Text>
               <Text>{item.meeting_time}</Text>
-              <Text>{item.meeting_date}</Text>
+              <Text>{formatIsoDateToCustomString(item.meeting_date)}</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -164,7 +165,7 @@ const CustomerReminder = props => {
             <View style={{ padding: 10 }}>
               <Text>{item.reminder_for}</Text>
               <Text>{item.meeting_time}</Text>
-              <Text>{item.meeting_date}</Text>
+              <Text>{formatIsoDateToCustomString(item.meeting_date)}</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -222,7 +223,7 @@ const CustomerReminder = props => {
             <View style={{ padding: 10 }}>
               <Text>{item.reminder_for}</Text>
               <Text>{item.meeting_time}</Text>
-              <Text>{item.meeting_date}</Text>
+              <Text>{formatIsoDateToCustomString(item.meeting_date)}</Text>
             </View>
           </View>
         </TouchableOpacity>
