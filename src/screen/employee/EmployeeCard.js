@@ -34,6 +34,7 @@ import {
   setCustomerDetails
 } from "../../reducers/Action";
 import axios from "axios";
+import { makeCall } from "../../util/methods";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -295,11 +296,11 @@ const EmployeeCard = props => {
 
   // // console.log(width);
 
-  const makeCall = item => {
-    const mobile = item.customer_details.mobile1;
-    const url = "tel://" + mobile;
-    Linking.openURL(url);
-  };
+  // const makeCall = item => {
+  //   const mobile = item.customer_details.mobile1;
+  //   const url = "tel://" + mobile;
+  //   Linking.openURL(url);
+  // };
 
   const onShare = async () => {
     // https://docs.expo.io/versions/latest/react-native/share/

@@ -22,6 +22,7 @@ import axios from "axios";
 
 const ProfileForm = props => {
   const { navigation } = props;
+  const {updateDbCall} = props.route.params;
 
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
@@ -33,6 +34,24 @@ const ProfileForm = props => {
 
   const dismissSnackBar = () => {
     setIsVisible(false);
+  };
+
+  React.useEffect(() => {
+      const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+        // Prevent default back action (optional)
+        // e.preventDefault();
+  
+        // Call your function here
+        myBackFunction();
+      });
+  
+      return unsubscribe;
+    }, [navigation]);
+
+  const myBackFunction = () => {
+    console.log('Back navigation detected!');
+    updateDbCall(false); 
+    // Do something (e.g., show confirmation, save data)
   };
 
   const onSubmit = () => {
@@ -58,7 +77,11 @@ const ProfileForm = props => {
 
     updateUserProfile(profileDetails);
   };
+
+
   const updateUserProfile = profileDetails => {
+    // also update agent employee details 
+
     axios(SERVER_URL+"/updateUserProfile", {
       method: "post",
       headers: {
@@ -78,7 +101,8 @@ const ProfileForm = props => {
           props.userDetails["email"] = profileDetails.email;
           props.setUserDetails({ ...props.userDetails });
 
-          updateAsyncStorageData(profileDetails);
+          // updateAsyncStorageData(profileDetails);
+          updateDbCall(true); 
           navigation.navigate("Profile");
         }
       },

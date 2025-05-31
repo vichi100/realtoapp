@@ -18,17 +18,18 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 import { setAnyItemDetails } from "../reducers/Action";
 import {SERVER_URL} from "../util/Constant";
+import { makeCall } from "../util/methods";
 
 const Message = props => {
   const { navigation } = props;
   const [messageList, setMessageList] = useState([]);
   const [subjectDetails, setSubjectDetails] = useState(null);
 
-  const makeCall = item => {
-    console.log("item make call:  ", item.sender_details.mobile);
-    const url = "tel://" + item.sender_details.mobile;
-    Linking.openURL(url);
-  };
+  // const makeCall = item => {
+  //   console.log("item make call:  ", item.sender_details.mobile);
+  //   const url = "tel://" + item.sender_details.mobile;
+  //   Linking.openURL(url);
+  // };
 
   useEffect(() => {
     getMessagesList();

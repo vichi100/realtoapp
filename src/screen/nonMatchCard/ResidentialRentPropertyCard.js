@@ -36,6 +36,7 @@ import {
   setStartNavigationPoint,
   setPropertyDetails
 } from "../reducers/Action";
+import { makeCall } from "../../util/methods";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -211,10 +212,10 @@ const ResidentialRentPropertyCard = props => {
 
   // // console.log(width);
 
-  const makeCall = mobile => {
-    const url = "tel://" + mobile;
-    Linking.openURL(url);
-  };
+  // const makeCall = mobile => {
+  //   const url = "tel://" + mobile;
+  //   Linking.openURL(url);
+  // };
 
   const onShare = async (item) => {
     console.log("item: ", JSON.stringify(item))

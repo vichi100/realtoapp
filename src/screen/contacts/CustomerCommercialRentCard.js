@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 import DoughnutChart from "../../components/DoughnutChart";
 import { CheckBox } from "@rneui/themed";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { ButtonGroup } from "@rneui/themed";
 import { Avatar } from "@rneui/themed";
@@ -35,6 +36,7 @@ import {
   setCustomerDetails,
 } from "../../reducers/Action";
 import Feather from "react-native-vector-icons/Feather";
+import { makeCall } from "../../util/methods";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -164,10 +166,10 @@ const CustomerCommercialRentCard = props => {
     setIndex(index);
   };
 
-  const makeCall = mobile => {
-    const url = "tel://" + mobile;
-    Linking.openURL(url);
-  };
+  // const makeCall = mobile => {
+  //   const url = "tel://" + mobile;
+  //   Linking.openURL(url);
+  // };
 
   const onShare = async () => {
     // https://docs.expo.io/versions/latest/react-native/share/
@@ -509,8 +511,14 @@ const CustomerCommercialRentCard = props => {
           >
             <View style={{ paddingLeft: 20, paddingTop: 10 }}>
               <Text style={[styles.title]}>{item.customer_details.name}</Text>
-              <Text style={[styles.subTitle]}>
-                {item.customer_details.mobile1}
+              <View style={{ flexDirection: "row", alignItems: "center" , marginTop: 5}}>
+                <MaterialCommunityIcons name="phone-dial" color={"#0f1a20"} size={20} />
+                <Text style={[styles.subTitle, { paddingLeft: 10, color: "#0f1a20" }]}>
+                  {item.customer_details.mobile1}
+                </Text>
+              </View>
+              <Text style={{ paddingRight: 10, color: "#0f1a20", marginTop: 5, marginBottom: 5 }}>
+              Reference id: {item.customer_id?.slice(-6)}
               </Text>
 
             </View>
@@ -587,10 +595,10 @@ const CustomerCommercialRentCard = props => {
 
         {disableDrawer ? null : (
           <Animated.View
-          style={[
-            styles.drawer,
-            { width: Sliding_Drawer_Width, transform: [{ translateX: Animation_Interpolate }] },
-          ]}
+            style={[
+              styles.drawer,
+              { width: Sliding_Drawer_Width, transform: [{ translateX: Animation_Interpolate }] },
+            ]}
           >
             <View style={[styles.Main_Sliding_Drawer_Container, { width: Sliding_Drawer_Width, paddingHorizontal: 0 }]}>
               {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
@@ -614,7 +622,7 @@ const CustomerCommercialRentCard = props => {
               >
                 <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
               </TouchableOpacity>
-}
+              }
 
               {/* <TouchableOpacity
                 onPress={() => onShare()}

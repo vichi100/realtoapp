@@ -21,6 +21,7 @@ import { SERVER_URL } from "../util/Constant";
 import { useIsFocused } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import {formatIsoDateToCustomString} from "../util/methods"; // Assuming this is the correct path to your method
+import { makeCall } from "../util/methods";
 
 const Reminder = props => {
   const {
@@ -205,10 +206,10 @@ const Reminder = props => {
       );
   }
 
-  const makeCall = mobile => {
-    const url = "tel://" + mobile;
-    Linking.openURL(url);
-  };
+  // const makeCall = mobile => {
+  //   const url = "tel://" + mobile;
+  //   Linking.openURL(url);
+  // };
 
   const ItemView = ({ item }) => {
     return item.reminder_for.toLowerCase() === "meeting".toLowerCase() ? (

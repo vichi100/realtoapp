@@ -16,6 +16,7 @@ import {
 import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
+import { makeCall } from "../util/methods";
 
 const PropertyReminder = props => {
   const {
@@ -84,10 +85,10 @@ const PropertyReminder = props => {
   //     );
   // }, []);
 
-  const makeCall = mobile => {
-    const url = "tel://" + mobile;
-    Linking.openURL(url);
-  };
+  // const makeCall = mobile => {
+  //   const url = "tel://" + mobile;
+  //   Linking.openURL(url);
+  // };
 
   const ItemView = ({ item }) => {
     return item.reminder_for.toLowerCase() === "meeting".toLowerCase() ? (

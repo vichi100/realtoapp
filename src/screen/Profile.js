@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   SafeAreaView,
@@ -32,7 +32,9 @@ import {
 } from "../reducers/Action";
 import axios from "axios";
 import { SERVER_URL } from "../util/Constant";
-import Home from "../screen/Home"
+import Home from "../screen/Home";
+import { useFocusEffect } from '@react-navigation/native';
+import { makeCall } from "../util/methods";
 
 // import Share from "react-native-share";
 
@@ -43,23 +45,107 @@ import Home from "../screen/Home"
 
 const Profile = props => {
   const { navigation } = props;
+  const { didDbCall = true } = props.route?.params || {}; // Use optional chaining and fallback
+
   const [modalVisible, setModalVisible] = useState(false);
+  const [dbCall, setDbCall] = useState(didDbCall);
+  const [userDetails, setUserDetails] = useState(props.userDetails);
+  const [userData, setUserData] = useState(null);
+
+
+  useEffect(() => {
+    // console.log("Profile useEffect: " + JSON.stringify(props.userDetails));
+    setUserDetails(props.userDetails);
+  }, [props.userDetails]);
+
+
+
+  useFocusEffect(
+    useCallback(() => {
+      // This function will be called when Screen A comes into focus
+      // console.log("useFocusEffect")
+      if (dbCall) {
+        getUserDeatls();
+
+      }
+
+      // Optional: Return a cleanup function if needed
+      return () => {
+        // This function will be called when Screen A loses focus
+        // You can perform cleanup here if necessary
+        setDbCall(true); // Set dbCall to false after fetching data
+      };
+    }, [dbCall]) // Re-run the effect if fetchData function changes (unlikely here)
+  );
 
   // useEffect(() => {
   //   // console.log(JSON.stringify(props.userDetails));
   // }, [props.userDetails]);
 
-  const makeCall = async () => {
-    const url = "tel://9833097595";
-    Linking.openURL(url);
+  const getUserDeatls = () => {
+
+    const profileDetails = {
+      req_user_id: props.userDetails.works_for,
+      user_id: props.userDetails.id,
+    };
+
+    axios(SERVER_URL + "/getUserProfile", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: profileDetails
+    }).then(
+      response => {
+        if (response.data === "success") {
+          setUserData(response.data);
+          updateDbCall(true);
+        }
+      },
+      error => {
+        // console.log(error);
+      }
+    );
   };
+
+  const updateDbCall = useCallback((value) => {
+    // console.log(`Function 'a' in Screen A called with value: ${value}`);
+    setDbCall(value); // Update state to show the effect
+    // Perform any other actions needed in Screen A
+  }, []); // useCallback ensures this function remains stable across re-renders
+
+  const openEditProfile = () => {
+    navigation.navigate("ProfileForm", {
+      updateDbCall: updateDbCall
+    });
+  };
+
+  const sendMail = () => {
+    // check if email is available
+    const email = props.userDetails.email;
+    if (email && email.trim() !== "") {
+      // call db to send email
+    } else if (!email || email.trim() === "") {
+      // open profile form to add email
+      navigation.navigate("ProfileForm", {
+        updateDbCall: updateDbCall
+      });
+    }
+  }
+
+
+  // const makeCall = async () => {
+  //   const url = "tel://+919833097595";
+  //   Linking.openURL(url);
+  // };
 
   const onShare = async () => {
     // https://docs.expo.io/versions/latest/react-native/share/
     try {
       const result = await Share.share({
         message:
-          "React Native | A framework for building native apps using React"
+          "Realto AI is a real estate app that Supercharge your property broking!",
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -272,7 +358,7 @@ const Profile = props => {
         <View style={styles.row}>
           <Icon name="phone" color="#777777" size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>
-            +91{" "}
+
             {props.userDetails && props.userDetails.mobile
               ? props.userDetails.mobile
               : "Add Mobile Number"}
@@ -300,7 +386,7 @@ const Profile = props => {
           <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Icon name="account-off" color="#777777" size={20} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("ProfileForm")}>
+          <TouchableOpacity onPress={() => openEditProfile()}>
             <Icon name="account-edit" color="#777777" size={20} />
           </TouchableOpacity>
         </View>
@@ -354,25 +440,44 @@ const Profile = props => {
       <View style={styles.menuWrapper}>
         <TouchableRipple onPress={() => onShare()}>
           <View style={styles.menuItem}>
-            <Icon name="share-outline" color="#FF6347" size={25} />
+            <Icon name="share-outline" color="rgb(183, 113, 229)" size={25} />
             <Text style={styles.menuItemText}>Tell Your Friends</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => makeCall()}>
           <View style={styles.menuItem}>
-            <AntDesign name="customerservice" color="#FF6347" size={25} />
+            <AntDesign name="customerservice" color="#FF6347rgb(103, 174, 110)" size={25} />
             <Text style={styles.menuItemText}>Support</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => { }}>
+        {(props.userDetails &&
+          props.userDetails.user_type === "agent") && (props.userDetails &&
+            props.userDetails.id === props.userDetails.works_for) ? <TouchableRipple onPress={() => { sendMail() }}>
+          <View style={{ flexDirection: "row", alignContent: "center", alignItems: "center", justifyContent: "space-between", marginRight: 15 }}>
+            <View style={styles.menuItem}>
+              <View style={{ flexDirection: "column", alignItems: "center" }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Icon name="email-outline" color="rgb(61, 144, 215)" size={25} />
+                  <Text style={styles.menuItemText}>Email your data to you</Text>
+                </View>
+                <Text style={{}}>{userData && userData.email ? userData.email : "email@gmail.com"}</Text>
+              </View>
+
+            </View>
+            <Text style={{ color: "#0f1a20", marginLeft: 0, fontSize: 16 }}>
+              {userData && userData.last_backup_date ? userData.last_backup_date : "29/Feb/2025"}
+            </Text>
+          </View>
+        </TouchableRipple> : null}
+        {/* <TouchableRipple onPress={() => { }}>
           <View style={styles.menuItem}>
             <Icon name="settings-outline" color="#FF6347" size={25} />
             <Text style={styles.menuItemText}>Settings</Text>
           </View>
-        </TouchableRipple>
+        </TouchableRipple> */}
         <TouchableRipple onPress={() => { }}>
           <View style={styles.menuItem}>
-            <MaterialIcons name="local-police" color="#FF6347" size={25} />
+            <MaterialIcons name="local-police" color="rgba(255, 99, 99, .9)" size={25} />
             <Text style={styles.menuItemText}>Privacy Policy</Text>
           </View>
         </TouchableRipple>

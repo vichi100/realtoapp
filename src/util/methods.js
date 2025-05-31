@@ -1,3 +1,13 @@
+import { Linking } from "react-native";
+
+export const makeCall = (mobile) => {
+  const updatedMobile = mobile.startsWith("+91") ? mobile : `+91${mobile}`;
+  const url = `tel://${updatedMobile}`;
+  Linking.openURL(url).catch((err) => {
+    console.error("Failed to make a call:", err);
+  });
+};
+
 export const numDifferentiation = value => {
   var val = Math.abs(value);
   if (val >= 10000000) {

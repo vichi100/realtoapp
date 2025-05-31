@@ -37,6 +37,7 @@ import {
   setPropertyDetails,
 } from "../../../reducers/Action";
 import { SERVER_URL } from "../../../util/Constant";
+import { makeCall } from "../../../util/methods";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -159,10 +160,10 @@ const Card = props => {
     setIndex(index);
   };
 
-  const makeCall = mobile => {
-    const url = "tel://" + mobile;
-    Linking.openURL(url);
-  };
+  // const makeCall = mobile => {
+  //   const url = "tel://" + mobile;
+  //   Linking.openURL(url);
+  // };
 
   const onShare = async () => {
     // https://docs.expo.io/versions/latest/react-native/share/
@@ -511,6 +512,9 @@ const Card = props => {
                 </Text>
                 <Text style={{ paddingRight: 10 }}>
                   {item.property_address.formatted_address}
+                </Text>
+                <Text style={{ paddingRight: 10, color: "#0f1a20", marginTop: 5 }}>
+                Reference id: {item.property_id?.slice(-6)}
                 </Text>
               </View>
               {props.userDetails.works_for === props.userDetails.id && item.agent_id === props.userDetails.id && <TouchableOpacity onPress={() => gotoEmployeeList(item)}>

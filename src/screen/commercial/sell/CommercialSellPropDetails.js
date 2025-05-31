@@ -8,13 +8,14 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Animated,
-  ActivityIndicator
+  ActivityIndicator,
+  Linking,
 } from "react-native";
 import Slideshow from "../../../components/Slideshow";
 import { numDifferentiation, dateFormat } from "../../../util/methods";
 import { connect } from "react-redux";
 
-import Ionicons from "react-native-vector-icons/Ionicons";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import AccordionListItem from '../../../components/AccordionListItem';
 import { MaterialIcons } from "@expo/vector-icons";
 import PropertyReminder from '../../PropertyReminder';
@@ -22,6 +23,7 @@ import { SERVER_URL } from "../../../util/Constant";
 import axios from "axios";
 import { formatIsoDateToCustomString } from "../../../util/methods";
 import Feather from "react-native-vector-icons/Feather";
+import { makeCall } from "../../../util/methods";
 
 
 const CommercialSellPropDetails = props => {
@@ -52,6 +54,12 @@ const CommercialSellPropDetails = props => {
       displayCheckBox: true,
     });
   }
+
+  // const makeCall = mobile => {
+  //     const url = "tel://" + mobile;
+  //     Linking.openURL(url);
+  //   };
+
 
   const scrollToAccordion = () => {
     scrollViewRef.current.scrollTo({ y: 0, animated: true });
@@ -286,11 +294,29 @@ const CommercialSellPropDetails = props => {
       <View style={styles.margin1}></View>
       <AccordionListItem title="Owner" open={false} onPress={scrollToAccordion}>
         <View style={styles.ownerDetails}>
-          <Text>{item.owner_details.name}</Text>
-          <Text>{item.owner_details.address}</Text>
-          <Text>+91 {item.owner_details.mobile1}</Text>
+          <View style={{ flexDirection: "row", marginBottom: 0, alignItems: "center", justifyContent: "space-between" }}>
+            <View style={{ flexDirection: "column", }}>
+              <Text>{item.owner_details.name}</Text>
+              <Text>
+                {item.owner_details.mobile1?.startsWith("+91")
+                  ? item.owner_details.mobile1
+                  : `+91 ${item.owner_details.mobile1}`}
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => makeCall(item.owner_details.mobile1)}
+              style={{ padding: 0, marginRight: 35 }}
+            >
+              <FontAwesome5 name="phone-alt" color={"#00bfa5"} size={25} />
+              {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text> */}
+            </TouchableOpacity>
+          </View>
+          <Text style={{ marginTop: 5 }}>{item.owner_details.address}</Text>
+
+
         </View>
       </AccordionListItem>
+
       {loading ? <View
         style={{
           flex: 1,
@@ -304,17 +330,7 @@ const CommercialSellPropDetails = props => {
       </View> : <PropertyReminder navigation={navigation} reminderListX={reminderListX} />}
 
 
-      {/* <View style={styles.overviewContainer}>
-        <View style={styles.overview}>
-          <Text>Owner</Text>
-          <View style={styles.horizontalLine}></View>
-          <View style={styles.ownerDetails}>
-            <Text>{item.owner_details.name}</Text>
-            <Text>{item.owner_details.address}</Text>
-            <Text>+91 {item.owner_details.mobile1}</Text>
-          </View>
-        </View>
-      </View> */}
+      
     </ScrollView>
   );
 };

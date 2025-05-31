@@ -82,7 +82,7 @@ const CustomerDetailsCommercialRentFromList = props => {
           <Text style={[StyleSheet.subTitle]}>
             {item.customer_details.mobile1}
           </Text>
-          <Text style={[StyleSheet.subTitle]}>
+          <Text style={[StyleSheet.subTitle, {marginTop: 5}]}>
             {item.customer_details.address}
           </Text>
         </View>
@@ -226,17 +226,7 @@ const CustomerDetailsCommercialRentFromList = props => {
       {/* owner details */}
       <View style={styles.margin1}></View>
       <Reminder navigation={navigation} customerData={item} isSpecificRemider = {true}/>
-      {/* <View style={styles.overviewContainer}>
-        <View style={styles.overview}>
-          <Text>Owner</Text>
-          <View style={styles.horizontalLine}></View>
-          <View style={styles.ownerDetails}>
-            <Text>{item.owner_details.name}</Text>
-            <Text>{item.owner_details.address}</Text>
-            <Text>+91 {item.owner_details.mobile1}</Text>
-          </View>
-        </View>
-      </View> */}
+      
     </ScrollView>
   );
 };

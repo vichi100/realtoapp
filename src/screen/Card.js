@@ -38,6 +38,8 @@ import {
   setPropertyDetails
 } from "../reducers/Action";
 
+import { makeCall } from "../util/methods";
+
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
 
@@ -376,10 +378,10 @@ const Card = props => {
 
   // // console.log(width);
 
-  const makeCall = mobile => {
-    const url = "tel://" + mobile;
-    Linking.openURL(url);
-  };
+  // const makeCall = mobile => {
+  //   const url = "tel://" + mobile;
+  //   Linking.openURL(url);
+  // };
 
   const onShare = async (item) => {
     console.log("item: ", JSON.stringify(item))
@@ -520,6 +522,9 @@ const Card = props => {
                 <Text style={{ paddingRight: 10 }}>
                   {item.property_address.formatted_address}
                 </Text>
+                <Text style={{ paddingRight: 10, color: "#0f1a20", marginTop: 5 }}>
+                  Reference id: {item.property_id?.slice(-6)}
+                </Text>
               </View>
               {props.userDetails.works_for === props.userDetails.id && item.agent_id === props.userDetails.id && <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginBottom: 10, marginTop: 0, marginLeft: 20 }}>
@@ -614,12 +619,12 @@ const Card = props => {
 
         {!disableDrawer && (
           <Animated.View
-          style={[
-            styles.drawer,
-            { width: Sliding_Drawer_Width, transform: [{ translateX: Animation_Interpolate }] },
-          ]}
+            style={[
+              styles.drawer,
+              { width: Sliding_Drawer_Width, transform: [{ translateX: Animation_Interpolate }] },
+            ]}
           >
-           <View style={[styles.Main_Sliding_Drawer_Container, { width: Sliding_Drawer_Width, paddingHorizontal: 0 }]}>
+            <View style={[styles.Main_Sliding_Drawer_Container, { width: Sliding_Drawer_Width, paddingHorizontal: 0 }]}>
               {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
               <TouchableOpacity
                 onPress={ShowSlidingDrawer}

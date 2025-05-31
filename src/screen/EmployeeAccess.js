@@ -15,6 +15,7 @@ import { setEmployeeList } from "../reducers/Action";
 import { connect } from "react-redux";
 import axios from "axios";
 import { SERVER_URL } from "../util/Constant";
+import { makeCall } from "../util/methods";
 
 const EmployeeAccess = props => {
   const [isReadEnabled, setIsReadEnabled] = useState(false);
@@ -30,10 +31,10 @@ const EmployeeAccess = props => {
     }
   }, []);
 
-  const makeCall = mobile => {
-    const url = "tel://" + mobile;
-    Linking.openURL(url);
-  };
+  // const makeCall = mobile => {
+  //   const url = "tel://" + mobile;
+  //   Linking.openURL(url);
+  // };
 
   const toggleReadSwitch = () =>
     setIsReadEnabled(previousState => !previousState);

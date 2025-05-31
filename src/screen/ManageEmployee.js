@@ -20,7 +20,7 @@ import Snackbar from "../components/SnackbarComponent";
 import axios from "axios";
 import { setEmployeeList } from "../reducers/Action";
 import { connect } from "react-redux";
-import {SERVER_URL} from "../util/Constant";
+import { SERVER_URL } from "../util/Constant";
 
 const ManageEmployee = props => {
   const { navigation } = props;
@@ -28,16 +28,18 @@ const ManageEmployee = props => {
   const [employeeMobile, setEmployeeMobile] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isReadEnabled, setIsReadEnabled] = useState(false);
-  const [isEditEnabled, setIsEditEnabled] = useState(false);
+  const [isMasterEnabled, setIsMasterEnabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isEditEnabled, setIsEditEnabled] = useState(false);
 
   const [employeeList, setEmployeeList] = useState([]);
 
   const toggleReadSwitch = () =>
     setIsReadEnabled(previousState => !previousState);
 
-  const toggleEditSwitch = () =>
-    setIsEditEnabled(previousState => !previousState);
+  const toggleMasterSwitch = () => {
+    setIsMasterEnabled(previousState => !previousState);
+  }
 
   const dismissSnackBar = () => {
     setIsVisible(false);
@@ -63,7 +65,7 @@ const ManageEmployee = props => {
       emp_mobile: employeeMobile.trim(),
       access_rights: isEditEnabled ? "edit" : "read"
     };
-    axios(SERVER_URL+"/addEmployee", {
+    axios(SERVER_URL + "/addEmployee", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -76,7 +78,7 @@ const ManageEmployee = props => {
         if (response.data) {
           const x = [response.data, ...props.employeeList];
           props.setEmployeeList(x);
-          navigation.navigate("EmployeeList",{
+          navigation.navigate("EmployeeList", {
             itemForAddEmplyee: null,
             disableDrawer: false,
             displayCheckBox: false
@@ -104,9 +106,11 @@ const ManageEmployee = props => {
 
   const getEmployeeList = () => {
     // console.log("user_id: " + JSON.stringify(props.userDetails));
-    const user = { req_user_id: props.userDetails.works_for,
-      user_id: props.userDetails.id };
-    axios(SERVER_URL+"/getEmployeeList", {
+    const user = {
+      req_user_id: props.userDetails.works_for,
+      user_id: props.userDetails.id
+    };
+    axios(SERVER_URL + "/getEmployeeList", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -206,11 +210,34 @@ const ManageEmployee = props => {
                     thumbColor={isEditEnabled ? "#ffffff" : "#f4f3f4"}
                     ios_backgroundColor="rgba(211,211,211, .3)"
                     onValueChange={toggleEditSwitch}
-                    value={isEditEnabled}
+                    value={true} //{isReadEnabled}
+                    style={{ transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }] }}
+                  />
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginLeft: 30
+                  }}
+                >
+                  <Text>Master</Text>
+                  <Switch
+                    trackColor={{
+                      false: "#767577",
+                      true: "rgba(0,250,154, .5)"
+                    }}
+                    thumbColor={isMasterEnabled ? "#ffffff" : "#f4f3f4"}
+                    ios_backgroundColor="rgba(211,211,211, .3)"
+                    onValueChange={toggleMasterSwitch}
+                    value={isMasterEnabled}
                     style={{ transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }] }}
                   />
                 </View>
               </View>
+              {isMasterEnabled && <Text style={{ marginTop: 10, fontWeight: "normal" }}>
+                <Text style={{ color: "red", fontWeight: "bold" }}>Warning:</Text> Enable Master will allow employee to see all the properties and customer details
+              </Text>}
             </View>
 
             <View

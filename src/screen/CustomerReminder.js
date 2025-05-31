@@ -16,7 +16,8 @@ import {
 import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
-import { SERVER_URL } from "../util/Constant"
+import { SERVER_URL } from "../util/Constant";
+import { makeCall } from "../util/methods";
 
 const CustomerReminder = props => {
   const { navigation, item } = props;
@@ -57,10 +58,10 @@ const CustomerReminder = props => {
 
 
 
-  const makeCall = mobile => {
-    const url = "tel://" + mobile;
-    Linking.openURL(url);
-  };
+  // const makeCall = mobile => {
+  //   const url = "tel://" + mobile;
+  //   Linking.openURL(url);
+  // };
 
   const ItemView = ({ item }) => {
     return item.reminder_for.toLowerCase() === "meeting".toLowerCase() ? (
