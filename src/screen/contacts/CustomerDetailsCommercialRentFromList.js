@@ -15,7 +15,7 @@ import { formatIsoDateToCustomString } from "../../util/methods";
 
 const CustomerDetailsCommercialRentFromList = props => {
   const { navigation } = props;
-  let {item, displayMatchCount = true, displayMatchPercent = true} = props.route.params;
+  let { item, displayMatchCount = true, displayMatchPercent = true } = props.route.params;
   // const displayMatchCount=false, displayMatchPercent=true
   // let item = props.anyItemDetails;
   // if(!item){
@@ -77,12 +77,14 @@ const CustomerDetailsCommercialRentFromList = props => {
             borderStyle: "solid"
           }}
         />
-        <View style={{ paddingLeft: 20, paddingTop: 10, flex: 1, minHeight:95 }}>
+        <View style={{ paddingLeft: 20, paddingTop: 10, flex: 1, minHeight: 95 }}>
           <Text style={[styles.title]}>{item.customer_details.name}</Text>
           <Text style={[StyleSheet.subTitle]}>
-            {item.customer_details.mobile1}
+            {item.customer_details.mobile1?.startsWith("+91")
+              ? item.customer_details.mobile1
+              : `+91 ${item.customer_details.mobile1}`}
           </Text>
-          <Text style={[StyleSheet.subTitle, {marginTop: 5}]}>
+          <Text style={[StyleSheet.subTitle, { marginTop: 5 }]}>
             {item.customer_details.address}
           </Text>
         </View>
@@ -225,8 +227,8 @@ const CustomerDetailsCommercialRentFromList = props => {
       </View>
       {/* owner details */}
       <View style={styles.margin1}></View>
-      <Reminder navigation={navigation} customerData={item} isSpecificRemider = {true}/>
-      
+      <Reminder navigation={navigation} customerData={item} isSpecificRemider={true} />
+
     </ScrollView>
   );
 };

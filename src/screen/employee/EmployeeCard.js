@@ -516,7 +516,7 @@ const EmployeeCard = props => {
 
 
 
-          <View style={{ marginLeft: { displayMatchCount } ? 10 : 10, }}>
+          <View style={{ marginLeft:  !displayMatchPercent  ? 40 : 0, }}>
             <Avatar
               square
               size={60}

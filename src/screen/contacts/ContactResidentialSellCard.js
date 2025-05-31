@@ -57,6 +57,7 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
     displayMatchPercent = false,
     displayCheckBoxForEmployee = false,
     employeeObj = null,
+    displayAvatar = true,
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
@@ -486,7 +487,7 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
             </>
           )}
 
-          <View style={{ marginLeft: { displayMatchCount } ? 40 : 30, }}>
+          <View style={{ marginLeft: !displayMatchPercent ? 40 : 0, }}>
 
             {!displayMatchPercent && <Avatar
               square
@@ -520,11 +521,13 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
               <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
                 <MaterialCommunityIcons name="phone-dial" color={"#0f1a20"} size={20} />
                 <Text style={[styles.subTitle, { paddingLeft: 10, color: "#0f1a20" }]}>
-                  {item.customer_details.mobile1}
+                  {item.customer_details.mobile1?.startsWith("+91")
+                    ? item.customer_details.mobile1
+                    : `+91 ${item.customer_details.mobile1}`}
                 </Text>
               </View>
               <Text style={{ paddingRight: 10, color: "#0f1a20", marginTop: 5, marginBottom: 5 }}>
-              Reference id: {item.customer_id?.slice(-6)}
+                Reference id: {item.customer_id?.slice(-6)}
               </Text>
 
             </View>

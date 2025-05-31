@@ -468,13 +468,15 @@ const MatchedCustomers = props => {
       if (item.customer_locality.property_for === "Rent") {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Residential", "Rent")}>
-            <ContactResidentialRentCard navigation={navigation} item={item} deleteMe={deleteMe} navigatedFrom={"MatchedCustomers"} displayMatchCount={false} displayMatchPercent={true} />
+            <ContactResidentialRentCard navigation={navigation} item={item} deleteMe={deleteMe} 
+            navigatedFrom={"MatchedCustomers"} displayMatchCount={false} displayMatchPercent={true} />
           </TouchableOpacity>
         );
       } else if (item.customer_locality.property_for === "Buy") {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Residential", "Buy")}>
-            <ContactResidentialSellCard navigation={navigation} item={item} deleteMe={deleteMe} displayMatchCount={false} displayMatchPercent={true} />
+            <ContactResidentialSellCard navigation={navigation} item={item} deleteMe={deleteMe} 
+            displayMatchCount={false} displayMatchPercent={true} />
           </TouchableOpacity>
         );
       }
@@ -482,13 +484,15 @@ const MatchedCustomers = props => {
       if (item.customer_locality.property_for === "Rent") {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Commercial", "Rent")}>
-            <ContactCommercialRentCard navigation={navigation} item={item} deleteMe={deleteMe} navigatedFrom={"MatchedCustomers"} displayMatchCount={false} displayMatchPercent={true} />
+            <ContactCommercialRentCard navigation={navigation} item={item} deleteMe={deleteMe} 
+            navigatedFrom={"MatchedCustomers"} displayMatchCount={false} displayMatchPercent={true} />
           </TouchableOpacity>
         );
       } else if (item.customer_locality.property_for === "Buy") {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Commercial", "Buy")}>
-            <ContactCommercialBuyCard navigation={navigation} item={item} deleteMe={deleteMe} displayMatchCount={false} displayMatchPercent={true} />
+            <ContactCommercialBuyCard navigation={navigation} item={item} deleteMe={deleteMe} 
+            displayMatchCount={false} displayMatchPercent={true} />
           </TouchableOpacity>
         );
       }

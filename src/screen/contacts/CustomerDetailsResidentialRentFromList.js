@@ -11,12 +11,12 @@ import { Avatar } from "@rneui/themed";
 import { numDifferentiation } from "../../util/methods";
 import Feather from "react-native-vector-icons/Feather";
 import { connect } from "react-redux";
-import Reminder from "../Reminder"; 
+import Reminder from "../Reminder";
 import { formatIsoDateToCustomString } from "../../util/methods";
 
-const CustomerDetailsResidentialRentFromList = props => {  
+const CustomerDetailsResidentialRentFromList = props => {
   const { navigation } = props;
-  let {item, displayMatchCount = true, displayMatchPercent = true} = props.route.params;
+  let { item, displayMatchCount = true, displayMatchPercent = true } = props.route.params;
   // let item = props.anyItemDetails;
   // if(!item){
   //   item = itemX
@@ -27,10 +27,10 @@ const CustomerDetailsResidentialRentFromList = props => {
   const [location, setLocation] = useState([])
 
   const getMatched = (matchedCustomerItem) => {
-    navigation.navigate('MatchedProperties', {matchedCustomerItem: matchedCustomerItem},);
+    navigation.navigate('MatchedProperties', { matchedCustomerItem: matchedCustomerItem },);
   }
 
-  useEffect(() => {  
+  useEffect(() => {
     // setItem(props.anyItemDetails);
 
     const locX = []
@@ -78,12 +78,14 @@ const CustomerDetailsResidentialRentFromList = props => {
             borderStyle: "solid"
           }}
         />
-        <View style={{ paddingLeft: 20, paddingTop: 10, flex: 1, minHeight:95 }}>
+        <View style={{ paddingLeft: 20, paddingTop: 10, flex: 1, minHeight: 95 }}>
           <Text style={[styles.title]}>{item.customer_details.name}</Text>
           <Text style={[StyleSheet.subTitle]}>
-            {item.customer_details.mobile1}
+            {item.customer_details.mobile1?.startsWith("+91")
+              ? item.customer_details.mobile1
+              : `+91 ${item.customer_details.mobile1}`}
           </Text>
-          <Text style={[StyleSheet.subTitle, {marginTop: 5}]}>
+          <Text style={[StyleSheet.subTitle, { marginTop: 5 }]}>
             {item.customer_details.address}
           </Text>
         </View>
@@ -241,8 +243,8 @@ const CustomerDetailsResidentialRentFromList = props => {
       </View>
       {/* owner details */}
       <View style={styles.margin1}></View>
-      <Reminder navigation={navigation} customerData={item} isSpecificRemider = {true}/>
-      
+      <Reminder navigation={navigation} customerData={item} isSpecificRemider={true} />
+
     </ScrollView>
   );
 };

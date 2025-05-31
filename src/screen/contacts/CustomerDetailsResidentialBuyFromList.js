@@ -16,7 +16,7 @@ import { formatIsoDateToCustomString } from "../../util/methods";
 
 const CustomerDetailsResidentialBuyFromList = props => {
   const { navigation } = props;
-  let {item, displayMatchCount = false, displayMatchPercent = true} = props.route.params;
+  let { item, displayMatchCount = false, displayMatchPercent = true } = props.route.params;
   // let item = props.anyItemDetails;
   // if(!item){
   //   item = itemX
@@ -78,24 +78,18 @@ const CustomerDetailsResidentialBuyFromList = props => {
             borderStyle: "solid"
           }}
         />
-        {/* <View style={{ paddingLeft: 20, paddingTop: 10 }}>
+
+        <View style={{ paddingLeft: 20, paddingTop: 10, flex: 1, minHeight: 95 }}>
           <Text style={[styles.title]}>{item.customer_details.name}</Text>
           <Text style={[StyleSheet.subTitle]}>
-            {item.customer_details.mobile1}
+            {item.customer_details.mobile1?.startsWith("+91")
+              ? item.customer_details.mobile1
+              : `+91 ${item.customer_details.mobile1}`}
           </Text>
-          <Text style={[StyleSheet.subTitle]}>
+          <Text style={[StyleSheet.subTitle, { marginTop: 5 }]}>
             {item.customer_details.address}
           </Text>
-        </View> */}
-        <View style={{ paddingLeft: 20, paddingTop: 10, flex: 1, minHeight:95 }}>
-                  <Text style={[styles.title]}>{item.customer_details.name}</Text>
-                  <Text style={[StyleSheet.subTitle]}>
-                    {item.customer_details.mobile1}
-                  </Text>
-                  <Text style={[StyleSheet.subTitle, {marginTop: 5}]}>
-                    {item.customer_details.address}
-                  </Text>
-                </View>
+        </View>
         {displayMatchCount === true && <TouchableOpacity
           onPress={() => getMatched(item)}
           style={{ flexDirection: 'row', marginTop: 0 }}
@@ -115,7 +109,7 @@ const CustomerDetailsResidentialBuyFromList = props => {
           </View>
 
 
-        </TouchableOpacity> }
+        </TouchableOpacity>}
       </View>
       {/* <Image
         source={require("../../assets/images/p1.jpg")}
@@ -241,8 +235,8 @@ const CustomerDetailsResidentialBuyFromList = props => {
       </View>
       {/* owner details */}
       <View style={styles.margin1}></View>
-      <Reminder navigation={navigation} customerData={item} isSpecificRemider = {true} didDbCall = {false }/>
-      
+      <Reminder navigation={navigation} customerData={item} isSpecificRemider={true} didDbCall={false} />
+
     </ScrollView>
   );
 };
