@@ -24,10 +24,10 @@ const ProfileForm = props => {
   const { navigation } = props;
   const {updateDbCall} = props.route.params;
 
-  const [name, setName] = useState("");
-  const [city, setCity] = useState("");
-  const [company, setCompany] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState(props.userDetails.name || "");
+  const [city, setCity] = useState(props.userDetails.city || "");
+  const [company, setCompany] = useState(props.userDetails.company_name || "");
+  const [email, setEmail] = useState(props.userDetails.email || "");
 
   const [errorMessage, setErrorMessage] = useState("");
   const [isVisible, setIsVisible] = useState(false);

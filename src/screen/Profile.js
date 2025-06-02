@@ -31,7 +31,7 @@ import {
   setPropReminderList
 } from "../reducers/Action";
 import axios from "axios";
-import { SERVER_URL } from "../util/Constant";
+import { SERVER_URL, EMAIL_PDF_SERVER } from "../util/Constant";
 import Home from "../screen/Home";
 import { useFocusEffect } from '@react-navigation/native';
 import { makeCall } from "../util/methods";
@@ -65,7 +65,7 @@ const Profile = props => {
       // This function will be called when Screen A comes into focus
       // console.log("useFocusEffect")
       if (dbCall) {
-        getUserDeatls();
+        getUserProfileDeatails();
 
       }
 
@@ -82,14 +82,17 @@ const Profile = props => {
   //   // console.log(JSON.stringify(props.userDetails));
   // }, [props.userDetails]);
 
-  const getUserDeatls = () => {
+  const getUserProfileDeatails = () => {
+    //   const reqUserId = obj.req_user_id;
+    // const userType = obj.user_type; // agent or employee
+    // const mobile = obj.mobile;
 
     const profileDetails = {
-      req_user_id: props.userDetails.works_for,
-      user_id: props.userDetails.id,
+      req_user_id: props.userDetails.id,
+      mobile: props.userDetails.mobile,
     };
 
-    axios(SERVER_URL + "/getUserProfile", {
+    axios(SERVER_URL + "/getUserProfileDeatails", {
       method: "post",
       headers: {
         "Content-type": "Application/json",
@@ -98,7 +101,7 @@ const Profile = props => {
       data: profileDetails
     }).then(
       response => {
-        if (response.data === "success") {
+        if (response.status === 200) {
           setUserData(response.data);
           updateDbCall(true);
         }
@@ -122,18 +125,46 @@ const Profile = props => {
   };
 
   const sendMail = () => {
-    // check if email is available
-    const email = props.userDetails.email;
-    if (email && email.trim() !== "") {
-      // call db to send email
-    } else if (!email || email.trim() === "") {
-      // open profile form to add email
-      navigation.navigate("ProfileForm", {
-        updateDbCall: updateDbCall
-      });
+
+    try {
+      // check if email is available
+      const email = props.userDetails.email;
+      if (email && email.trim() !== "") {
+        // call db to send email
+        const profileDetails = {
+          property_id: '17434190437467368827447',
+          req_user_id: props.userDetails.id,
+          mobile: props.userDetails.mobile,
+        };
+
+        axios(EMAIL_PDF_SERVER + "/emailpdf/generate", {
+          method: "post",
+          headers: {
+            "Content-type": "Application/json",
+            Accept: "Application/json"
+          },
+          data: profileDetails
+        }).then(
+          response => {
+            if (response.status === 200) {
+              setUserData(response.data);
+              updateDbCall(true);
+            }
+          },
+          error => {
+            // console.log(error);
+          }
+        );
+      } else if (!email || email.trim() === "") {
+        // open profile form to add email
+        navigation.navigate("ProfileForm", {
+          updateDbCall: updateDbCall
+        });
+      }
+    } catch (error) {
+      console.log("Error => ", error);
     }
   }
-
 
   // const makeCall = async () => {
   //   const url = "tel://+919833097595";
@@ -444,7 +475,7 @@ const Profile = props => {
             <Text style={styles.menuItemText}>Tell Your Friends</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => makeCall()}>
+        <TouchableRipple onPress={() => makeCall("+919833097595")}>
           <View style={styles.menuItem}>
             <AntDesign name="customerservice" color="#FF6347rgb(103, 174, 110)" size={25} />
             <Text style={styles.menuItemText}>Support</Text>
