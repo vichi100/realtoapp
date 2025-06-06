@@ -226,3 +226,6 @@ Guess the answer is to make sure that when you create a new file, you build it r
 ### Meeting from global search
 1) if the property/customer belong to user then user can create meeting with their customer on properties
 2) if the property/customer dont belong to user then he can only create meeting with the agent
+
+
+#### Filter and sort need to check 

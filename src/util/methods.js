@@ -53,3 +53,12 @@ export const formatIsoDateToCustomString = (isoString) => {
   return `${dayOfWeek} ${month} ${dayOfMonth} ${year}`;
 };
 
+
+export const camalize = (str) => {
+  if (!str) return ""; // Handle null or undefined input
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};

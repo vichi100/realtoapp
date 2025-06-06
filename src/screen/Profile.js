@@ -132,7 +132,7 @@ const Profile = props => {
       if (email && email.trim() !== "") {
         // call db to send email
         const profileDetails = {
-          property_id: '17434190437467368827447',
+          // property_id: '17434190437467368827447',
           req_user_id: props.userDetails.id,
           mobile: props.userDetails.mobile,
         };

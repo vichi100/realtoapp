@@ -823,32 +823,7 @@ const GlobalResidentialContactsSearchResult = props => {
           />
         </View>
       </BottomSheet>
-      {/* <TouchableOpacity
-        style={{
-          // borderWidth: 1,
-          // borderColor: "rgba(0,0,0,0.2)",
-          alignItems: "center",
-          justifyContent: "center",
-          // width: 40,
-          position: "absolute",
-          bottom: 15,
-          right: 10,
-          // height: 40,
-          backgroundColor: "#01a699",
-          borderRadius: 100
-        }}
-        onPress={() => navigation.navigate("AddNewCustomerStack")}
-      >
-        <AntDesign name="pluscircleo" size={40} color="#ffffff" />
-
-      </TouchableOpacity> */}
-      {/* <Snackbar
-        visible={isVisible}
-        textMessage={errorMessage}
-        position={"top"}
-        actionHandler={() => dismissSnackBar()}
-        actionText="OK"
-      /> */}
+      
     </View>
   );
 };

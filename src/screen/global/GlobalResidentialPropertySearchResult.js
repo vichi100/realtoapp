@@ -881,25 +881,7 @@ const GlobalResidentialPropertySearchResult = props => {
           />
         </View>
       </BottomSheet>
-
-      {/* <TouchableOpacity
-        style={{
-          // borderWidth: 1,
-          // borderColor: "rgba(0,0,0,0.2)",
-          alignItems: "center",
-          justifyContent: "center",
-          // width: 40,
-          position: "absolute",
-          bottom: 15,
-          right: 10,
-          // height: 40,
-          backgroundColor: "rgba(50, 195, 77, 0.59)",
-          borderRadius: 100
-        }}
-        onPress={() => navigation.navigate("Add")}
-      >
-        <AntDesign name="pluscircleo" size={40} color="#ffffff" />
-      </TouchableOpacity> */}
+      
     </View>
   );
 };

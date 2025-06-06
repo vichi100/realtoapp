@@ -24,22 +24,70 @@ import { SERVER_URL } from "../util/Constant";
 
 const ManageEmployee = props => {
   const { navigation } = props;
+  const { empData = {},
+    editEmp = false
+  } = props.route.params || {};
   const [employeeName, setEmployeeName] = useState("");
   const [employeeMobile, setEmployeeMobile] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [isReadEnabled, setIsReadEnabled] = useState(false);
+  const [isViewEnabled, setIsViewEnabled] = useState(true);
   const [isMasterEnabled, setIsMasterEnabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [isEditEnabled, setIsEditEnabled] = useState(false);
+  const [isAddEnabled, setIsAddEnabled] = useState(false);
+  const [isAdminEnabled, setIsAdminEnabled] = useState(false);
+  const [role, setRole] = useState(empData ? empData.employee_role : "view");
 
   const [employeeList, setEmployeeList] = useState([]);
 
-  const toggleReadSwitch = () =>
-    setIsReadEnabled(previousState => !previousState);
-
+  const calculateRole = (view, add, master, admin) => {
+    if (admin) {
+      return "admin";
+    }
+    if (master) {
+      return "master";
+    }
+    if (add) {
+      return "add";
+    }
+    if (view) {
+      return "view";
+    }
+    return "view"; // Default role
+  };
+  
+  const toggleViewSwitch = () => {
+    const newState = !isViewEnabled;
+    setIsViewEnabled(newState);
+    const newRole = calculateRole(newState, isAddEnabled, isMasterEnabled, isAdminEnabled);
+    setRole(newRole);
+    console.log(newRole); // Log the calculated role
+  };
+  
+  const toggleAddSwitch = () => {
+    const newState = !isAddEnabled;
+    setIsAddEnabled(newState);
+    const newRole = calculateRole(isViewEnabled, newState, isMasterEnabled, isAdminEnabled);
+    setRole(newRole);
+    console.log(newRole); // Log the calculated role
+  };
+  
   const toggleMasterSwitch = () => {
-    setIsMasterEnabled(previousState => !previousState);
-  }
+    const newState = !isMasterEnabled;
+    setIsMasterEnabled(newState);
+    const newRole = calculateRole(isViewEnabled, isAddEnabled, newState, isAdminEnabled);
+    setRole(newRole);
+    console.log(newRole); // Log the calculated role
+  };
+  
+  const toggleAdminSwitch = () => {
+    const newState = !isAdminEnabled;
+    setIsAdminEnabled(newState);
+    const newRole = calculateRole(isViewEnabled, isAddEnabled, isMasterEnabled, newState);
+    setRole(newRole);
+    console.log(newRole); // Log the calculated role
+  };
+  
+  
 
   const dismissSnackBar = () => {
     setIsVisible(false);
@@ -55,15 +103,21 @@ const ManageEmployee = props => {
       setIsVisible(true);
       return;
     }
+
+  // Ensure default role is "view" if no switches are toggled
+  const calculatedRole = calculateRole(isViewEnabled, isAddEnabled, isMasterEnabled, isAdminEnabled);
+  const finalRole = calculatedRole || "view"; // Fallback to "view"
+
     const user = {
       req_user_id: props.userDetails.works_for,// agent_id
       agent_id: props.userDetails.works_for,
+      user_type: "employee",
       company_name: props.userDetails.company_name,
       address: props.userDetails.address,
       city: props.userDetails.city,
       emp_name: employeeName.trim(),
       emp_mobile: employeeMobile.trim(),
-      access_rights: isEditEnabled ? "edit" : "read"
+      employee_role: finalRole
     };
     axios(SERVER_URL + "/addEmployee", {
       method: "post",
@@ -100,7 +154,100 @@ const ManageEmployee = props => {
     });
   };
 
+  const updateEmployeeDetails = () => {
+    if (employeeName.trim() === "") {
+      setErrorMessage("Employee name is missing");
+      setIsVisible(true);
+      return;
+    } else if (employeeMobile.trim() === "") {
+      setErrorMessage("Employee mobile is missing");
+      setIsVisible(true);
+      return;
+    }
+    const user = {
+      req_user_id: props.userDetails.works_for,// agent_id
+      agent_id: props.userDetails.works_for,
+      emp_id: empData.id,
+      emp_name: employeeName.trim(),
+      emp_mobile: employeeMobile.trim(),
+      employee_role: role
+    };
+    axios(SERVER_URL + "/updateEmployeeDetails", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: user
+    }).then(
+      response => {
+        // console.log(response.data);
+        if (response.data) {
+          const x = [response.data, ...props.employeeList];
+          props.setEmployeeList(x);
+          // navigation.navigate("EmployeeList", {
+          //   itemForAddEmplyee: null,
+          //   disableDrawer: false,
+          //   displayCheckBox: false
+          // });
+          navigation.goBack();
+        }
+      }
+    ).catch((error) => {
+      if (error.response && error.response.status === 409) {
+        // Check for the custom error code
+        if (error.response.data.errorCode === "EMPLOYEE_EXISTS") {
+          setErrorMessage(error.response.data.message); // Display the error message
+          setIsVisible(true);
+        }
+      } else {
+        console.error("Error adding employee:", error);
+        setErrorMessage("An unexpected error occurred. Please try again.");
+        setIsVisible(true);
+      }
+    });
+  };
+
   useEffect(() => {
+    if (empData && empData.employee_role) {
+      switch (empData.employee_role.toLowerCase()) {
+        case "admin":
+          setIsAdminEnabled(true);
+          setIsMasterEnabled(true);
+          setIsAddEnabled(true);
+          setIsViewEnabled(true);
+          break;
+        case "master":
+          setIsAdminEnabled(false);
+          setIsMasterEnabled(true);
+          setIsAddEnabled(true);
+          setIsViewEnabled(true);
+          break;
+        case "add":
+          setIsAdminEnabled(false);
+          setIsMasterEnabled(false);
+          setIsAddEnabled(true);
+          setIsViewEnabled(true);
+          break;
+        case "view":
+          setIsAdminEnabled(false);
+          setIsMasterEnabled(false);
+          setIsAddEnabled(false);
+          setIsViewEnabled(true);
+          break;
+        default:
+          setIsAdminEnabled(false);
+          setIsMasterEnabled(false);
+          setIsAddEnabled(false);
+          setIsViewEnabled(true); // Default role
+          break;
+      }
+    }
+  }, [empData.employee_role]);
+
+  useEffect(() => {
+    setEmployeeName(empData.name || ""); // Fallback to an empty string if undefined
+    setEmployeeMobile(empData.mobile || ""); // Fallback to an empty string if undefined
     getEmployeeList();
   }, []);
 
@@ -178,16 +325,16 @@ const ManageEmployee = props => {
             <Text style={{ marginTop: 20, marginBottom: 10, fontSize: 14 }}>
               Grant access right
             </Text>
-            <View style={styles.propSubSection}>
-              <View style={{ flexDirection: "row", marginLeft: 5 }}>
+            <View style={{}}>
+              <View style={{ flexDirection: "row", marginLeft: 5, flexWrap: "wrap" }}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text>Read</Text>
+                  <Text>View</Text>
                   <Switch
                     trackColor={{
                       false: "#767577",
                       true: "rgba(0,250,154, .5)"
                     }}
-                    thumbColor={isReadEnabled ? "#ffffff" : "#f4f3f4"}
+                    thumbColor={isViewEnabled ? "#ffffff" : "#f4f3f4"}
                     ios_backgroundColor="rgba(211,211,211, .3)"
                     // onValueChange={toggleReadSwitch}
                     value={true} //{isReadEnabled}
@@ -201,16 +348,16 @@ const ManageEmployee = props => {
                     marginLeft: 30
                   }}
                 >
-                  <Text>Edit</Text>
+                  <Text>Add</Text>
                   <Switch
                     trackColor={{
                       false: "#767577",
-                      true: "rgba(0,250,154, .5)"
+                      true: "rgba(25, 181, 254, .8)"
                     }}
-                    thumbColor={isEditEnabled ? "#ffffff" : "#f4f3f4"}
+                    thumbColor={isAddEnabled ? "#ffffff" : "#f4f3f4"}
                     ios_backgroundColor="rgba(211,211,211, .3)"
-                    onValueChange={toggleEditSwitch}
-                    value={true} //{isReadEnabled}
+                    onValueChange={toggleAddSwitch}
+                    value={isAddEnabled} //{isReadEnabled}
                     style={{ transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }] }}
                   />
                 </View>
@@ -225,7 +372,7 @@ const ManageEmployee = props => {
                   <Switch
                     trackColor={{
                       false: "#767577",
-                      true: "rgba(0,250,154, .5)"
+                      true: "rgba(249, 105, 14, .6)"
                     }}
                     thumbColor={isMasterEnabled ? "#ffffff" : "#f4f3f4"}
                     ios_backgroundColor="rgba(211,211,211, .3)"
@@ -234,9 +381,38 @@ const ManageEmployee = props => {
                     style={{ transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }] }}
                   />
                 </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    // marginLeft: 30
+                  }}
+                >
+                  <Text>Admin</Text>
+                  <Switch
+                    trackColor={{
+                      false: "#767577",
+                      true: "rgba(255, 76, 48, .9)"
+                    }}
+                    thumbColor={isAdminEnabled ? "#ffffff" : "#f4f3f4"}
+                    ios_backgroundColor="rgba(211,211,211, .3)"
+                    onValueChange={toggleAdminSwitch}
+                    value={isAdminEnabled}
+                    style={{ transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }] }}
+                  />
+                </View>
               </View>
+              {<Text style={{ marginTop: 10, fontWeight: "normal" }}>
+                <Text style={{ color: "", fontWeight: "bold" }}>View:</Text> Enable View will allow employee to see the properties and customers which are assigned to him.
+              </Text>}
+              {isAddEnabled && <Text style={{ marginTop: 10, fontWeight: "normal" }}>
+                <Text style={{ color: "", fontWeight: "bold" }}>Add:</Text> Enable Add will allow employee to add the new properties and and customers. Also will allow employee to see the properties and customers which are assigned to him.
+              </Text>}
               {isMasterEnabled && <Text style={{ marginTop: 10, fontWeight: "normal" }}>
-                <Text style={{ color: "red", fontWeight: "bold" }}>Warning:</Text> Enable Master will allow employee to see all the properties and customer details
+                <Text style={{ color: "red", fontWeight: "bold" }}>Warning:</Text> Enable Master will allow employee to see all the properties, customer and Employees details. Also will allow add the new properties and and customers
+              </Text>}
+              {isAdminEnabled && <Text style={{ marginTop: 10, fontWeight: "normal" }}>
+                <Text style={{ color: "red", fontWeight: "bold" }}>Warning:</Text> Enable Admin will allow employee to see and delete all the properties, customers and Employee.
               </Text>}
             </View>
 
@@ -248,7 +424,8 @@ const ManageEmployee = props => {
                 // marginRight: 10
               }}
             >
-              <Button title="ADD" onPress={() => onSubmit()} />
+              {!editEmp ? <Button title="ADD" onPress={() => onSubmit()} /> :
+              <Button title="UPDATE" onPress={() => updateEmployeeDetails()} />}
             </View>
           </View>
           {/* Property releted reminder list */}

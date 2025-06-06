@@ -34,12 +34,12 @@ import {
   setCustomerDetails
 } from "../../reducers/Action";
 import axios from "axios";
-import { makeCall } from "../../util/methods";
+import { makeCall, camalize } from "../../util/methods";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
 
-const Sliding_Drawer_Width = 140;
+const Sliding_Drawer_Width = 195;
 const width = Dimensions.get("window").width;
 
 const EmployeeCard = props => {
@@ -62,12 +62,12 @@ const EmployeeCard = props => {
   let Sliding_Drawer_Toggle = true;
   const [disabled, setDisabled] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [index, setIndex] = React.useState(null);
+  const [index, setIndex] = useState(-1);
   const [chatModalVisible, setChatModalVisible] = useState(false);
   const [refresh, setRefresh] = useState(false); // Add a state to trigger re-render
 
   // const [text, onChangeText] = React.useState("I have customer for this property. Please call me.");
-  const [message, setMessage] = React.useState(
+  const [message, setMessage] = useState(
     "I have property for this customer. Please call me. "
   );
 
@@ -294,30 +294,26 @@ const EmployeeCard = props => {
     outputRange: [Sliding_Drawer_Width - 33, -15]
   });
 
-  // // console.log(width);
-
   // const makeCall = item => {
   //   const mobile = item.customer_details.mobile1;
   //   const url = "tel://" + mobile;
   //   Linking.openURL(url);
   // };
 
-  const onShare = async () => {
+  const checkDeleteDecision = (item)=>{
+    if(index === 0){
+      deleteMe(item);
+    }
+    if(index ===1){
+      setModalVisible(false);
+    }
+    
+  }
+
+  const editEmployee = async (empData) => {
     // https://docs.expo.io/versions/latest/react-native/share/
     try {
-      const result = await Share.share({
-        message:
-          "React Native | A framework for building native apps using React"
-      });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
+      navigation.navigate("ManageEmployee", {empData:empData, editEmp: true}, );
     } catch (error) {
       alert(error.message);
     }
@@ -505,8 +501,10 @@ const EmployeeCard = props => {
               // paddingLeft: 16,
               // paddingBottom: 16,
               // paddingTop: 16,
-              width: "100%",
-              backgroundColor: "#ffffff"
+              // width: "100%",
+              backgroundColor: "#ffffff",
+              justifyContent: 'center'
+
             }
             // { backgroundColor: "rgba(245,245,245, 0.8)" }
           ]}
@@ -516,10 +514,10 @@ const EmployeeCard = props => {
 
 
 
-          <View style={{ marginLeft:  !displayMatchPercent  ? 40 : 0, }}>
+          <View style={{ marginLeft: !displayMatchPercent ? 10 : 0, alignItems: 'center', marginBottom:5, justifyContent:'center' }}>
             <Avatar
               square
-              size={60}
+              size={55}
               title={
                 item.name &&
                 item.name.slice(0, 1)
@@ -537,23 +535,47 @@ const EmployeeCard = props => {
 
               }}
             />
+            {item.employee_role == "admin" ?
+              <Text style={{ fontSize: 15, fontWeight: 500, color: "rgba(255, 76, 48, .9)" }}>{camalize(item.employee_role)} </Text> :
+              item.employee_role == "master" ?
+                <Text style={{ fontSize: 15, fontWeight: 500, color: "rgba(249, 105, 14, 1)" }}>{camalize(item.employee_role)} </Text> :
+                item.employee_role == "add" ?
+                  <Text style={{ fontSize: 15, fontWeight: 500, color: "rgba(25, 181, 254, 1))" }}>{camalize(item.employee_role)} </Text> :
+                  <Text style={{ fontSize: 15, fontWeight: 500, color: "rgba(22, 160, 133, 1)" }}>{camalize(item.employee_role)} </Text>}
           </View>
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
+              // alignItems: "center",
               flex: 1
             }}
           >
-            <View style={{ paddingLeft: 20, paddingTop: 10 }}>
-              <Text style={[styles.title]}>{item.name}</Text>
+            <View style={{ paddingLeft: 20, paddingTop: 20 }}>
+              <Text style={[styles.title]}>{item.name} </Text>
               <Text style={[styles.subTitle]}>
                 {item.mobile}
               </Text>
               {/* <Text style={[StyleSheet.subTitle]}>
-                {item.customer_details.address}
+               {item.employee_role == "admin" ?
+                  <Text style={{ fontSize: 15, fontWeight: 500, color: "rgba(255, 76, 48, .9)" }}>{camalize(item.employee_role)} </Text> :
+                  item.employee_role == "master" ?
+                    <Text style={{ fontSize: 15, fontWeight: 500, color: "rgba(249, 105, 14, 1)" }}>{camalize(item.employee_role)} </Text> :
+                    item.employee_role == "add" ?
+                      <Text style={{ fontSize: 15, fontWeight: 500, color: "rgba(25, 181, 254, 1))" }}>{camalize(item.employee_role)} </Text> :
+                      <Text style={{ fontSize: 15, fontWeight: 500, color: "rgba(22, 160, 133, 1)" }}>{camalize(item.employee_role)} </Text>}
               </Text> */}
             </View>
+            {/* <View style={{marginRight:50}}>
+
+            {item.employee_role == "admin" ?
+            <Text style={{fontSize:15, fontWeight:500, color:"rgba(255, 76, 48, .9)"}}>{camalize(item.employee_role)} </Text> : 
+            item.employee_role == "master" ? 
+            <Text style={{fontSize:15, fontWeight:500, color:"rgba(249, 105, 14, 1)" }}>{camalize(item.employee_role)} </Text> : 
+            item.employee_role == "add" ? 
+            <Text style={{fontSize:15, fontWeight:500, color:"rgba(25, 181, 254, 1))" }}>{camalize(item.employee_role)} </Text> :
+            <Text style={{fontSize:15, fontWeight:500, color:"rgba(22, 160, 133, 1)" }}>{camalize(item.employee_role)} </Text>}
+            </View> */}
 
 
 
@@ -615,12 +637,12 @@ const EmployeeCard = props => {
                 <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
               </TouchableOpacity>
 
-              {/* <TouchableOpacity
-                onPress={() => onShare()}
+              <TouchableOpacity
+                onPress={() => editEmployee(item)}
                 style={{ padding: 15, backgroundColor: "#0091ea" }}
               >
-                <Ionicons name="share-social" color={"#ffffff"} size={30} />
-              </TouchableOpacity> */}
+                <MaterialCommunityIcons name="account-edit" color={"#ffffff"} size={30} />
+              </TouchableOpacity>
               {/* <TouchableOpacity
                 onPress={() => onClickMeeting(item)}
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
@@ -632,7 +654,7 @@ const EmployeeCard = props => {
                 />
               </TouchableOpacity> */}
               <TouchableOpacity
-                onPress={() => makeCall(item)}
+                onPress={() => makeCall(item.mobile)}
                 style={{ padding: 15, backgroundColor: "#00bfa5" }}
               >
                 <Ionicons name="call" color={"#ffffff"} size={30} />
@@ -771,7 +793,7 @@ const EmployeeCard = props => {
               <TouchableHighlight
                 style={{ ...styles.applyButton }}
                 onPress={() => {
-                  deleteMe(item);
+                  checkDeleteDecision(item);
                   setModalVisible(!modalVisible);
                 }}
               >
