@@ -12,7 +12,9 @@ import {
   style,
   FlatList,
   Linking,
-  ActivityIndicator
+  ActivityIndicator,
+  TextInput,
+  StatusBar,
 } from "react-native";
 import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -20,8 +22,9 @@ import axios from "axios";
 import { SERVER_URL } from "../util/Constant";
 import { useIsFocused } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
-import {formatIsoDateToCustomString} from "../util/methods"; // Assuming this is the correct path to your method
+import { formatIsoDateToCustomString } from "../util/methods"; // Assuming this is the correct path to your method
 import { makeCall } from "../util/methods";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 const Reminder = props => {
   const {
@@ -34,7 +37,8 @@ const Reminder = props => {
   const [futureReminderList, setFutureReminderList] = useState([]);
   const [pastReminderList, setPastReminderList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [ dbCall, setDbCall ] = useState(didDbCall);
+  const [dbCall, setDbCall] = useState(didDbCall);
+  const [search, setSearch] = useState("");
 
   const updateDbCall = useCallback((value) => {
     // console.log(`Function 'a' in Screen A called with value: ${value}`);
@@ -42,25 +46,25 @@ const Reminder = props => {
     // Perform any other actions needed in Screen A
   }, []); // useCallback ensures this function remains stable across re-renders
 
-  
+
 
   useFocusEffect(
-      useCallback(() => {
-        // This function will be called when Screen A comes into focus
-        console.log("useFocusEffect")
-        if (dbCall && !isSpecificRemider && customerData == null) {
-          getReminderList();
-          
-        }
-  
-        // Optional: Return a cleanup function if needed
-        return () => {
-          // This function will be called when Screen A loses focus
-          // You can perform cleanup here if necessary
-          setDbCall(true); // Set dbCall to false after fetching data
-        };
-      }, [dbCall]) // Re-run the effect if fetchData function changes (unlikely here)
-    );
+    useCallback(() => {
+      // This function will be called when Screen A comes into focus
+      console.log("useFocusEffect")
+      if (dbCall && !isSpecificRemider && customerData == null) {
+        getReminderList();
+
+      }
+
+      // Optional: Return a cleanup function if needed
+      return () => {
+        // This function will be called when Screen A loses focus
+        // You can perform cleanup here if necessary
+        setDbCall(true); // Set dbCall to false after fetching data
+      };
+    }, [dbCall]) // Re-run the effect if fetchData function changes (unlikely here)
+  );
 
 
   useEffect(() => {
@@ -210,6 +214,39 @@ const Reminder = props => {
   //   const url = "tel://" + mobile;
   //   Linking.openURL(url);
   // };
+
+  const searchFilterFunction = (text) => {
+    // Check if the search text is not blank
+    if (text) {
+      // Filter the reminderList based on the search text
+      const newData = reminderList.filter((item) => {
+        // Ensure item and its properties exist
+        if (!item || !item.client_name || !item.client_mobile) {
+          return false;
+        }
+  
+        // Combine client_name and client_mobile for filtering
+        const itemData = `${item.client_name} ${item.client_mobile}`.toUpperCase();
+  
+        // Convert the search text to uppercase for case-insensitive comparison
+        const textData = text.toUpperCase();
+  
+        // Check if the search text is found in the itemData
+        return itemData.indexOf(textData) > -1;
+      });
+  
+      // Update the filtered data and search text
+      setFutureReminderList(newData.filter((item) => new Date(item.meeting_date) > new Date()));
+      setPastReminderList(newData.filter((item) => new Date(item.meeting_date) <= new Date()));
+      setSearch(text);
+    } else {
+      // If the search text is blank, reset the filtered data
+      setFutureReminderList(reminderList.filter((item) => new Date(item.meeting_date) > new Date()));
+      setPastReminderList(reminderList.filter((item) => new Date(item.meeting_date) <= new Date()));
+      setSearch(text);
+    }
+  };
+
 
   const ItemView = ({ item }) => {
     return item.reminder_for.toLowerCase() === "meeting".toLowerCase() ? (
@@ -423,7 +460,23 @@ const Reminder = props => {
     ) : (
       <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: "#ffffff" }}>
         {reminderList.length > 0 ? (
-          <View>
+
+          <View style={{ flex: 1, backgroundColor: "#ffffff", marginTop: StatusBar.currentHeight }}>
+            <View style={styles.searchBar}>
+              <AntDesign name="search1" size={20} color="#999" style={{ marginRight: 5, }} />
+              {/* <View style={{ flexDirection: "row", margin: 10, justifyContent: "space-between" }}>
+                        <Text>For Rent: {rentPropCount.length}</Text>
+                        <Text>For Sell: {sellPropCount.length}</Text>
+                      </View> */}
+              <TextInput
+                style={styles.textInputStyle}
+                onChangeText={text => searchFilterFunction(text)}
+                value={search}
+                underlineColorAndroid="transparent"
+                placeholder="Search by name, mobile"
+                placeholderTextColor="#000"
+              />
+            </View>
             <Text
               style={{
                 textAlign: "center",
@@ -526,6 +579,31 @@ const styles = StyleSheet.create({
     height: "100%",
     width: 2,
     backgroundColor: "#ffffff",
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+    marginTop:10,
+  },
+  textInputStyle: {
+    width: "98%",
+    height: 25,
+    // borderWidth: 1,
+    paddingLeft: 20,
+    margin: 5,
+    // marginBottom: 5,
+    borderRadius: 10,
+    // borderColor: "#009688",
+    backgroundColor: "#FFFFFF"
   },
 });
 

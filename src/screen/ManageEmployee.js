@@ -132,11 +132,12 @@ const ManageEmployee = props => {
         if (response.data) {
           const x = [response.data, ...props.employeeList];
           props.setEmployeeList(x);
-          navigation.navigate("EmployeeList", {
-            itemForAddEmplyee: null,
-            disableDrawer: false,
-            displayCheckBox: false
-          });
+          navigation.goBack();
+          // navigation.navigate("EmployeeList", {
+          //   itemForAddEmplyee: null,
+          //   disableDrawer: false,
+          //   displayCheckBox: false
+          // });
         }
       }
     ).catch((error) => {

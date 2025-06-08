@@ -24,7 +24,7 @@ import Button from "../../components/Button";
 import { Divider } from "react-native-paper";
 import { SocialIcon } from "@rneui/themed";
 import Slider from "../../components/Slider";
-import SliderX from "../../components/SliderX";
+import SliderCr from "../../components/SliderCr";
 import ContactResidentialRentCard from "./ContactResidentialRentCard";
 import ContactResidentialSellCard from "./ContactResidentialSellCard";
 import axios from "axios";
@@ -36,6 +36,8 @@ import {
 } from "../../reducers/Action";
 import { addDays, numDifferentiation } from "../../util/methods";
 import Snackbar from "../../components/SnackbarComponent";
+import CustomButtonGroup from "../../components/CustomButtonGroup";
+
 
 const lookingForArray = ["Rent", "Buy"];
 const homeTypeArray = ["Apartment", "Villa", "Independent House"];
@@ -46,6 +48,35 @@ const furnishingStatusArray = ["Full", "Semi", "Empty"];
 const sortByNameArray = ["A First", "Z First"];
 const lookingForArraySortBy = ["Rent", "Buy"];
 const sortByPostedDateArray = ["Recent First", "Oldest Fist"];
+
+
+const bhkOption = [
+  { text: '1RK' },
+  { text: '1BHK' },
+  { text: '2BHK' },
+  { text: '3BHK' },
+  { text: '4+BHK' },
+];
+
+const reqWithinOptions = [
+  { text: '7 Days' },
+  { text: '15 Days' },
+  { text: '30 Days' },
+  { text: '60 Days' },
+  { text: '60+ Days' },
+];
+
+const porposeForOptions = [
+  { text: 'Rent' },
+  { text: 'Buy' },
+];
+
+const furnishingStatusOptions = [
+  { text: 'Full' },
+  { text: 'Semi' },
+  { text: 'Empty' },
+]
+
 
 const ContactsResidential = props => {
   const { navigation } = props;
@@ -73,6 +104,13 @@ const ContactsResidential = props => {
   const [lookingForIndexSortBy, setLookingForIndexSortBy] = useState(-1);
 
   const [loading, setLoading] = useState(false);
+
+  // filter
+  const [selectedBHK, setSelectedBHK] = useState([]);
+  const [reqWithin, setReqWithin] = useState("");
+  const [purpose, setPurpose] = useState("");
+  const [selectedFunishing, setSelectedFunishing] = useState([]);
+
 
   useFocusEffect(
     useCallback(() => {
@@ -204,11 +242,10 @@ const ContactsResidential = props => {
   };
 
   const resetFilter = () => {
-    setLookingForIndex(-1);
-    setHomeTypeIndex(-1);
-    setBHKTypeIndex(-1);
-    setAvailabilityIndex(-1);
-    setFurnishingIndex(-1);
+    setSelectedBHK([]);
+    setReqWithin("");
+    setPurpose("");
+    setSelectedFunishing([]);
     setData(props.residentialCustomerList);
     setVisible(false);
     setMinRent(5000);
@@ -217,89 +254,144 @@ const ContactsResidential = props => {
     setMaxSell(100000000);
   };
 
+  const handlePriceRangeChange = useCallback((values) => {
+    setRentRange(values);
+  }, []);
+
+  const handlePriceRangeChangeCr = useCallback((values) => {
+    setSellRange(values);
+  }, []);
+
+  const selectBHK = (index, button) => {
+    let newSelectedIndicesBHK;
+    newSelectedIndicesBHK = [...selectedBHK];
+    if (newSelectedIndicesBHK.includes(button.text)) {
+      newSelectedIndicesBHK.splice(newSelectedIndicesBHK.indexOf(button.text), 1);
+    } else {
+      newSelectedIndicesBHK.push(button.text);
+    }
+    setSelectedBHK(newSelectedIndicesBHK);
+    console.log(`newSelectedIndices: ${newSelectedIndicesBHK}`);
+    // Query update is handled by useEffect after state change
+  }
+
+  const selectFurnishings = (index, button) => {
+    let newSelectedIndicesFurnishing;
+    newSelectedIndicesFurnishing = [...selectedFunishing];
+    if (newSelectedIndicesFurnishing.includes(button.text)) {
+      newSelectedIndicesFurnishing.splice(newSelectedIndicesFurnishing.indexOf(button.text), 1);
+    } else {
+      newSelectedIndicesFurnishing.push(button.text);
+    }
+    setSelectedFunishing(newSelectedIndicesFurnishing);
+    console.log(`newSelectedIndices: ${newSelectedIndicesFurnishing}`);
+    // Query update is handled by useEffect after state change
+  }
+
   const onFilter = () => {
     console.log("onFilter:     ", props.residentialCustomerList);
-    if (lookingForIndex === -1) {
+    if (purpose === "") {
       setErrorMessage("Looking for is missing in filter");
       setIsVisible(true);
       return;
     }
     let filterList = props.residentialCustomerList;
-    if (lookingForIndex > -1) {
+    if (purpose !== "") {
       filterList = filterList.filter(
         item =>
           item.customer_locality.property_for ===
-          lookingForArray[lookingForIndex]
+          purpose
       );
     }
-    if (homeTypeIndex > -1) {
+    // if (homeTypeIndex > -1) {
+    //   filterList = filterList.filter(
+    //     item =>
+    //       item.customer_property_details.house_type ===
+    //       homeTypeArray[homeTypeIndex]
+    //   );
+    // }
+
+
+    if (selectedBHK.length > 0) {
       filterList = filterList.filter(
-        item =>
-          item.customer_property_details.house_type ===
-          homeTypeArray[homeTypeIndex]
-      );
-    }
-    if (bhkTypeIndex > -1) {
-      filterList = filterList.filter(
-        item =>
-          item.customer_property_details.bhk_type === bhkTypeArray[bhkTypeIndex]
+        item => selectedBHK.includes(item.customer_property_details.bhk_type)
       );
     }
 
-    if (availabilityIndex > -1) {
-      // const oneDay = 24 * 60 * 60 * 1000;
-      let possessionDate = new Date();
+
+    if (purpose === "Rent" && reqWithin !== "") {
       const today = new Date();
-      if (availabilityArray[availabilityIndex] === "Immediate") {
-        possessionDate = addDays(today, 7); //new Date(today.getTime() + 15*24*60*60*1000)
+      let possessionDate;
+
+      if (reqWithin === "7 Days") {
+        possessionDate = addDays(today, 7);
         filterList = filterList.filter(
-          item =>
-            possessionDate > new Date(item.customer_rent_details.available_from)
+          item => new Date(item.customer_rent_details.available_from) <= possessionDate
         );
-        // console.log(
-        //   "possessionDate: ",
-        //   new Date(filterList[0].rent_details.available_from)
-        // );
-      } else if (availabilityArray[availabilityIndex] === "15 Days") {
+      } else if (reqWithin === "15 Days") {
         possessionDate = addDays(today, 15);
         filterList = filterList.filter(
-          item =>
-            possessionDate > new Date(item.customer_rent_details.available_from)
+          item => new Date(item.customer_rent_details.available_from) <= possessionDate
         );
-      } else if (availabilityArray[availabilityIndex] === "30 Days") {
+      } else if (reqWithin === "30 Days") {
         possessionDate = addDays(today, 30);
         filterList = filterList.filter(
-          item =>
-            possessionDate > new Date(item.customer_rent_details.available_from)
+          item => new Date(item.customer_rent_details.available_from) <= possessionDate
         );
-      } else if (availabilityArray[availabilityIndex] === "30+ Days") {
-        possessionDate = addDays(today, 30);
+      } else if (reqWithin === "60 Days") {
+        possessionDate = addDays(today, 60);
         filterList = filterList.filter(
-          item =>
-            new Date(item.customer_rent_details.available_from) > possessionDate
+          item => new Date(item.customer_rent_details.available_from) <= possessionDate
+        );
+      } else if (reqWithin === "60+ Days") {
+        possessionDate = addDays(today, 60);
+        filterList = filterList.filter(
+          item => new Date(item.customer_rent_details.available_from) > possessionDate
         );
       }
     }
 
-    if (furnishingIndex > -1) {
+    else if (purpose === "Buy" && reqWithin !== "") {
+      const today = new Date();
+      let possessionDate;
+
+      if (reqWithin === "7 Days") {
+        possessionDate = addDays(today, 7);
+        filterList = filterList.filter(
+          item => new Date(item.customer_buy_details.available_from) <= possessionDate
+        );
+      } else if (reqWithin === "15 Days") {
+        possessionDate = addDays(today, 15);
+        filterList = filterList.filter(
+          item => new Date(item.customer_buy_details.available_from) <= possessionDate
+        );
+      } else if (reqWithin === "30 Days") {
+        possessionDate = addDays(today, 30);
+        filterList = filterList.filter(
+          item => new Date(item.customer_buy_details.available_from) <= possessionDate
+        );
+      } else if (reqWithin === "60 Days") {
+        possessionDate = addDays(today, 60);
+        filterList = filterList.filter(
+          item => new Date(item.customer_buy_details.available_from) <= possessionDate
+        );
+      } else if (reqWithin === "60+ Days") {
+        possessionDate = addDays(today, 60);
+        filterList = filterList.filter(
+          item => new Date(item.customer_buy_details.available_from) > possessionDate
+        );
+      }
+    }
+
+    if (selectedFunishing.length > 0) {
       filterList = filterList.filter(
-        item =>
-          item.customer_property_details.furnishing_status ===
-          furnishingStatusArray[furnishingIndex]
+        item => selectedFunishing.includes(item.customer_property_details.furnishing_status)
       );
     }
-    // // console.log("rent", minRent);
-    // // console.log("rent", maxRent);
-    // if (minRent > 5000 || maxRent < 500000) {
-    //   // // console.log("rent");
-    //   filterList = filterList.filter(
-    //     item =>
-    //       item.rent_details.expected_rent >= minRent &&
-    //       item.rent_details.expected_rent <= maxRent
-    //   );
-    // }
 
-    if (lookingForIndex === 0) {
+
+    if (purpose === "Rent") {
+      // this code is to handle if we want to filter the rent which is below 5L, else we will show all result
       if (minRent > 5000 || maxRent < 500000) {
         // console.log("rent");
         filterList = filterList.filter(
@@ -308,7 +400,8 @@ const ContactsResidential = props => {
             item.customer_rent_details.expected_rent <= maxRent
         );
       }
-    } else if (lookingForIndex === 1) {
+    } else if (purpose === "Buy") {
+      // this code is to handle if we want to filter the Buy which is below 5L, else we will show all result
       if (minSell > 1000000 || maxSell < 100000000) {
         // console.log("rent");
         filterList = filterList.filter(
@@ -630,6 +723,7 @@ const ContactsResidential = props => {
             </View>
           </View>)}
         {/* Bottom for filters */}
+
         <BottomSheet
           visible={visible}
           //setting the visibility state of the bottom shee
@@ -640,7 +734,7 @@ const ContactsResidential = props => {
         >
           {/*Bottom Sheet inner View*/}
 
-          <View style={styles.bottomNavigationView}>
+          <View style={[styles.bottomNavigationView, { margin: 0 }]}>
             <Text style={{ marginTop: 15, fontSize: 16, fontWeight: "600" }}>
               Filter
             </Text>
@@ -654,19 +748,22 @@ const ContactsResidential = props => {
                 size={30}
               />
             </TouchableOpacity>
-            <ScrollView style={{ marginTop: 20, marginBottom: 20 }}>
+            <ScrollView style={{ marginTop: 20, marginBottom: 20, margin: 10 }}>
               <Text style={styles.marginBottom10}>Looking For</Text>
               <View style={styles.propSubSection}>
-                <ButtonGroup
-                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                  onPress={selectLookingForIndex}
-                  selectedIndex={lookingForIndex}
-                  buttons={lookingForArray}
-                  // containerStyle={{ height: 30 }}
-                  textStyle={{ textAlign: "center" }}
-                  selectedTextStyle={{ color: "#fff" }}
-                  containerStyle={{ borderRadius: 10, width: 350 }}
-                  containerBorderRadius={10}
+                <CustomButtonGroup
+                  buttons={porposeForOptions}
+                  selectedIndices={[porposeForOptions.findIndex(option => option.text === purpose)]}
+                  isMultiSelect={false}
+                  buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
+                  selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+                  buttonTextStyle={{ color: '#000' }}
+                  selectedButtonTextStyle={{ color: '#000' }}
+                  onButtonPress={(index, button) => {
+                    console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                    setPurpose(button.text);
+                    // Query update is handled by useEffect after state change
+                  }}
                 />
               </View>
               {/* <Text style={styles.marginBottom10}>Property type</Text>
@@ -683,7 +780,7 @@ const ContactsResidential = props => {
                 containerBorderRadius={10}
               />
             </View> */}
-              <Text style={styles.marginBottom10}>Home type</Text>
+              {/* <Text style={styles.marginBottom10}>Home type</Text>
               <View style={styles.propSubSection}>
                 <ButtonGroup
                   selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
@@ -696,116 +793,80 @@ const ContactsResidential = props => {
                   containerStyle={{ borderRadius: 10, width: 350 }}
                   containerBorderRadius={10}
                 />
-              </View>
+              </View> */}
               <Text style={styles.marginBottom10}>BHK type</Text>
               <View style={styles.propSubSection}>
-                <ButtonGroup
-                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                  onPress={selectBHKTypeIndex}
-                  selectedIndex={bhkTypeIndex}
-                  buttons={bhkTypeArray}
-                  // containerStyle={{ height: 30 }}
-                  textStyle={{ textAlign: "center" }}
-                  selectedTextStyle={{ color: "#fff" }}
-                  containerStyle={{ borderRadius: 10, width: 350 }}
-                  containerBorderRadius={10}
+                <CustomButtonGroup
+                  buttons={bhkOption}
+                  isMultiSelect={true}
+                  buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
+                  selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+                  buttonTextStyle={{ color: '#000' }}
+                  selectedButtonTextStyle={{ color: '#000' }}
+                  selectedIndices={selectedBHK.map((item) =>
+                    bhkOption.findIndex((option) => option.text === item)
+                  )}
+                  onButtonPress={(index, button) => {
+                    selectBHK(index, button);
+                  }}
                 />
               </View>
-              {/* <Text>Rent Range</Text>
-            <Slider
-              min={5000}
-              max={500000}
-              step={5000}
-              onSlide={values => setMultiSliderValue(values)}
-            /> */}
-              {lookingForIndex === -1 ? null : lookingForIndex === 0 ? (
+              {purpose === "" ? null : purpose === "Rent" ? (
                 <View>
-                  <Text>Rent Range</Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      marginTop: 10
-                    }}
-                  >
-                    <View>
-                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
-                        {numDifferentiation(minRent)}
-                      </Text>
-                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Min</Text>
-                    </View>
-                    <View>
-                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
-                        {numDifferentiation(maxRent)}
-                      </Text>
-                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Max</Text>
-                    </View>
-                  </View>
-
+                  <Text style={{ marginBottom: 15 }}>Rent Range</Text>
                   <Slider
-                    min={5000}
+                    min={10000}
                     max={500000}
-                    step={5000}
-                    onSlide={values => setRentRange(values)}
+                    onSlide={handlePriceRangeChange}
                   />
                 </View>
               ) : (
                 <View>
-                  <Text>Sell Price Range</Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      marginTop: 10
-                    }}
-                  >
-                    <View>
-                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
-                        {numDifferentiation(minSell)}
-                      </Text>
-                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Min</Text>
-                    </View>
-                    <View>
-                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>
-                        {numDifferentiation(maxSell)}
-                      </Text>
-                      <Text style={{ color: "rgba(108, 122, 137, 1)" }}>Max</Text>
-                    </View>
-                  </View>
-                  <SliderX
-                    min={minSell}
-                    max={maxSell}
-                    step={500000}
-                    onSlide={values => setSellRange(values)}
+                  <Text style={{ marginBottom: 10 }}>Sell Price Range</Text>
+
+                  <SliderCr
+                    min={1000000}
+                    max={100000000}
+                    onSlide={handlePriceRangeChangeCr}
                   />
                 </View>
               )}
               <Text style={styles.marginBottom10}>Availability</Text>
               <View style={styles.propSubSection}>
-                <ButtonGroup
-                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                  onPress={selectAvailabilityIndex}
-                  selectedIndex={availabilityIndex}
-                  buttons={availabilityArray}
-                  // containerStyle={{ height: 30 }}
-                  textStyle={{ textAlign: "center" }}
-                  selectedTextStyle={{ color: "#fff" }}
-                  containerStyle={{ borderRadius: 10, width: 350 }}
-                  containerBorderRadius={10}
+
+                <CustomButtonGroup
+                  buttons={reqWithinOptions}
+                  selectedIndices={[reqWithinOptions.findIndex(option => option.text === reqWithin)]}
+                  isMultiSelect={false}
+                  buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
+                  selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+                  buttonTextStyle={{ color: '#000' }}
+                  selectedButtonTextStyle={{ color: '#000' }}
+                  onButtonPress={(index, button) => {
+                    console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                    setReqWithin(button.text);
+                    // Query update is handled by useEffect after state change
+                  }}
                 />
               </View>
               <Text style={styles.marginBottom10}>Furnishing</Text>
               <View style={styles.propSubSection}>
-                <ButtonGroup
-                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                  onPress={selectFurnishingIndex}
-                  selectedIndex={furnishingIndex}
-                  buttons={furnishingStatusArray}
-                  // containerStyle={{ height: 30 }}
-                  textStyle={{ textAlign: "center" }}
-                  selectedTextStyle={{ color: "#fff" }}
-                  containerStyle={{ borderRadius: 10, width: 350 }}
-                  containerBorderRadius={10}
+
+                <CustomButtonGroup
+                  buttons={furnishingStatusOptions}
+                  isMultiSelect={true}
+                  buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
+                  selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+                  buttonTextStyle={{ color: '#000' }}
+                  selectedButtonTextStyle={{ color: '#000' }}
+                  selectedIndices={selectedFunishing.map((item) =>
+                    furnishingStatusOptions.findIndex((option) => option.text === item)
+                  )}
+                  onButtonPress={(index, button) => {
+                    console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                    selectFurnishings(index, button);
+                    // Query update is handled by useEffect after state change
+                  }}
                 />
               </View>
               <Button title="Apply" onPress={() => onFilter()} />
@@ -819,7 +880,6 @@ const ContactsResidential = props => {
             />
           </View>
         </BottomSheet>
-
         {/* Bottom sheet for sorting */}
         <BottomSheet
           visible={visibleSorting}
