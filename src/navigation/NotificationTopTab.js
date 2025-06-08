@@ -29,6 +29,15 @@ const NotificationTopTab = () => {
           borderBottomWidth: 2,
           borderBottomColor: 'rgb(2,171,61)',
         },
+        tabBarLabelStyle: {
+          fontSize: 18, // Adjust the font size
+          fontWeight: '500', // Make the text bold
+          color: 'black', // Set the text color
+          textTransform: 'capitalize', // Capitalize the text
+        },
+        tabBarStyle: {
+          backgroundColor: '#f8f8f8', // Optional: Set a background color for the tab bar
+        },
         // tabBarActiveTintColor: 'tomato',
         // tabBarInactiveTintColor: 'gray',
         style: {
