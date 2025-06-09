@@ -29,32 +29,37 @@ import { setEmployeeList } from "../../reducers/Action";
 import EmployeeCard from "../employee/EmployeeCard";
 import { useFocusEffect } from '@react-navigation/native';
 
+import { useDispatch } from 'react-redux'; // For functional components
+import { triggerRefresh } from '../../reducers/dataRefreshReducer'; // Import the action creator
+
 const EmployeeList = props => {
   const { navigation } = props;
-  const { 
+  const {
     itemForAddEmplyee = null, // this will pass value from property or customer card
-    disableDrawer = false, 
-    displayCheckBox = false 
+    disableDrawer = false,
+    displayCheckBox = false
   } = props.route.params || {}; // Add null check and default values
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false); // Add a state to trigger re-render
 
+  const dispatch = useDispatch();
+
 
   useFocusEffect(
-      useCallback(() => {
-        // This function will be called when Screen A comes into focus
-        console.log("useFocusEffect")
-        getListing();
-  
-        // Optional: Return a cleanup function if needed
-        return () => {
-          // This function will be called when Screen A loses focus
-          // You can perform cleanup here if necessary
-        };
-      }, []) // Re-run the effect if fetchData function changes (unlikely here)
-    );
+    useCallback(() => {
+      // This function will be called when Screen A comes into focus
+      console.log("useFocusEffect")
+      getListing();
+
+      // Optional: Return a cleanup function if needed
+      return () => {
+        // This function will be called when Screen A loses focus
+        // You can perform cleanup here if necessary
+      };
+    }, []) // Re-run the effect if fetchData function changes (unlikely here)
+  );
 
 
   useEffect(() => {
@@ -95,7 +100,7 @@ const EmployeeList = props => {
   const searchFilterFunction = text => {
     if (text) {
       const newData = props.employeeList.filter(function (item) {
-        const itemData = item.name+item.mobile;
+        const itemData = item.name + item.mobile;
         const textData = text.toUpperCase();
         return itemData.toUpperCase().indexOf(textData) > -1;
       });
@@ -129,6 +134,8 @@ const EmployeeList = props => {
             return el.id !== empObj.id;
           });
           props.setEmployeeList([...x]);
+          // After successful DB update, dispatch the refresh action
+          dispatch(triggerRefresh());
         }
         // setData(response.data);
       },

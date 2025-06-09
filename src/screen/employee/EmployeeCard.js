@@ -303,6 +303,14 @@ const EmployeeCard = props => {
   const checkDeleteDecision = (item)=>{
     if(index === 0){
       deleteMe(item);
+      setModalVisible(false);
+      Animated.timing(Animation, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true
+      }).start(() => {
+        Sliding_Drawer_Toggle = false;
+      });
     }
     if(index ===1){
       setModalVisible(false);

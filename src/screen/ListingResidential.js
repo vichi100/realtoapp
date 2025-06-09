@@ -41,6 +41,10 @@ import Snackbar from "../components/SnackbarComponent";
 import { useFocusEffect } from '@react-navigation/native';
 import CustomButtonGroup from "../components/CustomButtonGroup";
 
+import { resetRefresh } from '../reducers/dataRefreshReducer'; // Import the action creator
+import { useIsFocused } from '@react-navigation/native'; //
+import { useSelector, useDispatch } from 'react-redux'; // Import hooks
+
 // Dynamic query
 // https://stackoverflow.com/questions/29831164/how-to-filter-in-mongodb-dynamically#:~:text=answer%20was%20accepted%E2%80%A6-,var%20fName%3D%22John%22%2C%20fCountry%3D%22US%22,fName%7D)%3B%20%7D%20if%20(fCountry%20!%3D%3D
 
@@ -121,6 +125,12 @@ const ListingResidential = props => {
   const [purpose, setPurpose] = useState("");
   const [selectedFunishing, setSelectedFunishing] = useState([]);
 
+  // Select the 'shouldRefresh' state from the 'dataRefresh' slice
+  const shouldRefresh = useSelector((state) => state.dataRefresh.shouldRefresh);
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused(); // To ensure refresh happens when screen comes into view
+
+
   const resetFilter = () => {
     setSelectedBHK([]);
     setReqWithin("");
@@ -133,29 +143,50 @@ const ListingResidential = props => {
     setMinSell(1000000);
     setMaxSell(100000000);
   };
-  
 
-  // useEffect(() => {
-  //   console.log(rent)
-  //   setRentPropCount(rent.current);
-  //   setSellPropCount(sell.current);
-  // }, [rent.current, sell.current])
 
-  useFocusEffect(
-    useCallback(() => {
-      // This function will be called when Screen A comes into focus
-      console.log("useFocusEffect")
-      if (didDbCall) {
-        getListing();
-      }
+  const fetchData = useCallback(async () => {
+    // setLoading(true);
+    try {
+      console.log('ScreenA: Fetching latest data...');
+      // Replace with your actual data fetching logic from DB/API
+      getListing();
+    } catch (error) {
+      console.error('Failed to fetch data for ScreenA:', error);
+      setData('Error loading data.');
+    } finally {
+      setLoading(false);
+      // After successfully fetching, reset the Redux refresh flag
+      dispatch(resetRefresh());
+      console.log('ScreenA: Data fetched and refresh flag reset.');
+    }
+  }, [dispatch]);
 
-      // Optional: Return a cleanup function if needed
-      return () => {
-        // This function will be called when Screen A loses focus
-        // You can perform cleanup here if necessary
-      };
-    }, []) // Re-run the effect if fetchData function changes (unlikely here)
-  );
+  // Use useEffect to trigger fetch when:
+  // 1. The screen gains focus (e.g., navigated back to it)
+  // 2. The Redux 'shouldRefresh' flag becomes true (signaled by ScreenD)
+  useEffect(() => {
+    if (isFocused || shouldRefresh || didDbCall) {
+      fetchData();
+    }
+  }, [isFocused, shouldRefresh, fetchData, didDbCall]);
+
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     // This function will be called when Screen A comes into focus
+  //     console.log("useFocusEffect")
+  //     if (didDbCall || shouldRefresh) {
+  //       fetchData();
+  //     }
+
+  //     // Optional: Return a cleanup function if needed
+  //     return () => {
+  //       // This function will be called when Screen A loses focus
+  //       // You can perform cleanup here if necessary
+  //     };
+  //   }, []) // Re-run the effect if fetchData function changes (unlikely here)
+  // );
 
   const resetSortBy = () => {
     setLookingForIndexSortBy(-1);
@@ -382,6 +413,8 @@ const ListingResidential = props => {
         props.setResidentialPropertyList(response.data);
         setLoading(false);
         // console.log("response.data:      ", response.data);
+        // After successfully fetching, reset the Redux refresh flag
+        dispatch(resetRefresh());
       },
       error => {
         // console.log(error);
@@ -581,7 +614,7 @@ const ListingResidential = props => {
     if (purpose === "Rent" && reqWithin !== "") {
       const today = new Date();
       let possessionDate;
-    
+
       if (reqWithin === "7 Days") {
         possessionDate = addDays(today, 7);
         filterList = filterList.filter(
@@ -613,7 +646,7 @@ const ListingResidential = props => {
     else if (purpose === "Sell" && reqWithin !== "") {
       const today = new Date();
       let possessionDate;
-    
+
       if (reqWithin === "7 Days") {
         possessionDate = addDays(today, 7);
         filterList = filterList.filter(
@@ -811,7 +844,7 @@ const ListingResidential = props => {
                   buttons={porposeForOptions}
                   selectedIndices={[porposeForOptions.findIndex(option => option.text === purpose)]}
                   isMultiSelect={false}
-                  buttonStyle={{  backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
+                  buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
                   selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
                   buttonTextStyle={{ color: '#000' }}
                   selectedButtonTextStyle={{ color: '#000' }}
@@ -855,7 +888,7 @@ const ListingResidential = props => {
                 <CustomButtonGroup
                   buttons={bhkOption}
                   isMultiSelect={true}
-                  buttonStyle={{  backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
+                  buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
                   selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
                   buttonTextStyle={{ color: '#000' }}
                   selectedButtonTextStyle={{ color: '#000' }}
@@ -889,12 +922,12 @@ const ListingResidential = props => {
               )}
               <Text style={styles.marginBottom10}>Availability</Text>
               <View style={styles.propSubSection}>
-                
+
                 <CustomButtonGroup
                   buttons={reqWithinOptions}
                   selectedIndices={[reqWithinOptions.findIndex(option => option.text === reqWithin)]}
                   isMultiSelect={false}
-                  buttonStyle={{  backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
+                  buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
                   selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
                   buttonTextStyle={{ color: '#000' }}
                   selectedButtonTextStyle={{ color: '#000' }}
@@ -907,11 +940,11 @@ const ListingResidential = props => {
               </View>
               <Text style={styles.marginBottom10}>Furnishing</Text>
               <View style={styles.propSubSection}>
-               
+
                 <CustomButtonGroup
                   buttons={furnishingStatusOptions}
                   isMultiSelect={true}
-                  buttonStyle={{  backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
+                  buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
                   selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
                   buttonTextStyle={{ color: '#000' }}
                   selectedButtonTextStyle={{ color: '#000' }}
@@ -967,7 +1000,7 @@ const ListingResidential = props => {
               <Text style={styles.marginBottom10}>Looking For</Text>
               <View style={styles.propSubSection}>
                 <ButtonGroup
-                selectedButtonStyle={{ backgroundColor: "#00a36c4d" }} 
+                  selectedButtonStyle={{ backgroundColor: "#00a36c4d" }}
                   // selectedBackgroundColor="rgba(0, 163, 108, .2)"
                   onPress={selectLookingForIndexSortBy}
                   selectedIndex={lookingForIndexSortBy}
@@ -982,7 +1015,7 @@ const ListingResidential = props => {
               <Text style={styles.marginBottom10}>Rent</Text>
               <View style={styles.propSubSection}>
                 <ButtonGroup
-                  selectedButtonStyle={{ backgroundColor: "#00a36c4d" }} 
+                  selectedButtonStyle={{ backgroundColor: "#00a36c4d" }}
                   onPress={sortByRent}
                   selectedIndex={sortByRentIndex}
                   buttons={sortByRentArray}
@@ -996,7 +1029,7 @@ const ListingResidential = props => {
               <Text style={styles.marginBottom10}>Availability</Text>
               <View style={styles.propSubSection}>
                 <ButtonGroup
-                  selectedButtonStyle={{ backgroundColor: "#00a36c4d" }} 
+                  selectedButtonStyle={{ backgroundColor: "#00a36c4d" }}
                   onPress={sortByAvailability}
                   selectedIndex={sortByAvailabilityIndex}
                   buttons={sortByAvailabilityArray}
@@ -1011,7 +1044,7 @@ const ListingResidential = props => {
               <Text style={styles.marginBottom10}>Posted date</Text>
               <View style={styles.propSubSection}>
                 <ButtonGroup
-                  selectedButtonStyle={{ backgroundColor: "#00a36c4d" }} 
+                  selectedButtonStyle={{ backgroundColor: "#00a36c4d" }}
                   onPress={sortByPostedDate}
                   selectedIndex={sortByPostedDateIndex}
                   buttons={sortByPostedDateArray}

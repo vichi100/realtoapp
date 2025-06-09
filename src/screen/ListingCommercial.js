@@ -38,6 +38,10 @@ import Snackbar from "../components/SnackbarComponent";
 import { useFocusEffect } from '@react-navigation/native';
 import CustomButtonGroup from "../components/CustomButtonGroup";
 
+import { resetRefresh } from '../reducers/dataRefreshReducer'; // Import the action creator
+import { useIsFocused } from '@react-navigation/native'; //
+import { useSelector, useDispatch } from 'react-redux'; // Import hooks
+
 
 const buildingTypeArray = [
   "Businesses park ",
@@ -125,21 +129,53 @@ const ListingCommercial = props => {
   const [selectedProperties, setSelectedProperties] = useState([]);
   const [selectedBuildingType, setSelectedBuildingType] = useState([]);
 
-  useFocusEffect(
-    useCallback(() => {
-      // This function will be called when Screen A comes into focus
-      console.log("useFocusEffect")
-      if (didDbCall) {
-        getListing();
-      }
+  // Select the 'shouldRefresh' state from the 'dataRefresh' slice
+  const shouldRefresh = useSelector((state) => state.dataRefresh.shouldRefresh);
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused(); // To ensure refresh happens when screen comes into view
 
-      // Optional: Return a cleanup function if needed
-      return () => {
-        // This function will be called when Screen A loses focus
-        // You can perform cleanup here if necessary
-      };
-    }, []) // Re-run the effect if fetchData function changes (unlikely here)
-  );
+
+  const fetchData = useCallback(async () => {
+    // setLoading(true);
+    try {
+      console.log('ScreenA: Fetching latest data...');
+      // Replace with your actual data fetching logic from DB/API
+      getListing();
+    } catch (error) {
+      console.error('Failed to fetch data for ScreenA:', error);
+      setData('Error loading data.');
+    } finally {
+      setLoading(false);
+      // After successfully fetching, reset the Redux refresh flag
+      dispatch(resetRefresh());
+      console.log('ScreenA: Data fetched and refresh flag reset.');
+    }
+  }, [dispatch]);
+
+  // Use useEffect to trigger fetch when:
+  // 1. The screen gains focus (e.g., navigated back to it)
+  // 2. The Redux 'shouldRefresh' flag becomes true (signaled by ScreenD)
+  useEffect(() => {
+    if (isFocused || shouldRefresh || didDbCall) {
+      fetchData();
+    }
+  }, [isFocused, shouldRefresh, fetchData, didDbCall]);
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     // This function will be called when Screen A comes into focus
+  //     console.log("useFocusEffect")
+  //     if (didDbCall) {
+  //       getListing();
+  //     }
+
+  //     // Optional: Return a cleanup function if needed
+  //     return () => {
+  //       // This function will be called when Screen A loses focus
+  //       // You can perform cleanup here if necessary
+  //     };
+  //   }, []) // Re-run the effect if fetchData function changes (unlikely here)
+  // );
 
 
   const resetSortBy = () => {
