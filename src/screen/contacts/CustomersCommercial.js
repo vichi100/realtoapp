@@ -28,6 +28,7 @@ import CustomerCommercialRentCard from "./CustomerCommercialRentCard";
 import CustomerCommercialBuyCard from "./CustomerCommercialBuyCard";
 import axios from "axios";
 import { SERVER_URL } from "../../util/Constant";
+import { EMPLOYEE_ROLE } from "../../util/AppConstant";
 import Slider from "../../components/Slider";
 import SliderCr from "../../components/SliderCr";
 import SliderSmallNum from "../../components/SliderSmallNum";
@@ -768,13 +769,16 @@ const CustomersCommercial = props => {
               <Text style={{ textAlign: "center" }}>
                 You have no customer
               </Text>
-              <TouchableOpacity onPress={() => navigateTo()}>
-                <Text
-                  style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
-                >
-                  Add New Customer
-                </Text>
-              </TouchableOpacity>
+              {props.userDetails && ((props.userDetails.works_for === props.userDetails.id) ||
+                (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)
+                )) ?
+                <TouchableOpacity onPress={() => navigateTo()}>
+                  <Text
+                    style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
+                  >
+                    Add New Customer
+                  </Text>
+                </TouchableOpacity> : null}
             </View>
             <View style={styles.fab}>
               <TouchableOpacity
@@ -1056,25 +1060,29 @@ const CustomersCommercial = props => {
             />
           </View>
         </BottomSheet>
-        <TouchableOpacity
-          style={{
-            // borderWidth: 1,
-            // borderColor: "rgba(0,0,0,0.2)",
-            alignItems: "center",
-            justifyContent: "center",
-            // width: 40,
-            position: "absolute",
-            bottom: 15,
-            right: 10,
-            // height: 40,
-            backgroundColor: "rgba(0,191,255, .5)",
-            borderRadius: 100
-          }}
-          onPress={() => navigation.navigate("AddNewCustomerStack")}
-        >
-          <AntDesign name="pluscircleo" size={40} color="#ffffff" />
-          {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
-        </TouchableOpacity>
+
+        {props.userDetails && ((props.userDetails.works_for === props.userDetails.id) ||
+          (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)
+          )) ?
+          <TouchableOpacity
+            style={{
+              // borderWidth: 1,
+              // borderColor: "rgba(0,0,0,0.2)",
+              alignItems: "center",
+              justifyContent: "center",
+              // width: 40,
+              position: "absolute",
+              bottom: 15,
+              right: 10,
+              // height: 40,
+              backgroundColor: "rgba(0,191,255, .5)",
+              borderRadius: 100
+            }}
+            onPress={() => navigation.navigate("AddNewCustomerStack")}
+          >
+            <AntDesign name="pluscircleo" size={40} color="#ffffff" />
+            {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
+          </TouchableOpacity> : null}
       </View>
   );
 };

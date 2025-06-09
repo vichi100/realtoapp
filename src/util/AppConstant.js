@@ -1,3 +1,4 @@
+export const EMPLOYEE_ROLE = ["add", "master", "admin"]
 export const RENT = "Rent";
 export const SELL = "Sell";
 export const BUY = "Buy";

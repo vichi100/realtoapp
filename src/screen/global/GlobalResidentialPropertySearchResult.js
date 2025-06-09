@@ -587,13 +587,13 @@ const GlobalResidentialPropertySearchResult = props => {
           <Text style={{ textAlign: "center" }}>
             You have no property listing
           </Text>
-          <TouchableOpacity onPress={() => navigateTo()}>
+          {/* <TouchableOpacity onPress={() => navigateTo()}>
             <Text
               style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
             >
               Add New Property
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       )}
       {/* Bottom for filters */}

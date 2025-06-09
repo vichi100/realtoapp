@@ -23,6 +23,7 @@ import { Divider } from "react-native-paper";
 import { SocialIcon } from "@rneui/themed";
 import axios from "axios";
 import { SERVER_URL } from "../../util/Constant";
+import { EMPLOYEE_ROLE } from "../../util/AppConstant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 
 import { setEmployeeList } from "../../reducers/Action";
@@ -235,21 +236,28 @@ const EmployeeList = props => {
               <Text style={{ textAlign: "center" }}>
                 You have no Employee
               </Text>
-              <TouchableOpacity onPress={() => navigateTo()}>
-                <Text
-                  style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
-                >
-                  Add New Employee
-                </Text>
-              </TouchableOpacity>
+
+              {props.userDetails && ((props.userDetails.works_for === props.userDetails.id) ||
+                (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)
+                )) ?
+                <TouchableOpacity onPress={() => navigateTo()}>
+                  <Text
+                    style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
+                  >
+                    Add New Employee
+                  </Text>
+                </TouchableOpacity> : null}
             </View>
           </View>)}
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => navigation.navigate("ManageEmployee")}
-        >
-          <AntDesign name="pluscircleo" size={40} color="#ffffff" />
-        </TouchableOpacity>
+        {props.userDetails && ((props.userDetails.works_for === props.userDetails.id) ||
+          (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)
+          )) ?
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => navigation.navigate("ManageEmployee")}
+          >
+            <AntDesign name="pluscircleo" size={40} color="#ffffff" />
+          </TouchableOpacity> : null}
       </View>
   );
 };

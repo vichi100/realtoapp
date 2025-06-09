@@ -26,6 +26,7 @@ import CardResidentialRent from "../Card";
 import CardResidentialSell from "../CardSell";
 import axios from "axios";
 import { SERVER_URL } from "../../util/Constant";
+import { EMPLOYEE_ROLE } from "../../util/AppConstant";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 
 import CardRent from "../commercial/rent/Card";
@@ -303,13 +304,16 @@ const PropertyListForMeeting = props => {
           <Text style={{ textAlign: "center" }}>
             You have no property listing
           </Text>
-          <TouchableOpacity onPress={() => navigateTo()}>
+          {props.userDetails && ((props.userDetails.works_for === props.userDetails.id) ||
+                    (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)
+                  )) ?
+                  <TouchableOpacity onPress={() => navigateTo()}>
             <Text
               style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
             >
               Add New Property
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity>: null}
         </View>
       )}
       {/* Bottom for filters */}
@@ -495,7 +499,10 @@ const PropertyListForMeeting = props => {
           </ScrollView>
         </View>
       </BottomSheet>
-      <TouchableOpacity
+      {props.userDetails && ((props.userDetails.works_for === props.userDetails.id) ||
+                (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)
+              )) ?
+              <TouchableOpacity
         style={{
           // borderWidth: 1,
           // borderColor: "rgba(0,0,0,0.2)",
@@ -513,7 +520,7 @@ const PropertyListForMeeting = props => {
       >
         <AntDesign name="pluscircleo" size={40} color="#ffffff" />
         {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
-      </TouchableOpacity>
+      </TouchableOpacity>: null }
     </View>
   );
 };
