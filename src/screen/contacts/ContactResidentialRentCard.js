@@ -24,6 +24,7 @@ import { ButtonGroup } from "@rneui/themed";
 import { Avatar } from "@rneui/themed";
 import { numDifferentiation } from "../../util/methods";
 import { SERVER_URL } from "../../util/Constant";
+import { EMPLOYEE_ROLE } from "../../util/AppConstant";
 import Feather from "react-native-vector-icons/Feather";
 import {
   setUserMobile,
@@ -62,8 +63,6 @@ const ContactResidentialRentCard = props => {
   // console.log("ContactResidentialRentCard :    ", item);
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
-  let Animation = new Animated.Value(0);
-  let Sliding_Drawer_Toggle = true;
   const [disabled, setDisabled] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [index, setIndex] = React.useState(null);
@@ -71,6 +70,15 @@ const ContactResidentialRentCard = props => {
   const [refresh, setRefresh] = useState(false); // Add a state to trigger re-render
 
   const [Sliding_Drawer_Width, setSlidingDrawerWidth] = useState(195);
+    const [Sliding_Drawer_Width_WO_Delete, setSlidingDrawerWidthWODelete] = useState(140);
+
+  const canAddDelete = props.userDetails &&
+    ((props.userDetails.works_for === props.userDetails.id) ||
+      (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)));
+
+  const slidingDrawerWidth = canAddDelete
+    ? Sliding_Drawer_Width
+    : Sliding_Drawer_Width_WO_Delete;
 
   useEffect(() => {
     // Dynamically update the sliding drawer width based on the condition
@@ -80,6 +88,41 @@ const ContactResidentialRentCard = props => {
       setSlidingDrawerWidth(140); // Default width if dont want to see delete option
     }
   }, [item, props.userDetails.works_for]);
+
+  let Animation = new Animated.Value(0);
+
+  let Sliding_Drawer_Toggle = true;
+
+
+  const ShowSlidingDrawer = () => {
+    // // console.log(Sliding_Drawer_Toggle);
+    if (Sliding_Drawer_Toggle === true) {
+      Animated.timing(Animation, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true
+      }).start(() => {
+        Sliding_Drawer_Toggle = false;
+      });
+    } else {
+      Animated.timing(Animation, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true
+      }).start(() => {
+        Sliding_Drawer_Toggle = true;
+      });
+    }
+  };
+
+  const Animation_Interpolate = Animation.interpolate({
+    inputRange: [0, 1],
+    // outputRange: [370, 135]
+    // outputRange: [-(Sliding_Drawer_Width - width * 1.55), 135]
+    // outputRange: ["330%", "100%"]
+    // outputRange: ["250%", "100%"]
+    outputRange: [slidingDrawerWidth - 33, -15]
+  });
 
 
   const gotoEmployeeList = itemForAddEmplyee => {
@@ -168,36 +211,6 @@ const ContactResidentialRentCard = props => {
   const updateIndex = index => {
     setIndex(index);
   };
-
-  const ShowSlidingDrawer = () => {
-    // // console.log(Sliding_Drawer_Toggle);
-    if (Sliding_Drawer_Toggle === true) {
-      Animated.timing(Animation, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true
-      }).start(() => {
-        Sliding_Drawer_Toggle = false;
-      });
-    } else {
-      Animated.timing(Animation, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true
-      }).start(() => {
-        Sliding_Drawer_Toggle = true;
-      });
-    }
-  };
-
-  const Animation_Interpolate = Animation.interpolate({
-    inputRange: [0, 1],
-    // outputRange: [370, 135]
-    // outputRange: [-(Sliding_Drawer_Width - width * 1.55), 135]
-    // outputRange: ["330%", "100%"]
-    // outputRange: ["250%", "100%"]
-    outputRange: [Sliding_Drawer_Width - 33, -15]
-  });
 
   // // console.log(width);
 
@@ -494,7 +507,7 @@ const ContactResidentialRentCard = props => {
             </>
           )}
 
-          <View style={{ marginLeft:  !displayMatchPercent  ? 40 : 0, }}>
+          <View style={{ marginLeft: !displayMatchPercent ? 40 : 0, }}>
             {!displayMatchPercent && <Avatar
               square
               size={60}
@@ -528,13 +541,13 @@ const ContactResidentialRentCard = props => {
               <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
                 <MaterialCommunityIcons name="phone-dial" color={"#0f1a20"} size={20} />
                 <Text style={[styles.subTitle, { paddingLeft: 10, color: "#0f1a20" }]}>
-                {item.customer_details.mobile1?.startsWith("+91")
-    ? item.customer_details.mobile1
-    : `+91 ${item.customer_details.mobile1}`}
+                  {item.customer_details.mobile1?.startsWith("+91")
+                    ? item.customer_details.mobile1
+                    : `+91 ${item.customer_details.mobile1}`}
                 </Text>
               </View>
               <Text style={{ paddingRight: 10, color: "#0f1a20", marginTop: 5, marginBottom: 5 }}>
-              Reference id: {item.customer_id?.slice(-6)}
+                Reference id: {item.customer_id?.slice(-6)}
               </Text>
 
             </View>
@@ -613,10 +626,10 @@ const ContactResidentialRentCard = props => {
           <Animated.View
             style={[
               styles.drawer,
-              { width: Sliding_Drawer_Width, transform: [{ translateX: Animation_Interpolate }] },
+              { width: slidingDrawerWidth, transform: [{ translateX: Animation_Interpolate }] },
             ]}
           >
-            <View style={[styles.Main_Sliding_Drawer_Container, { width: Sliding_Drawer_Width, paddingHorizontal: 0 }]}>
+            <View style={[styles.Main_Sliding_Drawer_Container, { width: slidingDrawerWidth, paddingHorizontal: 0 }]}>
               {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
               <TouchableOpacity
                 onPress={ShowSlidingDrawer}
@@ -629,7 +642,7 @@ const ContactResidentialRentCard = props => {
                 />
               </TouchableOpacity>
               <View style={styles.verticalLine} />
-              {item.agent_id === props.userDetails.works_for && <TouchableOpacity
+              {(item.agent_id === props.userDetails.works_for && canAddDelete) && <TouchableOpacity
                 // disabled={Sliding_Drawer_Toggle}
                 onPress={() => {
                   setModalVisible(true);

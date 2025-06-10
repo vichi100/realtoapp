@@ -23,6 +23,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { CheckBox } from "@rneui/themed";
 import { numDifferentiation } from "../../util/methods";
 import { SERVER_URL } from "../../util/Constant";
+import { EMPLOYEE_ROLE } from "../../util/AppConstant";
 import { connect } from "react-redux";
 import {
   setUserMobile,
@@ -61,8 +62,6 @@ const CustomerCommercialBuyCard = props => {
   } = props;
   let animatedValue = new Animated.Value(0);
   let toggleFlag = 0;
-  let Animation = new Animated.Value(0);
-  let Sliding_Drawer_Toggle = true;
   const [disabled, setDisabled] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [index, setIndex] = React.useState(null);
@@ -70,16 +69,62 @@ const CustomerCommercialBuyCard = props => {
   const [refresh, setRefresh] = useState(false); // Add a state to trigger re-render
   // const [text, onChangeText] = React.useState("I have customer for this property. Please call me.");
 
-  const [Sliding_Drawer_Width, setSlidingDrawerWidth] = useState(250);
+  const [Sliding_Drawer_Width, setSlidingDrawerWidth] = useState(194);
+    const [Sliding_Drawer_Width_WO_Delete, setSlidingDrawerWidthWODelete] = useState(140);
+  
+    const canAddDelete = props.userDetails &&
+    ((props.userDetails.works_for === props.userDetails.id) ||
+      (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)));
+  
+    const slidingDrawerWidth = canAddDelete
+    ? Sliding_Drawer_Width
+    : Sliding_Drawer_Width_WO_Delete;
+  
+    useEffect(() => {
+      // Dynamically update the sliding drawer width based on the condition
+      if (item && item.agent_id === props.userDetails.works_for) {
+        setSlidingDrawerWidth(195); // Increase width
+      } else {
+        setSlidingDrawerWidth(140); // Default width if dont want to see delete option
+      }
+    }, [item, props.userDetails.works_for]);
+  
+    let Animation = new Animated.Value(0);
+  
+    let Sliding_Drawer_Toggle = true;
+  
+  
+    const ShowSlidingDrawer = () => {
+      // // console.log(Sliding_Drawer_Toggle);
+      if (Sliding_Drawer_Toggle === true) {
+        Animated.timing(Animation, {
+          toValue: 1,
+          duration: 500,
+          useNativeDriver: true
+        }).start(() => {
+          Sliding_Drawer_Toggle = false;
+        });
+      } else {
+        Animated.timing(Animation, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true
+        }).start(() => {
+          Sliding_Drawer_Toggle = true;
+        });
+      }
+    };
+  
+    const Animation_Interpolate = Animation.interpolate({
+      inputRange: [0, 1],
+      // outputRange: [370, 135]
+      // outputRange: [-(Sliding_Drawer_Width - width * 1.55), 135]
+      // outputRange: ["330%", "100%"]
+      // outputRange: ["250%", "100%"]
+      outputRange: [slidingDrawerWidth -33, -15]
+    });
 
-  useEffect(() => {
-    // Dynamically update the sliding drawer width based on the condition
-    if (item && item.agent_id === props.userDetails.works_for) {
-      setSlidingDrawerWidth(195); // Increase width
-    } else {
-      setSlidingDrawerWidth(140); // Default width if dont want to see delete option
-    }
-  }, [item, props.userDetails.works_for]);
+
 
   const gotoEmployeeList = itemForAddEmplyee => {
     // console.log("gotoEmployeeList: ", itemForAddEmplyee);
@@ -190,35 +235,6 @@ const CustomerCommercialBuyCard = props => {
     }
   };
 
-  const ShowSlidingDrawer = () => {
-    // // console.log(Sliding_Drawer_Toggle);
-    if (Sliding_Drawer_Toggle === true) {
-      Animated.timing(Animation, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true
-      }).start(() => {
-        Sliding_Drawer_Toggle = false;
-      });
-    } else {
-      Animated.timing(Animation, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true
-      }).start(() => {
-        Sliding_Drawer_Toggle = true;
-      });
-    }
-  };
-
-  const Animation_Interpolate = Animation.interpolate({
-    inputRange: [0, 1],
-    // outputRange: [370, 135]
-    // outputRange: [-(Sliding_Drawer_Width - width * 1.55), 135]
-    // outputRange: ["330%", "100%"]
-    // outputRange: ["250%", "100%"]
-    outputRange: [Sliding_Drawer_Width - 33, -15]
-  });
 
   const isAssetChecked = (item) => {
     // console.log("Checking if asset is assigned:", JSON.stringify(item));
@@ -599,10 +615,10 @@ const CustomerCommercialBuyCard = props => {
           <Animated.View
             style={[
               styles.drawer,
-              { width: Sliding_Drawer_Width, transform: [{ translateX: Animation_Interpolate }] },
+              { width: slidingDrawerWidth, transform: [{ translateX: Animation_Interpolate }] },
             ]}
           >
-            <View style={[styles.Main_Sliding_Drawer_Container, { width: Sliding_Drawer_Width, paddingHorizontal: 0 }]}>
+            <View style={[styles.Main_Sliding_Drawer_Container, { width: slidingDrawerWidth, paddingHorizontal: 0 }]}>
               {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
               <TouchableOpacity
                 onPress={ShowSlidingDrawer}
@@ -615,7 +631,7 @@ const CustomerCommercialBuyCard = props => {
                 />
               </TouchableOpacity>
               <View style={styles.verticalLine} />
-              {item.agent_id === props.userDetails.works_for && <TouchableOpacity
+              {(item.agent_id === props.userDetails.works_for && canAddDelete) && <TouchableOpacity
                 // disabled={Sliding_Drawer_Toggle}
                 onPress={() => {
                   setModalVisible(true);
