@@ -66,10 +66,27 @@ https://github.com/roto93/react-native-neat-date-picker/tree/main
 
 
 ### START APPLICATION ON EXPO 
+ npm run start:dev    
 
 npm start -- --clear
 
 npx expo start -c
+
+
+
+"scripts": {
+    "start:dev": "ENVFILE=.env.development npm start -- --clear",
+    "start:dev": "ENVFILE=.env.development expo start",
+    "start:qa": "ENVFILE=.env.qa expo start",
+    "start:prod": "ENVFILE=.env.production expo start --no-dev --minify",
+    "start": "expo start",
+    "reset-project": "node ./scripts/reset-project.js",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "test": "jest --watchAll",
+    "lint": "expo lint"
+  },
 
 
 ### START APPLICATION ON WEB
@@ -229,3 +246,13 @@ Guess the answer is to make sure that when you create a new file, you build it r
 
 
 #### Filter and sort need to check 
+
+
+
+### Run your Expo commands with ENVFILE:
+ENVFILE=development npx expo start
+
+### Building for Production:
+ENVFILE=production npx expo build:android # or npx expo build:ios
+# Or for EAS Build:
+ENVFILE=production eas build -p android --profile production
