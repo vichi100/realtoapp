@@ -23,9 +23,20 @@ import { connect } from "react-redux";
 import { setPropertyDetails } from "../reducers/Action";
 import DatePicker, { RangeOutput, SingleOutput } from 'react-native-neat-date-picker'
 import { MaterialIcons } from "@expo/vector-icons";
+import CustomButtonGroup from "../components/CustomButtonGroup";
+
 
 const preferredTenantsArray = ["Family", "Bachelors", "Any"];
 const nonvegAllowedArray = ["Yes", "No"];
+const preferredTenantsOption = [
+  { text: 'Family' },
+  { text: 'Bachelors' },
+  { text: 'Any' },
+];
+const nonvegAllowedOption = [
+  { text: 'Yes' },
+  { text: 'No' },
+];
 
 const RentDetailsForm = props => {
   const { navigation } = props;
@@ -37,9 +48,14 @@ const RentDetailsForm = props => {
   const [expectedDeposit, setExpectedDeposit] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [preferredTenantsIndex, setPreferredTenantsIndex] = useState(-1);
-  const [nonvegAllowedIndex, setNonvegAllowedIndex] = useState(-1);
+  // const [preferredTenantsIndex, setPreferredTenantsIndex] = useState(-1);
+  // const [nonvegAllowedIndex, setNonvegAllowedIndex] = useState(-1);
   const [visible, setVisible] = React.useState(false);
+
+  const [preferredTenant, setPreferredTenant] = useState("Any");
+  const [nonvegAllowed, setNonvegAllowed] = useState("Yes");
+  
+  
 
 
 
@@ -68,15 +84,15 @@ const RentDetailsForm = props => {
     // // console.log({ date });
   }, []);
 
-  const selectedPreferredTenantsIndex = index => {
-    setPreferredTenantsIndex(index);
-    setIsVisible(false);
-  };
+  // const selectedPreferredTenantsIndex = index => {
+  //   setPreferredTenantsIndex(index);
+  //   setIsVisible(false);
+  // };
 
-  const selectNonvegAllowedIndex = index => {
-    setNonvegAllowedIndex(index);
-    setIsVisible(false);
-  };
+  // const selectNonvegAllowedIndex = index => {
+  //   setNonvegAllowedIndex(index);
+  //   setIsVisible(false);
+  // };
 
   const onSubmit = async () => {
     if (expectedRent.trim() === "") {
@@ -91,30 +107,32 @@ const RentDetailsForm = props => {
       setErrorMessage("Available date is missing");
       setIsVisible(true);
       return;
-    } else if (
-      props.propertyType &&
-      props.propertyType === "Residential" &&
-      preferredTenantsIndex === -1
-    ) {
-      setErrorMessage("Preferred tenants is missing");
-      setIsVisible(true);
-      return;
-    } else if (
-      props.propertyType &&
-      props.propertyType === "Residential" &&
-      nonvegAllowedIndex === -1
-    ) {
-      setErrorMessage("Nonveg allowed is missing");
-      setIsVisible(true);
-      return;
-    }
+    } 
+    
+    // else if (
+    //   props.propertyType &&
+    //   props.propertyType === "Residential" &&
+    //   preferredTenantsIndex === -1
+    // ) {
+    //   setErrorMessage("Preferred tenants is missing");
+    //   setIsVisible(true);
+    //   return;
+    // } else if (
+    //   props.propertyType &&
+    //   props.propertyType === "Residential" &&
+    //   nonvegAllowedIndex === -1
+    // ) {
+    //   setErrorMessage("Nonveg allowed is missing");
+    //   setIsVisible(true);
+    //   return;
+    // }
 
     const rent_details = {
       expected_rent: expectedRent,
       expected_deposit: expectedDeposit,
       available_from: newDate.trim(),
-      preferred_tenants: preferredTenantsArray[preferredTenantsIndex],
-      non_veg_allowed: nonvegAllowedArray[nonvegAllowedIndex]
+      preferred_tenants: preferredTenant,
+      non_veg_allowed: nonvegAllowed
     };
     const property = props.propertyDetails;
     property["rent_details"] = rent_details;
@@ -196,7 +214,7 @@ const RentDetailsForm = props => {
               placeholder="Available From *"
               value={newDate}
               showSoftInputOnFocus={false}
-              
+
               // onChangeText={newDate => setNewDate(newDate)}
               onFocus={() => setVisible(true)}
               theme={{
@@ -215,7 +233,23 @@ const RentDetailsForm = props => {
               <View>
                 <Text>Preferred Tenants*</Text>
                 <View style={styles.propSubSection}>
-                  <ButtonGroup
+                  <CustomButtonGroup
+                    buttons={preferredTenantsOption}
+                    accessibilityLabelId="preferred_tenants"
+                    selectedIndices={[preferredTenantsOption.findIndex(option => option.text === preferredTenant)]}
+                    isMultiSelect={false}
+                    buttonStyle={{ backgroundColor: '#fff' }}
+                    selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+                    buttonTextStyle={{ color: '#000' }}
+                    selectedButtonTextStyle={{ color: '#000' }}
+                    onButtonPress={(index, button) => {
+                      console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                      setPreferredTenant(button.text);
+                      // Query update is handled by useEffect after state change
+                    }}
+                    width={95}
+                  />
+                  {/* <ButtonGroup
                     selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                     onPress={selectedPreferredTenantsIndex}
                     selectedIndex={preferredTenantsIndex}
@@ -225,11 +259,27 @@ const RentDetailsForm = props => {
                     selectedTextStyle={{ color: "#fff" }}
                     containerStyle={{ borderRadius: 10, width: 300 }}
                     containerBorderRadius={10}
-                  />
+                  /> */}
                 </View>
                 <Text>Nonveg Allowed*</Text>
                 <View style={styles.propSubSection}>
-                  <ButtonGroup
+                <CustomButtonGroup
+                    buttons={nonvegAllowedOption}
+                    accessibilityLabelId="non_veg_allowed"
+                    selectedIndices={[nonvegAllowedOption.findIndex(option => option.text === nonvegAllowed)]}
+                    isMultiSelect={false}
+                    buttonStyle={{ backgroundColor: '#fff' }}
+                    selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+                    buttonTextStyle={{ color: '#000' }}
+                    selectedButtonTextStyle={{ color: '#000' }}
+                    onButtonPress={(index, button) => {
+                      console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                      setNonvegAllowed(button.text);
+                      // Query update is handled by useEffect after state change
+                    }}
+                    width={95}
+                  />
+                  {/* <ButtonGroup
                     selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                     onPress={selectNonvegAllowedIndex}
                     selectedIndex={nonvegAllowedIndex}
@@ -239,7 +289,7 @@ const RentDetailsForm = props => {
                     selectedTextStyle={{ color: "#fff" }}
                     containerStyle={{ borderRadius: 10, width: 300 }}
                     containerBorderRadius={10}
-                  />
+                  /> */}
                 </View>
               </View>
             ) : null}
@@ -258,7 +308,7 @@ const RentDetailsForm = props => {
           animationType="slide" // optional, default is 'slide' on ios/android and 'none' on web
           locale={"en"} // optional, default is automically detected by your system
         /> */}
-        
+
       </KeyboardAwareScrollView>
       {/* https://github.com/roto93/react-native-neat-date-picker/tree/main */}
       <DatePicker
@@ -293,7 +343,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   propSubSection: {
-    marginTop: 10,
+    marginTop: 15,
     marginBottom: 15
   },
   doubleColSection: {
@@ -309,10 +359,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-},
-searchIcon: {
+  },
+  searchIcon: {
     padding: 10,
-},
+  },
 });
 
 const mapStateToProps = state => ({

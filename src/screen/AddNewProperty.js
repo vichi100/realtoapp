@@ -19,16 +19,27 @@ import Button from "../components/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Snackbar from "../components/SnackbarComponent";
 import { setPropertyType, setPropertyDetails } from "../reducers/Action";
+import CustomButtonGroup from "../components/CustomButtonGroup";
 
-const options = [
-  {
-    key: "Residential",
-    text: "Residential"
-  },
-  {
-    key: "Commercial",
-    text: "Commercial"
-  }
+// const options = [
+//   {
+//     key: "Residential",
+//     text: "Residential"
+//   },
+//   {
+//     key: "Commercial",
+//     text: "Commercial"
+//   }
+// ];
+
+const selectedPropTypeOption = [
+  { text: 'Residential' },
+  { text: 'Commercial' },
+];
+
+const propertyForOption = [
+  { text: 'Rent' },
+  { text: 'Sell' },
 ];
 
 const propertyForArray = ["Rent", "Sell"];
@@ -36,7 +47,7 @@ const propertyForArray = ["Rent", "Sell"];
 const AddNewProperty = props => {
   const { navigation } = props;
   const [propertyForIndex, setPropertyForIndex] = useState(-1);
-  const [selectedPropType, setSelectedPropType] = useState(null);
+  // const [selectedPropType, setSelectedPropType] = useState(null);
   const [ownerName, setOwnerName] = useState("");
   const [ownerMobile, setOwnerMobile] = useState("");
   const [ownerAddress, setOwnerAddress] = useState("");
@@ -44,23 +55,27 @@ const AddNewProperty = props => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isVisible, setIsVisible] = useState(false);
 
-  const onSelectPropType = item => {
-    // console.log(item);
-    if (selectedPropType && selectedPropType.key === item.key) {
-      setSelectedPropType(null);
-    } else {
-      setSelectedPropType(item);
-      props.setPropertyType(item.key);
-    }
-    setIsVisible(false);
-  };
+  const [selectedPropType, setSelectedPropType] = useState("Residential");
+  const [propertyFor, setPropertyFor] = useState("Rent");
+  
 
-  const selectPropertyForIndex = index => {
-    // // console.log(index);
-    // // console.log(propertyForArray[index]);
-    setPropertyForIndex(index);
-    setIsVisible(false);
-  };
+  // const onSelectPropType = item => {
+  //   // console.log(item);
+  //   if (selectedPropType && selectedPropType.key === item.key) {
+  //     setSelectedPropType(null);
+  //   } else {
+  //     setSelectedPropType(item);
+  //     props.setPropertyType(item.key);
+  //   }
+  //   setIsVisible(false);
+  // };
+
+  // const selectPropertyForIndex = index => {
+  //   // // console.log(index);
+  //   // // console.log(propertyForArray[index]);
+  //   setPropertyForIndex(index);
+  //   setIsVisible(false);
+  // };
 
   const dismissSnackBar = () => {
     setIsVisible(false);
@@ -68,15 +83,7 @@ const AddNewProperty = props => {
 
   const onSubmit = () => {
     // console.log("-1");
-    if (selectedPropType === null) {
-      setErrorMessage("Select Property type missing");
-      setIsVisible(true);
-      return;
-    } else if (propertyForIndex === -1) {
-      setErrorMessage("Select Property for missing");
-      setIsVisible(true);
-      return;
-    } else if (ownerName.trim() === "") {
+    if (ownerName.trim() === "") {
       setErrorMessage("Owner name is missing");
       setIsVisible(true);
       return;
@@ -88,7 +95,7 @@ const AddNewProperty = props => {
     console.log("props.userDetails: " + JSON.stringify(props.userDetails));
     const property = {
       // agent_id: props.userDetails.works_for,
-      property_type: selectedPropType.key,
+      property_type: selectedPropType,
       property_for: propertyForArray[propertyForIndex],
       property_status: "open",
       owner_details: {
@@ -115,20 +122,52 @@ const AddNewProperty = props => {
             <Text>Select Property Type</Text>
           </View>
           <View style={styles.propSection}>
-            <RadioButton
+            <CustomButtonGroup
+              buttons={selectedPropTypeOption}
+              accessibilityLabelId="property_type"
+              selectedIndices={[selectedPropTypeOption.findIndex(option => option.text === selectedPropType)]}
+              isMultiSelect={false}
+              buttonStyle={{ backgroundColor: '#fff' }}
+              selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+              buttonTextStyle={{ color: '#000' }}
+              selectedButtonTextStyle={{ color: '#000' }}
+              onButtonPress={(index, button) => {
+                console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                setSelectedPropType(button.text);
+                // Query update is handled by useEffect after state change
+              }}
+            />
+
+            {/* <RadioButton
               selectedOption={selectedPropType}
               onSelect={onSelectPropType}
               options={options}
-            />
+            /> */}
           </View>
-          <View style={styles.header}>
+          <View style={{ marginTop: 20 }}>
             <Text>Select Property For</Text>
           </View>
           <View
-            style={[styles.propSubSection, { marginBottom: 10, marginTop: 15 }]}
+            style={[ { marginBottom: 10, marginTop: 15 }]}
           >
             {/* <Text>Select Property For</Text> */}
-            <ButtonGroup
+            <CustomButtonGroup
+              buttons={propertyForOption}
+              accessibilityLabelId="property_for"
+              selectedIndices={[propertyForOption.findIndex(option => option.text === propertyFor)]}
+              isMultiSelect={false}
+              buttonStyle={{ backgroundColor: '#fff' }}
+              selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+              buttonTextStyle={{ color: '#000' }}
+              selectedButtonTextStyle={{ color: '#000' }}
+              onButtonPress={(index, button) => {
+                console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                setPropertyFor(button.text);
+                // Query update is handled by useEffect after state change
+              }}
+            />
+
+            {/* <ButtonGroup
               selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
               onPress={selectPropertyForIndex}
               selectedIndex={propertyForIndex}
@@ -142,7 +181,7 @@ const AddNewProperty = props => {
                 // borderColor: "red"
               }}
               containerBorderRadius={10}
-            />
+            /> */}
           </View>
 
           <View style={[styles.header, { marginTop: 30 }]}>

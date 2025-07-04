@@ -13,6 +13,8 @@ const CustomButtonGroup = ({
   buttonImageStyle, // Custom button image styles
   containerStyle, // Custom container styles
   onButtonPress, // Callback to handle button press
+  width = 105, // Default width for buttons
+  height = 40, // Default height for buttons
 }) => {
   const handlePress = (index) => {
     let newSelectedIndices;
@@ -43,7 +45,7 @@ const CustomButtonGroup = ({
             accessibilityLabel={`${accessibilityLabelId}_${button.text}`.toLowerCase().replace(/ /g, '_')}
             style={[
               styles.button,
-              { width: 105, height: 40 },
+              { width: width, height: height },
               buttonStyle,
               selectedIndices.includes(index) && [styles.selectedButton, selectedButtonStyle],
             ]}
