@@ -48,9 +48,6 @@ const CustomerMeetingDetails = props => {
     axios
       .post(
         SERVER_URL+"/getCustomerAndMeetingDetails",
-        // SERVER_URL + "/addNewResidentialRentProperty",
-        // await AsyncStorage.getItem("property")
-        // JSON.stringify({ vichi: "vchi" })
         queryObj
       )
       .then(

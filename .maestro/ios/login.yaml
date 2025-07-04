@@ -1,0 +1,11 @@
+appId: com.realtoapp.ios
+---
+- launchApp
+- waitForAnimationToEnd # Wait for any initial launch animations to finish
+- assertVisible: 'Supercharge your property broking'
+- tapOn: "Enter Mobile Number"
+- assertVisible: "Enter Mobile Number"
+- inputText: "9833097594"
+- tapOn: "" # Assuming this is a button to proceed or confirm
+- tapOn: "One-Time Password" # Assuming this is a field or button to focus on OTP
+- inputText: "999999"

@@ -44,9 +44,6 @@ const Message = props => {
     axios
       .post(
         SERVER_URL+"/getMessagesList",
-        // SERVER_URL + "/addNewResidentialRentProperty",
-        // await AsyncStorage.getItem("property")
-        // JSON.stringify({ vichi: "vchi" })
         agentId
       )
       .then(
@@ -75,9 +72,6 @@ const Message = props => {
     axios
       .post(
         SERVER_URL+"/getSubjectDetails",
-        // SERVER_URL + "/addNewResidentialRentProperty",
-        // await AsyncStorage.getItem("property")
-        // JSON.stringify({ vichi: "vchi" })
         item.subject
       )
       .then(

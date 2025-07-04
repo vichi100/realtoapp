@@ -59,37 +59,6 @@ const PropertyReminder = props => {
 
 
 
-  // useEffect(() => {
-  //   if(reminderList.length > 0){
-  //     return;
-  //   }
-  //   const agentId = {
-  //     agent_id: props.userDetails.works_for
-  //   };
-  //   axios
-  //     .post(
-  //       SERVER_URL+"/getReminderList",
-  //       // SERVER_URL + "/addNewResidentialRentProperty",
-  //       // await AsyncStorage.getItem("property")
-  //       // JSON.stringify({ vichi: "vchi" })
-  //       agentId
-  //     )
-  //     .then(
-  //       response => {
-  //         // console.log(response.data);
-  //         setReminderList(response.data);
-  //         // navigation.navigate("CardDetails");
-  //       },
-  //       error => {
-  //         // console.log(error);
-  //       }
-  //     );
-  // }, []);
-
-  // const makeCall = mobile => {
-  //   const url = "tel://" + mobile;
-  //   Linking.openURL(url);
-  // };
 
   const ItemView = ({ item }) => {
     return item.reminder_for.toLowerCase() === "meeting".toLowerCase() ? (

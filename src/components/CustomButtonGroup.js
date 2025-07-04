@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 const CustomButtonGroup = ({
   buttons, // Array of button data (text, image, etc.)
+  accessibilityLabelId, // Accessibility label for the button group
   selectedIndices = [], // Controlled selected indices from the parent
   isMultiSelect = false, // Multi-select mode
   buttonStyle, // Custom button styles
@@ -34,10 +35,12 @@ const CustomButtonGroup = ({
 
   return (
     <View style={[styles.container, containerStyle]}>
-       <View style={[styles.buttonGroup, { flexWrap: 'wrap' }]}>
+      <View style={[styles.buttonGroup, { flexWrap: 'wrap' }]}>
         {buttons.map((button, index) => (
           <TouchableOpacity
             key={index}
+            accessible={true}
+            accessibilityLabel={`${accessibilityLabelId}_${button.text}`.toLowerCase().replace(/ /g, '_')}
             style={[
               styles.button,
               { width: 105, height: 40 },
@@ -90,7 +93,7 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: 'column',
     // alignItems: 'flex-start',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     borderColor: '#ccc',
     borderRadius: 5,
     backgroundColor: 'rgba( 254, 254, 250, .9);',

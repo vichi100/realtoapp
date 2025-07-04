@@ -61,6 +61,7 @@ const BottomTabScreen = () => {
         name="GlobalSearchStackNav"
         component={GlobalSearchStackNav}
         options={{
+          tabBarAccessibilityLabel: "bottom_tab_global_search_icon",
           tabBarLabel: "",
           tabBarIcon: ({ focused }) => (
             <MaterialCommunityIcons name="web" color={focused ? '#ff5733' : '#828282'} size={26} />
@@ -75,6 +76,7 @@ const BottomTabScreen = () => {
         component={ListingStackScreens}
         title="My Properties"
         options={{
+          tabBarAccessibilityLabel: "bottom_tab_properties_icon",
           tabBarLabel: "",
           tabBarColor: "#ffffff",
           tabBarIcon: ({ focused }) => (
@@ -92,9 +94,10 @@ const BottomTabScreen = () => {
         name="Contact"
         component={ContactsStackScreens}
         options={{
+          tabBarAccessibilityLabel: "bottom_tab_contacts_icon",
           tabBarLabel: "",
           tabBarIcon: ({ focused }) => (
-            <AntDesign name="contacts" color={focused ? '#33aaff' : '#828282'} size={26} />
+            <AntDesign name="contacts" color={focused ? '#33aaff' : '#828282'} size={26}/>
           )
         }}
       />
@@ -120,6 +123,7 @@ const BottomTabScreen = () => {
         name="NotificationStackScreens"
         component={NotificationStackScreens}
         options={{
+          tabBarAccessibilityLabel: "bottom_tab_reminders_icon",
           tabBarLabel: "",
           tabBarIcon: ({ focused }) => (
             <Ionicons name="notifications-outline" color={focused ? '#FFAA1D' : '#828282'} size={26} />
@@ -131,6 +135,7 @@ const BottomTabScreen = () => {
         name="ProfileStackScreens"
         component={ProfileStackScreens}
         options={{
+          tabBarAccessibilityLabel: "bottom_tab_profile_icon",
           tabBarLabel: "",
           tabBarIcon: ({ focused }) => (
             <MaterialCommunityIcons name="account" color={focused ? 'rgba(148, 124, 176, 1)' : '#828282'} size={26} />

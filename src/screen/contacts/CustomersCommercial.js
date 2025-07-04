@@ -627,13 +627,60 @@ const CustomersCommercial = props => {
     }
   };
 
-  const deleteMe = (itemToDelete) => {
-    // console.log("props.setPropertyDetails(item: deleteMe: )", itemToDelete);
-    setData((data) => data.filter((item) => item.customer_id !== itemToDelete.customer_id));
-    //Fist delete for data
+  
 
+  const deleteMe = (itemToDelete) => {
+    setLoading(true);
+    const reqData = {
+      req_user_id: props.userDetails.id,
+      agent_id: props.userDetails.works_for,
+      dataToDelete: itemToDelete
+    };
+    // delete the item from the database
+    axios(SERVER_URL + "/deleteCommercialCustomer", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: reqData
+    }).then(
+      response => {
+        // console.log("response.data:      ", response.data);
+        // response.data.map(item => {
+        //   item.image_urls.map(image => {
+        //     image.url = SERVER_URL + image.url
+        //   })
+        // })
+        // setData(response.data);
+        // props.setResidentialPropertyList(response.data);
+        if (response.data === "success") {
+          setData((data) => data.filter((item) => item.customer_id !== itemToDelete.customer_id));
+        } else {
+          setErrorMessage(response.data || "Failed to delete property");
+        }
+
+        setLoading(false);
+        // console.log("response.data:      ", response.data);
+        // After successfully fetching, reset the Redux refresh flag
+        dispatch(resetRefresh());
+      },
+      error => {
+        // console.log(error);
+        setLoading(false);
+        console.log(error);
+      }
+    );
 
   }
+
+  // const deleteMe = (itemToDelete) => {
+  //   // console.log("props.setPropertyDetails(item: deleteMe: )", itemToDelete);
+  //   setData((data) => data.filter((item) => item.customer_id !== itemToDelete.customer_id));
+  //   //Fist delete for data
+
+
+  // }
 
   const ItemView = ({ item }) => {
     if (item.customer_locality.property_type === "Commercial") {
@@ -843,6 +890,7 @@ const CustomersCommercial = props => {
                 /> */}
                 <CustomButtonGroup
                   buttons={porposeForOptions}
+                  accessibilityLabelId="porpose_for"
                   selectedIndices={[porposeForOptions.findIndex(option => option.text === purpose)]}
                   isMultiSelect={false}
                   buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
@@ -873,6 +921,7 @@ const CustomersCommercial = props => {
                 /> */}
                 <CustomButtonGroup
                   buttons={propertyTypeOptions}
+                  accessibilityLabelId="property_type"
                   isMultiSelect={true}
                   buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
                   selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
@@ -892,6 +941,7 @@ const CustomersCommercial = props => {
 
                 <CustomButtonGroup
                   buttons={buildingTypeOption}
+                  accessibilityLabelId="building_type"
                   isMultiSelect={true}
                   buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
                   selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
@@ -939,6 +989,7 @@ const CustomersCommercial = props => {
               <View style={styles.propSubSection}>
                 <CustomButtonGroup
                   buttons={reqWithinOptions}
+                  accessibilityLabelId="req_within"
                   selectedIndices={[reqWithinOptions.findIndex(option => option.text === reqWithin)]}
                   isMultiSelect={false}
                   buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}

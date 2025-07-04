@@ -1,0 +1,4 @@
+- tapOn: "Search"
+- inputText: "Apartment"
+- tapOn: "Search Button"
+- assertVisible: "Search Results"

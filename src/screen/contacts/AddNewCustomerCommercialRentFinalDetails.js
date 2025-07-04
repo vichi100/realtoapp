@@ -96,9 +96,6 @@ const AddNewCustomerCommercialRentFinalDetails = props => {
     axios
       .post(
         SERVER_URL + "/addNewCommercialCustomer",
-        // SERVER_URL + "/addNewResidentialRentProperty",
-        // await AsyncStorage.getItem("property")
-        // JSON.stringify({ vichi: "vchi" })
         customerFinalDetails
       )
       .then(

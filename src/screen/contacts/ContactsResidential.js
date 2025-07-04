@@ -574,12 +574,55 @@ const ContactsResidential = props => {
   };
 
   const deleteMe = (itemToDelete) => {
-    // console.log("props.setPropertyDetails(item: deleteMe: )", itemToDelete);
-    setData((data) => data.filter((item) => item.customer_id !== itemToDelete.customer_id));
-    //Fist delete for data
+    setLoading(true);
+    const reqData = {
+      req_user_id: props.userDetails.id,
+      agent_id: props.userDetails.works_for,
+      dataToDelete: itemToDelete
+    };
+    // delete the item from the database
+    axios(SERVER_URL + "/deleteResidintialCustomer", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: reqData
+    }).then(
+      response => {
+        // console.log("response.data:      ", response.data);
+        // response.data.map(item => {
+        //   item.image_urls.map(image => {
+        //     image.url = SERVER_URL + image.url
+        //   })
+        // })
+        // setData(response.data);
+        // props.setResidentialPropertyList(response.data);
+        if (response.data === "success") {
+          setData((data) => data.filter((item) => item.customer_id !== itemToDelete.customer_id));
+        } else {
+          setErrorMessage(response.data || "Failed to delete property");
+        }
 
+        setLoading(false);
+        // console.log("response.data:      ", response.data);
+        // After successfully fetching, reset the Redux refresh flag
+        dispatch(resetRefresh());
+      },
+      error => {
+        // console.log(error);
+        setLoading(false);
+        console.log(error);
+      }
+    );
 
   }
+
+  // const deleteMe = (itemToDelete) => {
+  //   // console.log("props.setPropertyDetails(item: deleteMe: )", itemToDelete);
+  //   setData((data) => data.filter((item) => item.customer_id !== itemToDelete.customer_id));
+  //   //Fist delete for data
+  // }
 
   const ItemView = ({ item }) => {
     // // console.log(item);

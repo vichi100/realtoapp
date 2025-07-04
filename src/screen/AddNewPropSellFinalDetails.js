@@ -108,14 +108,7 @@ const AddNewPropSellFinalDetails = props => {
       data: data
     })
 
-      // axios
-      //   .post(
-      //     SERVER_URL + "/addNewResidentialRentProperty",
-      //     // SERVER_URL + "/addNewResidentialRentProperty",
-      //     // await AsyncStorage.getItem("property")
-      //     // JSON.stringify({ vichi: "vchi" })
-      //     propertyFinalDetails
-      //   )
+      
       .then(
         response => {
           // console.log(response.data);

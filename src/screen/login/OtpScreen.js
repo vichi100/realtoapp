@@ -60,9 +60,6 @@ const OtpScreen = (props) => {
 		axios
 			.post(
 				SERVER_URL + '/generateOTP',
-				// SERVER_MOVIE_API_URL + "/addNewResidentialRentProperty",
-				// await AsyncStorage.getItem("property")
-				// JSON.stringify({ vichi: "vchi" })
 				obj
 			)
 			.then(
@@ -93,9 +90,6 @@ const OtpScreen = (props) => {
 		axios
 			.post(
 				SERVER_URL + '/getUserDetails',
-				// SERVER_MOVIE_API_URL + "/addNewResidentialRentProperty",
-				// await AsyncStorage.getItem("property")
-				// JSON.stringify({ vichi: "vchi" })
 				userObj
 			)
 			.then(

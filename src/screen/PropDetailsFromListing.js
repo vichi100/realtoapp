@@ -81,9 +81,6 @@ const PropDetailsFromListing = props => {
     axios
       .post(
         SERVER_URL + "/getPropReminderList",
-        // SERVER_URL + "/addNewResidentialRentProperty",
-        // await AsyncStorage.getItem("property")
-        // JSON.stringify({ vichi: "vchi" })
         propertyId
       )
       .then(

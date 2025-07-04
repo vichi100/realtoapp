@@ -111,9 +111,6 @@ const Reminder = props => {
     axios
       .post(
         SERVER_URL + "/getReminderListByCustomerId",
-        // SERVER_URL + "/addNewResidentialRentProperty",
-        // await AsyncStorage.getItem("property")
-        // JSON.stringify({ vichi: "vchi" })
         customerDatax
       )
       .then(
@@ -169,9 +166,6 @@ const Reminder = props => {
     axios
       .post(
         SERVER_URL + "/getReminderList",
-        // SERVER_URL + "/addNewResidentialRentProperty",
-        // await AsyncStorage.getItem("property")
-        // JSON.stringify({ vichi: "vchi" })
         userData
       )
       .then(

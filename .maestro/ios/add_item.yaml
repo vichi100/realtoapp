@@ -1,0 +1,3 @@
+- tapOn: "result_1"
+- tapOn: "Add to Cart"
+- assertVisible: "Item Added"

@@ -1,0 +1,14 @@
+property
+ -residential
+  -rent
+  -sell
+ -commercial
+  -rent
+  -sell
+customer
+ -residential
+  -rent
+  -buy
+ -commercial
+  -rent
+  -buy

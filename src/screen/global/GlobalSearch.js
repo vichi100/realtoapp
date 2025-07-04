@@ -463,6 +463,7 @@ const GlobalSearch = props => {
         <View style={[{ marginBottom: 10, marginTop: 15 }]}>
           <CustomButtonGroup
             buttons={lookingForOptions}
+            accessibilityLabelId="looking_for"
             selectedIndices={[lookingForOptions.findIndex(option => option.text === lookingFor)]}
             isMultiSelect={false}
             buttonStyle={{ backgroundColor: '#fff' }}
@@ -481,6 +482,7 @@ const GlobalSearch = props => {
         <View style={[{ marginBottom: 10, marginTop: 15 }]}>
           <CustomButtonGroup
             buttons={whatTypeOptions}
+            accessibilityLabelId="what_type"
             selectedIndices={[whatTypeOptions.findIndex(option => option.text === whatType)]}
             isMultiSelect={false}
             buttonStyle={{ backgroundColor: '#fff' }}
@@ -499,6 +501,7 @@ const GlobalSearch = props => {
         <View style={[styles.propSubSection, { marginBottom: 10, marginTop: 15 }]}>
           <CustomButtonGroup
             buttons={porposeForOptions}
+            accessibilityLabelId="porpose_for"
             selectedIndices={[porposeForOptions.findIndex(option => option.text === purpose)]}
             isMultiSelect={false}
             buttonStyle={{ backgroundColor: '#fff' }}
@@ -520,6 +523,7 @@ const GlobalSearch = props => {
           <View style={[{ marginBottom: 10, marginTop: 15 }]}>
             <CustomButtonGroup
               buttons={bhkOption}
+              accessibilityLabelId="bhk_type"
               isMultiSelect={true}
               buttonStyle={{ backgroundColor: '#fff' }}
               selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
@@ -540,6 +544,7 @@ const GlobalSearch = props => {
           <View style={[{ marginBottom: 10, marginTop: 15 }]}>
             <CustomButtonGroup
               buttons={requiredForOption}
+              accessibilityLabelId="required_for"
               isMultiSelect={true}
               buttonStyle={{ backgroundColor: '#fff' }}
               selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
@@ -569,6 +574,7 @@ const GlobalSearch = props => {
           <View style={[{ marginBottom: 10, marginTop: 15 }]}>
             <CustomButtonGroup
               buttons={buildingTypeOption}
+              accessibilityLabelId="building_type"
               isMultiSelect={true}
               buttonStyle={{ backgroundColor: '#fff' }}
               selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
@@ -614,6 +620,7 @@ const GlobalSearch = props => {
         <View style={[{ marginBottom: 10, marginTop: 15 }]}>
           <CustomButtonGroup
             buttons={reqWithinOptions}
+            accessibilityLabelId="req_within"
             selectedIndices={[reqWithinOptions.findIndex(option => option.text === reqWithin)]}
             isMultiSelect={false}
             buttonStyle={{ backgroundColor: '#fff' }}
@@ -635,6 +642,7 @@ const GlobalSearch = props => {
           <View style={[{ marginBottom: 5, marginTop: 15 }]}>
             <CustomButtonGroup
               buttons={tenantOptions}
+              accessibilityLabelId="tenant_type"
               selectedIndices={[tenantOptions.findIndex(option => option.text === tenant)]}
               isMultiSelect={false}
               buttonStyle={{ backgroundColor: '#fff' }}

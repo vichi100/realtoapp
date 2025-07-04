@@ -256,3 +256,218 @@ ENVFILE=development npx expo start
 ENVFILE=production npx expo build:android # or npx expo build:ios
 # Or for EAS Build:
 ENVFILE=production eas build -p android --profile production
+
+
+### HOW TO RUN .sh FILE
+sudo ./setup-realto.sh
+
+### HOW TO CREATE SUB DOMAIN IN SQUARESPACE ###
+https://support.squarespace.com/hc/en-us/articles/215744668-Pointing-a-Squarespace-domain#toc-point-a-squarespace-subdomain
+
+
+
+###  maestro Testing ######
+https://docs.maestro.dev/getting-started/installing-maestro
+
+https://docs.expo.dev/eas/workflows/reference/e2e-tests/
+
+https://medium.com/@sahiltiwari_66376/maestro-next-generation-mobile-ui-testing-framework-appium-alternative-fcd3c4727771
+
+https://maestro.dev/blog/pokedex-ui-testing-series-getting-started-with-maestro-in-expo-react-native-part-1
+
+https://github.com/mobile-dev-inc/Maestro?tab=readme-ov-file
+
+
+#### Maestro testing with expo go ####
+Yes, you **can** use Maestro for testing Expo Go apps, but with some limitations and workarounds. Here’s what you need to know:
+
+---
+
+### **Option 1: Test Expo Go Directly (Limited)**
+Maestro can interact with Expo Go, but since Expo Go dynamically loads your app, you may face issues with:
+- **Bundle ID conflicts** (Expo Go uses `host.exp.Exponent`, not your app’s ID).
+- **Dynamic content loading** (Maestro may not detect elements until fully loaded).
+
+
+### **Option 2: Build a Development Client (Recommended)**
+For reliable testing:
+1. **Set up a [Dev Client](https://docs.expo.dev/development/getting-started/)**:
+   ```bash
+   npx expo install expo-dev-client
+   npx expo run:ios  # Builds a simulator-compatible .app
+   ```
+2. **Install the Dev Client on the simulator**:
+   ```bash
+   xcrun simctl install booted /path/to/YourApp.app
+   ```
+3. **Test in Maestro using your app’s real bundle ID** (e.g., `com.yourcompany.yourapp`).
+
+---
+
+### **Option 3: EAS Build for Testing (Production-like)**
+1. **Create a simulator-compatible build**:
+   ```bash
+   eas build --profile development --platform ios --local
+   ```
+2. **Install the `.app` or `.ipa` on the simulator**:
+   ```bash
+   xcrun simctl install booted /path/to/YourApp.app
+   ```
+3. **Run Maestro tests normally**.
+
+---
+
+### **Key Limitations with Expo Go**
+- ❌ **No direct bundle ID control** (Maestro expects your app’s ID, not `host.exp.Exponent`).
+- ❌ **Dynamic JS reloads may break tests** (elements can change unpredictably).
+- ✅ **Works for simple flows** (e.g., tapping static buttons).
+
+---
+
+### **Best Solution?**
+👉 **Use a Dev Client or EAS Build** for stable Maestro testing.  
+👉 **Expo Go is only for quick checks** (not reliable for automation).
+
+
+
+### **3. Installing on Simulator**
+Once you locate the `.app` file:
+```bash
+xcrun simctl install booted /path/to/YourApp.app
+```
+Example:
+```bash
+xcrun simctl install booted ~/Library/Developer/Xcode/DerivedData/YourApp-abcd1234/Build/Products/Debug-iphonesimulator/YourApp.app
+```
+
+---
+
+### **4. Verify Installation**
+Check if the app is installed:
+```bash
+xcrun simctl listapps booted | grep YourApp
+```
+
+###### START TESTING #######
+
+1. Start Metro Bundler First
+npm run start:dev
+
+2. Then run below cmd on other terminal, Metro Bundler must be running for testing
+maestro test .maestro/ios/home.yml
+
+Let’s record a Maestro test flow step by step. Follow these instructions carefully to capture your app interactions and generate a reusable test script.
+
+Great! Let’s record a Maestro test flow step by step. Follow these instructions carefully to capture your app interactions and generate a reusable test script.
+
+---
+
+### **Step-by-Step Recording Guide**
+
+#### **1. Start the Maestro Recorder**
+Open your terminal and run:
+```bash
+maestro studio
+```
+This launches the Maestro interactive recorder and your simulator/device.
+
+#### **2. Select Your App**
+- The simulator will open automatically.
+- Manually open your app (`com.realtoapp.ios`) if it doesn’t launch.
+
+#### **3. Record Your Flow**
+Interact naturally with your app:
+- **Taps**: Buttons, links, or any interactive elements.
+- **Swipes**: Scroll through lists or pages.
+- **Inputs**: Enter text in fields (e.g., login forms).
+- **Navigation**: Move between screens.
+
+Maestro translates your actions into YAML in real-time.
+
+#### **4. Add Assertions (Optional)**
+While recording, you can insert checks manually:
+- Pause and use the Maestro UI to add:
+  - `assertVisible`: Verify text/elements appear.
+  - `assertNotVisible`: Confirm elements are hidden.
+
+#### **5. Save the Recording**
+- Press `Ctrl+C` in the terminal to stop.
+- Save the generated YAML file (e.g., `home_to_login.yaml`).
+
+---
+
+### **Example: Recorded YAML Output**
+Here’s what your recorded file might look like:
+```yaml
+appId: com.realtoapp.ios
+
+flows:
+  - name: "Home to Login Journey"
+    steps:
+      - launchApp
+      - tapOn: "Get Started"  # Recorded tap
+      - inputText: "user@example.com"  # Recorded text entry
+      - tapOn: "Password"
+      - inputText: "securepassword123"
+      - tapOn: "Login"
+      - assertVisible: "Welcome Back!"  # Added assertion
+      - scrollUntilVisible:
+          element: "Latest Properties"
+          direction: DOWN
+```
+
+---
+
+### **Next Steps After Recording**
+1. **Run the Test**:
+   ```bash
+   maestro test home_to_login.yaml
+   ```
+
+   vichirajan@192 realtoapp % maestro test .maestro/ios/home.yml
+
+   
+2. **Debug if Needed**:
+   - Check `~/.maestro/tests/` for screenshots and logs.
+   - Use `waitFor` commands if elements load slowly.
+
+3. **Refine Your Script**:
+   - Replace generic selectors (like `"Button"`) with explicit IDs (e.g., `id: "loginBtn"`).
+   - Modularize reusable flows (e.g., `login.yaml`).
+
+---
+
+### **Pro Tips for Reliable Recordings**
+1. **Use Explicit Selectors**:
+   Prefer accessibility labels or IDs over text:
+   ```yaml
+   - tapOn:
+       id: "welcome_continue_btn"  # More stable than "Continue"
+   ```
+
+2. **Handle Async Waits**:
+   Add delays for dynamic content:
+   ```yaml
+   - waitFor: 3000  # Wait 3 seconds
+   ```
+
+3. **Combine with Manual Edits**:
+   Record first, then enhance the YAML with loops, conditions, or sub-flows.
+
+---
+
+### **Troubleshooting**
+- **If elements aren’t detected**:
+  - Check the app’s accessibility hierarchy (Xcode → Debug View Hierarchy).
+  - Use Maestro’s `-d` flag for debug output:
+    ```bash
+    maestro test -d home_to_login.yaml
+    ```
+
+- **If the app crashes**:
+  - Ensure Metro is running (`npx react-native start`).
+  - Rebuild the app (`npx react-native run-ios`).
+
+---
+
+Let me know if you’d like to record a specific user journey (e.g., login → search → checkout), and I’ll help structure the test optimally!
