@@ -21,6 +21,8 @@ import { numDifferentiation } from "../../util/methods";
 import { connect } from "react-redux";
 import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
 import DatePicker, { RangeOutput, SingleOutput } from 'react-native-neat-date-picker';
+import CustomButtonGroup from "../../components/CustomButtonGroup";
+import * as  AppConstant from "../../util/AppConstant";
 
 
 
@@ -37,6 +39,7 @@ const ContactBuyResidentialDetailsForm = props => {
   const [errorMessage, setErrorMessage] = useState("");
   const [negotiableIndex, setNegotiableIndex] = useState(-1);
   const [visible, setVisible] = React.useState(false);
+  const [negotiable, setNegotiable] = useState("Yes");
 
   const dismissSnackBar = () => {
     setIsVisible(false);
@@ -72,16 +75,12 @@ const ContactBuyResidentialDetailsForm = props => {
       setErrorMessage("Available from date is missing");
       setIsVisible(true);
       return;
-    } else if (negotiableIndex === -1) {
-      setErrorMessage("Negotiable is missing");
-      setIsVisible(true);
-      return;
-    }
+    } 
 
     const customer_buy_details = {
       expected_buy_price: expectedBuyPrice,
       available_from: newDate.trim(),
-      negotiable: negotiableArray[negotiableIndex]
+      negotiable: negotiable
     };
     // const customer = JSON.parse(await AsyncStorage.getItem("customer"));
     const customer = props.customerDetails;
@@ -93,20 +92,9 @@ const ContactBuyResidentialDetailsForm = props => {
     navigation.navigate("AddNewCustomerBuyResidentialFinalDetails");
   };
 
-  // const numDifferentiation = value => {
-  //   var val = Math.abs(value);
-  //   if (val >= 10000000) {
-  //     val = parseFloat((val / 10000000).toFixed(2)) + " Cr";
-  //   } else if (val >= 100000) {
-  //     val = parseFloat((val / 100000).toFixed(2)) + " Lac";
-  //   } else if (val >= 1000) {
-  //     val = parseFloat((val / 1000).toFixed(2)) + " K";
-  //   }
-  //   return val;
-  // };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <View style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}>
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
         <ScrollView>
           <View style={styles.container}>
@@ -122,7 +110,6 @@ const ContactBuyResidentialDetailsForm = props => {
               }
               placeholder="Expected Buy Price*"
               value={expectedBuyPrice}
-              keyboardType={"numeric"}
               onChangeText={text => setExpectedBuyPrice(text)}
               onFocus={() => setIsVisible(false)}
               theme={{
@@ -184,17 +171,22 @@ const ContactBuyResidentialDetailsForm = props => {
 
             <Text>Negotiable*</Text>
             <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectNegotiableIndex}
-                selectedIndex={negotiableIndex}
-                buttons={negotiableArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 300 }}
-                containerBorderRadius={10}
+            <CustomButtonGroup
+                buttons={AppConstant.NEGOTIABLE_OPTION}
+                accessibilityLabelId="negotiable_option"
+                selectedIndices={[AppConstant.NEGOTIABLE_OPTION.findIndex(option => option.text === negotiable)]}
+                isMultiSelect={false}
+                buttonStyle={{ backgroundColor: '#fff' }}
+                selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+                buttonTextStyle={{ color: '#000' }}
+                selectedButtonTextStyle={{ color: '#000' }}
+                onButtonPress={(index, button) => {
+                  console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                  setNegotiable(button.text);
+                  // Query update is handled by useEffect after state change
+                }}
               />
+              
             </View>
 
             <Button title="NEXT" onPress={() => onSubmit()} />

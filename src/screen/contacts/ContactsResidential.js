@@ -835,6 +835,7 @@ const ContactsResidential = props => {
               <View style={styles.propSubSection}>
                 <CustomButtonGroup
                   buttons={porposeForOptions}
+                  accessibilityLabelId="porpose_for_options"
                   selectedIndices={[porposeForOptions.findIndex(option => option.text === purpose)]}
                   isMultiSelect={false}
                   buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
@@ -848,38 +849,12 @@ const ContactsResidential = props => {
                   }}
                 />
               </View>
-              {/* <Text style={styles.marginBottom10}>Property type</Text>
-            <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Residential", "Commercial", "Any"]}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 350 }}
-                containerBorderRadius={10}
-              />
-            </View> */}
-              {/* <Text style={styles.marginBottom10}>Home type</Text>
-              <View style={styles.propSubSection}>
-                <ButtonGroup
-                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                  onPress={selectHomeTypeIndex}
-                  selectedIndex={homeTypeIndex}
-                  buttons={homeTypeArray}
-                  // containerStyle={{ height: 30 }}
-                  textStyle={{ textAlign: "center" }}
-                  selectedTextStyle={{ color: "#fff" }}
-                  containerStyle={{ borderRadius: 10, width: 350 }}
-                  containerBorderRadius={10}
-                />
-              </View> */}
-              <Text style={styles.marginBottom10}>BHK type</Text>
+              
+              <Text style={styles.marginBottom10}>BHK Type</Text>
               <View style={styles.propSubSection}>
                 <CustomButtonGroup
                   buttons={bhkOption}
+                  accessibilityLabelId="bhk_options"
                   isMultiSelect={true}
                   buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
                   selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
@@ -918,6 +893,7 @@ const ContactsResidential = props => {
 
                 <CustomButtonGroup
                   buttons={reqWithinOptions}
+                  accessibilityLabelId="req_within_options"
                   selectedIndices={[reqWithinOptions.findIndex(option => option.text === reqWithin)]}
                   isMultiSelect={false}
                   buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
@@ -936,6 +912,7 @@ const ContactsResidential = props => {
 
                 <CustomButtonGroup
                   buttons={furnishingStatusOptions}
+                  accessibilityLabelId="furnishing_status_options"
                   isMultiSelect={true}
                   buttonStyle={{ backgroundColor: '#fff', borderColor: 'rgba(173, 181, 189, .5)', borderWidth: 1 }}
                   selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}

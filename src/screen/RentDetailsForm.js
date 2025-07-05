@@ -229,7 +229,7 @@ const RentDetailsForm = props => {
               }}
             />
             {/* </View> */}
-            {props.propertyType && props.propertyType === "Residential" ? (
+            {props.propertyDetails && props.propertyDetails.propertyType === "Residential" ? (
               <View>
                 <Text>Preferred Tenants*</Text>
                 <View style={styles.propSubSection}>

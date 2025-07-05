@@ -22,23 +22,11 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { SERVER_URL, GOOGLE_PLACES_API_KEY } from "../../util/Constant";
 import { connect } from "react-redux";
 import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
+import CustomButtonGroup from "../../components/CustomButtonGroup";
+import * as  AppConstant from "../../util/AppConstant";
 
 
 const homePlace = { description: 'Mumbai', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } } };
-
-const options = [
-  {
-    key: "Residential",
-    text: "Residential"
-  },
-  {
-    key: "Commercial",
-    text: "Commercial"
-  }
-];
-
-const propertyForArray = ["Rent", "Buy"];
-const requiredForArray = ["Family", "Bachelors"];//preferred_tenants
 
 
 const ContactLocalityDetailsForm = props => {
@@ -51,45 +39,17 @@ const ContactLocalityDetailsForm = props => {
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [propertyForIndex, setPropertyForIndex] = useState(-1);
-  const [selectedPropType, setSelectedPropType] = useState(null);
+  
   const [SelectedLocationArray, setSelectedLocationArray] = useState([]);
   const [requiredForIndex, setRequiredForIndex] = useState(0);
   const [selectedRequiredFor, setSelectedRequiredFor] = useState(null);
   // const [p, setSelectedRequiredFor] = useState(null);
 
-  const selectRequiredForIndex = index => {
-    // // console.log(index);
-    // // console.log(propertyForArray[index]);
-    setRequiredForIndex(index);
-    setIsVisible(false);
-  };
+  const [selectedPropType, setSelectedPropType] = useState("Residential");
+  const [selectedPropFor, setSelectedPropFor] = useState("Rent");
+  const [requiredFor, setRequiredFor] = useState("Family");
+  
 
-  const onSelectequiredFor = item => {
-    console.log(item);
-    if (selectedRequiredFor && selectedRequiredFor.key === item.key) {
-      setSelectedRequiredFor(null);
-    } else {
-      setSelectedRequiredFor(item);
-    }
-    setIsVisible(false);
-  };
-
-  const onSelectPropType = item => {
-    // // console.log(item);
-    if (selectedPropType && selectedPropType.key === item.key) {
-      setSelectedPropType(null);
-    } else {
-      setSelectedPropType(item);
-    }
-    setIsVisible(false);
-  };
-
-  const selectPropertyForIndex = index => {
-    // // console.log(index);
-    // // console.log(propertyForArray[index]);
-    setPropertyForIndex(index);
-    setIsVisible(false);
-  };
 
   const dismissSnackBar = () => {
     setIsVisible(false);
@@ -112,16 +72,16 @@ const ContactLocalityDetailsForm = props => {
     const customer_locality = {
       city: city.trim(),
       location_area: SelectedLocationArray,
-      property_type: selectedPropType?.key || "",
-      property_for: propertyForArray[propertyForIndex] || "",
+      property_type: selectedPropType,
+      property_for: selectedPropFor,
       pin: "123",
-      preferred_tenants: requiredForArray[requiredForIndex] || "",
+      preferred_tenants: requiredFor,
     };
   
     customer["customer_locality"] = customer_locality;
     props.setCustomerDetails(customer);
   
-    const propertyType = selectedPropType?.key || "";
+    const propertyType =selectedPropType;
     if (propertyType.toLowerCase() === "residential") {
       navigation.navigate("ContactResidentialPropertyDetailsForm");
     } else {
@@ -277,60 +237,74 @@ const ContactLocalityDetailsForm = props => {
             <Text>Select Property Type</Text>
           </View>
           <View style={styles.propSection}>
-            <RadioButton
-              selectedOption={selectedPropType}
-              onSelect={onSelectPropType}
-              options={options}
+          <CustomButtonGroup
+              buttons={AppConstant.PROPERTY_TYPE_OPTION}
+              accessibilityLabelId="property_type"
+              selectedIndices={[AppConstant.PROPERTY_TYPE_OPTION.findIndex(option => option.text === selectedPropType)]}
+              isMultiSelect={false}
+              buttonStyle={{ backgroundColor: '#fff' }}
+              selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+              buttonTextStyle={{ color: '#000' }}
+              selectedButtonTextStyle={{ color: '#000' }}
+              onButtonPress={(index, button) => {
+                console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                setSelectedPropType(button.text);
+                // Query update is handled by useEffect after state change
+              }}
             />
+            
           </View>
-          <View style={{ alignContent: "flex-start" }}>
+          <View style={{ alignContent: "flex-start", marginTop: 20 }}>
             <Text>Select Property For</Text>
           </View>
           <View
-            style={[styles.propSubSection, { marginBottom: 10, marginTop: 15 }]}
+            style={[ { marginBottom: 10, marginTop: 15 }]}
           >
             {/* <Text>Select Property For</Text> */}
-            <ButtonGroup
-              selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-              onPress={selectPropertyForIndex}
-              selectedIndex={propertyForIndex}
-              buttons={propertyForArray}
-              // containerStyle={{ height: 30 }}
-              textStyle={{ textAlign: "center" }}
-              selectedTextStyle={{ color: "#fff" }}
-              containerStyle={{
-                borderRadius: 10,
-                width: 300
-                // borderColor: "red"
+            <CustomButtonGroup
+              buttons={AppConstant.CUSTOMER_PROPERTY_FOR_OPTION}
+              accessibilityLabelId="property_for"
+              selectedIndices={[AppConstant.CUSTOMER_PROPERTY_FOR_OPTION.findIndex(option => option.text === selectedPropFor)]}
+              isMultiSelect={false}
+              buttonStyle={{ backgroundColor: '#fff' }}
+              selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+              buttonTextStyle={{ color: '#000' }}
+              selectedButtonTextStyle={{ color: '#000' }}
+              onButtonPress={(index, button) => {
+                console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                setSelectedPropFor(button.text);
+                // Query update is handled by useEffect after state change
               }}
-              containerBorderRadius={10}
             />
+            
           </View>
 
-          {propertyForIndex === 0 && selectedPropType.text.toLowerCase() == "Residential".toLowerCase()? 
+          {selectedPropType.toLowerCase() == "Residential".toLowerCase() && selectedPropFor === "Rent"? 
           <View>
-          <View style={{ alignContent: "flex-start" }}>
+          <View style={{ alignContent: "flex-start", marginTop: 20  }}>
             <Text>Required for</Text>
           </View>
           <View
-            style={[styles.propSubSection, { marginBottom: 10, marginTop: 15 }]}
+            style={[ { marginBottom: 10, marginTop: 15 }]}
           >
             {/* <Text>Select Property For</Text> */}
-            <ButtonGroup
-              selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-              onPress={selectRequiredForIndex}
-              selectedIndex={requiredForIndex}
-              buttons={requiredForArray}
-              // containerStyle={{ height: 30 }}
-              textStyle={{ textAlign: "center" }}
-              selectedTextStyle={{ color: "#fff" }}
-              containerStyle={{
-                borderRadius: 10,
-                width: 300
-                // borderColor: "red"
+            <CustomButtonGroup
+              buttons={AppConstant.CUSTOMER_PREFERRED_TENANTS_OPTION}
+              accessibilityLabelId="preferred_tenants"
+              selectedIndices={[AppConstant.CUSTOMER_PREFERRED_TENANTS_OPTION.findIndex(option => option.text === requiredFor)]}
+              isMultiSelect={false}
+              buttonStyle={{ backgroundColor: '#fff' }}
+              selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+              buttonTextStyle={{ color: '#000' }}
+              selectedButtonTextStyle={{ color: '#000' }}
+              onButtonPress={(index, button) => {
+                console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                setRequiredFor(button.text);
+                // Query update is handled by useEffect after state change
               }}
-              containerBorderRadius={10}
             />
+
+            
             </View>
           </View> : <View></View>}
 

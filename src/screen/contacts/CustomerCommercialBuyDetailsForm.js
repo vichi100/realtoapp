@@ -21,6 +21,8 @@ import { numDifferentiation } from "../../util/methods";
 import { connect } from "react-redux";
 import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
 import DatePicker, { RangeOutput, SingleOutput } from 'react-native-neat-date-picker';
+import CustomButtonGroup from "../../components/CustomButtonGroup";
+import * as  AppConstant from "../../util/AppConstant";
 
 
 
@@ -35,7 +37,7 @@ const CustomerCommercialBuyDetailsForm = props => {
   // const [maintenanceCharge, setMaintenanceCharge] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [negotiableIndex, setNegotiableIndex] = useState(-1);
+  const [negotiable, setNegotiable] = useState("Yes");
   const [visible, setVisible] = React.useState(false);
 
   const dismissSnackBar = () => {
@@ -72,16 +74,11 @@ const CustomerCommercialBuyDetailsForm = props => {
       setErrorMessage("Available from date is missing");
       setIsVisible(true);
       return;
-    } else if (negotiableIndex === -1) {
-      setErrorMessage("Negotiable is missing");
-      setIsVisible(true);
-      return;
-    }
-
+    } 
     const customer_buy_details = {
       expected_buy_price: expectedSellPrice,
       available_from: newDate.trim(),
-      negotiable: negotiableArray[negotiableIndex]
+      negotiable: negotiable,
     };
     // const customer = JSON.parse(await AsyncStorage.getItem("customer"));
     const customer = props.customerDetails;
@@ -106,7 +103,7 @@ const CustomerCommercialBuyDetailsForm = props => {
   // };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <View style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}>
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
         <ScrollView>
           <View style={styles.container}>
@@ -185,7 +182,23 @@ const CustomerCommercialBuyDetailsForm = props => {
 
             <Text>Negotiable*</Text>
             <View style={styles.propSubSection}>
-              <ButtonGroup
+            <CustomButtonGroup
+                buttons={AppConstant.NEGOTIABLE_OPTION}
+                accessibilityLabelId="negotiable_option"
+                selectedIndices={[AppConstant.NEGOTIABLE_OPTION.findIndex(option => option.text === negotiable)]}
+                isMultiSelect={false}
+                buttonStyle={{ backgroundColor: '#fff' }}
+                selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+                buttonTextStyle={{ color: '#000' }}
+                selectedButtonTextStyle={{ color: '#000' }}
+                onButtonPress={(index, button) => {
+                  console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                  setNegotiable(button.text);
+                  // Query update is handled by useEffect after state change
+                }}
+              />
+
+              {/* <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={selectNegotiableIndex}
                 selectedIndex={negotiableIndex}
@@ -195,7 +208,7 @@ const CustomerCommercialBuyDetailsForm = props => {
                 selectedTextStyle={{ color: "#fff" }}
                 containerStyle={{ borderRadius: 10, width: 300 }}
                 containerBorderRadius={10}
-              />
+              /> */}
             </View>
 
             <Button title="NEXT" onPress={() => onSubmit()} />

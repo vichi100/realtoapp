@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import Slideshow from "../components/Slideshow";
 import Button from "../components/Button";
-import { ButtonGroup } from "@rneui/themed";
 import axios from "axios";
 import { SERVER_URL } from "../util/Constant";
 import { numDifferentiation } from "../util/methods";

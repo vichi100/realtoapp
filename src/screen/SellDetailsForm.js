@@ -21,6 +21,8 @@ import { numDifferentiation } from "../util/methods";
 import { connect } from "react-redux";
 import { setPropertyDetails } from "../reducers/Action";
 import DatePicker, { RangeOutput, SingleOutput } from 'react-native-neat-date-picker'
+import CustomButtonGroup from "../components/CustomButtonGroup";
+import * as  AppConstant from "../util/AppConstant";
 
 const negotiableArray = ["Yes", "No"];
 
@@ -35,6 +37,7 @@ const SellDetails = props => {
   const [errorMessage, setErrorMessage] = useState("");
   const [negotiableIndex, setNegotiableIndex] = useState(-1);
   const [visible, setVisible] = React.useState(false);
+  const [negotiable, setNegotiable] = useState("Yes");
 
   const dismissSnackBar = () => {
     setIsVisible(false);
@@ -74,17 +77,13 @@ const SellDetails = props => {
       setErrorMessage("Available from date is missing");
       setIsVisible(true);
       return;
-    } else if (negotiableIndex === -1) {
-      setErrorMessage("Negotiable is missing");
-      setIsVisible(true);
-      return;
-    }
+    } 
 
     const sell_details = {
       expected_sell_price: expectedSellPrice,
       maintenance_charge: maintenanceCharge,
       available_from: newDate.trim(),
-      negotiable: negotiableArray[negotiableIndex]
+      negotiable: negotiable
     };
     // const property = JSON.parse(await AsyncStorage.getItem("property"));
     const property = props.propertyDetails;
@@ -96,20 +95,8 @@ const SellDetails = props => {
     navigation.navigate("AddImages");
   };
 
-  // const numDifferentiation = value => {
-  //   var val = Math.abs(value);
-  //   if (val >= 10000000) {
-  //     val = parseFloat((val / 10000000).toFixed(2)) + " Cr";
-  //   } else if (val >= 100000) {
-  //     val = parseFloat((val / 100000).toFixed(2)) + " Lac";
-  //   } else if (val >= 1000) {
-  //     val = parseFloat((val / 1000).toFixed(2)) + " K";
-  //   }
-  //   return val;
-  // };
-
   return (
-    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <View style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}>
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
         <ScrollView>
           <View style={styles.container}>
@@ -126,7 +113,6 @@ const SellDetails = props => {
               }
               placeholder="Expected Sell Price*"
               value={expectedSellPrice}
-              keyboardType={"numeric"}
               onChangeText={text => setExpectedSellPrice(text)}
               onFocus={() => setIsVisible(false)}
               theme={{
@@ -152,7 +138,6 @@ const SellDetails = props => {
               }
               placeholder="Maintenance Charge"
               value={maintenanceCharge}
-              keyboardType={"numeric"}
               onChangeText={text => setMaintenanceCharge(text)}
               onFocus={() => setIsVisible(false)}
               theme={{
@@ -187,7 +172,22 @@ const SellDetails = props => {
 
             <Text>Negotiable*</Text>
             <View style={styles.propSubSection}>
-              <ButtonGroup
+            <CustomButtonGroup
+                buttons={AppConstant.NEGOTIABLE_OPTION}
+                accessibilityLabelId="negotiable_option"
+                selectedIndices={[AppConstant.NEGOTIABLE_OPTION.findIndex(option => option.text === negotiable)]}
+                isMultiSelect={false}
+                buttonStyle={{ backgroundColor: '#fff' }}
+                selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+                buttonTextStyle={{ color: '#000' }}
+                selectedButtonTextStyle={{ color: '#000' }}
+                onButtonPress={(index, button) => {
+                  console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                  setNegotiable(button.text);
+                  // Query update is handled by useEffect after state change
+                }}
+              />
+              {/* <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={selectNegotiableIndex}
                 selectedIndex={negotiableIndex}
@@ -197,7 +197,7 @@ const SellDetails = props => {
                 selectedTextStyle={{ color: "#fff" }}
                 containerStyle={{ borderRadius: 10, width: 300 }}
                 containerBorderRadius={10}
-              />
+              /> */}
             </View>
 
             <Button title="NEXT" onPress={() => onSubmit()} />

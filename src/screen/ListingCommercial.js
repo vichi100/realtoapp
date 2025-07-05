@@ -913,17 +913,7 @@ const ListingCommercial = props => {
             <ScrollView style={{ marginTop: 20, marginBottom: 20, margin: 10 }}>
               <Text style={styles.marginBottom20}>Looking For</Text>
               <View style={styles.propSubSection}>
-                {/* <ButtonGroup
-                  selectedButtonStyle={{ backgroundColor: "#00a36c4d" }} 
-                  onPress={selectLookingForIndex}
-                  selectedIndex={lookingForIndex}
-                  buttons={lookingForArray}
-                  // containerStyle={{ height: 30 }}
-                  textStyle={{ textAlign: "center" }}
-                  selectedTextStyle={{ color: "#000" }}
-                  containerStyle={{ borderRadius: 10, width: 350 }}
-                  containerBorderRadius={10}
-                /> */}
+                
                 <CustomButtonGroup
                   buttons={porposeForOptions}
                   accessibilityLabelId="porpose_for"
@@ -943,18 +933,7 @@ const ListingCommercial = props => {
 
               <Text style={styles.marginBottom20}>Prop type</Text>
               <View style={styles.propSubSection}>
-                {/* <ButtonGroup
-                  selectedButtonStyle={{ backgroundColor: "#00a36c4d" }} 
-                  onPress={selectPropertyTypeIndex}
-                  selectedIndex={propertyTypeIndex}
-                  buttons={propertyTypeArray}
-                  // containerStyle={{ height: 30 }}
-                  textStyle={{ textAlign: "center" }}
-                  selectedTextStyle={{ color: "#000" }}
-                  containerStyle={{ borderRadius: 10, width: 350 }}
-                  containerBorderRadius={10}
-                  vertical={true}
-                /> */}
+               
                 <CustomButtonGroup
                   buttons={propertyTypeOptions}
                   accessibilityLabelId="property_type"

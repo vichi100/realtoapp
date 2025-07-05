@@ -22,6 +22,7 @@ import { setPropertyDetails } from "../reducers/Action";
 import { connect } from "react-redux";
 import CustomButtonGroup from "../components/CustomButtonGroup";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import * as  AppConstant from "../util/AppConstant";
 
 
 // const houseTypeArray = ["Apartment", "Villa", "Independent House"];
@@ -89,18 +90,7 @@ const liftAvailbleOption = [
 
 const ResidentialPropertyDetailsForm = props => {
   const { navigation } = props;
-  // const [city, setCity] = React.useState("");
-  // const [locality, setLocality] = React.useState("");
-  // const [index, setIndex] = React.useState(null);
-  // const [text, setText] = React.useState("");
 
-  // const [houseTypeIndex, setHouseTypeIndex] = useState(-1);
-  // const [bhkIndex, setBHKIndex] = useState(-1);
-  // const [washroomIndex, setWashroomIndex] = useState(-1);
-  // const [furnishingIndex, setFurnishingIndex] = useState(-1);
-  // const [parkingIndex, setParkingIndex] = useState(-1);
-  // const [parkingTypeIndex, setParkingTypeIndex] = useState(-1);
-  // const [propertyAgeIndex, setPropertyAgeIndex] = useState(-1);
   const [floor, setFloor] = useState("");
   const [totalFloor, setTotalFloor] = useState("");
   // const [liftIndex, setLiftIndex] = useState(-1);
@@ -130,35 +120,6 @@ const ResidentialPropertyDetailsForm = props => {
   };
 
   const onSubmit = async () => {
-    // if (houseTypeIndex === -1) {
-    //   setErrorMessage("House Type is missing");
-    //   setIsVisible(true);
-    //   return;
-    // } else if (bhkIndex === -1) {
-    //   setErrorMessage("BHK is missing");
-    //   setIsVisible(true);
-    //   return;
-    // } else if (washroomIndex === -1) {
-    //   setErrorMessage("Wash rooms number is missing");
-    //   setIsVisible(true);
-    //   return;
-    // } else if (furnishingIndex === -1) {
-    //   setErrorMessage("Furnishing status is missing");
-    //   setIsVisible(true);
-    //   return;
-    // } else if (parkingIndex === -1) {
-    //   setErrorMessage("Parking is missing");
-    //   setIsVisible(true);
-    //   return;
-    // } else if (furnishingIndex === -1) {
-    //   setErrorMessage("Parking car/bike is missing");
-    //   setIsVisible(true);
-    //   return;
-    // } else if (propertyAgeIndex === -1) {
-    //   setErrorMessage("Property age is missing");
-    //   setIsVisible(true);
-    //   return;
-    // } else 
     
     if (floor.trim() === "") {
       setErrorMessage("Floor is missing");
@@ -169,11 +130,6 @@ const ResidentialPropertyDetailsForm = props => {
       setIsVisible(true);
       return;
     } 
-    // else if (liftIndex === -1) {
-    //   setErrorMessage("Lift is missing");
-    //   setIsVisible(true);
-    //   return;
-    // } else 
     
     if (propertySize.trim() === "") {
       setErrorMessage("Property size is missing");
@@ -210,39 +166,6 @@ const ResidentialPropertyDetailsForm = props => {
     }
   };
 
-  // const selectHouseTypeIndex = index => {
-  //   setHouseTypeIndex(index);
-  //   setIsVisible(false);
-  // };
-  // const selectBHkIndex = index => {
-  //   setBHKIndex(index);
-  //   setIsVisible(false);
-  // };
-  // const selectWashroomIndex = index => {
-  //   setWashroomIndex(index);
-  //   setIsVisible(false);
-  // };
-  // const selectFurnishingIndex = index => {
-  //   setFurnishingIndex(index);
-  //   setIsVisible(false);
-  // };
-  // const selectParkingIndex = index => {
-  //   setParkingIndex(index);
-  //   setIsVisible(false);
-  // };
-  // const selectParkingTypeIndex = index => {
-  //   setParkingTypeIndex(index);
-  //   setIsVisible(false);
-  // };
-  // const selectPropertyAgeIndex = index => {
-  //   setPropertyAgeIndex(index);
-  //   setIsVisible(false);
-  // };
-  // const selectLiftIndex = index => {
-  //   setLiftIndex(index);
-  //   setIsVisible(false);
-  // };
-
   return (
     <View
       style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
@@ -254,9 +177,9 @@ const ResidentialPropertyDetailsForm = props => {
             <View style={styles.propSubSection}>
 
               <CustomButtonGroup
-                buttons={houseTypeOption}
+                buttons={AppConstant.HOUSE_TYPE_OPTION}
                 accessibilityLabelId="house_type"
-                selectedIndices={[houseTypeOption.findIndex(option => option.text === houseType)]}
+                selectedIndices={[AppConstant.HOUSE_TYPE_OPTION.findIndex(option => option.text === houseType)]}
                 isMultiSelect={false}
                 buttonStyle={{ backgroundColor: '#fff' }}
                 selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
@@ -269,26 +192,14 @@ const ResidentialPropertyDetailsForm = props => {
                 }}
               />
 
-
-              {/* <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectHouseTypeIndex}
-                selectedIndex={houseTypeIndex}
-                buttons={houseTypeArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 310 }}
-                containerBorderRadius={10}
-              /> */}
             </View>
             <Text>How many BHK*</Text>
             <View style={styles.propSubSection}>
 
               <CustomButtonGroup
-                buttons={bhkOption}
+                buttons={AppConstant.BHK_OPTION}
                 accessibilityLabelId="bhk_type"
-                selectedIndices={[bhkOption.findIndex(option => option.text === bhkType)]}
+                selectedIndices={[AppConstant.BHK_OPTION.findIndex(option => option.text === bhkType)]}
                 isMultiSelect={false}
                 buttonStyle={{ backgroundColor: '#fff' }}
                 selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
@@ -301,17 +212,7 @@ const ResidentialPropertyDetailsForm = props => {
                 }}
               />
 
-              {/* <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectBHkIndex}
-                selectedIndex={bhkIndex}
-                buttons={bhkArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 300 }}
-                containerBorderRadius={10}
-              /> */}
+              
             </View>
 
             <Text>How many wash rooms*</Text>
@@ -333,25 +234,15 @@ const ResidentialPropertyDetailsForm = props => {
                 }}
               />
 
-              {/* <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectWashroomIndex}
-                selectedIndex={washroomIndex}
-                buttons={washroomArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 200 }}
-                containerBorderRadius={10}
-              /> */}
+              
             </View>
             <Text>Furnishing*</Text>
             <View style={styles.propSubSection}>
 
               <CustomButtonGroup
-                buttons={furnishingStatusOption}
+                buttons={AppConstant.FURNISHING_STATUS_OPTION}
                 accessibilityLabelId="furnishing_status"
-                selectedIndices={[furnishingStatusOption.findIndex(option => option.text === furnishingStatus)]}
+                selectedIndices={[AppConstant.FURNISHING_STATUS_OPTION.findIndex(option => option.text === furnishingStatus)]}
                 isMultiSelect={false}
                 buttonStyle={{ backgroundColor: '#fff' }}
                 selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
@@ -364,17 +255,7 @@ const ResidentialPropertyDetailsForm = props => {
                 }}
               />
 
-              {/* <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectFurnishingIndex}
-                selectedIndex={furnishingIndex}
-                buttons={furnishingStatusArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 200 }}
-                containerBorderRadius={10}
-              /> */}
+             
             </View>
 
             <Text>Parkings*</Text>
@@ -395,17 +276,7 @@ const ResidentialPropertyDetailsForm = props => {
                 }}
               />
 
-              {/* <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectParkingIndex}
-                selectedIndex={parkingIndex}
-                buttons={parkingNumberArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 5, width: 150 }}
-                containerBorderRadius={5}
-              /> */}
+              
 
               <View style={{marginLeft: 20, marginTop:15, flexDirection: 'row', alignItems: 'center'}}>
                 <View>
@@ -415,9 +286,9 @@ const ResidentialPropertyDetailsForm = props => {
                 <MaterialIcons name="directions-bike" color={"#000"} size={26} />
                 </View>
               <CustomButtonGroup
-                buttons={parkingTypeOption}
+                buttons={AppConstant.PARKING_OPTION}
                 accessibilityLabelId="parking_type"
-                selectedIndices={[parkingTypeOption.findIndex(option => option.text === parkingType)]}
+                selectedIndices={[AppConstant.PARKING_OPTION.findIndex(option => option.text === parkingType)]}
                 isMultiSelect={false}
                 buttonStyle={{ backgroundColor: '#fff' }}
                 selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
@@ -431,17 +302,7 @@ const ResidentialPropertyDetailsForm = props => {
               />
               </View>
 
-              {/* <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectParkingTypeIndex}
-                selectedIndex={parkingTypeIndex}
-                buttons={parkingTypeArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 150 }}
-                containerBorderRadius={10}
-              /> */}
+              
             </View>
             <Text>Property Age*</Text>
             <View style={styles.propSubSection}>
@@ -460,17 +321,7 @@ const ResidentialPropertyDetailsForm = props => {
                   // Query update is handled by useEffect after state change
                 }}
               />
-              {/* <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectPropertyAgeIndex}
-                selectedIndex={propertyAgeIndex}
-                buttons={propertyAgeArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 300 }}
-                containerBorderRadius={10}
-              /> */}
+              
             </View>
 
             <View
@@ -529,9 +380,9 @@ const ResidentialPropertyDetailsForm = props => {
               <View style={[styles.propSubSection, { marginLeft: 10 }]}>
                 <Text style={{marginBottom:10}}>Lift*</Text>
                 <CustomButtonGroup
-                buttons={liftAvailbleOption}
+                buttons={AppConstant.LIFT_AVAILBLE_OPTION}
                 accessibilityLabelId="lift_available"
-                selectedIndices={[liftAvailbleOption.findIndex(option => option.text === liftOption)]}
+                selectedIndices={[AppConstant.LIFT_AVAILBLE_OPTION.findIndex(option => option.text === liftOption)]}
                 isMultiSelect={false}
                 buttonStyle={{ backgroundColor: '#fff' }}
                 selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
@@ -545,26 +396,7 @@ const ResidentialPropertyDetailsForm = props => {
                 width={50}
                 height={40}
               />
-                {/* <ButtonGroup
-                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                  onPress={selectLiftIndex}
-                  selectedIndex={liftIndex}
-                  buttons={liftArray}
-                  // containerStyle={{ height: 30 }}
-                  textStyle={{ textAlign: "center" }}
-                  selectedTextStyle={{ color: "#fff" }}
-                  containerStyle={{ borderRadius: 10, width: 100 }}
-                  containerBorderRadius={10}
-                // theme={{
-                //   colors: {
-                //     // placeholder: "white",
-                //     // text: "white",
-                //     primary: "rgba(0,191,255, .9)",
-                //     underlineColor: "transparent",
-                //     background: "#ffffff"
-                //   }
-                // }}
-                /> */}
+                
               </View>
             </View>
 

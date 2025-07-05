@@ -896,35 +896,8 @@ const ListingResidential = props => {
                   }}
                 />
               </View>
-              {/* <Text style={styles.marginBottom10}>Property type</Text>
-            <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Residential", "Commercial", "Any"]}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 350 }}
-                containerBorderRadius={10}
-              />
-            </View> */}
-              {/* <Text style={styles.marginBottom10}>Home type</Text>
-              <View style={styles.propSubSection}>
-                <ButtonGroup
-                  selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                  onPress={selectHomeTypeIndex}
-                  selectedIndex={homeTypeIndex}
-                  buttons={homeTypeArray}
-                  // containerStyle={{ height: 30 }}
-                  textStyle={{ textAlign: "center" }}
-                  selectedTextStyle={{ color: "#fff" }}
-                  containerStyle={{ borderRadius: 10, width: 350 }}
-                  containerBorderRadius={10}
-                />
-              </View> */}
-              <Text style={styles.marginBottom10}>BHK type</Text>
+              
+              <Text style={styles.marginBottom10}>BHK Type</Text>
               <View style={styles.propSubSection}>
                 <CustomButtonGroup
                   buttons={bhkOption}

@@ -22,6 +22,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Snackbar from "../../components/SnackbarComponent";
 import { connect } from "react-redux";
 import { setPropertyType, setPropertyDetails, setCustomerDetails } from "../../reducers/Action";
+import CustomButtonGroup from "../../components/CustomButtonGroup";
+import * as  AppConstant from "../../util/AppConstant";
 
 
 const propertyTypeArray = [
@@ -68,35 +70,31 @@ const CustomerCommercialPropertyDetailsForm = props => {
 
   const [idealForSelectArray, setIdealForSelectArray] = useState([]);
   const [idealForArray, setIdealForArray] = useState(idealForArrayDict);
-  
+
+  const [propertyType, setPropertyType] = useState("Shop");
+  const [buildingType, setBuildingType] = useState("Mall");
+  const [selectIdealForList, setSelectIdealForList] = useState(["Shop"]);
+  const [parkingRequire, setParkingRequire] = useState("Must");
+
 
   const dismissSnackBar = () => {
     setIsVisible(false);
   };
 
   const onSubmit = async () => {
-    if (propertyTypeIndex === -1) {
-      setErrorMessage("Property type is missing");
+    if (propertySize.trim()==="") {
+      setErrorMessage("Property size is missing");
       setIsVisible(true);
       return;
-    } else if (buildingIndex === -1) {
-      setErrorMessage("Building type is missing");
-      setIsVisible(true);
-      return;
-    } else if (parkingTypeIndex === -1) {
-      setErrorMessage("Parking is missing");
-      setIsVisible(true);
-      return;
-    }
-    // const customer = JSON.parse(await AsyncStorage.getItem("customer"));
+    } 
     const customer = props.customerDetails;
     const propertyFor = customer.customer_locality.property_for;
 
     const customer_property_details = {
-      property_used_for: propertyTypeArray[propertyTypeIndex],
-      building_type: buildingTypeArray[buildingIndex],
+      property_used_for: propertyType,
+      building_type: buildingType,
       // ideal_for: idealForSelectArray,
-      parking_type: parkingTypeArray[parkingTypeIndex],
+      parking_type: parkingRequire,
       // property_age: propertyAgeArray[propertyAgeIndex],
       // power_backup: powerBackupkArray[powerBackupIndex],
       property_size: propertySize
@@ -114,82 +112,51 @@ const CustomerCommercialPropertyDetailsForm = props => {
     }
   };
 
-  const selectPropertyTypeIndex = index => {
-    setHouseTypeIndex(index);
-    setIsVisible(false);
-  };
-  const selectBuildingIndex = index => {
-    setBuildingIndex(index);
-    setIsVisible(false);
-  };
-
-  const selectParkingTypeIndex = index => {
-    setParkingTypeIndex(index);
-    setIsVisible(false);
-  };
-  const selectPropertyAgeIndex = index => {
-    setPropertyAgeIndex(index);
-    setIsVisible(false);
-  };
-  const selectPowerBackupIndex = index => {
-    setPowerBackupIndex(index);
-    setIsVisible(false);
-  };
-
-  const onIdealForSelect = index => {
-    // // console.log(index);
-    const temp = [...idealForArray];
-    // // console.log(temp[index]);
-    const tempChecked = temp[index].checked;
-    temp[index].checked = !tempChecked;
-    // // console.log(temp);
-    setIdealForArray(temp);
-    if (!tempChecked === true) {
-      idealForSelectArray.push(temp[index].name);
-    } else {
-      var filteredAry = ary.filter(e => e !== temp[index].name);
-      setIdealForSelectArray(filteredAry);
-    }
-  };
+  
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <View style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}>
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
         <ScrollView style={styles.container}>
-          <View style={{ paddingTop: 30, marginLeft: 20, marginRight: 20 }}>
+          <View style={{ paddingTop: 30, marginLeft: 20, marginRight: 0 }}>
             <Text>Property Type*</Text>
             <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectPropertyTypeIndex}
-                selectedIndex={propertyTypeIndex}
-                buttons={propertyTypeArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{
-                  width: 360
+              <CustomButtonGroup
+                buttons={AppConstant.COMMERCIAL_PROPERTY_TYPE_OPTION}
+                accessibilityLabelId="commercial_property_type"
+                selectedIndices={[AppConstant.COMMERCIAL_PROPERTY_TYPE_OPTION.findIndex(option => option.text === propertyType)]}
+                isMultiSelect={false}
+                buttonStyle={{ backgroundColor: '#fff' }}
+                selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+                buttonTextStyle={{ color: '#000' }}
+                selectedButtonTextStyle={{ color: '#000' }}
+                onButtonPress={(index, button) => {
+                  console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                  setPropertyType(button.text);
+                  // Query update is handled by useEffect after state change
                 }}
-                // containerBorderRadius={10}
-                buttonStyle={{ height: 30 }}
-                vertical={true}
               />
+              
             </View>
             <Text>Building type*</Text>
             <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectBuildingIndex}
-                selectedIndex={buildingIndex}
-                buttons={buildingTypeArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ width: 350 }}
-                // buttonContainerStyle={{ flex: 1, flexWrap: "wrap", flexDirection:"" }}
-                containerBorderRadius={10}
-                vertical={true}
+
+            <CustomButtonGroup
+                buttons={AppConstant.COMMERCIAL_PROPERTY_BUILDING_TYPE_OPTION}
+                accessibilityLabelId="commercial_property_building_type"
+                selectedIndices={[AppConstant.COMMERCIAL_PROPERTY_BUILDING_TYPE_OPTION.findIndex(option => option.text === buildingType)]}
+                isMultiSelect={false}
+                buttonStyle={{ backgroundColor: '#fff' }}
+                selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+                buttonTextStyle={{ color: '#000' }}
+                selectedButtonTextStyle={{ color: '#000' }}
+                onButtonPress={(index, button) => {
+                  console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                  setBuildingType(button.text);
+                  // Query update is handled by useEffect after state change
+                }}
               />
+              
             </View>
 
             <Text>Looking for size in sqft*</Text>
@@ -216,19 +183,24 @@ const CustomerCommercialPropertyDetailsForm = props => {
               }}
             />
 
-            <Text style={{marginTop:10}}>Parkings*</Text>
+            <Text style={{ marginTop: 10 }}>Parkings*</Text>
             <View style={styles.doubleColSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={selectParkingTypeIndex}
-                selectedIndex={parkingTypeIndex}
-                buttons={parkingTypeArray}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 300 }}
-                containerBorderRadius={10}
+            <CustomButtonGroup
+                buttons={AppConstant.PARKING_REQUIRED_OPTION}
+                accessibilityLabelId="parking_required"
+                selectedIndices={[AppConstant.PARKING_REQUIRED_OPTION.findIndex(option => option.text === parkingRequire)]}
+                isMultiSelect={false}
+                buttonStyle={{ backgroundColor: '#fff' }}
+                selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+                buttonTextStyle={{ color: '#000' }}
+                selectedButtonTextStyle={{ color: '#000' }}
+                onButtonPress={(index, button) => {
+                  console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                  setParkingRequire(button.text);
+                  // Query update is handled by useEffect after state change
+                }}
               />
+             
             </View>
 
             <View style={{ marginTop: 15 }}>
