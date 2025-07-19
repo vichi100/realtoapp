@@ -184,7 +184,7 @@ const CustomerCommercialBuyDetailsForm = props => {
             <View style={styles.propSubSection}>
             <CustomButtonGroup
                 buttons={AppConstant.NEGOTIABLE_OPTION}
-                accessibilityLabelId="negotiable_option"
+                accessibilityLabelId="negotiable"
                 selectedIndices={[AppConstant.NEGOTIABLE_OPTION.findIndex(option => option.text === negotiable)]}
                 isMultiSelect={false}
                 buttonStyle={{ backgroundColor: '#fff' }}

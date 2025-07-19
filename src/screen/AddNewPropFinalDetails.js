@@ -157,7 +157,7 @@ const AddNewPropFinalDetails = props => {
     <ScrollView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
-          {"Rent "}{propertyFinalDetails.property_address.flat_number},
+          {"Rent In "}{propertyFinalDetails.property_address.flat_number},
           {propertyFinalDetails.property_address.building_name},
 
           {/* 2 BHK For Rent In Anant Villa, Koregaon Park */}

@@ -102,7 +102,7 @@ const ContactResidentialPropertyDetailsForm = props => {
               />
               
             </View>
-            <Text>How many BHK*</Text>
+            <Text>Size of BHK*</Text>
             <View style={[styles.propSubSection, { marginTop: 10 }]}>
             <CustomButtonGroup
                 buttons={AppConstant.BHK_OPTION}

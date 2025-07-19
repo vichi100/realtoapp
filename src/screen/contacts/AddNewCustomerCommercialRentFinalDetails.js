@@ -242,19 +242,6 @@ const AddNewCustomerCommercialRentFinalDetails = props => {
               </Text>
               <Text style={[styles.subDetailsTitle]}>Building Type</Text>
             </View>
-
-            {/* <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {customerFinalDetails.customer_property_details.ideal_for.join(", ")}
-              </Text>
-              <Text style={[styles.subDetailsTitle]}>Ideal for</Text>
-            </View> */}
-            {/* <View style={[styles.subDetails]}>
-              <Text style={[styles.subDetailsValue]}>
-                {propertyFinalDetails.customer_property_details.lift}
-              </Text>
-              <Text style={[styles.subDetailsTitle]}>Lift</Text>
-            </View> */}
           </View>
           <View style={styles.overviewRightColumn}>
             <View style={[styles.subDetails]}>

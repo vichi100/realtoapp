@@ -66,119 +66,120 @@ const Login = props => {
 
   return (
     // ../../assets/images/rbg.jpeg
-<View style={{ flex: 1, backgroundColor: "#ffffff" }}>
-  
-    <ImageBackground source={require("../../../assets/images/rbg.jpeg")} resizeMode="cover" style={{
-      flex: 1,
-    }}>
-      <LinearGradient
-        // Background Linear Gradient
-        colors={['rgba(0,0,0,0.8)', 'transparent']}
-        style={styles.background}
-      />
-      <View
-        style={{
-          flex: 1,
-          // width: "100%",
-          marginTop: "20%",
-          marginLeft: 30,
-          marginRight: 30,
-          justifyContent: "center",
-          alignItems: "center"
-        }}
-      >
+    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
 
-        <Image
-          style={{ width: 200, height: 200 }}
-          source={require("../../../assets/images/logo.png")}
+      <ImageBackground source={require("../../../assets/images/rbg.jpeg")} resizeMode="cover" style={{
+        flex: 1,
+      }}>
+        <LinearGradient
+          // Background Linear Gradient
+          colors={['rgba(0,0,0,0.8)', 'transparent']}
+          style={styles.background}
         />
-        <View>
-          <Text style={{
-            // borderWidth: 1, // size/width of the border
-            // borderColor: "lightgrey", // color of the border
-            paddingLeft: 10,
-            width: "80%",
-            height: 45,
-            color: "#ffffff",
-            fontWeight: "500",
-            // borderRadius: 5
-            fontSize: 18
-          }}>Supercharge your property broking</Text>
-        </View>
-
-
         <View
           style={{
             flex: 1,
+            // width: "100%",
+            marginTop: "20%",
+            marginLeft: 30,
+            marginRight: 30,
             justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            // marginTop: 20
-            marginBottom: "55%"
+            alignItems: "center"
           }}
         >
 
-          <TextInput
-            style={{
-              borderWidth: 1, // size/width of the border
-              borderColor: "lightgrey", // color of the border
+          <Image
+            style={{ width: 200, height: 200 }}
+            source={require("../../../assets/images/logo.png")}
+          />
+          <View>
+            <Text style={{
+              // borderWidth: 1, // size/width of the border
+              // borderColor: "lightgrey", // color of the border
               paddingLeft: 10,
               width: "80%",
               height: 45,
               color: "#ffffff",
-              // fontWeight: "800",
+              fontWeight: "500",
               // borderRadius: 5
-              fontSize: 16
-            }}
-            onChangeText={text => setMobileNumberX(text)}
-            placeholder="Enter Mobile Number"
-            textAlign={'center'}
-            keyboardType={'numeric'}
-            returnKeyType={'done'}
-            placeholderTextColor={'#DCDCDC'}
-            placeholderStyle={{ fontSize: 16 }}
-          // value={mobileNumber.length === 0 ? "+91-": mobileNumber}
-          />
-          <TouchableOpacity
-            onPress={() => onNext()}
+              fontSize: 18
+            }}>Supercharge your property broking</Text>
+          </View>
+
+
+          <View
             style={{
-              padding: 5,
-              paddingTop: 15, 
-              // width: 200,
-              // justifyContent: "flex-end",
-              // flexDirection: "row",
-              // backgroundColor: "rgba(60,179,113, .9)",
-              left: 0
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              // marginTop: 20
+              marginBottom: "55%"
             }}
           >
-            {/* <Text style={{ padding: 5, textAlign: "center" }}>NEXT</Text> */}
-            <Entypo
-              name="controller-play"
-              color={"#ffffff"}
-              size={50}
-            // color={"rgba(60,179,113, .9)"}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
 
-      <TouchableOpacity
-        style={{
-          position: "absolute",
-          bottom: 10,
-          right: 10,
-          margin: 20
-          // backgroundColor: "rgba(60,179,113, .9)"
-        }}
-        onPress={() => onSkip()}
-      >
-        <Text
-          style={{ color: "#fff" }}
+            <TextInput
+              style={{
+                borderWidth: 1, // size/width of the border
+                borderColor: "lightgrey", // color of the border
+                paddingLeft: 10,
+                width: "80%",
+                height: 45,
+                color: "#ffffff",
+                // fontWeight: "800",
+                // borderRadius: 5
+                fontSize: 16
+              }}
+              onChangeText={text => setMobileNumberX(text)}
+              placeholder="Enter Mobile Number"
+              textAlign={'center'}
+              keyboardType={'numeric'}
+              returnKeyType={'done'}
+              placeholderTextColor={'#DCDCDC'}
+              placeholderStyle={{ fontSize: 16 }}
+            // value={mobileNumber.length === 0 ? "+91-": mobileNumber}
+            />
+            <TouchableOpacity
+              accessibilityLabel="controller_play_login_icon"
+              onPress={() => onNext()}
+              style={{
+                padding: 5,
+                paddingTop: 15,
+                // width: 200,
+                // justifyContent: "flex-end",
+                // flexDirection: "row",
+                // backgroundColor: "rgba(60,179,113, .9)",
+                left: 0
+              }}
+            >
+              {/* <Text style={{ padding: 5, textAlign: "center" }}>NEXT</Text> */}
+              <Entypo
+                name="controller-play"
+                color={"#ffffff"}
+                size={50}
+              // color={"rgba(60,179,113, .9)"}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <TouchableOpacity
+          style={{
+            position: "absolute",
+            bottom: 10,
+            right: 10,
+            margin: 20
+            // backgroundColor: "rgba(60,179,113, .9)"
+          }}
+          onPress={() => onSkip()}
         >
-          Skip
-        </Text>
-      </TouchableOpacity>
-    </ImageBackground>
+          <Text
+            style={{ color: "#fff" }}
+          >
+            Skip
+          </Text>
+        </TouchableOpacity>
+      </ImageBackground>
 
     </View>
 

@@ -1,23 +1,30 @@
-flows:
-  - name: "Full User Journey"
-    steps:
-      - runFlow: login.yaml
-      - runFlow: search.yaml
-      - runFlow: add_item.yaml
+appId: com.realtoapp.ios
+---
+- launchApp:
+    permissions:
+      photos: true
+      camera: true
 
+- runFlow:
+    file: login.yaml
 
+# - runFlow:
+#     file: property/add_residential_rent_property.yaml
+# - runFlow:
+#     file: property/add_residential_sell_property.yaml
+# - runFlow:
+#     file: property/add_commercial_rent_property.yaml
+# - runFlow:
+#     file: property/add_commercial_sell_property.yaml
+# - runFlow:
+#     file: customer/add_residential_rent_customer.yaml
+# - runFlow:
+    # file: customer/add_residential_buy_customer.yaml
+# - runFlow:
+#     file: customer/add_commercial_rent_customer.yaml
+- runFlow:
+    file: customer/add_commercial_buy_customer.yaml
+    
+    
 
-# property
-#  -residential
-#   -rent
-#   -sell
-#  -commercial
-#   -rent
-#   -sell
-# customer
-#  -residential
-#   -rent
-#   -buy
-#  -commercial
-#   -rent
-#   -buy
+    

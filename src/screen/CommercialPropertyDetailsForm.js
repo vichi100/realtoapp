@@ -219,7 +219,7 @@ const PropertyDetails = props => {
               />
              
             </View>
-            <Text>Building type*</Text>
+            <Text>Building Type*</Text>
             <View style={styles.propSubSection}>
             <CustomButtonGroup
                 buttons={AppConstant.COMMERCIAL_PROPERTY_BUILDING_TYPE_OPTION}
@@ -241,7 +241,7 @@ const PropertyDetails = props => {
             </View>
             
 
-            <Text>Ideal for*(Multi Select)</Text>
+            <Text>Ideal For*(Multi Select)</Text>
             <View style={styles.propSubSection}>
 
             <CustomButtonGroup
@@ -303,7 +303,7 @@ const PropertyDetails = props => {
               />
               
             </View>
-            <Text>Power backup*</Text>
+            <Text>Power Backup*</Text>
             <View style={styles.propSubSection}>
             <CustomButtonGroup
                 buttons={AppConstant.POWER_BACKUP_OPTION}

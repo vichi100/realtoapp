@@ -1037,6 +1037,7 @@ const ContactsResidential = props => {
           (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)
           )) ?
           <TouchableOpacity
+          accessibilityLabel="add_customer_icon"
             style={{
               // borderWidth: 1,
               // borderColor: "rgba(0,0,0,0.2)",

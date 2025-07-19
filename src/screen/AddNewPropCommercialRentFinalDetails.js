@@ -115,7 +115,7 @@ const AddNewPropCommercialRentFinalDetails = props => {
       data: data
     })
 
-      
+
 
       .then(
         response => {
@@ -151,11 +151,12 @@ const AddNewPropCommercialRentFinalDetails = props => {
         }
       );
   };
+
   return propertyFinalDetails ? (
     <ScrollView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
-          {propertyFinalDetails.property_details.property_used_for} {" for rent in "}
+          {propertyFinalDetails.property_details.property_used_for} {"For Rent In "}
           {/* {propertyFinalDetails.property_address.flat_number}, */}
           {propertyFinalDetails.property_address.building_name},
 
@@ -241,7 +242,13 @@ const AddNewPropCommercialRentFinalDetails = props => {
               <Text style={[styles.subDetailsValue]}>
                 {propertyFinalDetails.property_details.ideal_for.join(", ")}
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Ideal for</Text>
+              <Text style={[styles.subDetailsTitle]}>Ideal For</Text>
+            </View>
+            <View style={[styles.subDetails]}>
+              <Text style={[styles.subDetailsValue]}>
+                {propertyFinalDetails.property_details.power_backup}
+              </Text>
+              <Text style={[styles.subDetailsTitle]}>Power Backup</Text>
             </View>
             {/* <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
@@ -292,9 +299,19 @@ const AddNewPropCommercialRentFinalDetails = props => {
           </View>
         </View>
       </View>
+      <View style={{ marginTop: 60 }}>
       <View style={{ margin: 20 }}>
         <Button title="ADD" onPress={() => send()} />
       </View>
+
+      </View>
+      <Snackbar
+        visible={isVisible}
+        textMessage={errorMessage}
+        position={"top"}
+        actionHandler={() => dismissSnackBar()}
+        actionText="OK"
+      />
       <ModalActivityIndicator visible={loading} size='large' color='#A9A9A9' />
 
       <Modal
@@ -347,13 +364,7 @@ const AddNewPropCommercialRentFinalDetails = props => {
         </View>
       </Modal>
 
-      <Snackbar
-        visible={isVisible}
-        textMessage={errorMessage}
-        position={"top"}
-        actionHandler={() => dismissSnackBar()}
-        actionText="OK"
-      />
+
     </ScrollView>
   ) : null;
 };

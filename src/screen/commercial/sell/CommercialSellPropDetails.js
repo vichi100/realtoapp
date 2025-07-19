@@ -130,7 +130,7 @@ const CommercialSellPropDetails = props => {
             // backgroundColor: "#d1d1d1",
           }}>
             <Text style={[styles.title]}>
-              Sell in {item.property_address.flat_number},{" "} {item.property_address.building_name},{" "}
+              Sell Off In {item.property_address.flat_number},{" "} {item.property_address.building_name},{" "}
               {item.property_address.landmark_or_street}
             </Text>
             <Text style={[StyleSheet.subTitle]}>

@@ -26,7 +26,7 @@ const AddNewPropCommercialSellFinalDetails = props => {
   const [bhk, setBHK] = useState(null);
   const [possessionDate, setPossessionDate] = useState(null);
   const [loading, setLoading] = useState(false);
-   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     getPropFinalDetails();
@@ -118,7 +118,7 @@ const AddNewPropCommercialSellFinalDetails = props => {
             props.setCommercialPropertyList([...props.commercialPropertyList, response.data])
             // navigation.navigate("Listing");
             // Dont understand why else part is here
-            console.log("props.startNavigationPoint: "+props.startNavigationPoint);
+            console.log("props.startNavigationPoint: " + props.startNavigationPoint);
             if (props.startNavigationPoint === null) {
               navigation.navigate("Listing", { didDbCall: true });
 
@@ -144,7 +144,7 @@ const AddNewPropCommercialSellFinalDetails = props => {
     <ScrollView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
-          {propertyFinalDetails.property_details.property_used_for} {" for sell in "}
+          {propertyFinalDetails.property_details.property_used_for} {"For Sell In "}
           {/* {propertyFinalDetails.property_address.flat_number}, */}
           {propertyFinalDetails.property_address.building_name},
           {/* {propertyFinalDetails.property_address.location_area} */}
@@ -230,7 +230,13 @@ const AddNewPropCommercialSellFinalDetails = props => {
               <Text style={[styles.subDetailsValue]}>
                 {propertyFinalDetails.property_details.ideal_for.join(", ")}
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Ideal for</Text>
+              <Text style={[styles.subDetailsTitle]}>Ideal For</Text>
+            </View>
+            <View style={[styles.subDetails]}>
+              <Text style={[styles.subDetailsValue]}>
+                {propertyFinalDetails.property_details.power_backup}
+              </Text>
+              <Text style={[styles.subDetailsTitle]}>Power Backup</Text>
             </View>
             {/* <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
@@ -284,57 +290,68 @@ const AddNewPropCommercialSellFinalDetails = props => {
       <View style={{ margin: 20 }}>
         <Button title="ADD" onPress={() => send()} />
       </View>
+      {/* <View style={{ margin: 60 }}>
+        <Text
+          testID="scroll_anchor_bottom"
+          accessibilityLabel={"scroll_anchor_bottom"}  // ✅ Ensure it's always set
+          accessible={true}  // ✅ Makes the full view accessible
+          style={{ height: 1, width: 1, opacity: 0 }}
+        >
+          scroll_anchor_bottom
+        </Text>
+      </View> */}
+
       <ModalActivityIndicator visible={loading} size='large' color='#A9A9A9' />
 
       <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                // Alert.alert("Modal has been closed.");
-                setModalVisible(false);
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          // Alert.alert("Modal has been closed.");
+          setModalVisible(false);
+        }}
+      >
+        <View style={styles.centeredView1}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>
+              You are not logged in, please login.
+            </Text>
+
+
+            <View
+              style={{
+                position: "absolute",
+                flexDirection: "row",
+                right: 0,
+                bottom: 0,
+                marginTop: 20,
+                marginBottom: 20,
+                padding: 20
+                // justifyContent: "flex-end"
               }}
             >
-              <View style={styles.centeredView1}>
-                <View style={styles.modalView}>
-                  <Text style={styles.modalText}>
-                    You are not logged in, please login.
-                  </Text>
-      
-      
-                  <View
-                    style={{
-                      position: "absolute",
-                      flexDirection: "row",
-                      right: 0,
-                      bottom: 0,
-                      marginTop: 20,
-                      marginBottom: 20,
-                      padding: 20
-                      // justifyContent: "flex-end"
-                    }}
-                  >
-                    <TouchableHighlight
-                      style={{ ...styles.cancelButton }}
-                      onPress={() => {
-                        setModalVisible(!modalVisible);
-                      }}
-                    >
-                      <Text style={styles.textStyle}>Cancel</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight
-                      style={{ ...styles.applyButton }}
-                      onPress={() => {
-                        login();
-                        setModalVisible(!modalVisible);
-                      }}
-                    >
-                      <Text style={styles.textStyle}>Login</Text>
-                    </TouchableHighlight>
-                  </View>
-                </View>
-              </View>
-            </Modal>
+              <TouchableHighlight
+                style={{ ...styles.cancelButton }}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Cancel</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={{ ...styles.applyButton }}
+                onPress={() => {
+                  login();
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Login</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
     </ScrollView>
   ) : null;

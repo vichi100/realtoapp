@@ -151,8 +151,8 @@ const ContactBuyResidentialDetailsForm = props => {
             <TextInput
               mode="outlined"
               style={styles.inputContainerStyle}
-              label="Available From *"
-              placeholder="Available From *"
+              label="Required From *"
+              placeholder="Required From *"
               value={newDate}
               showSoftInputOnFocus={false}
               // onChangeText={newDate => setNewDate(newDate)}
@@ -173,7 +173,7 @@ const ContactBuyResidentialDetailsForm = props => {
             <View style={styles.propSubSection}>
             <CustomButtonGroup
                 buttons={AppConstant.NEGOTIABLE_OPTION}
-                accessibilityLabelId="negotiable_option"
+                accessibilityLabelId="negotiable"
                 selectedIndices={[AppConstant.NEGOTIABLE_OPTION.findIndex(option => option.text === negotiable)]}
                 isMultiSelect={false}
                 buttonStyle={{ backgroundColor: '#fff' }}

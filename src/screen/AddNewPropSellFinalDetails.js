@@ -146,7 +146,7 @@ const AddNewPropSellFinalDetails = props => {
     <ScrollView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <View style={[styles.headerContainer]}>
         <Text style={[styles.title]}>
-          {"Sell "}{propertyFinalDetails.property_address.flat_number},
+          {"Sell Off "}{propertyFinalDetails.property_address.flat_number},
           {propertyFinalDetails.property_address.building_name},
           {/* {propertyFinalDetails.property_address.location_area} */}
           {/* 2 BHK For Rent In Anant Villa, Koregaon Park */}

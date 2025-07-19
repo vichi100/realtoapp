@@ -5,6 +5,8 @@ import { StyleSheet, Text, View } from "react-native";
 import MainScreen from "./src/navigation/MainScreen";
 import { Provider } from "react-redux";
 import configureStore from "./Store";
+import { LogBox } from 'react-native';
+import { Keyboard } from 'react-native';
 
 
 
@@ -58,7 +60,10 @@ if (isHermesEnabled || isAndroid) {  // this line is only needed if you don't us
 
 
 const store = configureStore();
-
+// This will disable ALL yellow warning boxes
+LogBox.ignoreAllLogs();
+// To prevent keyboard from appearing
+Keyboard.dismiss();
 
 const App=()=> {
   

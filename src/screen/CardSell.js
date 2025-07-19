@@ -537,7 +537,7 @@ const Card = props => {
                 paddingBottom: 20, paddingTop: 5, minHeight: 90
               }}>
                 <Text style={[styles.title]}>
-                  Sell In {item.property_address.building_name},{" "}
+                  Sell Off In {item.property_address.building_name},{" "}
                   {item.property_address.landmark_or_street}
                 </Text>
                 <Text style={{ paddingRight: 10 }}>

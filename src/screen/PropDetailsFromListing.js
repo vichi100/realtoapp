@@ -127,7 +127,7 @@ const PropDetailsFromListing = props => {
             // backgroundColor: "#d1d1d1",
           }}>
             <Text style={[styles.title]}>
-              Rent {item.property_address.flat_number},{" "} {item.property_address.building_name},{" "}
+              Rent In {item.property_address.flat_number},{" "} {item.property_address.building_name},{" "}
               {item.property_address.landmark_or_street}
             </Text>
             <Text style={[StyleSheet.subTitle]}>

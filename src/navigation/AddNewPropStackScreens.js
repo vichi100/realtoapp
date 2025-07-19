@@ -69,7 +69,7 @@ const AddNewPropStackScreens = () => {
       <Stack.Screen
         name="SellDetailsForm"
         component={SellDetailsForm}
-        options={{ title: "Selling Details" }}
+        options={{ title: "Sell Details" }}
       />
 
       <Stack.Screen

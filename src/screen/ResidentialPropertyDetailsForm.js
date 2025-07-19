@@ -193,7 +193,7 @@ const ResidentialPropertyDetailsForm = props => {
               />
 
             </View>
-            <Text>How many BHK*</Text>
+            <Text>Size of BHK*</Text>
             <View style={styles.propSubSection}>
 
               <CustomButtonGroup

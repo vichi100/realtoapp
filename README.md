@@ -470,4 +470,45 @@ flows:
 
 ---
 
-Let me know if you’d like to record a specific user journey (e.g., login → search → checkout), and I’ll help structure the test optimally!
+##### HOW TO TEST MAESTRO ######
+1) start expo app in local, run below cmd in new terminal
+   npm run start:dev
+2) once metro start or QR code appear then press i to start IOS simulator.
+3) it want a to ccreate a fresh build run below cmd on new terminal and le the build complete
+   npx expo run:ios --no-build-cache
+4) to start Maestro run below cmd on new terminal 
+   maestro studio
+5) to run test suit run below cmd
+   vichirajan@192 realtoapp % maestro test .maestro/ios/test_suite.yaml
+
+   npm run start:dev in a terminal
+   npx expo run:ios --no-build-cache  if want ot rebuild 
+   maestro test .maestro/ios/test_suite.yaml start runining test cases
+   maestro studio to start maestro studio
+
+
+# property
+#  -residential
+#   -rent
+#   -sell
+#  -commercial
+#   -rent
+#   -sell
+# customer
+#  -residential
+#   -rent
+#   -buy
+#  -commercial
+#   -rent
+#   -buy
+
+
+#########  Error Issue ######
+
+if you get anu date related error install below
+
+"react-native-date-picker": "^5.0.8",
+"@react-native-community/datetimepicker": "8.3.0",
+
+
+###############

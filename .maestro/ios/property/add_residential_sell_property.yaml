@@ -1,14 +1,35 @@
-- runFlow: ../../../shared/login.yaml
+# /Users/vichirajan/Documents/realto/realtoapp/.maestro/ios/add_residential_rent_property.yaml
+ appId: com.example.app
+---
+# REMOVE - runFlow: ../login.yaml if login is handled by test_suite.yaml
 - tapOn: "bottom_tab_properties_icon"
-- tapOn: "Residential"
-- tapOn: "Rent"
+- assertVisible: "Residential"
+- tapOn: "add_property_icon"
+- tapOn: "property_type_residential"
+- tapOn: "property_for_sell"
+- assertVisible: "Owner Details"
 - tapOn: "Name*"
-- inputText: "Property 1 Residential Rent"
+- inputText: "Property 1 Residential Sell"
+- hideKeyboard # not wrking on iOS
+- waitForAnimationToEnd  
+- tapOn:
+    text: "return"
+    optional: true 
 - tapOn: "Mobile*"
 - inputText: "1234567890"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
 - tapOn: "Address*"
 - inputText: "Juhu, Mumbai"
+- hideKeyboard  
+- waitForAnimationToEnd
+- tapOn:
+    text: "return"
+    optional: true 
 - tapOn: "NEXT"
+
+- assertVisible: "Locality Details"
 - tapOn: "City*"
 - inputText: "Mumbai"
 - tapOn: "Add multiple locations within city"
@@ -21,6 +42,84 @@
 - tapOn: "Street / Landmark*"
 - inputText: "Near Juhu Beach"
 - tapOn: "NEXT"
-- tapOn: "Apartment"
-- tapOn: "2BHK"
+
+- assertVisible: "House Type*"
+- tapOn: "house_type_apartment"
+- assertVisible: "Size of BHK*"
+- tapOn: "bhk_type_2bhk"
+- tapOn: "washroom_number_2"
+- assertVisible: "Furnishing*"
+- tapOn: "furnishing_status_semi"
+- assertVisible: "Parkings*"
+- tapOn: "parking_number_2"
+- tapOn: "parking_type_car"
+- assertVisible: "Property Age*"
+- tapOn: "property_age_6-10"
+- scrollUntilVisible:
+    element:
+      text: "NEXT"
+    direction: down
+- tapOn: "Floor"
+- inputText: "10"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- tapOn: "Total Floor"
+- inputText: "20"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- assertVisible: "Lift*"
+- tapOn: "lift_available_yes"
+- tapOn: "Property Size"
+- inputText: "1000"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- scrollUntilVisible:
+    element:
+      text: "NEXT"
+    direction: down
+- tapOn: "NEXT"
+
+- assertVisible: "Sell Details"
+- tapOn: "Expected Sell Price*"
+- inputText: "25000000"
+- tapOn: "Maintenance Charge"
+- inputText: "15000"
+- tapOn: "Available From *"
+- tapOn: " 31 "
+- tapOn: "OK"
+- tapOn: "negotiable_option_yes"
+- tapOn: "NEXT"
+
+- assertVisible: "Add Images"
+- assertVisible: "ADD PHOTOS"
+- tapOn: "ADD PHOTOS"
+- tapOn: "Photo, 31 March 2018, 12:44 AM"
+- waitForAnimationToEnd  
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd  
+- assertVisible: "Final Details"
+- assertVisible: ".*Sell Off Flat 101, Wing A,Sunrise Apartments.*"
+- assertVisible: ".*Near Juhu Beach,Juhu Beach, Maharashtra, India.*"
+
+- assertVisible: "Details"
+- assertVisible: "10/20"
+- assertVisible: "6-10"
+- assertVisible: "Semi"
+- assertVisible: "Owner"
+
+- scrollUntilVisible:
+    element:
+      text: "ADD"
+    direction: down
+- tapOn: "ADD"
+
+- waitForAnimationToEnd
+- tapOn: "Residential"
+- waitForAnimationToEnd
+- assertVisible: ".*Sell Off In Sunrise Apartments.*"
+
 

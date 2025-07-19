@@ -1,0 +1,93 @@
+ appId: com.realtoapp.ios
+---
+- tapOn: "bottom_tab_contacts_icon"
+- waitForAnimationToEnd
+- tapOn: "add_customer_icon"
+- waitForAnimationToEnd
+- assertVisible: "Add new customer details who is looking to rent or buy a property"
+- assertVisible: "Customer Details"
+- tapOn: "Name*"
+- inputText: "Customer 1 Residential Rent"
+- tapOn: "Mobile*"
+- inputText: "1234567890"
+- tapOn: "Address*"
+- inputText: "Juhu, Mumbai"
+- waitForAnimationToEnd
+- tapOn:
+    text: "return"
+    optional: true
+- assertVisible: "NEXT"
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd
+- assertVisible: "Locality Details"
+- assertVisible: "Enter city and locations where customer wants the property"
+- tapOn: "City*"
+- inputText: "Mumbai"
+- tapOn: "Add multiple locations within city"
+- inputText: "juhu"
+- tapOn: "Juhu Beach, Maharashtra"
+- assertVisible: "Select Property Type"
+- tapOn: "property_type_residential"
+- assertVisible: "Select Property For"
+- tapOn: "property_for_rent"
+- assertVisible: "Required for"
+- tapOn: "preferred_tenants_family"
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd
+- assertVisible: "Property Details"
+- assertVisible: "Provide property details of which customer is looking for"
+- assertVisible: "House Type*"
+- tapOn: "house_type_apartment"
+- assertVisible: "Size of BHK*"
+- tapOn: "bhk_type_2bhk"
+- assertVisible: "Furnishing*"
+- tapOn: "furnishing_status_semi"
+- assertVisible: "Parkings*"
+- tapOn: "parking_type_car"
+- assertVisible: "Lift Mandatory*"
+- tapOn: "lift_available_yes"
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd
+- assertVisible: "Rent Details"
+- assertVisible: "Provide rent details what max customer can afford"
+- tapOn: "Max Rent"
+- inputText: "50000"
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- tapOn: "Max Deposit"
+- inputText: "100000"
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- tapOn: "Required From *"
+- waitForAnimationToEnd  
+- tapOn: " 31 "
+- tapOn: "OK"
+- waitForAnimationToEnd  
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd
+- assertVisible: "Customer Final Details"
+- assertVisible: "2BHK"
+- assertVisible: "Looking for"
+- assertVisible: "50 K"
+- assertVisible: "Max Rent"
+- assertVisible: "1 Lac"
+- assertVisible: "Max Deposit"
+- assertVisible: "Details"
+- assertVisible: "City"
+- assertVisible: "Mumbai"
+- assertVisible: "Locations"
+- assertVisible: "Juhu Beach"
+- assertVisible: "Car"
+- assertVisible: "Parking"
+- assertVisible: "Lift Mandatory"
+- assertVisible: "Tenant Type"
+- tapOn: "ADD"
+
+- waitForAnimationToEnd
+- tapOn: "Residential"
+
+

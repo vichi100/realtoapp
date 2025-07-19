@@ -1,9 +1,0 @@
-appId: com.realtoapp.ios
----
-- tapOn: "Enter Mobile Number"
-- assertVisible: "Enter Mobile Number"
-- inputText: "9833097594"
-- tapOn: ""
-- tapOn: "One-Time Password"
-- inputText: "999999"
-- tapOn: "󱇙 󱇙"
