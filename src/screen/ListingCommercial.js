@@ -804,8 +804,8 @@ const ListingCommercial = props => {
             onChangeText={text => searchFilterFunction(text)}
             value={search}
             underlineColorAndroid="transparent"
-            placeholder="Search by name, address, id, mobile"
-            placeholderTextColor="#000"
+            placeholder="Search By Name, Address, Id, Mobile"
+            placeholderTextColor="#696969"
           />
         </View>
         {data.length > 0 ? (
@@ -1240,7 +1240,7 @@ const styles = StyleSheet.create({
     width: "98%",
     height: 40,
     // borderWidth: 1,
-    paddingLeft: 20,
+    paddingLeft: 0,
     margin: 5,
     // marginBottom: 5,
     borderRadius: 10,

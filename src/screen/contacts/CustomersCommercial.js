@@ -749,15 +749,7 @@ const CustomersCommercial = props => {
       {/* <ActivityIndicator animating size="large" /> */}
     </View> :
       <View style={{ flex: 1 }}>
-        {/* <View style={styles.searchBarContainer}>
-          <TextInput
-            style={styles.textInputStyle}
-            onChangeText={text => searchFilterFunction(text)}
-            value={search}
-            underlineColorAndroid="transparent"
-            placeholder="Search by name, location"
-          />
-        </View> */}
+        
         <View style={styles.searchBar}>
           <AntDesign name="search1" size={20} color="#999" style={{ marginRight: 5, }} />
           {/* <View style={{ flexDirection: "row", margin: 10, justifyContent: "space-between" }}>
@@ -769,8 +761,8 @@ const CustomersCommercial = props => {
             onChangeText={text => searchFilterFunction(text)}
             value={search}
             underlineColorAndroid="transparent"
-            placeholder="Search by name, address, id, mobile"
-            placeholderTextColor="#000"
+            placeholder="Search By Name, Address, Id, Mobile"
+            placeholderTextColor="#696969"
           />
         </View>
         {data.length > 0 ? (
@@ -1227,7 +1219,7 @@ const styles = StyleSheet.create({
     width: "98%",
     height: 40,
     // borderWidth: 1,
-    paddingLeft: 20,
+    paddingLeft: 0,
     margin: 5,
     // marginBottom: 5,
     borderRadius: 10,

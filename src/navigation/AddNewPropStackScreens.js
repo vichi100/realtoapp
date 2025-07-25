@@ -45,48 +45,48 @@ const AddNewPropStackScreens = () => {
       <Stack.Screen
         name="LocalityDetailsForm"
         component={LocalityDetailsForm}
-        options={{ title: "Locality Details" }}
+        options={{ title: "Locality Details" ,headerBackTitle: "Back",}}
       />
 
       <Stack.Screen
         name="ResidentialPropertyDetailsForm"
         component={ResidentialPropertyDetailsForm}
-        options={{ title: "Property Details" }}
+        options={{ title: "Property Details" ,headerBackTitle: "Back"}}
       />
 
       <Stack.Screen
         name="CommercialPropertyDetailsForm"
         component={CommercialPropertyDetailsForm}
-        options={{ title: "Property Details" }}
+        options={{ title: "Property Details" ,headerBackTitle: "Back"}}
       />
 
       <Stack.Screen
         name="RentDetailsForm"
         component={RentDetailsForm}
-        options={{ title: "Rent Details" }}
+        options={{ title: "Rent Details" ,headerBackTitle: "Back"}}
       />
 
       <Stack.Screen
         name="SellDetailsForm"
         component={SellDetailsForm}
-        options={{ title: "Sell Details" }}
+        options={{ title: "Sell Details" ,headerBackTitle: "Back"}}
       />
 
       <Stack.Screen
         name="AddImages"
         component={AddImages}
-        options={{ title: "Add Images" }}
+        options={{ title: "Add Images" ,headerBackTitle: "Back"}}
       />
       <Stack.Screen
         name="AddNewPropFinalDetails"
         component={AddNewPropFinalDetails}
-        options={{ title: "Final Details" }}
+        options={{ title: "Final Details",headerBackTitle: "Back" }}
       />
 
       <Stack.Screen
         name="AddNewPropSellFinalDetails"
         component={AddNewPropSellFinalDetails}
-        options={{ title: "Final Details" }}
+        options={{ title: "Final Details" ,headerBackTitle: "Back"}}
       />
 
       <Stack.Screen
@@ -97,7 +97,7 @@ const AddNewPropStackScreens = () => {
       <Stack.Screen
         name="AddNewPropCommercialSellFinalDetails"
         component={AddNewPropCommercialSellFinalDetails}
-        options={{ title: "Final Details" }}
+        options={{ title: "Final Details" ,headerBackTitle: "Back"}}
       />
     </Stack.Navigator>
   );

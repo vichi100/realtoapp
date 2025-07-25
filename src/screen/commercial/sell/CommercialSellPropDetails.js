@@ -146,7 +146,7 @@ const CommercialSellPropDetails = props => {
               <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>
                 {Array.isArray(item.assigned_to_employee_name) && item.assigned_to_employee_name.length > 0
                   ? item.assigned_to_employee_name.join(", ")
-                  : "No employees assigned"}
+                  : "No Employees Assigned"}
               </Text>
               {/* <SimpleLineIcons name="user-unfollow" size={20} color="black" /> */}
             </View>

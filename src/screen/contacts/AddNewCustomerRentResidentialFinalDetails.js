@@ -205,7 +205,7 @@ const AddNewCustomerRentResidentialFinalDetails = props => {
             <Text style={[styles.subDetailsValue]}>
               {customerFinalDetails.customer_property_details.bhk_type}
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Looking for</Text>
+            <Text style={[styles.subDetailsTitle]}>Looking For</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
@@ -271,7 +271,7 @@ const AddNewCustomerRentResidentialFinalDetails = props => {
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
-                {customerFinalDetails.customer_rent_details.preferred_tenants}
+                {customerFinalDetails.customer_locality.preferred_tenants}
               </Text>
               <Text style={[styles.subDetailsTitle]}>Tenant Type</Text>
             </View>
@@ -291,12 +291,12 @@ const AddNewCustomerRentResidentialFinalDetails = props => {
               </Text>
               <Text style={[styles.subDetailsTitle]}>Floor</Text>
             </View> */}
-            <View style={[styles.subDetails]}>
+            {/* <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
                 {customerFinalDetails.customer_rent_details.non_veg_allowed}
               </Text>
               <Text style={[styles.subDetailsTitle]}>NonVeg</Text>
-            </View>
+            </View> */}
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
                 {customerFinalDetails.customer_property_details.lift}

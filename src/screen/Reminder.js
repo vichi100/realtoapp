@@ -25,6 +25,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { formatIsoDateToCustomString } from "../util/methods"; // Assuming this is the correct path to your method
 import { makeCall } from "../util/methods";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { formatClientNameForDisplay } from "../util/methods";
 
 const Reminder = props => {
   const {
@@ -218,17 +219,17 @@ const Reminder = props => {
         if (!item || !item.client_name || !item.client_mobile) {
           return false;
         }
-  
+
         // Combine client_name and client_mobile for filtering
         const itemData = `${item.client_name} ${item.client_mobile}`.toUpperCase();
-  
+
         // Convert the search text to uppercase for case-insensitive comparison
         const textData = text.toUpperCase();
-  
+
         // Check if the search text is found in the itemData
         return itemData.indexOf(textData) > -1;
       });
-  
+
       // Update the filtered data and search text
       setFutureReminderList(newData.filter((item) => new Date(item.meeting_date) > new Date()));
       setPastReminderList(newData.filter((item) => new Date(item.meeting_date) <= new Date()));
@@ -277,8 +278,10 @@ const Reminder = props => {
                 fontWeight: "600",
                 color: "rgba(0,0,0, 0.7)"
               }}
+              numberOfLines={2} // <<-- This will limit the text to one line
+              ellipsizeMode="tail" // <<-- This will add "..." at the end if it overflows
             >
-              {item.client_name}
+              {formatClientNameForDisplay(item.client_name)}
             </Text>
             <Text>+91 {item.client_mobile}</Text>
           </View>
@@ -336,8 +339,10 @@ const Reminder = props => {
                 fontWeight: "600",
                 color: "rgba(0,0,0, 0.7)"
               }}
+              numberOfLines={2} // <<-- This will limit the text to one line
+              ellipsizeMode="tail" // <<-- This will add "..." at the end if it overflows
             >
-              {item.client_name}
+              {formatClientNameForDisplay(item.client_name)}
             </Text>
             <Text>+91 {item.client_mobile}</Text>
           </View>
@@ -402,8 +407,10 @@ const Reminder = props => {
                 fontWeight: "600",
                 color: "rgba(0,0,0, 0.7)"
               }}
+              numberOfLines={2} // <<-- This will limit the text to one line
+              ellipsizeMode="tail" // <<-- This will add "..." at the end if it overflows
             >
-              {item.client_name}
+              {formatClientNameForDisplay(item.client_name)}
             </Text>
             <Text>+91 {item.client_mobile}</Text>
           </View>
@@ -467,8 +474,8 @@ const Reminder = props => {
                 onChangeText={text => searchFilterFunction(text)}
                 value={search}
                 underlineColorAndroid="transparent"
-                placeholder="Search by name, mobile"
-                placeholderTextColor="#000"
+                placeholder="Search By Name, Mobile"
+                placeholderTextColor="#696969"
               />
             </View>
             <Text
@@ -586,13 +593,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 2,
-    marginTop:10,
+    marginTop: 10,
   },
   textInputStyle: {
     width: "98%",
     height: 25,
     // borderWidth: 1,
-    paddingLeft: 20,
+    paddingLeft: 0,
     margin: 5,
     // marginBottom: 5,
     borderRadius: 10,

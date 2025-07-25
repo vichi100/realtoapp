@@ -62,3 +62,20 @@ export const camalize = (str) => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 };
+
+
+export const formatClientNameForDisplay = (inputString) => {
+  let formattedString = inputString; // Initialize with the original string
+
+  // Ensure the input is a valid string before attempting operations
+  if (typeof inputString === 'string' && inputString) { // Check for truthy and non-empty string
+    const words = inputString.split(' '); // Split the string by spaces
+
+    if (words.length > 2) {
+      // If there are more than two words, insert a newline after the second word
+      formattedString = words[0] + ' ' + words[1] + '\n' + words.slice(2).join(' ');
+    }
+  }
+
+  return formattedString;
+}

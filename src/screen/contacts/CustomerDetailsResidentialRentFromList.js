@@ -40,7 +40,7 @@ const CustomerDetailsResidentialRentFromList = props => {
     })
     setLocation(locX)
 
-  }, item)
+  }, [item])
 
   return (
     <ScrollView style={[styles.container]}>
@@ -165,8 +165,8 @@ const CustomerDetailsResidentialRentFromList = props => {
             style={{ justifyContent: "space-between", flexDirection: "row" }}
           >
             <Text>Details</Text>
-            <TouchableOpacity
-              onPress={() => toggleBottomNavigationView()}
+            {/* <TouchableOpacity
+              // onPress={() => toggleBottomNavigationView()}
               style={styles.fabIcon2}
             >
               <Feather
@@ -174,7 +174,7 @@ const CustomerDetailsResidentialRentFromList = props => {
                 // color={"#ffffff"}
                 size={20}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <View style={styles.horizontalLine}></View>
         </View>

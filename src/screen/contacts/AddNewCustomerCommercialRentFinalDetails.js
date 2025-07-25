@@ -182,7 +182,7 @@ const AddNewCustomerCommercialRentFinalDetails = props => {
             <Text style={[styles.subDetailsValue]}>
               {customerFinalDetails.customer_property_details.property_used_for}
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Prop Type</Text>
+            <Text style={[styles.subDetailsTitle]}>Looking For</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
@@ -192,7 +192,7 @@ const AddNewCustomerCommercialRentFinalDetails = props => {
               )}
             </Text>
             <Text style={[styles.subDetailsTitle]}>
-              {customerFinalDetails.customer_locality.property_for}
+              Max {customerFinalDetails.customer_locality.property_for}
             </Text>
           </View>
           <View style={styles.verticalLine}></View>
@@ -202,15 +202,15 @@ const AddNewCustomerCommercialRentFinalDetails = props => {
                 customerFinalDetails.customer_rent_details.expected_deposit
               )}
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Deposit</Text>
+            <Text style={[styles.subDetailsTitle]}>Max Deposit</Text>
           </View>
-          {/* <View style={styles.verticalLine}></View>
+          <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
               {customerFinalDetails.customer_property_details.property_size}sqft
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Buildup</Text>
-          </View> */}
+            <Text style={[styles.subDetailsTitle]}>Buildup Apx</Text>
+          </View>
         </View>
       </View>
 

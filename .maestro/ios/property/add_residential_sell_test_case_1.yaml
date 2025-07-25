@@ -1,0 +1,121 @@
+# Parameterized template for residential sell property test cases
+appId: com.example.app
+---
+- tapOn: "bottom_tab_properties_icon"
+- assertVisible: "Residential"
+- tapOn: "add_property_icon"
+- tapOn: "property_type_residential"
+- tapOn: "property_for_sell"
+- assertVisible: "Owner Details"
+- tapOn: "Name*"
+- inputText: "RSP1"
+- hideKeyboard
+- waitForAnimationToEnd  
+- tapOn:
+    text: "return"
+    optional: true 
+- tapOn: "Mobile*"
+- inputText: "9833022221"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- tapOn: "Address*"
+- inputText: "juhu mumbai"
+- hideKeyboard  
+- waitForAnimationToEnd
+- tapOn:
+    text: "return"
+    optional: true 
+- tapOn: "NEXT"
+
+- assertVisible: "Locality Details"
+- tapOn: "City*"
+- inputText: "Mumbai"
+- tapOn: "Add multiple locations within city"
+- inputText: "Juhu"
+- tapOn: "Juhu Beach, Maharashtra"
+- tapOn: "Flat No and Wing*"
+- inputText: "RSP1 F1 Wing 1"
+- tapOn: "Building Name / Society*"
+- inputText: "RSP1 Bulding 1"
+- tapOn: "Street / Landmark*"
+- inputText: "RSP1 Landmark 1"
+- tapOn: "NEXT"
+
+- assertVisible: "House Type*"
+- tapOn: "house_type_apartment"
+- assertVisible: "Size of BHK*"
+- tapOn: "bhk_type_2bhk"
+- tapOn: "washroom_number_2"
+- assertVisible: "Furnishing*"
+- tapOn: "furnishing_status_semi"
+- assertVisible: "Parkings*"
+- tapOn: "parking_number_2"
+- tapOn: "parking_type_car"
+- assertVisible: "Property Age*"
+- tapOn: "property_age_6-10"
+- scrollUntilVisible:
+    element:
+      text: "NEXT"
+    direction: down
+- tapOn: "Floor"
+- inputText: "20"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- tapOn: "Total Floor"
+- inputText: "25"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- assertVisible: "Lift*"
+- tapOn: "lift_available_yes"
+- tapOn: "Property Size"
+- inputText: "500"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- scrollUntilVisible:
+    element:
+      text: "NEXT"
+    direction: down
+- tapOn: "NEXT"
+
+- assertVisible: "Sell Details"
+- tapOn: "Expected Sell Price*"
+- inputText: "25000000"
+- tapOn: "Maintenance Charge"
+- inputText: "2500"
+- tapOn: "Available From *"
+- tapOn: " 30 "
+- tapOn: "OK"
+- tapOn: "negotiable_option_yes"
+- tapOn: "NEXT"
+
+- assertVisible: "Add Images"
+- assertVisible: "ADD PHOTOS"
+- tapOn: "ADD PHOTOS"
+- tapOn: "Photo, 31 March 2018, 12:44 AM"
+- waitForAnimationToEnd  
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd  
+- assertVisible: "Final Details"
+- assertVisible: ".*.*Bulding 1.*.*"
+- assertVisible: ".*.*Juhu.*.*"
+- assertVisible: "Details"
+- assertVisible: "20/25"
+- assertVisible: "6-10"
+- assertVisible: "Semi"
+- assertVisible: "Owner"
+
+- scrollUntilVisible:
+    element:
+      text: "ADD"
+    direction: down
+- tapOn: "ADD"
+
+- waitForAnimationToEnd
+- tapOn: "Residential"
+- waitForAnimationToEnd
+- assertVisible: ".*Sell Off In RSP1 Bulding 1.*"

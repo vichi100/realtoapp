@@ -1,0 +1,106 @@
+# Parameterized template for commercial rent property test cases
+appId: com.example.app
+---
+- tapOn: "bottom_tab_properties_icon"
+- assertVisible: "Commercial"
+- tapOn: "add_property_icon"
+- tapOn: "property_type_commercial"
+- tapOn: "property_for_rent"
+- assertVisible: "Owner Details"
+- tapOn: "Name*"
+- inputText: "${owner_name_input}"
+- hideKeyboard
+- waitForAnimationToEnd  
+- tapOn:
+    text: "return"
+    optional: true 
+- tapOn: "Mobile*"
+- inputText: "${owner_mobile}"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- tapOn: "Address*"
+- inputText: "${owner_address}"
+- hideKeyboard  
+- waitForAnimationToEnd
+- tapOn:
+    text: "return"
+    optional: true 
+- tapOn: "NEXT"
+
+- assertVisible: "Locality Details"
+- tapOn: "City*"
+- inputText: "${locaity_details_city}"
+- tapOn: "Add multiple locations within city"
+- inputText: "${locaity_details_location}"
+- tapOn: "${locaity_details_location_suggestion}"
+- tapOn: "Building Name / Society*"
+- inputText: "${locaity_details_building_name}"
+- tapOn: "Street / Landmark*"
+- inputText: "${locaity_details_landmark}"
+- tapOn: "NEXT"
+
+- assertVisible: "Property Details"
+- assertVisible: "Property Type*"
+- tapOn: "commercial_property_type_${property_details_property_type_lower}"
+- tapOn: "Building Type*"
+- tapOn: "commercial_property_building_type_${property_details_building_type_lower}"
+- tapOn: "Ideal For*(Multi Select)"
+- tapOn: "commercial_property_ideal_for_${property_details_ideal_for_lower}"
+- scrollUntilVisible:
+    element:
+      text: "NEXT"
+    direction: down
+- assertVisible: "Parkings"
+- tapOn: "commercial_parking_type_${property_details_parkings_lower}"
+- tapOn: "Power Backup*"
+- tapOn: "power_backup_${property_details_power_backup_lower}"
+- tapOn: "Property Size"
+- inputText: "${property_details_property_size}"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- scrollUntilVisible:
+    element:
+      text: "NEXT"
+    direction: down
+- tapOn: "NEXT"
+
+- assertVisible: "Rent Details"
+- tapOn: "Expected Rent"
+- inputText: "${rent_details_expected_rent}"
+- tapOn: "Expected Deposit"
+- inputText: "${rent_details_expected_deposit}"
+- tapOn: "Available From *"
+- tapOn: " ${rent_details_available_from} "
+- tapOn: "OK"
+- tapOn: "NEXT"
+
+- assertVisible: "Add Images"
+- assertVisible: "ADD PHOTOS"
+- tapOn: "ADD PHOTOS"
+- tapOn: "Photo, 31 March 2018, 12:44 AM"
+- waitForAnimationToEnd  
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd  
+- assertVisible: "Final Details"
+- assertVisible: ".*${final_details_top_header}.*"
+- assertVisible: ".*${final_details_sub_header}.*"
+- assertVisible: "Details"
+- assertVisible: "${final_details_building_type_value}"
+- assertVisible: "${final_details_age_of_building_type}"
+- assertVisible: "Ideal For"
+- assertVisible: "Owner"
+
+- scrollUntilVisible:
+    element:
+      text: "ADD"
+    direction: down
+- waitForAnimationToEnd
+- tapOn: "ADD"
+
+- waitForAnimationToEnd
+- tapOn: "Commercial"
+- waitForAnimationToEnd
+- assertVisible: ".*Rent In ${locaity_details_building_name}.*"

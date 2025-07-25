@@ -124,48 +124,66 @@ export const CUSTOMER_PROPERTY_FOR_OPTION = [
     { text: 'Buy' },
 ];
 
-export const  PROPERTY_PREFERRED_TENANTS_OPTION = [
+export const PROPERTY_PREFERRED_TENANTS_OPTION = [
     { text: 'Family' },
     { text: 'Bachelors' },
     { text: 'Any' },
-  ];
+];
 
-  export const  CUSTOMER_PREFERRED_TENANTS_OPTION = [
+export const CUSTOMER_PREFERRED_TENANTS_OPTION = [
     { text: 'Family' },
     { text: 'Bachelors' },
-  ];
+];
 
-  export const BHK_OPTION = [
+export const BHK_OPTION = [
     { text: '1RK' },
     { text: '1BHK' },
     { text: '2BHK' },
     { text: '3BHK' },
     { text: '4+BHK' },
-  ];
+];
 
-  export const HOUSE_TYPE_OPTION = [
+export const HOUSE_TYPE_OPTION = [
     { text: 'Apartment' },
     { text: 'Villa' },
     { text: 'Independent House' },
-  ];
+];
 
-  export const FURNISHING_STATUS_OPTION = [
+export const FURNISHING_STATUS_OPTION = [
     { text: 'Full' },
     { text: 'Semi' },
     { text: 'Empty' },
-  ];
+];
 
-  export const PARKING_OPTION = [
+export const PARKING_OPTION = [
     { text: 'Bike' },
     { text: 'Car' },
-  ]
+]
 
-  export const LIFT_AVAILBLE_OPTION = [
+export const LIFT_AVAILBLE_OPTION = [
     { text: 'Yes' },
     { text: 'No' },
-  ];
+];
 
-  export const PARKING_REQUIRED_OPTION = [
+export const PARKING_REQUIRED_OPTION = [
     { text: 'Must' },
     { text: 'Doesnt Matter' },
-  ]
+]
+
+
+export const REMINDER_FOR_OPTION = [
+    { text: 'Call' },
+    { text: 'Meeting' },
+    { text: 'Property Visit' },
+];
+
+
+export const AM_PM_OPTION = [
+    { text: 'AM' },
+    { text: 'PM' },
+]
+
+export const DEAL_WIN_OPTION = [
+    { text: 'Yes' },
+    { text: 'No' },
+];

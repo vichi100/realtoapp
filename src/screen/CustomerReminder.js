@@ -18,7 +18,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 import { SERVER_URL } from "../util/Constant";
 import { makeCall } from "../util/methods";
-import {formatIsoDateToCustomString} from "../util/methods"; 
+import {formatIsoDateToCustomString, formatClientNameForDisplay} from "../util/methods"; 
 
 const CustomerReminder = props => {
   const { navigation, item } = props;
@@ -95,8 +95,10 @@ const CustomerReminder = props => {
                 fontWeight: "600",
                 color: "rgba(0,0,0, 0.7)"
               }}
+              numberOfLines={2} // <<-- This will limit the text to one line
+              ellipsizeMode="tail" // <<-- This will add "..." at the end if it overflows
             >
-              {item.client_name}
+              {formatClientNameForDisplay(item.client_name)}
             </Text>
             <Text>+91 {item.client_mobile}</Text>
           </View>
@@ -153,8 +155,10 @@ const CustomerReminder = props => {
                 fontWeight: "600",
                 color: "rgba(0,0,0, 0.7)"
               }}
+              numberOfLines={2} // <<-- This will limit the text to one line
+              ellipsizeMode="tail" // <<-- This will add "..." at the end if it overflows
             >
-              {item.client_name}
+              {formatClientNameForDisplay(item.client_name)}
             </Text>
             <Text>+91 {item.client_mobile}</Text>
           </View>
@@ -211,8 +215,10 @@ const CustomerReminder = props => {
                 fontWeight: "600",
                 color: "rgba(0,0,0, 0.7)"
               }}
+              numberOfLines={2} // <<-- This will limit the text to one line
+              ellipsizeMode="tail" // <<-- This will add "..." at the end if it overflows
             >
-              {item.client_name}
+              {formatClientNameForDisplay(item.client_name)}
             </Text>
             <Text>+91 {item.client_mobile}</Text>
           </View>

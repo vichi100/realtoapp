@@ -1,0 +1,11 @@
+### For Commercial Rent 1 ###
+
+
+TapOn
+    select_property_type_tapon=Commercial
+    select_property_for=Rent
+
+    appId: com.realtoapp.ios
+---
+- tapOn: "bottom_tab_properties_icon"
+- assertVisible: "Residential"

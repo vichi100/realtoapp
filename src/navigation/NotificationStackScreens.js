@@ -79,7 +79,7 @@ const NotificationStackScreens = () => {
         component={CommercialSellPropDetails}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details"
+          title: "Property details", headerBackTitle: "Back"
         }}
       />
     </Stack.Navigator>

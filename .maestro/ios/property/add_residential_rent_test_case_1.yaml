@@ -1,0 +1,120 @@
+# Parameterized template for residential rent property test cases
+appId: com.realtoapp.ios
+---
+- tapOn: "bottom_tab_properties_icon"
+- assertVisible: "Residential"
+- tapOn: "add_property_icon"
+- tapOn: "property_type_residential"
+- tapOn: "property_for_rent"
+- assertVisible: "Owner Details"
+- tapOn: "Name*"
+- inputText: "RRP1"
+- hideKeyboard
+- waitForAnimationToEnd  
+- tapOn:
+    text: "return"
+    optional: true 
+- tapOn: "Mobile*"
+- inputText: "9833011111"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- tapOn: "Address*"
+- inputText: "juhu mumbai"
+- hideKeyboard  
+- waitForAnimationToEnd
+- tapOn:
+    text: "return"
+    optional: true 
+- tapOn: "NEXT"
+
+- assertVisible: "Locality Details"
+- tapOn: "City*"
+- inputText: "Mumbai"
+- tapOn: "Add multiple locations within city"
+- inputText: "Juhu"
+- tapOn: "Juhu Beach, Maharashtra"
+- tapOn: "Flat No and Wing*"
+- inputText: "RRP1 F1 Wing 1"
+- tapOn: "Building Name / Society*"
+- inputText: "RRP1 Bulding 1"
+- tapOn: "Street / Landmark*"
+- inputText: "RRP1 Landmark 1"
+- tapOn: "NEXT"
+
+- assertVisible: "House Type*"
+- tapOn: "house_type_Apartment"
+- assertVisible: "Size of BHK*"
+- tapOn: "bhk_type_2BHK"
+- tapOn: "washroom_number_2"
+- assertVisible: "Furnishing*"
+- tapOn: "furnishing_status_Semi"
+- assertVisible: "Parkings*"
+- tapOn: "parking_number_2"
+- tapOn: "parking_type_Car"
+- assertVisible: "Property Age*"
+- tapOn: "property_age_6-10"
+- scrollUntilVisible:
+    element:
+      text: "NEXT"
+    direction: down
+- tapOn: "Floor"
+- inputText: "20"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- tapOn: "Total Floor"
+- inputText: "25"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- assertVisible: "Lift*"
+- tapOn: "lift_available_Yes"
+- tapOn: "Property Size"
+- inputText: "500"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- scrollUntilVisible:
+    element:
+      text: "NEXT"
+    direction: down
+- tapOn: "NEXT"
+
+- assertVisible: "Rent Details"
+- tapOn: "Expected Rent"
+- inputText: "30000"
+- tapOn: "Expected Deposit"
+- inputText: "150000"
+- tapOn: "Available From *"
+- tapOn: " 30 "
+- tapOn: "OK"
+- tapOn: "NEXT"
+
+- assertVisible: "Add Images"
+- assertVisible: "ADD PHOTOS"
+- tapOn: "ADD PHOTOS"
+- tapOn: "Photo, 31 March 2018, 12:44 AM"
+- waitForAnimationToEnd  
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd  
+- assertVisible: "Final Details"
+- assertVisible: ".*.*Bulding 1.*.*"
+- assertVisible: ".*.*Juhu.*.*"
+- assertVisible: "Details"
+- assertVisible: "20/25"
+- assertVisible: "6-10"
+- assertVisible: "Semi"
+- assertVisible: "Owner"
+
+- scrollUntilVisible:
+    element:
+      text: "ADD"
+    direction: down
+- tapOn: "ADD"
+
+- waitForAnimationToEnd
+- tapOn: "Residential"
+- waitForAnimationToEnd
+- assertVisible: ".*Rent In RRP1 Bulding 1.*"

@@ -1,0 +1,10 @@
+# test_flow.yaml
+appId: com.realtoapp.ios
+---
+# Load JS from same directory
+- runScript: "./test_utils.js"
+
+# Use JS function
+- inputText:
+    id: "emailField"
+    text: ${generateTestEmail()}

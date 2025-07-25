@@ -86,7 +86,7 @@ const ContactsStackScreens = () => {
         component={PropDetailsFromListingForSell}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details"
+          title: "Property details", headerBackTitle: "Back"
         }}
       />
 
@@ -95,7 +95,7 @@ const ContactsStackScreens = () => {
         component={CommercialRentPropDetails}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details"
+          title: "Property details", headerBackTitle: "Back"
         }}
       />
       <Stack.Screen
@@ -103,42 +103,43 @@ const ContactsStackScreens = () => {
         component={CommercialSellPropDetails}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details"
+          title: "Property details", headerBackTitle: "Back"
         }}
       />
 
       <Stack.Screen
         name="CustomerDetailsResidentialRentFromList"
         component={CustomerDetailsResidentialRentFromList}
-        options={{ title: "Customer Details" }}
+        options={{ title: "Customer Details" , headerBackTitle: "Back"}}
       />
       <Stack.Screen
         name="CustomerDetailsResidentialBuyFromList"
         component={CustomerDetailsResidentialBuyFromList}
-        options={{ title: "Customer Details" }}
+        options={{ title: "Customer Details" , headerBackTitle: "Back"}}
       />
 
       <Stack.Screen
         name="CustomerDetailsCommercialRentFromList"
         component={CustomerDetailsCommercialRentFromList}
-        options={{ title: "Customer Details" }}
+        options={{ title: "Customer Details" , headerBackTitle: "Back"}}
       />
       <Stack.Screen
         name="CustomerDetailsCommercialBuyFromList"
         component={CustomerDetailsCommercialBuyFromList}
-        options={{ title: "Customer Details" }}
+        options={{ title: "Customer Details" , headerBackTitle: "Back"}}
       />
 
       <Stack.Screen
         name="MatchedProperties"
         component={MatchedProperties}
-        options={{ title: "Matched Properties" }}
+        options={{ title: "Matched Properties" , headerBackTitle: "Back"}}
       />
       <Stack.Screen
         name="MatchedCustomers"
         component={MatchedCustomers}
         options={{
           title: "Matched Customers",
+          headerBackTitle: "Back",
           tabBarStyle: {
             display: "none",
           },
@@ -150,7 +151,7 @@ const ContactsStackScreens = () => {
       <Stack.Screen
         name="CustomerMeetingDetails"
         component={CustomerMeetingDetails}
-        options={{ title: "Meeting Details" }}
+        options={{ title: "Meeting Details" , headerBackTitle: "Back"}}
       />
 
       <Stack.Screen
@@ -188,13 +189,13 @@ const ContactsStackScreens = () => {
       <Stack.Screen
         name="CustomerListForMeeting"
         component={CustomerListForMeeting}
-        options={{ title: "Client List" }}
+        options={{ title: "Customer List" , headerBackTitle: "Back"}}
       />
 
       <Stack.Screen
         name="EmployeeListOfListing"
         component={EmployeeList}
-        options={{ title: "Employee" }}
+        options={{ title: "Employee" , headerBackTitle: "Back"}}
       />
 
 

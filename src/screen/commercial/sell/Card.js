@@ -39,6 +39,8 @@ import {
 import { SERVER_URL } from "../../../util/Constant";
 import { EMPLOYEE_ROLE } from "../../../util/AppConstant";
 import { makeCall } from "../../../util/methods";
+import * as  AppConstant from "../../../util/AppConstant";
+import CustomButtonGroup from "../../../components/CustomButtonGroup";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -69,58 +71,60 @@ const Card = props => {
   // const [text, onChangeText] = React.useState("I have customer for this property. Please call me.");
 
   const [Sliding_Drawer_Width, setSlidingDrawerWidth] = useState(250);
-    const [Sliding_Drawer_Width_WO_Delete, setSlidingDrawerWidthWODelete] = useState(195);
-  
-    const canAddDelete = props.userDetails &&
-      ((props.userDetails.works_for === props.userDetails.id) ||
-        (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)));
-  
-    const slidingDrawerWidth = canAddDelete
-      ? Sliding_Drawer_Width
-      : Sliding_Drawer_Width_WO_Delete;
-  
-    useEffect(() => {
-      // Dynamically update the sliding drawer width based on the condition
-      if (item && item.agent_id === props.userDetails.works_for) {
-        setSlidingDrawerWidth(250); // Increase width
-      } else {
-        setSlidingDrawerWidth(200); // Default width if dont want to see delete option
-      }
-    }, [item, props.userDetails.works_for]);
-  
-    let Animation = new Animated.Value(0);
-  
-    let Sliding_Drawer_Toggle = true;
-  
-    const ShowSlidingDrawer = () => {
-      // // console.log(Sliding_Drawer_Toggle);
-      if (Sliding_Drawer_Toggle === true) {
-        Animated.timing(Animation, {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: true
-        }).start(() => {
-          Sliding_Drawer_Toggle = false;
-        });
-      } else {
-        Animated.timing(Animation, {
-          toValue: 0,
-          duration: 500,
-          useNativeDriver: true
-        }).start(() => {
-          Sliding_Drawer_Toggle = true;
-        });
-      }
-    };
-  
-    const Animation_Interpolate = Animation.interpolate({
-      inputRange: [0, 1],
-      // outputRange: [370, 135]
-      // outputRange: [-(Sliding_Drawer_Width - width * 1.55), 135]
-      // outputRange: ["330%", "100%"]
-      // outputRange: ["250%", "100%"]
-      outputRange: [slidingDrawerWidth - 33, -15]
-    });
+  const [Sliding_Drawer_Width_WO_Delete, setSlidingDrawerWidthWODelete] = useState(195);
+
+  const [dealWin, setDealWin] = useState("Yes");
+
+  const canAddDelete = props.userDetails &&
+    ((props.userDetails.works_for === props.userDetails.id) ||
+      (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)));
+
+  const slidingDrawerWidth = canAddDelete
+    ? Sliding_Drawer_Width
+    : Sliding_Drawer_Width_WO_Delete;
+
+  useEffect(() => {
+    // Dynamically update the sliding drawer width based on the condition
+    if (item && item.agent_id === props.userDetails.works_for) {
+      setSlidingDrawerWidth(250); // Increase width
+    } else {
+      setSlidingDrawerWidth(200); // Default width if dont want to see delete option
+    }
+  }, [item, props.userDetails.works_for]);
+
+  let Animation = new Animated.Value(0);
+
+  let Sliding_Drawer_Toggle = true;
+
+  const ShowSlidingDrawer = () => {
+    // // console.log(Sliding_Drawer_Toggle);
+    if (Sliding_Drawer_Toggle === true) {
+      Animated.timing(Animation, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true
+      }).start(() => {
+        Sliding_Drawer_Toggle = false;
+      });
+    } else {
+      Animated.timing(Animation, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true
+      }).start(() => {
+        Sliding_Drawer_Toggle = true;
+      });
+    }
+  };
+
+  const Animation_Interpolate = Animation.interpolate({
+    inputRange: [0, 1],
+    // outputRange: [370, 135]
+    // outputRange: [-(Sliding_Drawer_Width - width * 1.55), 135]
+    // outputRange: ["330%", "100%"]
+    // outputRange: ["250%", "100%"]
+    outputRange: [slidingDrawerWidth - 33, -15]
+  });
 
 
   const gotoEmployeeList = itemForAddEmplyee => {
@@ -228,7 +232,7 @@ const Card = props => {
     }
   };
 
-  
+
 
 
   const isAssetChecked = (item) => {
@@ -467,7 +471,10 @@ const Card = props => {
             marginTop: -5,
             marginBottom: 5,
           }}>
-            {displayMatchCount && <TouchableOpacity onPress={() => getMatched(item)}>
+            {displayMatchCount && <TouchableOpacity onPress={() => getMatched(item)}
+              accessibilityLabel={`match_${item.property_id}`}
+              testID={`match_id_${item.property_id}`}
+            >
               <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
                 <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
               </View>
@@ -520,30 +527,43 @@ const Card = props => {
                 flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: 40, paddingRight: 20,
                 paddingBottom: 20, paddingTop: 5, minHeight: 90
               }}>
-                <Text style={[styles.title]}>
+                <Text style={[styles.title]}
+                  accessibilityLabel={`header_${item.property_id}`}
+                  testID={`header_id_${item.property_id}`}
+                >
                   Sell Off in {item.property_address.building_name},{" "}
                   {item.property_address.landmark_or_street}
                 </Text>
-                <Text style={{ paddingRight: 10 }}>
+                <Text style={{ paddingRight: 10 }}
+                  accessibilityLabel={`address_${item.property_id}`}
+                  testID={`address_id_${item.property_id}`}
+                >
                   {item.property_address.formatted_address}
                 </Text>
-                <Text style={{ paddingRight: 10, color: "#0f1a20", marginTop: 5 }}>
-                Reference id: {item.property_id?.slice(-6)}
+                <Text style={{ paddingRight: 10, color: "#0f1a20", marginTop: 5 }}
+                  accessibilityLabel={`ref_${item.property_id}`}
+                  testID={`ref_id_${item.property_id}`}
+                >
+                  Reference id: {item.property_id?.slice(-6)}
                 </Text>
               </View>
-              {props.userDetails.works_for === props.userDetails.id && item.agent_id === props.userDetails.id && <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginBottom: 10, marginTop: 0, marginLeft: 20 }}>
-                  {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
-                  <Feather name="user-plus" size={20} color="black" />
-                  {/* <FontAwesome5 name="user-minus" size={20} color="rgb(70, 69, 69)" />  */}
-                  {/* <FontAwesome5 name="user-plus" size={20} color="rgb(111, 104, 104)" /> */}
-                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>
-                    {Array.isArray(item.assigned_to_employee_name) && item.assigned_to_employee_name.length > 0
-                      ? item.assigned_to_employee_name.join(", ")
-                      : "No employees assigned"}</Text>
-                  {/* <SimpleLineIcons name="user-unfollow" size={20} color="black" /> */}
-                </View>
-              </TouchableOpacity>}
+              {props.userDetails.works_for === props.userDetails.id && item.agent_id === props.userDetails.id &&
+                <TouchableOpacity onPress={() => gotoEmployeeList(item)}
+                  accessibilityLabel={`employee_${item.property_id}`}
+                  testID={`employee_id_${item.property_id}`}
+                >
+                  <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginBottom: 10, marginTop: 0, marginLeft: 20 }}>
+                    {/* <MaterialIcons name="alarm" size={20} color="black" /> */}
+                    <Feather name="user-plus" size={20} color="black" />
+                    {/* <FontAwesome5 name="user-minus" size={20} color="rgb(70, 69, 69)" />  */}
+                    {/* <FontAwesome5 name="user-plus" size={20} color="rgb(111, 104, 104)" /> */}
+                    <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>
+                      {Array.isArray(item.assigned_to_employee_name) && item.assigned_to_employee_name.length > 0
+                        ? item.assigned_to_employee_name.join(", ")
+                        : "No Employees Assigned"}</Text>
+                    {/* <SimpleLineIcons name="user-unfollow" size={20} color="black" /> */}
+                  </View>
+                </TouchableOpacity>}
 
             </View>
 
@@ -568,6 +588,8 @@ const Card = props => {
             >
               <CheckBox
                 onPress={() => onClickCheckBox(item)}
+                accessibilityLabel={`checkbox_${item.property_id}`}
+                testID={`checkbox_id_${item.property_id}`}
                 center
                 // title="Select"
                 checked={
@@ -596,6 +618,8 @@ const Card = props => {
             >
               <CheckBox
                 onPress={() => onClickCheckBoxForEmployee(item)}
+                accessibilityLabel={`emp_checkbox_${item.property_id}`}
+                testID={`emp_checkbox_id_${item.property_id}`}
                 center
                 // title="Select"
                 checked={isAssetChecked(item)}
@@ -634,14 +658,22 @@ const Card = props => {
           <Animated.View
             style={[
               styles.drawer,
-              { width: slidingDrawerWidth, transform: [{ translateX: Animation_Interpolate }] },
+              {
+                width: slidingDrawerWidth,
+                transform: [{ translateX: Animation_Interpolate }],
+                // overflow: "hidden", // Prevent content overflow
+              },
             ]}
+            accessibilityLabel={`animated_${item.property_id}`}
+            testID={`animated_id_${item.property_id}`}
           >
             <View style={[styles.Main_Sliding_Drawer_Container, { width: slidingDrawerWidth, paddingHorizontal: 0 }]}>
               {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
               <TouchableOpacity
                 onPress={ShowSlidingDrawer}
                 style={{ paddingTop: 20 }}
+                accessibilityLabel={`chevron_left_icon_${item.property_id}`}
+                testID={`chevron_left_icon_id_${item.property_id}`}
               >
                 <MaterialCommunityIcons
                   name="chevron-left"
@@ -650,40 +682,49 @@ const Card = props => {
                 />
               </TouchableOpacity>
               <View style={styles.verticalLine} />
-              {(item.agent_id === props.userDetails.works_for && canAddDelete) &&  <TouchableOpacity
-                // disabled={Sliding_Drawer_Toggle}
-                onPress={() => {
-                  setModalVisible(true);
-                }}
-                style={{ padding: 15, backgroundColor: "#e57373" }}
-              >
-                <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
-              </TouchableOpacity>
-              }
+              {(item.agent_id === props.userDetails.works_for && canAddDelete) &&
+                <TouchableOpacity
+                  // disabled={Sliding_Drawer_Toggle}
+                  onPress={() => {
+                    setModalVisible(true);
+                  }}
+                  style={{ padding: 15, backgroundColor: "#e57373" }}
+                  accessibilityLabel={`close_sharp_icon_${item.property_id}`}
+                  testID={`close_sharp_icon_id_${item.property_id}`}
+                >
+                  <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
+                </TouchableOpacity>}
+
               <TouchableOpacity
-                onPress={() => onShare()}
+                onPress={() => onShare(item)}
                 style={{ padding: 15, backgroundColor: "#0091ea" }}
+                accessibilityLabel={`share_social_icon_${item.property_id}`}
+                testID={`share_social_icon_id_${item.property_id}`}
               >
                 <Ionicons name="share-social" color={"#ffffff"} size={30} />
+                {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Share</Text> */}
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() =>
-                  onClickMeeting(item)
-                }
+                onPress={() => onClickMeeting(item)}
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
+                accessibilityLabel={`alarm_outline_icon_${item.property_id}`}
+                testID={`alarm_outline_icon_id_${item.property_id}`}
               >
                 <Ionicons
                   name="alarm-outline"
                   color={"#ffffff"}
                   size={30}
                 />
+                {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Meeting</Text> */}
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => makeCall(item.owner_details.mobile1)}
                 style={{ padding: 15, backgroundColor: "#00bfa5" }}
+                accessibilityLabel={`call_icon_${item.property_id}`}
+                testID={`call_icon_id_${item.property_id}`}
               >
                 <Ionicons name="call" color={"#ffffff"} size={30} />
-                {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text> */}
+                {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Owner</Text> */}
               </TouchableOpacity>
             </View>
           </Animated.View>
@@ -741,17 +782,27 @@ const Card = props => {
             <Text style={styles.modalText}>
               Did you win deal for this property?
             </Text>
-            <ButtonGroup
-              selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-              onPress={updateIndex}
-              selectedIndex={index}
-              buttons={["Yes", "No"]}
-              // containerStyle={{ height: 30 }}
-              textStyle={{ textAlign: "center" }}
-              selectedTextStyle={{ color: "#fff" }}
-              containerStyle={{ borderRadius: 10, width: 300 }}
-              containerBorderRadius={10}
+            <CustomButtonGroup
+              buttons={AppConstant.DEAL_WIN_OPTION}
+              accessibilityLabelId={`delete_option_${item.property_id}`}
+              testID={`delete_option_id_${item.property_id}`}
+              selectedIndices={[AppConstant.DEAL_WIN_OPTION.findIndex(option => option.text === dealWin)]}
+              isMultiSelect={false}
+              buttonStyle={{ backgroundColor: '#fff' }}
+              buttonBorderColor='#E5E4E2'
+              selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+              buttonTextStyle={{ color: '#000' }}
+              selectedButtonTextStyle={{ color: '#000' }}
+              width={100}
+              onButtonPress={(index, button) => {
+                console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                setDealWin(button.text);
+                // Query update is handled by useEffect after state change
+              }}
+
             />
+
+            <Text style={{ marginBottom: 50 }}>You are going to delete?</Text>
 
             <View
               style={{

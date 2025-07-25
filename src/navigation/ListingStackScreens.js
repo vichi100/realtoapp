@@ -71,7 +71,7 @@ const ListingStackScreens = ({ navigation, route }) => {
       <Stack.Screen 
         name="Meeting"
         component={Meeting}
-        options={{ title: "Reminders", tabBarVisible: false }}
+        options={{ title: "Reminders", tabBarVisible: false , headerBackTitle: "Back"}}
         navigationOptions={{ tabBarVisible: false }}
       />
 
@@ -80,7 +80,7 @@ const ListingStackScreens = ({ navigation, route }) => {
         component={PropDetailsFromListing}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details"
+          title: "Property details", headerBackTitle: "Back"
         }}
       />
 
@@ -90,6 +90,7 @@ const ListingStackScreens = ({ navigation, route }) => {
         navigationOptions={{ tabBarVisible: true }}
         options={{
           title: "Matched Customers",
+           headerBackTitle: "Back"
           // tabBarStyle: {
           //   display: "none",
           // },
@@ -100,7 +101,7 @@ const ListingStackScreens = ({ navigation, route }) => {
       <Stack.Screen
         name="MatchedProperties"
         component={MatchedProperties}
-        options={{ title: "Matched Properties" }}
+        options={{ title: "Matched Properties", headerBackTitle: "Back" }}
       />
 
       <Stack.Screen
@@ -108,7 +109,7 @@ const ListingStackScreens = ({ navigation, route }) => {
         component={PropDetailsFromListingForSell}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details"
+          title: "Property details", headerBackTitle: "Back"
         }}
       />
 
@@ -117,7 +118,7 @@ const ListingStackScreens = ({ navigation, route }) => {
         component={CommercialRentPropDetails}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details"
+          title: "Property details", headerBackTitle: "Back"
         }}
       />
       <Stack.Screen
@@ -125,7 +126,7 @@ const ListingStackScreens = ({ navigation, route }) => {
         component={CommercialSellPropDetails}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details"
+          title: "Property details", headerBackTitle: "Back"
         }}
       />
 
@@ -164,43 +165,43 @@ const ListingStackScreens = ({ navigation, route }) => {
       <Stack.Screen
         name="CustomerMeetingDetails"
         component={CustomerMeetingDetails}
-        options={{ title: "Meeting Details" }}
+        options={{ title: "Meeting Details" , headerBackTitle: "Back"}}
       />
       <Stack.Screen
         name="CustomerListForMeeting"
         component={CustomerListForMeeting}
-        options={{ title: "Client List" }}
+        options={{ title: "Customer List" , headerBackTitle: "Back"}}
       />
       <Stack.Screen
         name="CustomerMeeting"
         component={CustomerMeeting}
-        options={{ title: "Reminders", tabBarVisible: false }}
+        options={{ title: "Reminders", tabBarVisible: false , headerBackTitle: "Back"}}
         navigationOptions={{ tabBarVisible: false }}
       />
       <Stack.Screen
         name="CustomerDetailsResidentialRentFromList"
         component={CustomerDetailsResidentialRentFromList}
-        options={{ title: "Customer Details" }}
+        options={{ title: "Customer Details" , headerBackTitle: "Back"}}
       />
       <Stack.Screen
         name="CustomerDetailsResidentialBuyFromList"
         component={CustomerDetailsResidentialBuyFromList}
-        options={{ title: "Customer Details" }}
+        options={{ title: "Customer Details" , headerBackTitle: "Back"}}
       />
       <Stack.Screen
         name="CustomerDetailsCommercialRentFromList"
         component={CustomerDetailsCommercialRentFromList}
-        options={{ title: "Customer Details" }}
+        options={{ title: "Customer Details" , headerBackTitle: "Back"}}
       />
       <Stack.Screen
         name="CustomerDetailsCommercialBuyFromList"
         component={CustomerDetailsCommercialBuyFromList}
-        options={{ title: "Customer Details" }}
+        options={{ title: "Customer Details" , headerBackTitle: "Back"}}
       />
       <Stack.Screen
         name="PropertyListForMeeting"
         component={PropertyListForMeeting}
-        options={{ title: "Property List", tabBarVisible: false }}
+        options={{ title: "Property List", tabBarVisible: false , headerBackTitle: "Back"}}
         navigationOptions={{ tabBarVisible: false }}
       />
 

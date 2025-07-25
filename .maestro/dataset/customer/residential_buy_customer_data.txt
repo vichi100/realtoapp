@@ -1,0 +1,47 @@
+### For Residential Buy Customer 1 ###
+
+Input
+    customer_deatils_name=Customer Buy Residential 1
+    customer_deatils_mobile=9933066666
+    customer_deatils_address=juhu mumbai
+
+    locaity_details_city=Mumbai
+    locaity_details_location=Juhu
+
+TapOn
+    locaity_details_select_property_type=Residential
+    locaity_details_select_property_for=Buy
+TapOn
+    property_details_house_type=Apartment
+    property_details_size_of_bhk=2BHK
+    property_details_how_many_washroom=2
+    property_details_furnishing=Semi
+    property_details_parkings=Car
+    property_details_lift_mandatory=Yes
+
+Input
+    buy_details_expected_buy_price=30000000
+TapOn
+    buy_details_required_from="30"
+    buy_details_negotiable=Yes
+
+
+Assertive
+    final_details_name_header=.*Customer Buy Residential 1.*
+    final_details_mobile_header=.*9933066666.*
+    final_details_address_header=.*Juhu.*
+    final_details_looking_for_tag=Looking For
+    final_details_looking_for_tag_value=2BHK
+    final_details_max_buy_tag=Buy
+    final_details_max_but_tag_value=3 Cr
+    final_details_furnishing_tag=Furnishing
+    final_details_furnishing_tag_value=Semi
+    final_details_city_tag=City
+    final_details_city_tag_value=Mumbai
+    final_details_locations_tag=Locations
+    final_details_locations_tag_value=.*Juhu.*
+    final_details_parking_tag=Parking
+    final_details_parking_tag_value=Car
+    final_details_possession_tag=Possession
+    final_details_lift_tag=Lift
+    final_details_lift_tag_value=Yes

@@ -1,0 +1,47 @@
+appId: com.realtoapp.ios
+---
+- tapOn: "bottom_tab_properties_icon"
+- assertVisible: "Residential"
+- tapOn: "Residential"
+- assertVisible: "Search By Name, Address, Id, Mobile"
+- assertVisible: "header_17523305258015682692248"
+- assertVisible: ".*Rent In .*"
+- assertVisible: "address_17523305258015682692248"
+- assertVisible: "ref_17523305258015682692248"
+- assertVisible: ".*Reference id.*"
+
+
+- tapOn: "chevron_left_icon_17523305258015682692248"
+- tapOn: "alarm_outline_icon_17523305258015682692248"
+- assertVisible: "Reminders"
+- assertVisible: "Create a call/visiting schedule to show property to customer and get reminder on time"
+- assertVisible: "Reminder For ?"
+- tapOn: "reminder_type_meeting"
+- tapOn: " Add Customer For Meeting."
+
+- assertVisible: "Customer List"
+- tapOn: "checkbox_17511833038704386455857"
+- tapOn: "Reminders, back"
+
+- assertVisible: "Customer Name*"
+- assertVisible: "Customer Mobile*"
+- assertVisible: "Date*"
+- tapOn: " 30 "
+- tapOn: "OK"
+- tapOn: "Time*"
+- tapOn: "Hour"
+- inputText: "11"
+- tapOn: "Done"
+- tapOn: "Minute"
+- inputText: "30"
+- tapOn: "Done"
+- tapOn: "AM"
+- tapOn: "Apply"
+- assertVisible: "Date*"
+- assertVisible: "Time*"
+- tapOn: "Save"
+
+- assertVisible: "Customer 1\nResidential Rent"
+- assertVisible: "Call"
+- tapOn: "Customer 1\nResidential Rent"
+

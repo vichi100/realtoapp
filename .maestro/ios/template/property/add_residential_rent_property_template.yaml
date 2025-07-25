@@ -1,0 +1,120 @@
+# Parameterized template for residential rent property test cases
+appId: com.realtoapp.ios
+---
+- tapOn: "bottom_tab_properties_icon"
+- assertVisible: "Residential"
+- tapOn: "add_property_icon"
+- tapOn: "property_type_residential"
+- tapOn: "property_for_rent"
+- assertVisible: "Owner Details"
+- tapOn: "Name*"
+- inputText: "${owner_name_input}"
+- hideKeyboard
+- waitForAnimationToEnd  
+- tapOn:
+    text: "return"
+    optional: true 
+- tapOn: "Mobile*"
+- inputText: "${owner_mobile}"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- tapOn: "Address*"
+- inputText: "${owner_address}"
+- hideKeyboard  
+- waitForAnimationToEnd
+- tapOn:
+    text: "return"
+    optional: true 
+- tapOn: "NEXT"
+
+- assertVisible: "Locality Details"
+- tapOn: "City*"
+- inputText: "${locaity_details_city}"
+- tapOn: "Add multiple locations within city"
+- inputText: "${locaity_details_location}"
+- tapOn: "${locaity_details_location_suggestion}"
+- tapOn: "Flat No and Wing*"
+- inputText: "${locaity_details_flat_num}"
+- tapOn: "Building Name / Society*"
+- inputText: "${locaity_details_building_name}"
+- tapOn: "Street / Landmark*"
+- inputText: "${locaity_details_landmark}"
+- tapOn: "NEXT"
+
+- assertVisible: "House Type*"
+- tapOn: "house_type_${property_details_house_type_lower}"
+- assertVisible: "Size of BHK*"
+- tapOn: "bhk_type_${property_details_size_of_bhk_lower}"
+- tapOn: "washroom_number_${property_details_how_many_washroom}"
+- assertVisible: "Furnishing*"
+- tapOn: "furnishing_status_${property_details_furnishing_lower}"
+- assertVisible: "Parkings*"
+- tapOn: "parking_number_${property_details_parkings}"
+- tapOn: "parking_type_${property_details_parking_type_lower}"
+- assertVisible: "Property Age*"
+- tapOn: "property_age_${property_details_property_age}"
+- scrollUntilVisible:
+    element:
+      text: "NEXT"
+    direction: down
+- tapOn: "Floor"
+- inputText: "${property_details_floor}"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- tapOn: "Total Floor"
+- inputText: "${property_details_total_floor}"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- assertVisible: "Lift*"
+- tapOn: "lift_available_${property_details_lift_lower}"
+- tapOn: "Property Size"
+- inputText: "${property_details_property_size}"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- scrollUntilVisible:
+    element:
+      text: "NEXT"
+    direction: down
+- tapOn: "NEXT"
+
+- assertVisible: "Rent Details"
+- tapOn: "Expected Rent"
+- inputText: "${rent_details_expected_rent}"
+- tapOn: "Expected Deposit"
+- inputText: "${rent_details_expected_deposit}"
+- tapOn: "Available From *"
+- tapOn: " ${rent_details_available_from} "
+- tapOn: "OK"
+- tapOn: "NEXT"
+
+- assertVisible: "Add Images"
+- assertVisible: "ADD PHOTOS"
+- tapOn: "ADD PHOTOS"
+- tapOn: "Photo, 31 March 2018, 12:44 AM"
+- waitForAnimationToEnd  
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd  
+- assertVisible: "Final Details"
+- assertVisible: ".*${final_details_top_header}.*"
+- assertVisible: ".*${final_details_sub_header}.*"
+- assertVisible: "Details"
+- assertVisible: "${final_details_floor_type_value}"
+- assertVisible: "${final_details_age_of_building_type}"
+- assertVisible: "${final_details_furnishing_type_value}"
+- assertVisible: "Owner"
+
+- scrollUntilVisible:
+    element:
+      text: "ADD"
+    direction: down
+- tapOn: "ADD"
+
+- waitForAnimationToEnd
+- tapOn: "Residential"
+- waitForAnimationToEnd
+- assertVisible: ".*${final_details_property_title}.*"

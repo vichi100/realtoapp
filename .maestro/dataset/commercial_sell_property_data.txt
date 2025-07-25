@@ -1,0 +1,49 @@
+### For Commercial Sell Property 1 ###
+
+
+TapOn
+    select_property_type_tapon=Commercial
+    select_property_for=Sell
+Input
+    owner_name_input=CSP1
+    owner_mobile=9833044441
+    owner_address= juhu mumbai
+
+    locaity_details_city=Mumbai
+    locaity_details_location=Juhu
+    locaity_details_flat_num=CSP1 F1 Wing 1
+    locaity_details_building_name=CSP1 Bulding 1
+    locaity_details_landmark=CSP1 Landmark 1
+TapOn
+    property_details_property_type=Shop
+    property_details_building_type=Mall
+    property_details_ideal_for=Shop
+    property_details_parkings=Public
+    property_details_property_age=6-10
+    property_details_power_backup=Yes
+Input
+    property_details_property_size=500
+
+    sell_details_expected_sell_price=30000000
+    sell_details_maintenance=1500
+TapOn
+    sell_details_available_from="30"
+    sell_details_negotiable=Yes
+Assertive
+    final_details_top_header=.*Bulding 1.*
+    final_details_sub_header=.*Juhu.*
+    final_details_property_type=Prop Type
+    final_details_property_type_value=Shop
+    final_details_sell_type=Sell
+    final_details_sell_type_value=3 Cr
+    final_details_buildup_type=Buildup
+    final_details_buildup_type_value=500sqft
+    final_details_ideal_for_type=Ideal For
+    final_details_ideal_for_type_value=Shop
+    final_details_building_type_value=Mall
+    final_details_parking_type_vlue=Public
+    final_details_age_of_building_type=Age of Building
+    final_details_age_of_building_type=6-10
+    final_details_owner_name=CSP1
+    final_details_owner_mobile=9833033331
+    final_details_owner_address=juhu mumbai

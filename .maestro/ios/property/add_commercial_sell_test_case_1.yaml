@@ -1,0 +1,109 @@
+# Parameterized template for commercial sell property test cases
+appId: com.example.app
+---
+- tapOn: "bottom_tab_properties_icon"
+- waitForAnimationToEnd 
+- assertVisible: "Commercial"
+- tapOn: "add_property_icon"
+- tapOn: "property_type_commercial"
+- tapOn: "property_for_sell"
+- assertVisible: "Owner Details"
+- tapOn: "Name*"
+- inputText: "CSP1"
+- hideKeyboard
+- waitForAnimationToEnd  
+- tapOn:
+    text: "return"
+    optional: true 
+- tapOn: "Mobile*"
+- inputText: "9833044441"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- tapOn: "Address*"
+- inputText: "juhu mumbai"
+- hideKeyboard  
+- waitForAnimationToEnd
+- tapOn:
+    text: "return"
+    optional: true 
+- tapOn: "NEXT"
+
+- assertVisible: "Locality Details"
+- tapOn: "City*"
+- inputText: "Mumbai"
+- tapOn: "Add multiple locations within city"
+- inputText: "Juhu"
+- tapOn: "Juhu Beach, Maharashtra"
+- tapOn: "Building Name / Society*"
+- inputText: "CSP1 Bulding 1"
+- tapOn: "Street / Landmark*"
+- inputText: "CSP1 Landmark 1"
+- tapOn: "NEXT"
+
+- assertVisible: "Property Details"
+- assertVisible: "Property Type*"
+- tapOn: "commercial_property_type_shop"
+- tapOn: "Building Type*"
+- tapOn: "commercial_property_building_type_mall"
+- tapOn: "Ideal For*(Multi Select)"
+- tapOn: "commercial_property_ideal_for_shop"
+- scrollUntilVisible:
+    element:
+      text: "NEXT"
+    direction: down
+- assertVisible: "Parkings"
+- tapOn: "commercial_parking_type_public"
+- assertVisible: "Power Backup*"
+- tapOn: "power_backup_yes"
+- tapOn: "Property Size"
+- inputText: "500"
+- hideKeyboard  
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- scrollUntilVisible:
+    element:
+      text: "NEXT"
+    direction: down
+- tapOn: "NEXT"
+
+- assertVisible: "Sell Details"
+- tapOn: "Expected Sell Price*"
+- inputText: "30000000"
+- tapOn: "Maintenance Charge"
+- inputText: "1500"
+- tapOn: "Available From *"
+- tapOn: " 30 "
+- tapOn: "OK"
+- assertVisible: "Negotiable*"
+- tapOn: "negotiable_option_yes"
+- tapOn: "NEXT"
+
+- assertVisible: "Add Images"
+- assertVisible: "ADD PHOTOS"
+- tapOn: "ADD PHOTOS"
+- tapOn: "Photo, 31 March 2018, 12:44 AM"
+- waitForAnimationToEnd  
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd  
+- assertVisible: "Final Details"
+- assertVisible: ".*.*Bulding 1.*.*"
+- assertVisible: ".*.*Juhu.*.*"
+- assertVisible: "Details"
+- assertVisible: "Mall"
+- assertVisible: "6-10"
+- assertVisible: "Ideal For"
+- assertVisible: "Owner"
+
+- scrollUntilVisible:
+    element:
+      text: "ADD"
+    direction: down
+- waitForAnimationToEnd
+- tapOn: "ADD"
+
+- waitForAnimationToEnd
+- tapOn: "Commercial"
+- waitForAnimationToEnd
+- assertVisible: ".*Sell Off In CSP1 Bulding 1.*"

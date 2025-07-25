@@ -24,6 +24,7 @@ import CardCommercialSell from "../commercial/sell/Card";
 import { SERVER_URL } from "../../util/Constant";
 import { connect } from "react-redux";
 import AppConstant from "../../util/AppConstant";
+import {formatIsoDateToCustomString} from "../../util/methods";
 import { useNavigation } from '@react-navigation/native';
 import { BackHandler } from 'react-native';
 import {
@@ -62,7 +63,7 @@ const CustomerMeetingDetails = props => {
 
   const myBackFunction = () => {
     console.log('Back navigation detected!');
-    updateDbCall(false); 
+    // updateDbCall(false); 
     // Do something (e.g., show confirmation, save data)
   };
 
@@ -131,7 +132,7 @@ const CustomerMeetingDetails = props => {
                     {reminderObj.reminder_for}
                   </Text>
                   <Text style={{ padding: 10 }}>
-                    {reminderObj.meeting_date}
+                    {formatIsoDateToCustomString(reminderObj.meeting_date)}
                   </Text>
                   <Text style={{ padding: 10 }}>
                     {reminderObj.meeting_time}
@@ -144,7 +145,7 @@ const CustomerMeetingDetails = props => {
                   }}
                 >
                   <Text style={{ padding: 10, textAlign: "center" }}>
-                    Related properties for this meeting
+                    Related Properties For Meeting
                   </Text>
                 </View>
 
@@ -194,7 +195,7 @@ const CustomerMeetingDetails = props => {
                     {reminderObj.reminder_for}
                   </Text>
                   <Text style={{ padding: 10 }}>
-                    {reminderObj.meeting_date}
+                    {formatIsoDateToCustomString(reminderObj.meeting_date)}
                   </Text>
                   <Text style={{ padding: 10 }}>
                     {reminderObj.meeting_time}
@@ -207,7 +208,7 @@ const CustomerMeetingDetails = props => {
                   }}
                 >
                   <Text style={{ padding: 10, textAlign: "center" }}>
-                    Related properties for this meeting
+                    Related Properties For Meeting
                   </Text>
                 </View>
 
@@ -262,7 +263,7 @@ const CustomerMeetingDetails = props => {
                     {reminderObj.reminder_for}
                   </Text>
                   <Text style={{ padding: 10 }}>
-                    {reminderObj.meeting_date}
+                    {formatIsoDateToCustomString(reminderObj.meeting_date)}
                   </Text>
                   <Text style={{ padding: 10 }}>
                     {reminderObj.meeting_time}
@@ -275,7 +276,7 @@ const CustomerMeetingDetails = props => {
                   }}
                 >
                   <Text style={{ padding: 10, textAlign: "center" }}>
-                    Related properties for this meeting
+                    Related Properties For Meeting
                   </Text>
                 </View>
 
@@ -326,7 +327,7 @@ const CustomerMeetingDetails = props => {
                     {reminderObj.reminder_for}
                   </Text>
                   <Text style={{ padding: 10 }}>
-                    {reminderObj.meeting_date}
+                    {formatIsoDateToCustomString(reminderObj.meeting_date)}
                   </Text>
                   <Text style={{ padding: 10 }}>
                     {reminderObj.meeting_time}
@@ -339,7 +340,7 @@ const CustomerMeetingDetails = props => {
                   }}
                 >
                   <Text style={{ padding: 10, textAlign: "center" }}>
-                    Related properties for this meeting
+                    Related Properties For Meeting
                   </Text>
                 </View>
 

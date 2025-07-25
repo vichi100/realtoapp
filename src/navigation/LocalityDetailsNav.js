@@ -10,7 +10,7 @@ function LocalityDetailsNav() {
       <Stack.Screen
         name="LocalityDetails"
         component={LocalityDetails}
-        options={{ title: "Locality Details" }}
+        options={{ title: "Locality Details" , headerBackTitle: "Back"}}
       />
     </Stack.Navigator>
   );

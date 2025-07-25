@@ -1,0 +1,47 @@
+### For Commercial Rent Customer 1 ###
+
+Input
+    customer_deatils_name=Customer Rent Commercial 1
+    customer_deatils_mobile=99330577777
+    customer_deatils_address=juhu mumbai
+
+    locaity_details_city=Mumbai
+    locaity_details_location=Juhu
+
+TapOn
+    locaity_details_select_property_type=Commercial
+    locaity_details_select_property_for=Rent
+TapOn
+    property_details_property_type=Shop
+    property_details_building_type=Mall
+    property_details_parkings=Must
+
+Input
+    property_details_property_size=500
+    rent_details_max_rent=30000
+    rent_details_max_deposit=150000    
+TapOn
+    rent_details_required_from="30"
+
+
+Assertive
+    final_details_name_header=.*Customer Rent Commercial 1.*
+    final_details_mobile_header=.*9933055555.*
+    final_details_address_header=.*Juhu.*
+    final_details_looking_for_tag=Looking For
+    final_details_looking_for_tag_value=Shop
+    final_details_max_rent_tag=Max Rent
+    final_details_max_rent_tag_value=30 K
+    final_details_max_deposit_tag=Max Deposit
+    final_details_max_rent_tag_value=1.5 Lac
+    final_details_max_buildup_tag=Buildup Apx
+    final_details_max_buildup_tag_value=500sqft
+    final_details_city_tag=City
+    final_details_city_tag_value=Mumbai
+    final_details_locations_tag=Locations
+    final_details_locations_tag_value=.*Juhu.*
+    final_details_parking_tag=Parking
+    final_details_locations_tag_value=Must
+    final_details_possession_tag=Possession
+    final_details_building_type_tag=Building Type
+    final_details_building_type_tag_value=Mall

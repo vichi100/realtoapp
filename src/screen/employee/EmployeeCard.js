@@ -676,7 +676,7 @@ const EmployeeCard = props => {
       <View
         style={{
           flexDirection: "row",
-          marginLeft: 30, backgroundColor: "rgba(220,220,220, .2)"
+          paddingLeft: 30, backgroundColor: "rgba(220,220,220, .2)"
         }}>
         <Ionicons
           name="location-sharp"

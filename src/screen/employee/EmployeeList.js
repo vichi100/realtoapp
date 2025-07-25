@@ -192,7 +192,7 @@ const EmployeeList = props => {
             onChangeText={text => searchFilterFunction(text)}
             value={search}
             underlineColorAndroid="transparent"
-            placeholder="Search by name, mobile"
+            placeholder="Search By Name, Mobile"
             placeholderTextColor="#000"
           />
         </View>

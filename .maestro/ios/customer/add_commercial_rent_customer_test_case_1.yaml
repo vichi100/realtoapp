@@ -1,0 +1,90 @@
+# Parameterized template for commercial rent customer test cases
+appId: com.realtoapp.ios
+---
+- tapOn: "bottom_tab_contacts_icon"
+- waitForAnimationToEnd
+- tapOn: "add_customer_icon"
+- waitForAnimationToEnd
+- assertVisible: "Add new customer details who is looking to rent or buy a property"
+- assertVisible: "Customer Details"
+- tapOn: "Name*"
+- inputText: "Customer Rent Commercial 1"
+- tapOn: "Mobile*"
+- inputText: "99330577777"
+- tapOn: "Address*"
+- inputText: "juhu mumbai"
+- waitForAnimationToEnd
+- tapOn:
+    text: "return"
+    optional: true
+- assertVisible: "NEXT"
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd
+- assertVisible: "Locality Details"
+- assertVisible: "Enter city and locations where customer wants the property"
+- tapOn: "City*"
+- inputText: "Mumbai"
+- tapOn: "Add multiple locations within city"
+- inputText: "Juhu"
+- tapOn: "Juhu Beach, Maharashtra"
+- assertVisible: "Select Property Type"
+- tapOn: "property_type_commercial"
+- assertVisible: "Select Property For"
+- tapOn: "property_for_rent"
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd
+- assertVisible: "Customer Property Details"
+- assertVisible: "Property Type*"
+- tapOn: "commercial_property_type_shop"
+- assertVisible: "Building Type*"
+- tapOn: "commercial_property_building_type_mall"
+- assertVisible: "Looking For Size In SQFT*"
+- tapOn: "Property Size"
+- inputText: "500"
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- waitForAnimationToEnd  
+- assertVisible: "Parkings*"
+- tapOn: "parking_required_must"
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd
+- assertVisible: "Rent Details"
+- tapOn: "Max Rent"
+- inputText: "30000"
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- tapOn: "Max Deposit"
+- inputText: "150000"
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- tapOn: "Required From *"
+- waitForAnimationToEnd  
+- tapOn: " 30 "
+- tapOn: "OK"
+- waitForAnimationToEnd  
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd
+- assertVisible: "Customer Final Details"
+- assertVisible: "Shop"
+- assertVisible: "Looking For"
+- assertVisible: "1.5 Lac"
+- assertVisible: "Max Rent"
+- assertVisible: "1.5 Lac"
+- assertVisible: "Max Deposit"
+- assertVisible: "Details"
+- assertVisible: "City"
+- assertVisible: "Mumbai"
+- assertVisible: "Locations"
+- assertVisible: "Must"
+- assertVisible: "Must"
+- assertVisible: "Parking"
+- assertVisible: "Building Type"
+- assertVisible: "Mall"
+- tapOn: "ADD"
+
+- waitForAnimationToEnd
+- tapOn: "Commercial"

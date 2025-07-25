@@ -37,6 +37,8 @@ import {
 import axios from "axios";
 import Feather from "react-native-vector-icons/Feather";
 import { makeCall } from "../../util/methods";
+import * as  AppConstant from "../../util/AppConstant";
+import CustomButtonGroup from "../../components/CustomButtonGroup";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -70,59 +72,61 @@ const CustomerCommercialBuyCard = props => {
   // const [text, onChangeText] = React.useState("I have customer for this property. Please call me.");
 
   const [Sliding_Drawer_Width, setSlidingDrawerWidth] = useState(194);
-    const [Sliding_Drawer_Width_WO_Delete, setSlidingDrawerWidthWODelete] = useState(140);
-  
-    const canAddDelete = props.userDetails &&
+  const [Sliding_Drawer_Width_WO_Delete, setSlidingDrawerWidthWODelete] = useState(140);
+
+  const [dealWin, setDealWin] = useState("Yes");
+
+  const canAddDelete = props.userDetails &&
     ((props.userDetails.works_for === props.userDetails.id) ||
       (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)));
-  
-    const slidingDrawerWidth = canAddDelete
+
+  const slidingDrawerWidth = canAddDelete
     ? Sliding_Drawer_Width
     : Sliding_Drawer_Width_WO_Delete;
-  
-    useEffect(() => {
-      // Dynamically update the sliding drawer width based on the condition
-      if (item && item.agent_id === props.userDetails.works_for) {
-        setSlidingDrawerWidth(195); // Increase width
-      } else {
-        setSlidingDrawerWidth(140); // Default width if dont want to see delete option
-      }
-    }, [item, props.userDetails.works_for]);
-  
-    let Animation = new Animated.Value(0);
-  
-    let Sliding_Drawer_Toggle = true;
-  
-  
-    const ShowSlidingDrawer = () => {
-      // // console.log(Sliding_Drawer_Toggle);
-      if (Sliding_Drawer_Toggle === true) {
-        Animated.timing(Animation, {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: true
-        }).start(() => {
-          Sliding_Drawer_Toggle = false;
-        });
-      } else {
-        Animated.timing(Animation, {
-          toValue: 0,
-          duration: 500,
-          useNativeDriver: true
-        }).start(() => {
-          Sliding_Drawer_Toggle = true;
-        });
-      }
-    };
-  
-    const Animation_Interpolate = Animation.interpolate({
-      inputRange: [0, 1],
-      // outputRange: [370, 135]
-      // outputRange: [-(Sliding_Drawer_Width - width * 1.55), 135]
-      // outputRange: ["330%", "100%"]
-      // outputRange: ["250%", "100%"]
-      outputRange: [slidingDrawerWidth -33, -15]
-    });
+
+  useEffect(() => {
+    // Dynamically update the sliding drawer width based on the condition
+    if (item && item.agent_id === props.userDetails.works_for) {
+      setSlidingDrawerWidth(195); // Increase width
+    } else {
+      setSlidingDrawerWidth(140); // Default width if dont want to see delete option
+    }
+  }, [item, props.userDetails.works_for]);
+
+  let Animation = new Animated.Value(0);
+
+  let Sliding_Drawer_Toggle = true;
+
+
+  const ShowSlidingDrawer = () => {
+    // // console.log(Sliding_Drawer_Toggle);
+    if (Sliding_Drawer_Toggle === true) {
+      Animated.timing(Animation, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true
+      }).start(() => {
+        Sliding_Drawer_Toggle = false;
+      });
+    } else {
+      Animated.timing(Animation, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true
+      }).start(() => {
+        Sliding_Drawer_Toggle = true;
+      });
+    }
+  };
+
+  const Animation_Interpolate = Animation.interpolate({
+    inputRange: [0, 1],
+    // outputRange: [370, 135]
+    // outputRange: [-(Sliding_Drawer_Width - width * 1.55), 135]
+    // outputRange: ["330%", "100%"]
+    // outputRange: ["250%", "100%"]
+    outputRange: [slidingDrawerWidth - 33, -15]
+  });
 
 
 
@@ -445,7 +449,10 @@ const CustomerCommercialBuyCard = props => {
 
           {displayMatchCount === true && (
             <>
-              <TouchableOpacity onPress={() => getMatched(item)}>
+              <TouchableOpacity onPress={() => getMatched(item)}
+                accessibilityLabel={`match_${item.customer_id}`}
+                testID={`match_id_${item.customer_id}`}
+              >
                 <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
                   <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
                 </View>
@@ -527,16 +534,27 @@ const CustomerCommercialBuyCard = props => {
             }}
           >
             <View style={{ paddingLeft: 20, paddingTop: 10 }}>
-              <Text style={[styles.title]}>{item.customer_details.name}</Text>
+              <Text style={[styles.title]}
+                accessibilityLabel={`name_${item.customer_id}`}
+                testID={`name_id_${item.customer_id}`}
+              >
+                {item.customer_details.name}
+              </Text>
               <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
                 <MaterialCommunityIcons name="phone-dial" color={"#0f1a20"} size={20} />
-                <Text style={[styles.subTitle, { paddingLeft: 10, color: "#0f1a20" }]}>
+                <Text style={[styles.subTitle, { paddingLeft: 10, color: "#0f1a20" }]}
+                  accessibilityLabel={`mobile_${item.customer_id}`}
+                  testID={`mobile_id_${item.customer_id}`}
+                >
                   {item.customer_details.mobile1?.startsWith("+91")
                     ? item.customer_details.mobile1
                     : `+91 ${item.customer_details.mobile1}`}
                 </Text>
               </View>
-              <Text style={{ paddingRight: 10, color: "#0f1a20", marginTop: 5, marginBottom: 5 }}>
+              <Text style={{ paddingRight: 10, color: "#0f1a20", marginTop: 5, marginBottom: 5 }}
+                accessibilityLabel={`ref_${item.customer_id}`}
+                testID={`ref_id_${item.customer_id}`}
+              >
                 Reference id: {item.customer_id?.slice(-6)}
               </Text>
 
@@ -551,6 +569,8 @@ const CustomerCommercialBuyCard = props => {
               >
                 <CheckBox
                   onPress={() => onClickCheckBox(item)}
+                  accessibilityLabel={`checkbox_${item.customer_id}`}
+                  testID={`checkbox_id_${item.customer_id}`}
                   center
                   // title="Select"
                   checked={
@@ -580,6 +600,8 @@ const CustomerCommercialBuyCard = props => {
               >
                 <CheckBox
                   onPress={() => onClickCheckBoxForEmployee(item)}
+                  accessibilityLabel={`emp_checkbox_${item.customer_id}`}
+                  testID={`emp_checkbox_id_${item.customer_id}`}
                   center
                   checked={isAssetChecked(item)} // Ensure this is tied to the isAssetChecked function
                   containerStyle={{
@@ -617,12 +639,16 @@ const CustomerCommercialBuyCard = props => {
               styles.drawer,
               { width: slidingDrawerWidth, transform: [{ translateX: Animation_Interpolate }] },
             ]}
+            accessibilityLabel={`animated_${item.customer_id}`}
+            testID={`animated_id_${item.customer_id}`}
           >
             <View style={[styles.Main_Sliding_Drawer_Container, { width: slidingDrawerWidth, paddingHorizontal: 0 }]}>
               {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
               <TouchableOpacity
                 onPress={ShowSlidingDrawer}
                 style={{ paddingTop: 20 }}
+                accessibilityLabel={`chevron_left_icon_${item.customer_id}`}
+                testID={`chevron_left_icon_id_${item.customer_id}`}
               >
                 <MaterialCommunityIcons
                   name="chevron-left"
@@ -637,23 +663,24 @@ const CustomerCommercialBuyCard = props => {
                   setModalVisible(true);
                 }}
                 style={{ padding: 15, backgroundColor: "#e57373" }}
+                accessibilityLabel={`close_sharp_icon_${item.customer_id}`}
+                testID={`close_sharp_icon_id_${item.customer_id}`}
               >
                 <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
               </TouchableOpacity>
               }
 
               {/* <TouchableOpacity
-                onPress={() => onShare()}
-                style={{ padding: 15, backgroundColor: "#0091ea" }}
-              >
-                <Ionicons name="share-social" color={"#ffffff"} size={30} />
-              </TouchableOpacity> */}
-
+                        onPress={() => onShare()}
+                        style={{ padding: 15, backgroundColor: "#0091ea" }}
+                      >
+                        <Ionicons name="share-social" color={"#ffffff"} size={30} />
+                      </TouchableOpacity> */}
               <TouchableOpacity
-                onPress={() =>
-                  onClickMeeting(item)
-                }
+                onPress={() => onClickMeeting(item)}
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
+                accessibilityLabel={`alarm_outline_icon_${item.customer_id}`}
+                testID={`alarm_outline_icon_id_${item.customer_id}`}
               >
                 <Ionicons
                   name="alarm-outline"
@@ -664,6 +691,8 @@ const CustomerCommercialBuyCard = props => {
               <TouchableOpacity
                 onPress={() => makeCall(item.customer_details.mobile1)}
                 style={{ padding: 15, backgroundColor: "#00bfa5" }}
+                accessibilityLabel={`call_icon_${item.customer_id}`}
+                testID={`call_icon_id_${item.customer_id}`}
               >
                 <Ionicons name="call" color={"#ffffff"} size={30} />
                 {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text> */}
@@ -676,7 +705,7 @@ const CustomerCommercialBuyCard = props => {
       <View
         style={{
           flexDirection: "row",
-          marginLeft: 30, backgroundColor: "rgba(220,220,220, .2)"
+          paddingLeft: 30, backgroundColor: "rgba(220,220,220, .2)"
         }}>
         <Ionicons
           name="location-sharp"
@@ -695,7 +724,7 @@ const CustomerCommercialBuyCard = props => {
           <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>
             {Array.isArray(item.assigned_to_employee_name) && item.assigned_to_employee_name.length > 0
               ? item.assigned_to_employee_name.join(", ")
-              : "No employees assigned"}
+              : "No Employees Assigned"}
           </Text>
         </View>
       </TouchableOpacity>}
@@ -749,19 +778,29 @@ const CustomerCommercialBuyCard = props => {
         <View style={styles.centeredView1}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>
-              Did you win deal for this property?
+              Did you win deal for this customer?
             </Text>
-            <ButtonGroup
-              selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-              onPress={updateIndex}
-              selectedIndex={index}
-              buttons={["Yes", "No"]}
-              // containerStyle={{ height: 30 }}
-              textStyle={{ textAlign: "center" }}
-              selectedTextStyle={{ color: "#fff" }}
-              containerStyle={{ borderRadius: 10, width: 300 }}
-              containerBorderRadius={10}
+            <CustomButtonGroup
+              buttons={AppConstant.DEAL_WIN_OPTION}
+              accessibilityLabelId={`delete_option_${item.property_id}`}
+              testID={`delete_option_id_${item.property_id}`}
+              selectedIndices={[AppConstant.DEAL_WIN_OPTION.findIndex(option => option.text === dealWin)]}
+              isMultiSelect={false}
+              buttonStyle={{ backgroundColor: '#fff' }}
+              buttonBorderColor='#E5E4E2'
+              selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+              buttonTextStyle={{ color: '#000' }}
+              selectedButtonTextStyle={{ color: '#000' }}
+              width={100}
+              onButtonPress={(index, button) => {
+                console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                setDealWin(button.text);
+                // Query update is handled by useEffect after state change
+              }}
+
             />
+
+            <Text style={{ marginBottom: 50 }}>You are going to delete?</Text>
 
             <View
               style={{

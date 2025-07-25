@@ -32,7 +32,7 @@ const GlobalSearchStackNav = () => {
       <Stack.Screen
         name="GlobalSearch"
         component={GlobalSearch}
-        options={{ title: "Global Search", tabBarLabel: "Home!", tabBarVisible: false, headerShown: false }}
+        options={{ title: "Global Search", tabBarLabel: "Home!", tabBarVisible: false, headerShown: false , headerBackTitle: "Back"}}
       />
       <Stack.Screen
         name="GlobalResidentialPropertySearchResult"
@@ -66,7 +66,7 @@ const GlobalSearchStackNav = () => {
       <Stack.Screen
         name="CustomerMeetingDetails"
         component={CustomerMeetingDetails}
-        options={{ title: "Meeting Details", headerShown: true }}
+        options={{ title: "Meeting Details", headerShown: true , headerBackTitle: "Back"}}
       />
 
       <Stack.Screen
@@ -84,25 +84,25 @@ const GlobalSearchStackNav = () => {
       <Stack.Screen
         name="MatchedProperties"
         component={MatchedProperties}
-        options={{ title: "Matched Properties" }}
+        options={{ title: "Matched Properties" , headerBackTitle: "Back"}}
       />
 
       <Stack.Screen
         name="CustomerDetailsResidentialRentFromList"
         component={CustomerDetailsResidentialRentFromList}
-        options={{ title: "Customer Details" }}
+        options={{ title: "Customer Details" , headerBackTitle: "Back"}}
       />
       <Stack.Screen
         name="CustomerDetailsResidentialBuyFromList"
         component={CustomerDetailsResidentialBuyFromList}
-        options={{ title: "Customer Details" }}
+        options={{ title: "Customer Details" , headerBackTitle: "Back"}}
       />
       <Stack.Screen
         name="PropDetailsFromListing"
         component={PropDetailsFromListing}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details"
+          title: "Property details", headerBackTitle: "Back"
         }}
       />
 
@@ -111,7 +111,7 @@ const GlobalSearchStackNav = () => {
         component={PropDetailsFromListingForSell}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details"
+          title: "Property details", headerBackTitle: "Back"
         }}
       />
 

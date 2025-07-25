@@ -1,0 +1,92 @@
+# Parameterized template for residential rent customer test cases
+appId: com.realtoapp.ios
+---
+- tapOn: "bottom_tab_contacts_icon"
+- waitForAnimationToEnd
+- tapOn: "add_customer_icon"
+- waitForAnimationToEnd
+- assertVisible: "Add new customer details who is looking to rent or buy a property"
+- assertVisible: "Customer Details"
+- tapOn: "Name*"
+- inputText: "${customer_details_name}"
+- tapOn: "Mobile*"
+- inputText: "${customer_details_mobile}"
+- tapOn: "Address*"
+- inputText: "${customer_details_address}"
+- waitForAnimationToEnd
+- tapOn:
+    text: "return"
+    optional: true
+- assertVisible: "NEXT"
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd
+- assertVisible: "Locality Details"
+- assertVisible: "Enter city and locations where customer wants the property"
+- tapOn: "City*"
+- inputText: "${locality_details_city}"
+- tapOn: "Add multiple locations within city"
+- inputText: "${locality_details_location}"
+- tapOn: "${locality_details_location_suggestion}"
+- assertVisible: "Select Property Type"
+- tapOn: "property_type_${locality_details_select_property_type_lower}"
+- assertVisible: "Select Property For"
+- tapOn: "property_for_${locality_details_select_property_for_lower}"
+- assertVisible: "Required for"
+- tapOn: "preferred_tenants_${locality_details_required_for_lower}"
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd
+- assertVisible: "Property Details"
+- assertVisible: "Provide property details of which customer is looking for"
+- assertVisible: "House Type*"
+- tapOn: "house_type_${property_details_house_type_lower}"
+- assertVisible: "Size of BHK*"
+- tapOn: "bhk_type_${property_details_size_of_bhk_lower}"
+- assertVisible: "Furnishing*"
+- tapOn: "furnishing_status_${property_details_furnishing_lower}"
+- assertVisible: "Parkings*"
+- tapOn: "parking_type_${property_details_parkings_lower}"
+- assertVisible: "Lift Mandatory*"
+- tapOn: "lift_available_${property_details_lift_mandatory_lower}"
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd
+- assertVisible: "Rent Details"
+- assertVisible: "Provide rent details what max customer can afford"
+- tapOn: "Max Rent"
+- inputText: "${rent_details_max_rent}"
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- tapOn: "Max Deposit"
+- inputText: "${rent_details_max_deposit}"
+- waitForAnimationToEnd  
+- tapOn: "Done"
+- tapOn: "Required From *"
+- waitForAnimationToEnd  
+- tapOn: " ${rent_details_required_from} "
+- tapOn: "OK"
+- waitForAnimationToEnd  
+- tapOn: "NEXT"
+
+- waitForAnimationToEnd
+- assertVisible: "Customer Final Details"
+- assertVisible: "${final_details_looking_for_tag_value}"
+- assertVisible: "${final_details_looking_for_tag}"
+- assertVisible: "${final_details_max_rent_tag_value}"
+- assertVisible: "${final_details_max_rent_tag}"
+- assertVisible: "${final_details_max_deposit_tag_value}"
+- assertVisible: "${final_details_max_deposit_tag}"
+- assertVisible: "Details"
+- assertVisible: "${final_details_city_tag}"
+- assertVisible: "${final_details_city_tag_value}"
+- assertVisible: "${final_details_locations_tag}"
+- assertVisible: "${final_details_locations_tag_value}"
+- assertVisible: "${final_details_parking_tag_value}"
+- assertVisible: "${final_details_parking_tag}"
+- assertVisible: "${final_details_lift_mandatory_tag}"
+- assertVisible: "${final_details_tenant_type_tag}"
+- tapOn: "ADD"
+
+- waitForAnimationToEnd
+- tapOn: "Residential"

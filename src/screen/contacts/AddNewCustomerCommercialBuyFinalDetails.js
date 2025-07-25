@@ -181,7 +181,7 @@ const AddNewCustomerCommercialBuyFinalDetails = props => {
             <Text style={[styles.subDetailsValue]}>
               {customerFinalDetails.customer_property_details.property_used_for}
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Prop Type</Text>
+            <Text style={[styles.subDetailsTitle]}>Looking For</Text>
           </View>
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
@@ -203,13 +203,13 @@ const AddNewCustomerCommercialBuyFinalDetails = props => {
             </Text>
             <Text style={[styles.subDetailsTitle]}>Deposit</Text>
           </View> */}
-          {/* <View style={styles.verticalLine}></View>
+          <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>
               {customerFinalDetails.customer_property_details.property_size}sqft
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Buildup</Text>
-          </View> */}
+            <Text style={[styles.subDetailsTitle]}>Buildup Apx</Text>
+          </View>
         </View>
       </View>
 

@@ -1,0 +1,51 @@
+### For Residential Rent Customer 1 ###
+
+Input
+    customer_deatils_name=Customer Rent Residential 1
+    customer_deatils_mobile=9933055555
+    customer_deatils_address=juhu mumbai
+
+    locaity_details_city=Mumbai
+    locaity_details_location=Juhu
+
+TapOn
+    locaity_details_select_property_type=Residential
+    locaity_details_select_property_for=Rent
+    locaity_details_requied_for=Family
+TapOn
+    property_details_house_type=Apartment
+    property_details_size_of_bhk=2BHK
+    property_details_how_many_washroom=2
+    property_details_furnishing=Semi
+    property_details_parkings=Car
+    property_details_lift_mandatory=Yes
+
+Input
+    rent_details_max_rent=30000
+    rent_details_max_deposit=150000    
+TapOn
+    rent_details_required_from="30"
+
+
+Assertive
+    final_details_name_header=.*Customer Rent Residential 1.*
+    final_details_mobile_header=.*9933055555.*
+    final_details_address_header=.*Juhu.*
+    final_details_looking_for_tag=Looking For
+    final_details_looking_for_tag_value=2BHK
+    final_details_max_rent_tag=Max Rent
+    final_details_max_rent_tag_value=30 K
+    final_details_max_deposit_tag=Max Deposit
+    final_details_max_deposit_tag_value=1.5 Lac
+    final_details_furnishing_tag=Furnishing
+    final_details_furnishing_tag_value=Semi
+    final_details_city_tag=City
+    final_details_city_tag_value=Mumbai
+    final_details_locations_tag=Locations
+    final_details_locations_tag_value=.*Juhu.*
+    final_details_parking_tag=Parking
+    final_details_parking_tag_value=Car
+    final_details_possession_tag=Possession
+    final_details_tenant_type_tag=Family
+    final_details_lift_mandatory_tag=Lift Mandatory
+    final_details_lift_mandatory_tag_value=Yes

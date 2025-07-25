@@ -36,6 +36,8 @@ import {
   setPropertyDetails
 } from "../reducers/Action";
 import { makeCall } from "../../util/methods";
+import * as  AppConstant from "../../util/AppConstant";
+import CustomButtonGroup from "../../components/CustomButtonGroup";
 
 // https://reactnativecode.com/create-custom-sliding-drawer-using-animation/
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
@@ -234,15 +236,15 @@ const ResidentialSellPropertyCard = props => {
     props.setPropertyDetails(item);
 
     if (propertyFor === "Rent") {
-      navigation.navigate("PropDetailsFromListing", {item:item});
+      navigation.navigate("PropDetailsFromListing", { item: item });
     } else if (propertyFor === "Sell") {
-      navigation.navigate("PropDetailsFromListingForSell", {item:item});
+      navigation.navigate("PropDetailsFromListingForSell", { item: item });
     }
 
   };
 
   const getMatched = (matchedProprtyItem) => {
-    navigation.navigate('MatchedCustomers', {matchedProprtyItem: matchedProprtyItem},);
+    navigation.navigate('MatchedCustomers', { matchedProprtyItem: matchedProprtyItem },);
   }
 
   return (<TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
@@ -467,17 +469,27 @@ const ResidentialSellPropertyCard = props => {
             <Text style={styles.modalText}>
               Did you win deal for this property?
             </Text>
-            <ButtonGroup
-              selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-              onPress={updateIndex}
-              selectedIndex={index}
-              buttons={["Yes", "No"]}
-              // containerStyle={{ height: 30 }}
-              textStyle={{ textAlign: "center" }}
-              selectedTextStyle={{ color: "#fff" }}
-              containerStyle={{ borderRadius: 10, width: 300 }}
-              containerBorderRadius={10}
+            <CustomButtonGroup
+              buttons={AppConstant.DEAL_WIN_OPTION}
+              accessibilityLabelId={`delete_option_${item.property_id}`}
+              testID={`delete_option_id_${item.property_id}`}
+              selectedIndices={[AppConstant.DEAL_WIN_OPTION.findIndex(option => option.text === dealWin)]}
+              isMultiSelect={false}
+              buttonStyle={{ backgroundColor: '#fff' }}
+              buttonBorderColor='#E5E4E2'
+              selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+              buttonTextStyle={{ color: '#000' }}
+              selectedButtonTextStyle={{ color: '#000' }}
+              width={100}
+              onButtonPress={(index, button) => {
+                console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                setDealWin(button.text);
+                // Query update is handled by useEffect after state change
+              }}
+
             />
+
+            <Text style={{ marginBottom: 50 }}>You are going to delete?</Text>
 
             <View
               style={{

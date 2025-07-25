@@ -33,6 +33,10 @@ import {
 } from "../../reducers/Action";
 import PropertyReminder from "../PropertyReminder";
 import DatePicker, { RangeOutput, SingleOutput } from 'react-native-neat-date-picker'
+import * as  AppConstant from "../../util/AppConstant";
+import CustomButtonGroup from "../../components/CustomButtonGroup";
+
+
 
 const reminderForArray = ["Call", "Meeting", "Property Visit"];
 const ampmArray = ["AM", "PM"];
@@ -64,6 +68,7 @@ const CustomerMeeting = props => {
   const [loading, setLoading] = useState(false);
   const [reminderListX, setReminderListX] = useState([]);
 
+  const [remiderType, setReminderType] = useState("Call");
 
   const clearState = () => {
     setNewDate("");
@@ -74,6 +79,7 @@ const CustomerMeeting = props => {
     setMinutes("");
     setAMPMIndex(-1);
     setReminderForIndex(-1);
+    setReminderType("Call");
     props.setPropListForMeeting([])
   }
 
@@ -129,6 +135,7 @@ const CustomerMeeting = props => {
   const onChange = React.useCallback(({ date }) => {
     setVisible(false);
     setIsVisible(false);
+    clearState();
     // const x = date.toString().split("00:00");
     // setNewDate(x[0]);
     const x = dateFormat(date.toString());
@@ -175,11 +182,7 @@ const CustomerMeeting = props => {
   };
 
   const onSubmit = () => {
-    if (reminderForIndex === -1) {
-      setErrorMessage("Reminder type is missing");
-      setIsVisible(true);
-      return;
-    } else if (clientName.trim() === "") {
+    if (clientName.trim() === "") {
       setErrorMessage("Client name is missing");
       setIsVisible(true);
       return;
@@ -216,7 +219,7 @@ const CustomerMeeting = props => {
       category_ids: categoryArray,
       category_type: item.customer_locality.property_type,
       category_for: item.customer_locality.property_for,
-      reminder_for: reminderForArray[reminderForIndex],
+      reminder_for: remiderType,
       client_name: clientName.trim(),
       client_mobile: clientMobile.trim(),
       client_id: item.customer_id,
@@ -292,6 +295,7 @@ const CustomerMeeting = props => {
   };
 
   useEffect(() => {
+    clearState();
     // console.log("useEffect called: " + props.propReminderList.length);
     // if (props.propReminderList.length === 0) {
     // console.log("getPropReminders called");
@@ -335,7 +339,7 @@ const CustomerMeeting = props => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <View style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}>
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
         <ScrollView style={styles.container}>
           <View>
@@ -344,11 +348,28 @@ const CustomerMeeting = props => {
               reminder on time
             </Text>
             <Divider />
-            <Text style={{ marginTop: 20, marginBottom: 10, fontSize: 14 }}>
-              Reminder for ?
+            <Text style={{ marginTop: 20, marginBottom: 15, fontSize: 14 }}>
+              Reminder For ?
             </Text>
             <View style={styles.propSubSection}>
-              <ButtonGroup
+              <CustomButtonGroup
+                buttons={AppConstant.REMINDER_FOR_OPTION}
+                accessibilityLabelId="reminder_type"
+                selectedIndices={[AppConstant.REMINDER_FOR_OPTION.findIndex(option => option.text === remiderType)]}
+                isMultiSelect={false}
+                buttonStyle={{ backgroundColor: '#fff' }}
+                selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+                buttonTextStyle={{ color: '#000' }}
+                selectedButtonTextStyle={{ color: '#000' }}
+                width={100}
+                onButtonPress={(index, button) => {
+                  console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                  setReminderType(button.text);
+                  // Query update is handled by useEffect after state change
+                }}
+                
+              />
+              {/* <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={selectReminderForIndex}
                 selectedIndex={reminderForIndex}
@@ -358,32 +379,33 @@ const CustomerMeeting = props => {
                 selectedTextStyle={{ color: "#fff" }}
                 containerStyle={{ borderRadius: 10, width: 300 }}
                 containerBorderRadius={10}
-              />
+              /> */}
             </View>
             <DatePicker
-            isVisible={visible}
-            mode={'single'}
-            initialDate={new Date()}
-            minDate={new Date()}
-            onCancel={onDismiss}
-            onConfirm={onChange}
-            dateStringFormat={"dd-mmm-yyyy"}
+              isVisible={visible}
+              mode={'single'}
+              initialDate={new Date()}
+              minDate={new Date()}
+              onCancel={onDismiss}
+              onConfirm={onChange}
+              dateStringFormat={"dd-mmm-yyyy"}
             // backgroundColor='#ffffff'
             // modalStyles={{alignContent:'center', justifyContent:'center', flex:1}}
             // withoutModal={true}
-          />
+            />
 
             <TextInput
-              label="Client Name*"
+              label="Customer Name*"
               disabled={true}
               value={clientName}
               onChangeText={text => setClientName(text)}
               onFocus={() => setIsVisible(false)}
-              style={{ backgroundColor: "#ffffff", marginTop: 8 }}
+              style={{ backgroundColor: "#ffffff", marginTop: 25 , color: "black",}}
+              textColor="#555555"
               theme={{
                 colors: {
                   // placeholder: "white",
-                  // text: "white",
+                  text: "blue", // Change text color here
                   primary: "rgba(0,191,255, .9)",
                   underlineColor: "transparent",
                   background: "#ffffff"
@@ -392,7 +414,7 @@ const CustomerMeeting = props => {
             />
 
             <TextInput
-              label="Client Mobile*"
+              label="Customer Mobile*"
               disabled={true}
               value={clientMobile}
               onChangeText={text => setClientMobile(text)}
@@ -400,6 +422,7 @@ const CustomerMeeting = props => {
               keyboardType={"numeric"}
               returnKeyType={"done"}
               style={{ backgroundColor: "#ffffff", marginTop: 0 }}
+              textColor="#555555"
               theme={{
                 colors: {
                   // placeholder: "white",
@@ -438,8 +461,8 @@ const CustomerMeeting = props => {
                 <Text
                   style={{ color: "#00BFFF", paddingLeft: 10, paddingTop: 5, fontWeight: "500" }}
                 >
-                  Add {item.customer_locality.property_type} Properties for{" "}
-                  {item.customer_locality.property_for.toLowerCase()}
+                  Add {item.customer_locality.property_type} Properties For{" "}
+                  {item.customer_locality.property_for}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -542,19 +565,19 @@ const CustomerMeeting = props => {
           locale={"en"} // optional, default is automically detected by your system
         /> */}
         {/* <View style={{alignContent:'center', justifyContent:'center', flex:1}} > */}
-          
-          <TimePickerModal
-            visible={timeVisible}
-            onDismiss={onDismissTimePicker}
-            onConfirm={onConfirmTimePicker}
-            hours={12} // default: current hours
-            minutes={15} // default: current minutes
-            label="Select time" // optional, default 'Select time'
-            cancelLabel="Cancel" // optional, default: 'Cancel'
-            confirmLabel="Ok" // optional, default: 'Ok'
-            animationType="fade" // optional, default is 'none'
-            locale={"en"} // optional, default is automically detected by your system
-          />
+
+        <TimePickerModal
+          visible={timeVisible}
+          onDismiss={onDismissTimePicker}
+          onConfirm={onConfirmTimePicker}
+          hours={12} // default: current hours
+          minutes={15} // default: current minutes
+          label="Select time" // optional, default 'Select time'
+          cancelLabel="Cancel" // optional, default: 'Cancel'
+          confirmLabel="Ok" // optional, default: 'Ok'
+          animationType="fade" // optional, default is 'none'
+          locale={"en"} // optional, default is automically detected by your system
+        />
         {/* </View> */}
       </KeyboardAwareScrollView>
       <Snackbar
@@ -682,8 +705,8 @@ const styles = StyleSheet.create({
     flex: 1,
     // padding: 10,
     marginTop: 20,
-    marginLeft: 20,
-    marginRight: 20
+    marginLeft: 5,
+    marginRight: 5
     // justifyContent: "center",
     // alignItems: "center",
     // backgroundColor: "#ffffff"

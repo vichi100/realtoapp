@@ -33,6 +33,9 @@ import {
 import PropertyReminder from "./PropertyReminder";
 import { SERVER_URL } from "../util/Constant";
 import DatePicker, { RangeOutput, SingleOutput } from 'react-native-neat-date-picker';
+import * as  AppConstant from "../util/AppConstant";
+import CustomButtonGroup from "../components/CustomButtonGroup"; // Assuming you have a CustomButtonGroup component
+
 
 const reminderForArray = ["Call", "Meeting", "Property Visit"];
 const ampmArray = ["AM", "PM"];
@@ -63,6 +66,8 @@ const Meeting = props => {
   const [propertyIdX, setPropertyIdX] = useState(item.property_id);
   const [loading, setLoading] = useState(false);
   const [reminderListX, setReminderListX] = useState([]);
+
+  const [remiderType, setReminderType] = useState("Call");
 
 
   const clearState = () => {
@@ -190,11 +195,7 @@ const Meeting = props => {
   };
 
   const onSubmit = () => {
-    if (reminderForIndex === -1) {
-      setErrorMessage("Reminder type is missing");
-      setIsVisible(true);
-      return;
-    } else if (clientName.trim() === "") {
+    if (clientName.trim() === "") {
       setErrorMessage("Client name is missing");
       setIsVisible(true);
       return;
@@ -230,7 +231,7 @@ const Meeting = props => {
         category_ids: [item.property_id],
         category_type: item.property_type,
         category_for: item.property_for,
-        reminder_for: reminderForArray[reminderForIndex],
+        reminder_for: remiderType,
         client_name: clientName.trim(),
         client_mobile: clientMobile.trim(),
         client_id: clientId,
@@ -317,7 +318,7 @@ const Meeting = props => {
   // }, [propertyIdX]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <View style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}>
       <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
         <ScrollView style={styles.container}>
           <View>
@@ -326,12 +327,30 @@ const Meeting = props => {
               reminder on time
             </Text>
             <Divider />
-            <Text style={{ marginTop: 20, marginBottom: 10, fontSize: 14 }}>
-              Reminder for ?
+            <Text style={{ marginTop: 20, marginBottom: 15, fontSize: 14 }}>
+              Reminder For ?
             </Text>
 
             <View style={styles.propSubSection}>
-              <ButtonGroup
+
+              <CustomButtonGroup
+                buttons={AppConstant.REMINDER_FOR_OPTION}
+                accessibilityLabelId="reminder_type"
+                selectedIndices={[AppConstant.REMINDER_FOR_OPTION.findIndex(option => option.text === remiderType)]}
+                isMultiSelect={false}
+                buttonStyle={{ backgroundColor: '#fff' }}
+                selectedButtonStyle={{ backgroundColor: 'rgba(0, 163, 108, .2)' }}
+                buttonTextStyle={{ color: '#000' }}
+                selectedButtonTextStyle={{ color: '#000' }}
+                width={100}
+                onButtonPress={(index, button) => {
+                  console.log(`Button pressed: ${button.text} (Index: ${index})`);
+                  setReminderType(button.text);
+                  // Query update is handled by useEffect after state change
+                }}
+              />
+
+              {/* <ButtonGroup
                 selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
                 onPress={selectReminderForIndex}
                 selectedIndex={reminderForIndex}
@@ -341,22 +360,22 @@ const Meeting = props => {
                 selectedTextStyle={{ color: "#fff" }}
                 containerStyle={{ borderRadius: 10, width: 300 }}
                 containerBorderRadius={10}
-              />
+              /> */}
             </View>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("CustomerListForMeeting",{
+                navigation.navigate("CustomerListForMeeting", {
                   displayMatchCount: false,
                   displayMatchPercent: true
                 })
               }
             >
-              <View style={{ flexDirection: "row", marginTop: 10 }}>
+              <View style={{ flexDirection: "row", marginTop: 20 }}>
                 <AntDesign name="pluscircleo" color={"#00BFFF"} size={26} />
                 <Text
                   style={{ color: "#00BFFF", paddingLeft: 10, paddingTop: 5, fontWeight: "500" }}
                 >
-                  Add client details for this meeting.
+                  Add Customer For Meeting.
                 </Text>
               </View>
             </TouchableOpacity>
@@ -373,11 +392,12 @@ const Meeting = props => {
               <View>
                 <TextInput
                   disabled={true}
-                  label="Client Name*"
+                  label="Customer Name*"
                   value={clientName}
                   onChangeText={text => setClientName(text)}
                   onFocus={() => setIsVisible(false)}
-                  style={{ backgroundColor: "#ffffff", marginTop: 8 }}
+                  style={{ backgroundColor: "#ffffff", marginTop: 25 }}
+                  textColor="#555555"
                   theme={{
                     colors: {
                       // placeholder: "white",
@@ -391,13 +411,14 @@ const Meeting = props => {
 
                 <TextInput
                   disabled={true}
-                  label="Client Mobile*"
+                  label="Customer Mobile*"
                   value={clientMobile}
                   onChangeText={text => setClientMobile(text)}
                   onFocus={() => setIsVisible(false)}
                   keyboardType={"numeric"}
                   returnKeyType={"done"}
                   style={{ backgroundColor: "#ffffff", marginTop: 8 }}
+                  textColor="#555555"
                   theme={{
                     colors: {
                       // placeholder: "white",
@@ -617,8 +638,8 @@ const styles = StyleSheet.create({
     flex: 1,
     // padding: 10,
     marginTop: 20,
-    marginLeft: 20,
-    marginRight: 20
+    marginLeft: 5,
+    marginRight: 5
     // justifyContent: "center",
     // alignItems: "center",
     // backgroundColor: "#ffffff"

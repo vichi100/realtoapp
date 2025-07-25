@@ -86,7 +86,7 @@ const DoughnutChart = ({
               {mainPercentage < 40 ? 0 : mainPercentage}%
             </Text>
             <Text style={[styles.centerText, { color: textColor, fontSize: textSize / 1.2 }]}>
-            match
+            Match
             </Text>
           </View>
         )}

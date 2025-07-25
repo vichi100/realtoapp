@@ -211,7 +211,8 @@ CustomerListForMeeting = props => {
           item.customer_details.name +
           item.customer_details.address +
           item.customer_details.mobile1 +
-          item.customer_locality.location_area.map(item => item.main_text).join(', ')
+          item.customer_locality.location_area.map(item => item.main_text).join(', ')+
+          item.customer_id;
         // item.customer_locality.location_area;
 
         const textData = text.toUpperCase();
@@ -236,13 +237,22 @@ CustomerListForMeeting = props => {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.searchBarContainer}>
-        <TextInput
-          style={styles.textInputStyle}
-          onChangeText={text => searchFilterFunction(text)}
-          value={search}
-          underlineColorAndroid="transparent"
-          placeholder="Search by name, location"
-        />
+        <View style={styles.searchBar}>
+          <AntDesign name="search1" size={20} color="#999" style={{ marginRight: 5, }} />
+          {/* <View style={{ flexDirection: "row", margin: 10, justifyContent: "space-between" }}>
+                    <Text>For Rent: {rentPropCount.length}</Text>
+                    <Text>For Sell: {sellPropCount.length}</Text>
+                  </View> */}
+          <TextInput
+            style={styles.textInputStyle}
+            onChangeText={text => searchFilterFunction(text)}
+            value={search}
+            underlineColorAndroid="transparent"
+            placeholder="Search By Name, Address, Id, Mobile"
+            placeholderTextColor="#696969"
+          />
+        </View>
+
       </View>
       {data.length > 0 ? (
         <View style={styles.container}>
@@ -254,7 +264,7 @@ CustomerListForMeeting = props => {
             renderItem={ItemView}
             keyExtractor={(item, index) => index.toString()}
           />
-          <View style={styles.fab}>
+          {/* <View style={styles.fab}>
             <TouchableOpacity
               onPress={() => toggleSortingBottomNavigationView()}
               style={styles.fabIcon1}
@@ -272,7 +282,7 @@ CustomerListForMeeting = props => {
                 size={26}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       ) : (
         <View
@@ -297,7 +307,7 @@ CustomerListForMeeting = props => {
         </View>
       )}
       {/* Bottom for filters */}
-      <BottomSheet
+      {/* <BottomSheet
         visible={visible}
         //setting the visibility state of the bottom shee
         onBackButtonPress={toggleBottomNavigationView}
@@ -305,7 +315,7 @@ CustomerListForMeeting = props => {
         onBackdropPress={toggleBottomNavigationView}
       //Toggling the visibility state on the clicking out side of the sheet
       >
-        {/*Bottom Sheet inner View*/}
+        
 
         <View style={styles.bottomNavigationView}>
           <Text style={{ marginTop: 15, fontSize: 16, fontWeight: "600" }}>
@@ -336,20 +346,7 @@ CustomerListForMeeting = props => {
                 containerBorderRadius={10}
               />
             </View>
-            {/* <Text style={styles.marginBottom10}>Property type</Text>
-            <View style={styles.propSubSection}>
-              <ButtonGroup
-                selectedBackgroundColor="rgba(27, 106, 158, 0.85)"
-                onPress={updateIndex}
-                selectedIndex={index}
-                buttons={["Residential", "Commercial", "Any"]}
-                // containerStyle={{ height: 30 }}
-                textStyle={{ textAlign: "center" }}
-                selectedTextStyle={{ color: "#fff" }}
-                containerStyle={{ borderRadius: 10, width: 350 }}
-                containerBorderRadius={10}
-              />
-            </View> */}
+            
             <Text style={styles.marginBottom10}>Home type</Text>
             <View style={styles.propSubSection}>
               <ButtonGroup
@@ -414,10 +411,10 @@ CustomerListForMeeting = props => {
             />
           </ScrollView>
         </View>
-      </BottomSheet>
+      </BottomSheet> */}
 
       {/* Bottom sheet for sorting */}
-      <BottomSheet
+      {/* <BottomSheet
         visible={visibleSorting}
         //setting the visibility state of the bottom shee
         onBackButtonPress={toggleSortingBottomNavigationView}
@@ -425,7 +422,7 @@ CustomerListForMeeting = props => {
         onBackdropPress={toggleSortingBottomNavigationView}
       //Toggling the visibility state on the clicking out side of the sheet
       >
-        {/*Bottom Sheet inner View*/}
+        
 
         <View style={styles.sortingBottomNavigationView}>
           <Text style={{ marginTop: 15, fontSize: 16, fontWeight: "600" }}>
@@ -478,28 +475,32 @@ CustomerListForMeeting = props => {
             </View>
           </ScrollView>
         </View>
-      </BottomSheet>
+      </BottomSheet> */}
       {props.userDetails && ((props.userDetails.works_for === props.userDetails.id) ||
         (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)
-        )) ? <TouchableOpacity
-          style={{
-            // borderWidth: 1,
-            // borderColor: "rgba(0,0,0,0.2)",
-            alignItems: "center",
-            justifyContent: "center",
-            // width: 40,
-            position: "absolute",
-            bottom: 15,
-            right: 10,
-            // height: 40,
-            backgroundColor: "#01a699",
-            borderRadius: 100
-          }}
-          onPress={() => navigation.navigate("AddNewCustomerStack")}
-        >
-        <AntDesign name="pluscircleo" size={40} color="#ffffff" />
-        {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
-      </TouchableOpacity> : null}
+        ))
+        //   ? 
+        //   <TouchableOpacity
+        //     style={{
+        //       // borderWidth: 1,
+        //       // borderColor: "rgba(0,0,0,0.2)",
+        //       alignItems: "center",
+        //       justifyContent: "center",
+        //       // width: 40,
+        //       position: "absolute",
+        //       bottom: 15,
+        //       right: 10,
+        //       // height: 40,
+        //       backgroundColor: "#01a699",
+        //       borderRadius: 100
+        //     }}
+        //     onPress={() => navigation.navigate("AddNewCustomerStack")}
+        //   >
+        //   <AntDesign name="pluscircleo" size={40} color="#ffffff" />
+        //   {/* <Image style={{ width: 50, height: 50, resizeMode: 'contain' }} source={require('assets/imgs/group.png')} /> */}
+        // </TouchableOpacity> 
+        // : null
+      }
     </View>
   );
 };
@@ -600,7 +601,7 @@ const styles = StyleSheet.create({
     width: "98%",
     height: 40,
     // borderWidth: 1,
-    paddingLeft: 20,
+    paddingLeft: 0,
     margin: 5,
     // marginBottom: 5,
     borderRadius: 10,
@@ -609,5 +610,18 @@ const styles = StyleSheet.create({
   },
   marginBottom10: {
     marginBottom: 10
-  }
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+  },
 });

@@ -138,7 +138,7 @@ const CustomerCommercialPropertyDetailsForm = props => {
               />
               
             </View>
-            <Text>Building type*</Text>
+            <Text>Building Type*</Text>
             <View style={styles.propSubSection}>
 
             <CustomButtonGroup
@@ -159,7 +159,7 @@ const CustomerCommercialPropertyDetailsForm = props => {
               
             </View>
 
-            <Text>Looking for size in sqft*</Text>
+            <Text>Looking For Size In SQFT*</Text>
 
             <TextInput
               mode="outlined"

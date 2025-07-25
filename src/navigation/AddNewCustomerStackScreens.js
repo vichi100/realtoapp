@@ -60,7 +60,8 @@ const AddNewContactsStackScreens = () => {
                 navigationOptions={{ tabBarVisible: false }}
                 // options={{ headerShown: false, }}
                 options={{
-                    title: "Add New Customer"
+                    title: "Add New Customer",
+                    headerBackTitle: "Back", // This will make the back button title on the *next* screen "Back"
                 }}
             />
             <Stack.Screen
@@ -74,12 +75,18 @@ const AddNewContactsStackScreens = () => {
             <Stack.Screen
                 name="ContactResidentialPropertyDetailsForm"
                 component={ContactResidentialPropertyDetailsForm}
-                options={{ title: "Property Details" }}
+                options={{ 
+                    title: "Property Details",
+                    headerBackTitle: "Back", // This will make the back button title on the *next* screen "Back"
+                     }}
             />
             <Stack.Screen
                 name="ContactRentDetailsForm"
                 component={ContactRentDetailsForm}
-                options={{ title: "Rent Details" }}
+                options={{ 
+                    title: "Rent Details",
+                    headerBackTitle: "Back", // This will make the back button title on the *next* screen "Back"
+                 }}
             />
             <Stack.Screen
                 name="AddNewCustomerRentResidentialFinalDetails"
@@ -93,7 +100,9 @@ const AddNewContactsStackScreens = () => {
             <Stack.Screen
                 name="ContactBuyResidentialDetailsForm"
                 component={ContactBuyResidentialDetailsForm}
-                options={{ title: "Buy Details" }}
+                options={{ title: "Buy Details" ,
+                    headerBackTitle: "Back", // This will make the back button title on the *next* screen "Back"
+                }}
             />
 
             <Stack.Screen
@@ -126,13 +135,17 @@ const AddNewContactsStackScreens = () => {
             <Stack.Screen
                 name="CustomerCommercialRentDetailsForm"
                 component={CustomerCommercialRentDetailsForm}
-                options={{ title: "Rent Details" }}
+                options={{ title: "Rent Details",
+                    headerBackTitle: "Back", // This will make the back button title on the *next* screen "Back"
+                }}
             />
 
             <Stack.Screen
                 name="CustomerCommercialBuyDetailsForm"
                 component={CustomerCommercialBuyDetailsForm}
-                options={{ title: "Buy Details" }}
+                options={{ title: "Buy Details",
+                    headerBackTitle: "Back", // This will make the back button title on the *next* screen "Back"
+                 }}
             />
             <Stack.Screen
                 name="AddNewCustomerCommercialBuyFinalDetails"
