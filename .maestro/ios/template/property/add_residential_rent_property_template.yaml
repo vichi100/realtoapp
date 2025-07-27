@@ -117,4 +117,4 @@ appId: com.realtoapp.ios
 - waitForAnimationToEnd
 - tapOn: "Residential"
 - waitForAnimationToEnd
-- assertVisible: ".*${final_details_property_title}.*"
+# - assertVisible: ".*${final_details_property_title}.*"

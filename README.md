@@ -476,6 +476,10 @@ flows:
 2) once metro start or QR code appear then press i to start IOS simulator.
 3) it want a to ccreate a fresh build run below cmd on new terminal and le the build complete
    npx expo run:ios --no-build-cache
+   Note : Add below in info.plist file for photo/pics access on ios else your app will crash
+   <key>NSPhotoLibraryUsageDescription</key>
+    <string>Your app needs access to the photo library to allow you to select and upload images for your properties.</string>
+ 
 4) to start Maestro run below cmd on new terminal 
    maestro studio
 5) to run test suit run below cmd

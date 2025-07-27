@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
+
 // Function to parse the test data file
 function parseTestData(filePath) {
   const fileContent = fs.readFileSync(filePath, 'utf8');
@@ -89,8 +90,21 @@ function generateYaml(template, data) {
 
 // Function to create test data variations for multiple files
 function createTestDataVariations(baseData) {
+
   return [
     { ...baseData, variation: '1' },
+    { 
+      ...baseData, 
+      variation: '2',
+      owner_name_input: 'RSP2',
+      owner_mobile: '9833022222',
+      locaity_details_flat_num: 'RSP2 F2 Wing 2',
+      locaity_details_building_name: 'RSP2 Bulding 2',
+      locaity_details_landmark: 'RSP2 Landmark 2',
+      final_details_top_header: '.*Bulding 2.*',
+      final_details_owner_name: 'RSP2',
+      final_details_owner_mobile: '9833022222',
+    },
     // { 
     //   ...baseData, 
     //   variation: '2',
@@ -116,7 +130,7 @@ function createTestDataVariations(baseData) {
   ];
 }
 
-const dataFileLocation = '../../dataset/residential_sell_property_data.txt'
+const dataFileLocation = '../../dataset/property/residential_sell_property_data.txt'
 const templateFileLocation = '../../ios/template/property/add_residential_sell_property_template.yaml';
 
 // Main execution

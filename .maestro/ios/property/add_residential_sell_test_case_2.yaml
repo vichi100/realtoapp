@@ -8,70 +8,73 @@ appId: com.example.app
 - tapOn: "property_for_sell"
 - assertVisible: "Owner Details"
 - tapOn: "Name*"
-- inputText: "${owner_name_input}"
+- inputText: "RSP2"
 - hideKeyboard
 - waitForAnimationToEnd  
 - tapOn:
     text: "return"
     optional: true 
 - tapOn: "Mobile*"
-- inputText: "${owner_mobile}"
+- inputText: "9833022222"
 - hideKeyboard  
 - waitForAnimationToEnd  
 - tapOn: "Done"
 - tapOn: "Address*"
-- inputText: "${owner_address}"
+- inputText: "juhu mumbai"
 - hideKeyboard  
 - waitForAnimationToEnd
 - tapOn:
     text: "return"
     optional: true 
+- tapOn:
+    text: "Done"
+    optional: true 
 - tapOn: "NEXT"
 
 - assertVisible: "Locality Details"
 - tapOn: "City*"
-- inputText: "${locaity_details_city}"
+- inputText: "Mumbai"
 - tapOn: "Add multiple locations within city"
-- inputText: "${locaity_details_location}"
-- tapOn: "${locaity_details_location_suggestion}"
+- inputText: "Juhu"
+- tapOn: "Juhu Beach, Maharashtra"
 - tapOn: "Flat No and Wing*"
-- inputText: "${locaity_details_flat_num}"
+- inputText: "RSP2 F2 Wing 2"
 - tapOn: "Building Name / Society*"
-- inputText: "${locaity_details_building_name}"
+- inputText: "RSP2 Bulding 2"
 - tapOn: "Street / Landmark*"
-- inputText: "${locaity_details_landmark}"
+- inputText: "RSP2 Landmark 2"
 - tapOn: "NEXT"
 
 - assertVisible: "House Type*"
-- tapOn: "house_type_${property_details_house_type_lower}"
+- tapOn: "house_type_apartment"
 - assertVisible: "Size of BHK*"
-- tapOn: "bhk_type_${property_details_size_of_bhk_lower}"
-- tapOn: "washroom_number_${property_details_how_many_washroom}"
+- tapOn: "bhk_type_2bhk"
+- tapOn: "washroom_number_2"
 - assertVisible: "Furnishing*"
-- tapOn: "furnishing_status_${property_details_furnishing_lower}"
+- tapOn: "furnishing_status_semi"
 - assertVisible: "Parkings*"
-- tapOn: "parking_number_${property_details_parkings}"
-- tapOn: "parking_type_${property_details_parking_type_lower}"
+- tapOn: "parking_number_2"
+- tapOn: "parking_type_car"
 - assertVisible: "Property Age*"
-- tapOn: "property_age_${property_details_property_age}"
+- tapOn: "property_age_6-10"
 - scrollUntilVisible:
     element:
       text: "NEXT"
     direction: down
 - tapOn: "Floor"
-- inputText: "${property_details_floor}"
+- inputText: "20"
 - hideKeyboard  
 - waitForAnimationToEnd  
 - tapOn: "Done"
 - tapOn: "Total Floor"
-- inputText: "${property_details_total_floor}"
+- inputText: "25"
 - hideKeyboard  
 - waitForAnimationToEnd  
 - tapOn: "Done"
 - assertVisible: "Lift*"
-- tapOn: "lift_available_${property_details_lift_lower}"
+- tapOn: "lift_available_yes"
 - tapOn: "Property Size"
-- inputText: "${property_details_property_size}"
+- inputText: "500"
 - hideKeyboard  
 - waitForAnimationToEnd  
 - tapOn: "Done"
@@ -83,13 +86,13 @@ appId: com.example.app
 
 - assertVisible: "Sell Details"
 - tapOn: "Expected Sell Price*"
-- inputText: "${sell_details_expected_sell_price}"
+- inputText: "25000000"
 - tapOn: "Maintenance Charge"
-- inputText: "${sell_details_maintenance}"
+- inputText: "2500"
 - tapOn: "Available From *"
-- tapOn: " ${sell_details_available_from} "
+- tapOn: " 30 "
 - tapOn: "OK"
-- tapOn: "negotiable_option_${sell_details_negotiable_lower}"
+- tapOn: "negotiable_option_yes"
 - tapOn: "NEXT"
 
 - assertVisible: "Add Images"
@@ -101,12 +104,12 @@ appId: com.example.app
 
 - waitForAnimationToEnd  
 - assertVisible: "Final Details"
-- assertVisible: ".*${final_details_top_header}.*"
-- assertVisible: ".*${final_details_sub_header}.*"
+- assertVisible: ".*.*Bulding 2.*.*"
+- assertVisible: ".*.*Juhu.*.*"
 - assertVisible: "Details"
-- assertVisible: "${final_details_floor_type_value}"
-- assertVisible: "${final_details_age_of_building_type}"
-- assertVisible: "${final_details_furnishing_type_value}"
+- assertVisible: "20/25"
+- assertVisible: "6-10"
+- assertVisible: "Semi"
 - assertVisible: "Owner"
 
 - scrollUntilVisible:
@@ -118,4 +121,4 @@ appId: com.example.app
 - waitForAnimationToEnd
 - tapOn: "Residential"
 - waitForAnimationToEnd
-# - assertVisible: ".*${final_details_property_title}.*"
+# - assertVisible: ".*Sell Off In RSP1 Bulding 1.*"

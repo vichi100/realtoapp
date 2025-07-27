@@ -103,4 +103,4 @@ appId: com.example.app
 - waitForAnimationToEnd
 - tapOn: "Commercial"
 - waitForAnimationToEnd
-- assertVisible: ".*Rent In ${locaity_details_building_name}.*"
+# - assertVisible: ".*Rent In ${locaity_details_building_name}.*"

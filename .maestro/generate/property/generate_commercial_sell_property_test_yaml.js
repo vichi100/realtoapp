@@ -84,6 +84,18 @@ function generateYaml(template, data) {
 function createTestDataVariations(baseData) {
   return [
     { ...baseData, variation: '1' },
+    { 
+      ...baseData, 
+      variation: '2',
+      owner_name_input: 'CSP2',
+      owner_mobile: '9833044442',
+      locaity_details_flat_num: 'CSP2 F2 Wing 2',
+      locaity_details_building_name: 'CSP2 Building 2',
+      locaity_details_landmark: 'CSP2 Landmark 2',
+      final_details_top_header: '.*Bulding 2.*',
+      final_details_owner_name: 'CSP2',
+      final_details_owner_mobile: '9833044442'
+    },
     // { 
     //   ...baseData, 
     //   variation: '2',
@@ -108,7 +120,7 @@ function createTestDataVariations(baseData) {
   ];
 }
 
-const dataFileLocation = '../../dataset/commercial_sell_property_data.txt'
+const dataFileLocation = '../../dataset/property/commercial_sell_property_data.txt'
 const templateFileLocation = '../../ios/template/property/add_commercial_sell_property_template.yaml';
 
 // Main execution

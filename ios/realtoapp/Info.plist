@@ -81,5 +81,7 @@
     <string>Automatic</string>
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Your app needs access to the photo library to allow you to select and upload images for your properties.</string>
   </dict>
 </plist>

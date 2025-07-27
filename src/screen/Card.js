@@ -572,20 +572,20 @@ const Card = props => {
                 paddingBottom: 20, paddingTop: 5, minHeight: 90
               }}>
                 <Text style={[styles.title]}
-                  accessibilityLabel={`header_${item.property_id}`}
+                  accessibilityLabel={`Rent In ${item.property_address.building_name}`}
                   testID={`header_id_${item.property_id}`}
                 >
                   Rent In {item.property_address.building_name},{" "}
                   {item.property_address.landmark_or_street}
                 </Text>
                 <Text style={{ paddingRight: 10 }}
-                  accessibilityLabel={`address_${item.property_id}`}
+                  accessibilityLabel={item.property_address.formatted_address}
                   testID={`address_id_${item.property_id}`}
                 >
                   {item.property_address.formatted_address}
                 </Text>
                 <Text style={{ paddingRight: 10, color: "#0f1a20", marginTop: 5 }}
-                  accessibilityLabel={`ref_${item.property_id}`}
+                  accessibilityLabel={` Reference id: ${item.property_id?.slice(-6)}`}
                   testID={`ref_id_${item.property_id}`}
                 >
                   Reference id: {item.property_id?.slice(-6)}

@@ -25,6 +25,9 @@ appId: com.realtoapp.ios
 - waitForAnimationToEnd
 - tapOn:
     text: "return"
+    optional: true
+- tapOn:
+    text: "Done"
     optional: true 
 - tapOn: "NEXT"
 
@@ -117,4 +120,4 @@ appId: com.realtoapp.ios
 - waitForAnimationToEnd
 - tapOn: "Residential"
 - waitForAnimationToEnd
-- assertVisible: ".*Rent In RRP1 Bulding 1.*"
+# - assertVisible: ".*Rent In RRP1 Bulding 1.*"

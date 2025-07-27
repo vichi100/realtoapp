@@ -82,6 +82,18 @@ function generateYaml(template, data) {
 function createTestDataVariations(baseData) {
   return [
     { ...baseData, variation: '1' },
+    {
+      ...baseData,
+      variation: '2',
+      owner_name_input: 'CRP2',
+      owner_mobile: '9833033332',
+      locaity_details_flat_num: 'CRP2 F2 Wing 2',
+      locaity_details_building_name: 'CRP2 Building 2',
+      locaity_details_landmark: 'CRP2 Landmark 2',
+      final_details_top_header: '.*Bulding 2.*',
+      final_details_owner_name: 'CRP2',
+      final_details_owner_mobile: '9833033332'
+    },
     // { 
     //   ...baseData, 
     //   variation: '2',
@@ -106,7 +118,7 @@ function createTestDataVariations(baseData) {
   ];
 }
 
-const dataFileLocation = '../../dataset/commercial_rent_property_data.txt'
+const dataFileLocation = '../../dataset/property/commercial_rent_property_data.txt'
 const templateFileLocation = '../../ios/template/property/add_commercial_rent_property_template.yaml';
 
 // Main execution
@@ -116,16 +128,16 @@ const templateFilePath = path.join(__dirname, templateFileLocation);
 try {
   // Parse the test data file
   const parsedData = parseTestData(dataFilePath);
-  
+
   // Transform the parsed data into template variables
   const baseTemplateData = transformTestData(parsedData);
-  
+
   // Create 4 variations of test data
   const testDataVariations = createTestDataVariations(baseTemplateData);
-  
+
   // Read the template
   const template = fs.readFileSync(templateFilePath, 'utf8');
-  
+
   // Generate YAML files for each variation
   testDataVariations.forEach((testData, index) => {
     const outputFilePath = path.join(__dirname, `../../ios/property/add_commercial_rent_test_case_${index + 1}.yaml`);
@@ -133,7 +145,7 @@ try {
     fs.writeFileSync(outputFilePath, yamlContent);
     console.log(`Generated commercial rent test case ${index + 1} at: ${outputFilePath}`);
   });
-  
+
 } catch (error) {
   console.error('Error generating test cases:', error);
   process.exit(1);

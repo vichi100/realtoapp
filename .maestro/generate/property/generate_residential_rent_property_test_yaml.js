@@ -90,13 +90,22 @@ function generateYaml(template, data) {
 function createTestDataVariations(baseData) {
   return [
     { ...baseData, variation: '1' },
-    // { 
-    //   ...baseData, 
-    //   variation: '2',
-    //   owner_name_input: `${baseData.owner_name_input}_v2`,
-    //   property_details_floor: '15',
-    //   property_details_total_floor: '30'
-    // },
+    { 
+      ...baseData, 
+      variation: '2',
+      owner_name_input: `RRP2`,
+      owner_mobile: '9833011112',
+      owner_address: 'juhu mumbai',
+      locaity_details_city: 'Mumbai',
+      locaity_details_location: 'Juhu',
+      locaity_details_flat_num: 'RRP2 F2 Wing 2',
+      locaity_details_building_name: 'RRP2 Bulding 2',
+      locaity_details_landmark: 'RRP2 Landmark 2',
+      final_details_top_header: '.*Bulding 2.*',
+      final_details_owner_name: 'RRP2',
+      final_details_owner_mobile: '9833011112',
+      final_details_owner_address: 'juhu mumbai',
+    },
     // { 
     //   ...baseData, 
     //   variation: '3',
@@ -114,7 +123,7 @@ function createTestDataVariations(baseData) {
   ];
 }
 
-const dataFileLocation = '../../dataset/residential_rent_property_data.txt'
+const dataFileLocation = '../../dataset/property/residential_rent_property_data.txt'
 const templateFileLocation = '../../ios/template/property/add_residential_rent_property_template.yaml';
 
 // Main execution

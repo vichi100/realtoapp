@@ -9,55 +9,58 @@ appId: com.example.app
 - tapOn: "property_for_sell"
 - assertVisible: "Owner Details"
 - tapOn: "Name*"
-- inputText: "${owner_name_input}"
+- inputText: "CSP2"
 - hideKeyboard
 - waitForAnimationToEnd  
 - tapOn:
     text: "return"
     optional: true 
 - tapOn: "Mobile*"
-- inputText: "${owner_mobile}"
+- inputText: "9833044442"
 - hideKeyboard  
 - waitForAnimationToEnd  
 - tapOn: "Done"
 - tapOn: "Address*"
-- inputText: "${owner_address}"
+- inputText: "juhu mumbai"
 - hideKeyboard  
 - waitForAnimationToEnd
 - tapOn:
     text: "return"
     optional: true 
+- tapOn:
+    text: "Done"
+    optional: true 
 - tapOn: "NEXT"
 
 - assertVisible: "Locality Details"
 - tapOn: "City*"
-- inputText: "${locaity_details_city}"
+- inputText: "Mumbai"
 - tapOn: "Add multiple locations within city"
-- inputText: "${locaity_details_location}"
-- tapOn: "${locaity_details_location_suggestion}"
+- inputText: "Juhu"
+- tapOn: "Juhu Beach, Maharashtra"
 - tapOn: "Building Name / Society*"
-- inputText: "${locaity_details_building_name}"
+- inputText: "CSP2 Building 2"
 - tapOn: "Street / Landmark*"
-- inputText: "${locaity_details_landmark}"
+- inputText: "CSP2 Landmark 2"
 - tapOn: "NEXT"
 
 - assertVisible: "Property Details"
 - assertVisible: "Property Type*"
-- tapOn: "commercial_property_type_${property_details_property_type_lower}"
+- tapOn: "commercial_property_type_shop"
 - tapOn: "Building Type*"
-- tapOn: "commercial_property_building_type_${property_details_building_type_lower}"
+- tapOn: "commercial_property_building_type_mall"
 - tapOn: "Ideal For*(Multi Select)"
-- tapOn: "commercial_property_ideal_for_${property_details_ideal_for_lower}"
+- tapOn: "commercial_property_ideal_for_shop"
 - scrollUntilVisible:
     element:
       text: "NEXT"
     direction: down
 - assertVisible: "Parkings"
-- tapOn: "commercial_parking_type_${property_details_parkings_lower}"
+- tapOn: "commercial_parking_type_public"
 - assertVisible: "Power Backup*"
-- tapOn: "power_backup_${property_details_power_backup_lower}"
+- tapOn: "power_backup_yes"
 - tapOn: "Property Size"
-- inputText: "${property_details_property_size}"
+- inputText: "500"
 - hideKeyboard  
 - waitForAnimationToEnd  
 - tapOn: "Done"
@@ -69,14 +72,14 @@ appId: com.example.app
 
 - assertVisible: "Sell Details"
 - tapOn: "Expected Sell Price*"
-- inputText: "${sell_details_expected_sell_price}"
+- inputText: "30000000"
 - tapOn: "Maintenance Charge"
-- inputText: "${sell_details_maintenance}"
+- inputText: "1500"
 - tapOn: "Available From *"
-- tapOn: " ${sell_details_available_from} "
+- tapOn: " 30 "
 - tapOn: "OK"
 - assertVisible: "Negotiable*"
-- tapOn: "negotiable_option_${sell_details_negotiable_lower}"
+- tapOn: "negotiable_option_yes"
 - tapOn: "NEXT"
 
 - assertVisible: "Add Images"
@@ -88,11 +91,11 @@ appId: com.example.app
 
 - waitForAnimationToEnd  
 - assertVisible: "Final Details"
-- assertVisible: ".*${final_details_top_header}.*"
-- assertVisible: ".*${final_details_sub_header}.*"
+- assertVisible: ".*.*Bulding 2.*.*"
+- assertVisible: ".*.*Juhu.*.*"
 - assertVisible: "Details"
-- assertVisible: "${final_details_building_type_value}"
-- assertVisible: "${final_details_age_of_building_type}"
+- assertVisible: "Mall"
+- assertVisible: "6-10"
 - assertVisible: "Ideal For"
 - assertVisible: "Owner"
 
@@ -106,4 +109,4 @@ appId: com.example.app
 - waitForAnimationToEnd
 - tapOn: "Commercial"
 - waitForAnimationToEnd
-# - assertVisible: ".*${final_details_property_title}.*"
+# - assertVisible: ".*Sell Off In CSP1 Bulding 1.*"

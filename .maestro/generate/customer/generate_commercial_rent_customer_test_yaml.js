@@ -90,6 +90,13 @@ function generateYaml(template, data) {
 function createTestDataVariations(baseData) {
   return [
     { ...baseData, variation: '1' },
+    { ...baseData, 
+      variation: '2',
+      customer_details_name: 'Customer Rent Commercial 2',
+      customer_details_mobile: '99330677772',
+      final_details_name_header: '.*Customer Rent Commercial 2.*',
+      final_details_mobile_header: '.*99330677772.*',
+    },
     // { 
     //   ...baseData, 
     //   variation: '2',

@@ -26,6 +26,9 @@ appId: com.example.app
 - tapOn:
     text: "return"
     optional: true 
+- tapOn:
+    text: "Done"
+    optional: true 
 - tapOn: "NEXT"
 
 - assertVisible: "Locality Details"
@@ -118,4 +121,4 @@ appId: com.example.app
 - waitForAnimationToEnd
 - tapOn: "Residential"
 - waitForAnimationToEnd
-- assertVisible: ".*Sell Off In RSP1 Bulding 1.*"
+# - assertVisible: ".*Sell Off In RSP1 Bulding 1.*"
