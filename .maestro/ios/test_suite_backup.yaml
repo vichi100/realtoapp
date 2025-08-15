@@ -9,20 +9,20 @@ appId: com.realtoapp.ios
     file: login.yaml
 - runFlow:
     file: property/add_residential_rent_test_case_1.yaml
-# - runFlow:
-#     file: property/add_residential_sell_test_case_1.yaml
-# - runFlow:
-#     file: property/add_commercial_rent_test_case_1.yaml
-# - runFlow:
-#     file: property/add_commercial_sell_test_case_1.yaml
-# - runFlow:
-#     file: customer/add_residential_rent_customer_test_case_1.yaml
-# - runFlow:
-#     file: customer/add_residential_buy_customer_test_case_1.yaml
-# - runFlow:
-#     file: customer/add_commercial_rent_customer_test_case_1.yaml
-# - runFlow:
-#     file: customer/add_commercial_buy_customer_test_case_1.yaml
+- runFlow:
+    file: property/add_residential_sell_test_case_1.yaml
+- runFlow:
+    file: property/add_commercial_rent_test_case_1.yaml
+- runFlow:
+    file: property/add_commercial_sell_test_case_1.yaml
+- runFlow:
+    file: customer/add_residential_rent_customer_test_case_1.yaml
+- runFlow:
+    file: customer/add_residential_buy_customer_test_case_1.yaml
+- runFlow:
+    file: customer/add_commercial_rent_customer_test_case_1.yaml
+- runFlow:
+    file: customer/add_commercial_buy_customer_test_case_1.yaml
 
 # - runFlow:
 #     file: property/add_residential_rent_property.yaml

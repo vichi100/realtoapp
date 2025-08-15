@@ -26,6 +26,8 @@ Input
 TapOn
     rent_details_required_from="30"
 
+takeScreenshot
+    final_details_screenshot=final_details_residential_rent_customer_1
 
 Assertive
     final_details_name_header=.*Customer Rent Residential 1.*

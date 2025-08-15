@@ -8,7 +8,8 @@ function parseTestData(filePath) {
   const testData = {
     tapOn: {},
     input: {},
-    assertive: {}
+    assertive: {},
+    takeScreenshot:{}
   };
   let currentSection = null;
 
@@ -23,6 +24,9 @@ function parseTestData(filePath) {
       continue;
     } else if (line.trim().toLowerCase() === 'assertive') {
       currentSection = 'assertive';
+      continue;
+    } else if (line.trim().toLowerCase() === 'takescreenshot') {
+      currentSection = 'takeScreenshot';
       continue;
     }
 
@@ -60,6 +64,7 @@ function transformTestData(parsedData) {
     sell_details_maintenance: parsedData.input.sell_details_maintenance,
     sell_details_available_from: parsedData.tapOn.sell_details_available_from,
     sell_details_negotiable_lower: parsedData.tapOn.sell_details_negotiable.toLowerCase(),
+    final_details_screenshot: parsedData.takeScreenshot.final_details_screenshot,
     final_details_top_header: parsedData.assertive.final_details_top_header,
     final_details_sub_header: parsedData.assertive.final_details_sub_header,
     final_details_building_type_value: parsedData.assertive.final_details_building_type_value,
@@ -92,7 +97,8 @@ function createTestDataVariations(baseData) {
       locaity_details_flat_num: 'CSP2 F2 Wing 2',
       locaity_details_building_name: 'CSP2 Building 2',
       locaity_details_landmark: 'CSP2 Landmark 2',
-      final_details_top_header: '.*Bulding 2.*',
+      final_details_screenshot: 'final_details_commercial_sell_property_2',
+      final_details_top_header: '.*Building 2.*',
       final_details_owner_name: 'CSP2',
       final_details_owner_mobile: '9833044442'
     },

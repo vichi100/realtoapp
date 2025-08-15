@@ -517,25 +517,29 @@ const ListingResidential = props => {
 
   }
 
-  const ItemView = ({ item }) => {
+  const ItemView = ({ item, index }) => {
 
     if (item.property_type.toLowerCase() === "Residential".toLowerCase()) {
       if (item.property_for.toLowerCase() === "Rent".toLowerCase()) {
         // rentPropCount.push("1");
         // console.log(rentPropCount.length);
         return (
-          <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")} accessibilityLabelId={`residential-rent-${index}`}
+          testID={`residential-rent-${index}`}>
             <CardResidentialRent navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox}
-              disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} />
+              disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} 
+              />
 
           </TouchableOpacity>
         );
       } else if (item.property_for.toLowerCase() === "Sell".toLowerCase()) {
         // sellPropCount.push("1");
         return (
-          <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
+          <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")} accessibilityLabelId={`residential-rent-${index}`}
+          testID={`residential-rent-${index}`}>
             <CardResidentialSell navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox}
-              disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} />
+              disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} 
+               />
           </TouchableOpacity>
         );
       }

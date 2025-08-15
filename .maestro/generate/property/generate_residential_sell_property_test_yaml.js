@@ -9,7 +9,8 @@ function parseTestData(filePath) {
   const testData = {
     tapOn: {},
     input: {},
-    assertive: {}
+    assertive: {},
+    takeScreenshot:{}
   };
   let currentSection = null;
 
@@ -24,6 +25,10 @@ function parseTestData(filePath) {
       continue;
     } else if (line.trim().toLowerCase() === 'assertive') {
       currentSection = 'assertive';
+      continue;
+    }
+    else if (line.trim().toLowerCase() === 'takescreenshot') {
+      currentSection = 'takeScreenshot';
       continue;
     }
 
@@ -67,6 +72,7 @@ function transformTestData(parsedData) {
     sell_details_maintenance: parsedData.input.sell_details_maintenance,
     sell_details_available_from: parsedData.tapOn.sell_details_available_from,
     sell_details_negotiable_lower: parsedData.tapOn.sell_details_negotiable.toLowerCase(),
+    final_details_screenshot: parsedData.takeScreenshot.final_details_screenshot,
     final_details_top_header: parsedData.assertive.final_details_top_header,
     final_details_sub_header: parsedData.assertive.final_details_sub_header,
     final_details_floor_type_value: parsedData.assertive.final_details_floor_type_value,
@@ -79,6 +85,8 @@ function transformTestData(parsedData) {
 // Function to generate YAML from template and data
 function generateYaml(template, data) {
   let result = template;
+  //   console.log('Generating YAML with data Sell property:', data);
+  // console.log('Template before replacement Sell property:', result);
   for (const [key, value] of Object.entries(data)) {
     if (value === undefined) {
       throw new Error(`Missing required value for key: ${key}`);
@@ -99,9 +107,10 @@ function createTestDataVariations(baseData) {
       owner_name_input: 'RSP2',
       owner_mobile: '9833022222',
       locaity_details_flat_num: 'RSP2 F2 Wing 2',
-      locaity_details_building_name: 'RSP2 Bulding 2',
+      locaity_details_building_name: 'RSP2 Building 2',
       locaity_details_landmark: 'RSP2 Landmark 2',
-      final_details_top_header: '.*Bulding 2.*',
+      final_details_screenshot: 'final_details_residential_sell_property_2',
+      final_details_top_header: '.*Building 2.*',
       final_details_owner_name: 'RSP2',
       final_details_owner_mobile: '9833022222',
     },

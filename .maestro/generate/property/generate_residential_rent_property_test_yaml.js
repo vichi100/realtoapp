@@ -8,7 +8,8 @@ function parseTestData(filePath) {
   const testData = {
     tapOn: {},
     input: {},
-    assertive: {}
+    assertive: {},
+    takeScreenshot:{}
   };
   let currentSection = null;
 
@@ -23,6 +24,9 @@ function parseTestData(filePath) {
       continue;
     } else if (line.trim().toLowerCase() === 'assertive') {
       currentSection = 'assertive';
+      continue;
+    }else if (line.trim().toLowerCase() === 'takescreenshot') {
+      currentSection = 'takeScreenshot';
       continue;
     }
 
@@ -41,6 +45,7 @@ function parseTestData(filePath) {
 
 // Function to transform parsed data into template variables (no default values)
 function transformTestData(parsedData) {
+  // console.log('Generating YAML with data Rent property:', parsedData);
   return {
     owner_name_input: parsedData.input.owner_name_input,
     owner_mobile: parsedData.input.owner_mobile,
@@ -65,6 +70,7 @@ function transformTestData(parsedData) {
     rent_details_expected_rent: parsedData.input.rent_details_expected_rent,
     rent_details_expected_deposit: parsedData.input.rent_details_expected_deposit,
     rent_details_available_from: parsedData.tapOn.rent_details_available_from,
+    final_details_screenshot: parsedData.takeScreenshot.final_details_screenshot,
     final_details_top_header: parsedData.assertive.final_details_top_header,
     final_details_sub_header: parsedData.assertive.final_details_sub_header,
     final_details_floor_type_value: parsedData.assertive.final_details_floor_type_value,
@@ -77,6 +83,8 @@ function transformTestData(parsedData) {
 // Function to generate YAML from template and data
 function generateYaml(template, data) {
   let result = template;
+  // console.log('Generating YAML with data Rent property:', data);
+  // console.log('Template before replacement Rent property:', result);
   for (const [key, value] of Object.entries(data)) {
     if (value === undefined) {
       throw new Error(`Missing required value for key: ${key}`);
@@ -99,9 +107,10 @@ function createTestDataVariations(baseData) {
       locaity_details_city: 'Mumbai',
       locaity_details_location: 'Juhu',
       locaity_details_flat_num: 'RRP2 F2 Wing 2',
-      locaity_details_building_name: 'RRP2 Bulding 2',
+      locaity_details_building_name: 'RRP2 Building 2',
       locaity_details_landmark: 'RRP2 Landmark 2',
-      final_details_top_header: '.*Bulding 2.*',
+      final_details_screenshot: 'final_details_residential_rent_property_2',
+      final_details_top_header: '.*Building 2.*',
       final_details_owner_name: 'RRP2',
       final_details_owner_mobile: '9833011112',
       final_details_owner_address: 'juhu mumbai',

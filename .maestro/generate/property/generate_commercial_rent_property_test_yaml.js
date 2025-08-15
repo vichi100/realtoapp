@@ -8,7 +8,8 @@ function parseTestData(filePath) {
   const testData = {
     tapOn: {},
     input: {},
-    assertive: {}
+    assertive: {},
+    takeScreenshot:{}
   };
   let currentSection = null;
 
@@ -23,6 +24,9 @@ function parseTestData(filePath) {
       continue;
     } else if (line.trim().toLowerCase() === 'assertive') {
       currentSection = 'assertive';
+      continue;
+    } else if (line.trim().toLowerCase() === 'takescreenshot') {
+      currentSection = 'takeScreenshot';
       continue;
     }
 
@@ -59,6 +63,7 @@ function transformTestData(parsedData) {
     rent_details_expected_rent: parsedData.input.rent_details_expected_rent,
     rent_details_expected_deposit: parsedData.input.rent_details_expected_deposit,
     rent_details_available_from: parsedData.tapOn.rent_details_available_from,
+    final_details_screenshot: parsedData.takeScreenshot.final_details_screenshot,
     final_details_top_header: parsedData.assertive.final_details_top_header,
     final_details_sub_header: parsedData.assertive.final_details_sub_header,
     final_details_building_type_value: parsedData.assertive.final_details_building_type_value,
@@ -90,7 +95,8 @@ function createTestDataVariations(baseData) {
       locaity_details_flat_num: 'CRP2 F2 Wing 2',
       locaity_details_building_name: 'CRP2 Building 2',
       locaity_details_landmark: 'CRP2 Landmark 2',
-      final_details_top_header: '.*Bulding 2.*',
+      final_details_screenshot: 'final_details_commercial_rent_property_2',
+      final_details_top_header: '.*Building 2.*',
       final_details_owner_name: 'CRP2',
       final_details_owner_mobile: '9833033332'
     },

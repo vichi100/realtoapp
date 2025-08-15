@@ -12,7 +12,7 @@ appId: com.realtoapp.ios
 - hideKeyboard
 - waitForAnimationToEnd  
 - tapOn:
-    text: "return"
+    text: return
     optional: true 
 - tapOn: "Mobile*"
 - inputText: "${owner_mobile}"
@@ -24,22 +24,40 @@ appId: com.realtoapp.ios
 - hideKeyboard  
 - waitForAnimationToEnd
 - tapOn:
-    text: "return"
-    optional: true 
+    text: return
+    optional: true
+- tapOn: 
+    text: Done
+    optional: true  
 - tapOn: "NEXT"
 
 - assertVisible: "Locality Details"
 - tapOn: "City*"
 - inputText: "${locaity_details_city}"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "Add multiple locations within city"
 - inputText: "${locaity_details_location}"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "${locaity_details_location_suggestion}"
 - tapOn: "Flat No and Wing*"
 - inputText: "${locaity_details_flat_num}"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "Building Name / Society*"
 - inputText: "${locaity_details_building_name}"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "Street / Landmark*"
 - inputText: "${locaity_details_landmark}"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "NEXT"
 
 - assertVisible: "House Type*"
@@ -84,8 +102,10 @@ appId: com.realtoapp.ios
 - assertVisible: "Rent Details"
 - tapOn: "Expected Rent"
 - inputText: "${rent_details_expected_rent}"
+- tapOn: "Done"
 - tapOn: "Expected Deposit"
 - inputText: "${rent_details_expected_deposit}"
+- tapOn: "Done"
 - tapOn: "Available From *"
 - tapOn: " ${rent_details_available_from} "
 - tapOn: "OK"
@@ -100,6 +120,7 @@ appId: com.realtoapp.ios
 
 - waitForAnimationToEnd  
 - assertVisible: "Final Details"
+- takeScreenshot: "${final_details_screenshot}"
 - assertVisible: ".*${final_details_top_header}.*"
 - assertVisible: ".*${final_details_sub_header}.*"
 - assertVisible: "Details"

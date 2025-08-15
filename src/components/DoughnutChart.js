@@ -83,7 +83,7 @@ const DoughnutChart = ({
         {showPercentage && (
           <View style={[styles.centerTextContainer, { width: holeRadius * 2, height: holeRadius * 2 }]}>
             <Text style={[styles.centerText, { color: textColor, fontSize: textSize }]}>
-              {mainPercentage < 40 ? 0 : mainPercentage}%
+              {mainPercentage }%
             </Text>
             <Text style={[styles.centerText, { color: textColor, fontSize: textSize / 1.2 }]}>
             Match

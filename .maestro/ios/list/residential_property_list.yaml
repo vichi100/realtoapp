@@ -1,0 +1,7 @@
+appId: com.realtoapp.ios
+---
+- tapOn: "bottom_tab_properties_icon"
+- assertVisible: "Residential"
+- tapOn:
+    id: "residential-rent-0"
+

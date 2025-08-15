@@ -6,14 +6,19 @@
 
 - waitForAnimationToEnd # Wait for any initial launch animations to finish
 - assertVisible: 'Supercharge your property broking'
+- takeScreenshot: "login_screen_current"
 - tapOn: "Enter Mobile Number"
 - assertVisible: "Enter Mobile Number"
-- inputText: "9000000002"
+- hideKeyboard
+- inputText: "9000000001"
+- pressKey: "escape"
+- hideKeyboard
+- tapOn: 'Done'
 - waitForAnimationToEnd  
 - tapOn: "controller_play_login_icon" # Assuming this is a button to proceed or confirm
 
 - assertVisible: "OTP sent to mobile"
-- assertVisible: "+91 9000000002"
+- assertVisible: "+91 9000000001"
 - tapOn: "One-Time Password" # Assuming this is a field or button to focus on OTP
 - inputText: "999999"
 - waitForAnimationToEnd  

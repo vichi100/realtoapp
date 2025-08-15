@@ -12,7 +12,7 @@ appId: com.example.app
 - hideKeyboard
 - waitForAnimationToEnd  
 - tapOn:
-    text: "return"
+    text: return
     optional: true 
 - tapOn: "Mobile*"
 - inputText: "9833022221"
@@ -24,25 +24,37 @@ appId: com.example.app
 - hideKeyboard  
 - waitForAnimationToEnd
 - tapOn:
-    text: "return"
-    optional: true 
-- tapOn:
-    text: "Done"
-    optional: true 
+    text: return
+    optional: true
+- tapOn: 
+    text: Done
+    optional: true  
 - tapOn: "NEXT"
 
 - assertVisible: "Locality Details"
 - tapOn: "City*"
 - inputText: "Mumbai"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "Add multiple locations within city"
 - inputText: "Juhu"
 - tapOn: "Juhu Beach, Maharashtra"
 - tapOn: "Flat No and Wing*"
 - inputText: "RSP1 F1 Wing 1"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "Building Name / Society*"
-- inputText: "RSP1 Bulding 1"
+- inputText: "RSP1 Building 1"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "Street / Landmark*"
 - inputText: "RSP1 Landmark 1"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "NEXT"
 
 - assertVisible: "House Type*"
@@ -87,8 +99,10 @@ appId: com.example.app
 - assertVisible: "Sell Details"
 - tapOn: "Expected Sell Price*"
 - inputText: "25000000"
+- tapOn: "Done"
 - tapOn: "Maintenance Charge"
 - inputText: "2500"
+- tapOn: "Done"
 - tapOn: "Available From *"
 - tapOn: " 30 "
 - tapOn: "OK"
@@ -104,7 +118,8 @@ appId: com.example.app
 
 - waitForAnimationToEnd  
 - assertVisible: "Final Details"
-- assertVisible: ".*.*Bulding 1.*.*"
+- takeScreenshot: "final_details_residential_sell_property_1"
+- assertVisible: ".*.*Building 1.*.*"
 - assertVisible: ".*.*Juhu.*.*"
 - assertVisible: "Details"
 - assertVisible: "20/25"
@@ -121,4 +136,4 @@ appId: com.example.app
 - waitForAnimationToEnd
 - tapOn: "Residential"
 - waitForAnimationToEnd
-# - assertVisible: ".*Sell Off In RSP1 Bulding 1.*"
+# - assertVisible: ".*Sell Off In RSP1 Building 1.*"

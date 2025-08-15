@@ -12,7 +12,7 @@ appId: com.example.app
 - hideKeyboard
 - waitForAnimationToEnd  
 - tapOn:
-    text: "return"
+    text: return
     optional: true 
 - tapOn: "Mobile*"
 - inputText: "9833033332"
@@ -24,23 +24,35 @@ appId: com.example.app
 - hideKeyboard  
 - waitForAnimationToEnd
 - tapOn:
-    text: "return"
-    optional: true 
-- tapOn:
-    text: "Done"
-    optional: true 
+    text: return
+    optional: true
+- tapOn: 
+    text: Done
+    optional: true  
 - tapOn: "NEXT"
 
 - assertVisible: "Locality Details"
 - tapOn: "City*"
 - inputText: "Mumbai"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "Add multiple locations within city"
 - inputText: "Juhu"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "Juhu Beach, Maharashtra"
 - tapOn: "Building Name / Society*"
 - inputText: "CRP2 Building 2"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "Street / Landmark*"
 - inputText: "CRP2 Landmark 2"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "NEXT"
 
 - assertVisible: "Property Details"
@@ -72,8 +84,10 @@ appId: com.example.app
 - assertVisible: "Rent Details"
 - tapOn: "Expected Rent"
 - inputText: "30000"
+- tapOn: Done
 - tapOn: "Expected Deposit"
 - inputText: "150000"
+- tapOn: Done
 - tapOn: "Available From *"
 - tapOn: " 30 "
 - tapOn: "OK"
@@ -88,7 +102,8 @@ appId: com.example.app
 
 - waitForAnimationToEnd  
 - assertVisible: "Final Details"
-- assertVisible: ".*.*Bulding 2.*.*"
+- takeScreenshot: "final_details_commercial_rent_property_2"
+- assertVisible: ".*.*Building 2.*.*"
 - assertVisible: ".*.*Juhu.*.*"
 - assertVisible: "Details"
 - assertVisible: "Mall"

@@ -12,7 +12,7 @@ Input
     locaity_details_city=Mumbai
     locaity_details_location=Juhu
     locaity_details_flat_num=RSP1 F1 Wing 1
-    locaity_details_building_name=RSP1 Bulding 1
+    locaity_details_building_name=RSP1 Building 1
     locaity_details_landmark=RSP1 Landmark 1
 TapOn
     property_details_house_type=Apartment
@@ -35,9 +35,10 @@ Input
 TapOn
     sell_details_available_from="30"
      sell_details_negotiable=Yes
-
+takeScreenshot
+    final_details_screenshot=final_details_residential_sell_property_1
 Assertive
-    final_details_top_header=.*Bulding 1.*
+    final_details_top_header=.*Building 1.*
     final_details_sub_header=.*Juhu.*
     final_details_bhk_type=2BHK
     final_details_bhk_type_value=2

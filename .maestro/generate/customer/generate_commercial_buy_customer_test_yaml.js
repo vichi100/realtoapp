@@ -8,7 +8,8 @@ function parseTestData(filePath) {
   const testData = {
     input: {},
     tapOn: {},
-    assertive: {}
+    assertive: {},
+    takeScreenshot: {}
   };
   let currentSection = null;
 
@@ -23,6 +24,9 @@ function parseTestData(filePath) {
       continue;
     } else if (line.trim().toLowerCase() === 'assertive') {
       currentSection = 'assertive';
+      continue;
+    } else if (line.trim().toLowerCase() === 'takescreenshot') {
+      currentSection = 'takeScreenshot';
       continue;
     }
 

@@ -71,6 +71,7 @@ appId: com.realtoapp.ios
 
 - waitForAnimationToEnd
 - assertVisible: "Customer Final Details"
+- takeScreenshot: "${final_details_screenshot}"
 - assertVisible: "${final_details_looking_for_tag_value}"
 - assertVisible: "${final_details_looking_for_tag}"
 - assertVisible: "${final_details_max_rent_tag_value}"

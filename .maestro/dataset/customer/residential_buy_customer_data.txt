@@ -24,7 +24,8 @@ Input
 TapOn
     buy_details_required_from="30"
     buy_details_negotiable=Yes
-
+takeScreenshot
+    final_details_screenshot=final_details_residential_buy_customer_1
 
 Assertive
     final_details_name_header=.*Customer Buy Residential 1.*

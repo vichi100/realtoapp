@@ -8,7 +8,8 @@ function parseTestData(filePath) {
   const testData = {
     input: {},
     tapOn: {},
-    assertive: {}
+    assertive: {},
+    takeScreenshot: {}
   };
   let currentSection = null;
 

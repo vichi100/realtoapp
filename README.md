@@ -475,7 +475,11 @@ flows:
    npm run start:dev
 2) once metro start or QR code appear then press i to start IOS simulator.
 3) it want a to ccreate a fresh build run below cmd on new terminal and le the build complete
+
    npx expo run:ios --no-build-cache
+
+   npx expo run:android --no-build-cache
+
    Note : Add below in info.plist file for photo/pics access on ios else your app will crash
    <key>NSPhotoLibraryUsageDescription</key>
     <string>Your app needs access to the photo library to allow you to select and upload images for your properties.</string>
@@ -490,6 +494,8 @@ flows:
    maestro test .maestro/ios/test_suite.yaml start runining test cases
    maestro studio to start maestro studio
 
+6) run add test cases for diffrent mobile number
+vichirajan@192 ios % node run_tests_with_mobiles.js
 
 # property
 #  -residential

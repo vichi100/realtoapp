@@ -66,6 +66,7 @@ appId: com.realtoapp.ios
 
 - waitForAnimationToEnd
 - assertVisible: "Customer Final Details"
+- takeScreenshot: "${final_details_screenshot}"
 - assertVisible: "Shop"
 - assertVisible: "Looking For"
 - assertVisible: "3 Cr"

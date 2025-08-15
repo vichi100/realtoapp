@@ -12,7 +12,7 @@ appId: com.realtoapp.ios
 - hideKeyboard
 - waitForAnimationToEnd  
 - tapOn:
-    text: "return"
+    text: return
     optional: true 
 - tapOn: "Mobile*"
 - inputText: "9833011112"
@@ -24,25 +24,40 @@ appId: com.realtoapp.ios
 - hideKeyboard  
 - waitForAnimationToEnd
 - tapOn:
-    text: "return"
-    optional: true 
-- tapOn:
-    text: "Done"
-    optional: true 
+    text: return
+    optional: true
+- tapOn: 
+    text: Done
+    optional: true  
 - tapOn: "NEXT"
 
 - assertVisible: "Locality Details"
 - tapOn: "City*"
 - inputText: "Mumbai"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "Add multiple locations within city"
 - inputText: "Juhu"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "Juhu Beach, Maharashtra"
 - tapOn: "Flat No and Wing*"
 - inputText: "RRP2 F2 Wing 2"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "Building Name / Society*"
-- inputText: "RRP2 Bulding 2"
+- inputText: "RRP2 Building 2"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "Street / Landmark*"
 - inputText: "RRP2 Landmark 2"
+- tapOn:
+    text: return
+    optional: true 
 - tapOn: "NEXT"
 
 - assertVisible: "House Type*"
@@ -87,8 +102,10 @@ appId: com.realtoapp.ios
 - assertVisible: "Rent Details"
 - tapOn: "Expected Rent"
 - inputText: "30000"
+- tapOn: "Done"
 - tapOn: "Expected Deposit"
 - inputText: "150000"
+- tapOn: "Done"
 - tapOn: "Available From *"
 - tapOn: " 30 "
 - tapOn: "OK"
@@ -103,7 +120,8 @@ appId: com.realtoapp.ios
 
 - waitForAnimationToEnd  
 - assertVisible: "Final Details"
-- assertVisible: ".*.*Bulding 2.*.*"
+- takeScreenshot: "final_details_residential_rent_property_2"
+- assertVisible: ".*.*Building 2.*.*"
 - assertVisible: ".*.*Juhu.*.*"
 - assertVisible: "Details"
 - assertVisible: "20/25"
@@ -120,4 +138,4 @@ appId: com.realtoapp.ios
 - waitForAnimationToEnd
 - tapOn: "Residential"
 - waitForAnimationToEnd
-# - assertVisible: ".*Rent In RRP1 Bulding 1.*"
+# - assertVisible: ".*Rent In RRP1 Building 1.*"
