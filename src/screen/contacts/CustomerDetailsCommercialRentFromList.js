@@ -38,7 +38,7 @@ const CustomerDetailsCommercialRentFromList = props => {
     })
     setLocation(locX)
 
-  }, item)
+  }, [item])
 
 
   // // console.log(item);

@@ -59,7 +59,7 @@ const GlobalSearchStackNav = () => {
         component={PropDetailsFromListing}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details",
+          title: "Property Details",
           headerShown: true
         }}
       /> */}
@@ -102,7 +102,7 @@ const GlobalSearchStackNav = () => {
         component={PropDetailsFromListing}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details", headerBackTitle: "Back"
+          title: "Property Details", headerBackTitle: "Back"
         }}
       />
 
@@ -111,7 +111,7 @@ const GlobalSearchStackNav = () => {
         component={PropDetailsFromListingForSell}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details", headerBackTitle: "Back"
+          title: "Property Details", headerBackTitle: "Back"
         }}
       />
 

@@ -54,7 +54,7 @@ const NotificationStackScreens = () => {
         component={PropDetailsFromListing}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details"
+          title: "Property Details"
         }}
       />
       <Stack.Screen
@@ -62,7 +62,7 @@ const NotificationStackScreens = () => {
         component={PropDetailsFromListingForSell}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details"
+          title: "Property Details"
         }}
       />
 
@@ -71,7 +71,7 @@ const NotificationStackScreens = () => {
         component={CommercialRentPropDetails}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details"
+          title: "Property Details"
         }}
       />
       <Stack.Screen
@@ -79,7 +79,7 @@ const NotificationStackScreens = () => {
         component={CommercialSellPropDetails}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details", headerBackTitle: "Back"
+          title: "Property Details", headerBackTitle: "Back"
         }}
       />
     </Stack.Navigator>

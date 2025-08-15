@@ -39,7 +39,7 @@ const CustomerDetailsResidentialBuyFromList = props => {
     })
     setLocation(locX)
 
-  }, item)
+  }, [item])
 
 
   return (

@@ -82,7 +82,7 @@ const CommercialRentPropertyCard = props => {
 
   const sendMessage = () => {
     console.log("userDetails: ", props.userDetails);
-    console.log("Property details: ", item);
+    console.log("Property Details: ", item);
     const sender_details = {
       id: props.userDetails.id,
       name: props.userDetails.name,

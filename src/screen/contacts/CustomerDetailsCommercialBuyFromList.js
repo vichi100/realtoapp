@@ -38,7 +38,7 @@ const CustomerDetailsCommercialBuyFromList = props => {
     })
     setLocation(locX)
 
-  }, item)
+  }, [item])
 
   // // console.log(item);
   return (

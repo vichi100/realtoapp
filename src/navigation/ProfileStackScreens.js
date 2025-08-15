@@ -70,7 +70,7 @@ const ProfileStackScreens = ({ route }) => {
         component={PropDetailsFromListing}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details", headerBackTitle: "Back"
+          title: "Property Details", headerBackTitle: "Back"
         }}
       />
       <Stack.Screen
@@ -78,7 +78,7 @@ const ProfileStackScreens = ({ route }) => {
         component={PropDetailsFromListingForSell}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details", headerBackTitle: "Back"
+          title: "Property Details", headerBackTitle: "Back"
         }}
       />
       <Stack.Screen
@@ -86,7 +86,7 @@ const ProfileStackScreens = ({ route }) => {
         component={CommercialRentPropDetails}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details", headerBackTitle: "Back"
+          title: "Property Details", headerBackTitle: "Back"
         }}
       />
       <Stack.Screen
@@ -94,7 +94,7 @@ const ProfileStackScreens = ({ route }) => {
         component={CommercialSellPropDetails}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details", headerBackTitle: "Back"
+          title: "Property Details", headerBackTitle: "Back"
         }}
       />
 

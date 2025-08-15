@@ -77,7 +77,7 @@ const ContactsStackScreens = () => {
         component={PropDetailsFromListing}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details"
+          title: "Property Details"
         }}
       />
 
@@ -86,7 +86,7 @@ const ContactsStackScreens = () => {
         component={PropDetailsFromListingForSell}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details", headerBackTitle: "Back"
+          title: "Property Details", headerBackTitle: "Back"
         }}
       />
 
@@ -95,7 +95,7 @@ const ContactsStackScreens = () => {
         component={CommercialRentPropDetails}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details", headerBackTitle: "Back"
+          title: "Property Details", headerBackTitle: "Back"
         }}
       />
       <Stack.Screen
@@ -103,7 +103,7 @@ const ContactsStackScreens = () => {
         component={CommercialSellPropDetails}
         navigationOptions={{ tabBarVisible: false }}
         options={{
-          title: "Property details", headerBackTitle: "Back"
+          title: "Property Details", headerBackTitle: "Back"
         }}
       />
 

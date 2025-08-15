@@ -35,8 +35,8 @@ const PropDetailsFromListing = props => {
     displayMatchCount = true,
     displayMatchPercent = true
   } = props.route.params;
-  console.log("displayMatchCount:", displayMatchCount);
-  console.log("displayMatchPercent:", displayMatchPercent);
+  console.log("PropDetailsFromListing, displayMatchCount:", displayMatchCount);
+  console.log("PropDetailsFromListing, displayMatchPercent:", displayMatchPercent);
   if (!item) {
     item = props.propertyDetails;
   }

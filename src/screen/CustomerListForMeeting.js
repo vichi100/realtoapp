@@ -105,7 +105,7 @@ CustomerListForMeeting = props => {
             onPress={() =>
               navigation.navigate(
                 "CustomerDetailsResidentialRentFromList",
-                { item: item }
+                { item: item, displayMatchCount:false }
               )
             }
           >
@@ -124,7 +124,7 @@ CustomerListForMeeting = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CustomerDetailsResidentialBuyFromList", { item: item })
+              navigation.navigate("CustomerDetailsResidentialBuyFromList", { item: item, displayMatchCount:false })
             }
           >
             <ContactResidentialSellCard
@@ -146,7 +146,7 @@ CustomerListForMeeting = props => {
             onPress={() =>
               navigation.navigate(
                 "CustomerDetailsCommercialRentFromList",
-                { item: item }
+                { item: item , displayMatchCount:false, displayMatchCount:false}
               )
             }
           >
@@ -165,7 +165,7 @@ CustomerListForMeeting = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CustomerDetailsCommercialBuyFromList", { item: item })
+              navigation.navigate("CustomerDetailsCommercialBuyFromList", { item: item, displayMatchCount:false })
             }
           >
             <CustomerCommercialBuyCard
