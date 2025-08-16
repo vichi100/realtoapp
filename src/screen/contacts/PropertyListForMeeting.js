@@ -260,6 +260,7 @@ const PropertyListForMeeting = props => {
           value={search}
           underlineColorAndroid="transparent"
           placeholder="Search by property address, owner"
+          placeholderTextColor="#696969"
         />
       </View>
       {data.length > 0 ? (

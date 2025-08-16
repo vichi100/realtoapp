@@ -477,8 +477,8 @@ const GlobalResidentialContactsSearchResult = props => {
           value={search}
           underlineColorAndroid="transparent"
           placeholder="GLocal Search..."
-          onFocus={() => navigation.navigate("GlobalSearch")}
-          placeholderTextColor="#000"
+          // onFocus={() => navigation.navigate("GlobalSearch")}
+          placeholderTextColor="#696969"
         />
         <View style={{ position: "absolute", right: 5, paddingTop: 10 }}>
           <MaterialCommunityIcons
