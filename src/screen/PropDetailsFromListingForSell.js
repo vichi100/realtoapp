@@ -24,7 +24,7 @@ import axios from "axios";
 import AppConstant from "../util/AppConstant";
 import { formatIsoDateToCustomString } from "../util/methods";
 import Feather from "react-native-vector-icons/Feather";
-import { makeCall } from "../util/methods";
+import { makeCall , camalize} from "../util/methods";
 
 
 const PropDetailsFromListingForSell = props => {
@@ -289,14 +289,14 @@ const PropDetailsFromListingForSell = props => {
               <Text style={[styles.subDetailsValue]}>
                 {item.property_details.property_age} years
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Age of Building</Text>
+              <Text style={[styles.subDetailsTitle]}>Age Of Building</Text>
             </View>
           </View>
         </View>
       </View>
       {/* owner details */}
       <View style={styles.margin1}></View>
-      <AccordionListItem title="Owner" open={false} onPress={scrollToAccordion}>
+      <AccordionListItem title="Owner" open={false} onPress={scrollToAccordion} testID="owner_accordion">
         <View style={styles.ownerDetails}>
           <View style={{ flexDirection: "row", marginBottom: 0, alignItems: "center", justifyContent: "space-between" }}>
             <View style={{ flexDirection: "column", }}>
@@ -310,12 +310,13 @@ const PropDetailsFromListingForSell = props => {
             <TouchableOpacity
               onPress={() => makeCall(item.owner_details.mobile1)}
               style={{ padding: 0, marginRight: 35 }}
+              testID="owner_phone"
             >
               <FontAwesome5 name="phone-alt" color={"#00bfa5"} size={25} />
               {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text> */}
             </TouchableOpacity>
           </View>
-          <Text style={{ marginTop: 5 }}>{item.owner_details.address}</Text>
+          <Text style={{ marginTop: 5 }}>{camalize(item.owner_details.address)}</Text>
 
 
         </View>

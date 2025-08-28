@@ -11,7 +11,7 @@ import { numDifferentiation, dateFormat } from "../../util/methods";
 import { Avatar } from "@rneui/themed";
 import { connect } from "react-redux";
 import Reminder from "../Reminder";
-import { formatIsoDateToCustomString } from "../../util/methods";
+import { formatIsoDateToCustomString,camalize } from "../../util/methods";
 
 const CustomerDetailsCommercialRentFromList = props => {
   const { navigation } = props;
@@ -85,7 +85,7 @@ const CustomerDetailsCommercialRentFromList = props => {
               : `+91 ${item.customer_details.mobile1}`}
           </Text>
           <Text style={[StyleSheet.subTitle, { marginTop: 5 }]}>
-            {item.customer_details.address}
+            {camalize(item.customer_details.address)}
           </Text>
         </View>
         {displayMatchCount && <TouchableOpacity
@@ -214,13 +214,13 @@ const CustomerDetailsCommercialRentFromList = props => {
               <Text style={[styles.subDetailsValue]}>
                 {item.customer_property_details.property_age} years
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Age of Building</Text>
+              <Text style={[styles.subDetailsTitle]}>Age Of Building</Text>
             </View> */}
             {/* <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
                 {item.customer_property_details.power_backup}
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Power backup</Text>
+              <Text style={[styles.subDetailsTitle]}>Power Backup</Text>
             </View> */}
           </View>
         </View>

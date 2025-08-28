@@ -23,7 +23,7 @@ import { SERVER_URL } from "../../../util/Constant";
 import axios from "axios";
 import { formatIsoDateToCustomString } from "../../../util/methods";
 import Feather from "react-native-vector-icons/Feather";
-import { makeCall } from "../../../util/methods";
+import { makeCall, camalize } from "../../../util/methods";
 
 
 const CommercialRentPropDetails = props => {
@@ -125,7 +125,7 @@ const CommercialRentPropDetails = props => {
             // backgroundColor: "#d1d1d1",
           }}>
             <Text style={[styles.title]}>
-              Rent in {item.property_address.flat_number},{" "} {item.property_address.building_name},{" "}
+              Rent in {item.property_address.flat_number}{item.property_address.building_name},{" "}
               {item.property_address.landmark_or_street}
             </Text>
             <Text style={[StyleSheet.subTitle]}>
@@ -272,20 +272,20 @@ const CommercialRentPropDetails = props => {
               <Text style={[styles.subDetailsValue]}>
                 {item.property_details.property_age} years
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Age of Building</Text>
+              <Text style={[styles.subDetailsTitle]}>Age Of Building</Text>
             </View>
             <View style={[styles.subDetails]}>
               <Text style={[styles.subDetailsValue]}>
                 {item.property_details.power_backup}
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Power backup</Text>
+              <Text style={[styles.subDetailsTitle]}>Power Backup</Text>
             </View>
           </View>
         </View>
       </View>
       {/* owner details */}
       <View style={styles.margin1}></View>
-      <AccordionListItem title="Owner" open={false} onPress={scrollToAccordion}>
+      <AccordionListItem title="Owner" open={false} onPress={scrollToAccordion} testID="owner_accordion">
         <View style={styles.ownerDetails}>
           <View style={{ flexDirection: "row", marginBottom: 0, alignItems: "center", justifyContent: "space-between" }}>
             <View style={{ flexDirection: "column", }}>
@@ -299,12 +299,13 @@ const CommercialRentPropDetails = props => {
             <TouchableOpacity
               onPress={() => makeCall(item.owner_details.mobile1)}
               style={{ padding: 0, marginRight: 35 }}
+              testID="owner_phone"
             >
               <FontAwesome5 name="phone-alt" color={"#00bfa5"} size={25} />
               {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text> */}
             </TouchableOpacity>
           </View>
-          <Text style={{ marginTop: 5 }}>{item.owner_details.address}</Text>
+          <Text style={{ marginTop: 5 }}>{camalize(item.owner_details.address)}</Text>
 
 
         </View>

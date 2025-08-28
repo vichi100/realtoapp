@@ -170,8 +170,8 @@ const ResidentialPropertyDetailsForm = props => {
     <View
       style={{ flex: 1, backgroundColor: "rgba(245,245,245, 0.2)" }}
     >
-      <KeyboardAwareScrollView onPress={Keyboard.dismiss}>
-        <ScrollView style={styles.container}>
+      <KeyboardAwareScrollView style={styles.container} onPress={Keyboard.dismiss} testID="scrollView">
+        {/* <ScrollView style={styles.container} testID="scrollView"> */}
           <View style={{ paddingTop: 30, padding: 10 }}>
             <Text>House Type*</Text>
             <View style={styles.propSubSection}>
@@ -331,6 +331,7 @@ const ResidentialPropertyDetailsForm = props => {
               ]}
             >
               <TextInput
+              testID="floorInput"
                 mode="outlined"
                 style={[
                   styles.inputContainerStyle,
@@ -354,6 +355,7 @@ const ResidentialPropertyDetailsForm = props => {
                 }}
               />
               <TextInput
+              testID="totalFloorInput"
                 mode="outlined"
                 style={[
                   styles.inputContainerStyle,
@@ -401,6 +403,7 @@ const ResidentialPropertyDetailsForm = props => {
             </View>
 
             <TextInput
+              testID="propertySizeInput"
               mode="outlined"
               style={styles.inputContainerStyle}
               label="Property Size*"
@@ -425,7 +428,7 @@ const ResidentialPropertyDetailsForm = props => {
               <Button title="NEXT" onPress={() => onSubmit()} />
             </View>
           </View>
-        </ScrollView>
+        {/* </ScrollView> */}
       </KeyboardAwareScrollView>
       <Snackbar
         visible={isVisible}

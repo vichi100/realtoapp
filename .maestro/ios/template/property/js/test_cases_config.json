@@ -1,0 +1,15 @@
+{
+  "testCases": [
+    {
+     "templatePath": ".maestro/ios/template/property/template/add_residential_rent_property_template.yaml",
+      "dataPath": ".maestro/ios/template/property/data/add_residential_rent_property_data.json",
+      "outputPath": ".maestro/ios/new_property/add_residential_rent_property.yaml"
+    },
+    {
+     "templatePath": ".maestro/ios/template/customer/add_residential_rent_customer_template.yaml",
+      "dataPath": ".maestro/ios/template/property/data/add_residential_rent_customer_data.json",
+      "outputPath": ".maestro/ios/new_property/add_residential_rent_customer.yaml"
+    }
+    
+  ]
+}

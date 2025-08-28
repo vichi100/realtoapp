@@ -123,6 +123,7 @@ const LocalityDetailsForm = props => {
         <ScrollView style={styles.container} keyboardShouldPersistTaps={'always'} listViewDisplayed={false}>
           <Text style={{ color: "#696969", fontSize: 16, fontWeight: "500", marginBottom: 20 }}>Enter property address details</Text>
           <TextInput
+            testID="cityInput"
             label="City*"
             value={city}
             onChangeText={text => setCity(text)}
@@ -140,9 +141,11 @@ const LocalityDetailsForm = props => {
           />
           <View style={{ marginTop: 25 }} />
           <GooglePlacesAutocomplete
+          
             ref={ref}
             placeholder="Add multiple locations within city"
             textInputProps={{
+              testID:"GooglePlacesInput",
               placeholderTextColor: 'rgba(90, 90, 90,1)',
               returnKeyType: "search"
             }}
@@ -213,6 +216,7 @@ const LocalityDetailsForm = props => {
           /> */}
           {props.propertyDetails && props.propertyDetails.property_type && props.propertyDetails.property_type.toLowerCase() === "residential" ?
             <TextInput
+              testID="flatNumberInput"
               label="Flat No and Wing*"
               value={flatNumber}
               onChangeText={text => setFlatNumber(text)}
@@ -230,6 +234,7 @@ const LocalityDetailsForm = props => {
             /> : null}
 
           <TextInput
+            testID="buildingNameInput"
             label="Building Name / Society*"
             value={buildingName}
             onChangeText={text => setBuildingName(text)}
@@ -247,6 +252,7 @@ const LocalityDetailsForm = props => {
           />
 
           <TextInput
+            testID="landmarkInput"
             label="Street / Landmark*"
             value={landmark}
             onChangeText={text => setLandmark(text)}

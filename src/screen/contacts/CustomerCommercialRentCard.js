@@ -450,8 +450,8 @@ const CustomerCommercialRentCard = props => {
           {displayMatchCount === true && (
             <>
               <TouchableOpacity onPress={() => getMatched(item)}
-                accessibilityLabel={`match_${item.customer_id}`}
-                testID={`match_id_${item.customer_id}`}
+                accessibilityLabel={`match_${item.customer_id?.slice(-6)}`}
+                testID={`match_id_${item.customer_id?.slice(-6)}`}
               >
                 <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
                   <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
@@ -533,16 +533,16 @@ const CustomerCommercialRentCard = props => {
           >
             <View style={{ paddingLeft: 20, paddingTop: 10 }}>
               <Text style={[styles.title]}
-                accessibilityLabel={`name_${item.customer_id}`}
-                testID={`name_id_${item.customer_id}`}
+                accessibilityLabel={`name_${item.customer_id?.slice(-6)}`}
+                testID={`name_id_${item.customer_id?.slice(-6)}`}
               >
                 {item.customer_details.name}
               </Text>
               <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
                 <MaterialCommunityIcons name="phone-dial" color={"#0f1a20"} size={20} />
                 <Text style={[styles.subTitle, { paddingLeft: 10, color: "#0f1a20" }]}
-                  accessibilityLabel={`mobile_${item.customer_id}`}
-                  testID={`mobile_id_${item.customer_id}`}
+                  accessibilityLabel={`mobile_${item.customer_id?.slice(-6)}`}
+                  testID={`mobile_id_${item.customer_id?.slice(-6)}`}
                 >
                   {item.customer_details.mobile1?.startsWith("+91")
                     ? item.customer_details.mobile1
@@ -550,8 +550,8 @@ const CustomerCommercialRentCard = props => {
                 </Text>
               </View>
               <Text style={{ paddingRight: 10, color: "#0f1a20", marginTop: 5, marginBottom: 5 }}
-                accessibilityLabel={`ref_${item.customer_id}`}
-                testID={`ref_id_${item.customer_id}`}
+                accessibilityLabel={`ref_${item.customer_id?.slice(-6)}`}
+                testID={`ref_id_${item.customer_id?.slice(-6)}`}
               >
                 Reference id: {item.customer_id?.slice(-6)}
               </Text>
@@ -568,8 +568,8 @@ const CustomerCommercialRentCard = props => {
               >
                 <CheckBox
                   onPress={() => onClickCheckBox(item)}
-                  accessibilityLabel={`checkbox_${item.customer_id}`}
-                  testID={`checkbox_id_${item.customer_id}`}
+                  accessibilityLabel={`checkbox_${item.customer_id?.slice(-6)}`}
+                  testID={`checkbox_id_${item.customer_id?.slice(-6)}`}
                   center
                   // title="Select"
                   checked={
@@ -599,8 +599,8 @@ const CustomerCommercialRentCard = props => {
               >
                 <CheckBox
                   onPress={() => onClickCheckBoxForEmployee(item)}
-                  accessibilityLabel={`emp_checkbox_${item.customer_id}`}
-                  testID={`emp_checkbox_id_${item.customer_id}`}
+                  accessibilityLabel={`emp_checkbox_${item.customer_id?.slice(-6)}`}
+                  testID={`emp_checkbox_id_${item.customer_id?.slice(-6)}`}
                   center
                   checked={isAssetChecked(item)} // Ensure this is tied to the isAssetChecked function
                   containerStyle={{
@@ -638,16 +638,16 @@ const CustomerCommercialRentCard = props => {
               styles.drawer,
               { width: slidingDrawerWidth, transform: [{ translateX: Animation_Interpolate }] },
             ]}
-            accessibilityLabel={`animated_${item.customer_id}`}
-            testID={`animated_id_${item.customer_id}`}
+            accessibilityLabel={`animated_${item.customer_id?.slice(-6)}`}
+            testID={`animated_id_${item.customer_id?.slice(-6)}`}
           >
             <View style={[styles.Main_Sliding_Drawer_Container, { width: slidingDrawerWidth, paddingHorizontal: 0 }]}>
               {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
               <TouchableOpacity
                 onPress={ShowSlidingDrawer}
                 style={{ paddingTop: 20 }}
-                accessibilityLabel={`chevron_left_icon_${item.customer_id}`}
-                testID={`chevron_left_icon_id_${item.customer_id}`}
+                accessibilityLabel={`chevron_left_icon_${item.customer_id?.slice(-6)}`}
+                testID={`chevron_left_icon_id_${item.customer_id?.slice(-6)}`}
               >
                 <MaterialCommunityIcons
                   name="chevron-left"
@@ -662,8 +662,8 @@ const CustomerCommercialRentCard = props => {
                   setModalVisible(true);
                 }}
                 style={{ padding: 15, backgroundColor: "#e57373" }}
-                accessibilityLabel={`close_sharp_icon_${item.customer_id}`}
-                testID={`close_sharp_icon_id_${item.customer_id}`}
+                accessibilityLabel={`close_sharp_icon_${item.customer_id?.slice(-6)}`}
+                testID={`close_sharp_icon_id_${item.customer_id?.slice(-6)}`}
               >
                 <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
               </TouchableOpacity>
@@ -678,8 +678,8 @@ const CustomerCommercialRentCard = props => {
               <TouchableOpacity
                 onPress={() => onClickMeeting(item)}
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
-                accessibilityLabel={`alarm_outline_icon_${item.customer_id}`}
-                testID={`alarm_outline_icon_id_${item.customer_id}`}
+                accessibilityLabel={`alarm_outline_icon_${item.customer_id?.slice(-6)}`}
+                testID={`alarm_outline_icon_id_${item.customer_id?.slice(-6)}`}
               >
                 <Ionicons
                   name="alarm-outline"
@@ -690,8 +690,8 @@ const CustomerCommercialRentCard = props => {
               <TouchableOpacity
                 onPress={() => makeCall(item.customer_details.mobile1)}
                 style={{ padding: 15, backgroundColor: "#00bfa5" }}
-                accessibilityLabel={`call_icon_${item.customer_id}`}
-                testID={`call_icon_id_${item.customer_id}`}
+                accessibilityLabel={`call_icon_${item.customer_id?.slice(-6)}`}
+                testID={`call_icon_id_${item.customer_id?.slice(-6)}`}
               >
                 <Ionicons name="call" color={"#ffffff"} size={30} />
                 {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text> */}
@@ -716,7 +716,8 @@ const CustomerCommercialRentCard = props => {
         </Text>
       </View>
 
-      {props.userDetails.works_for === props.userDetails.id && item.agent_id === props.userDetails.id && <TouchableOpacity onPress={() => gotoEmployeeList(item)}>
+      {props.userDetails.works_for === props.userDetails.id && item.agent_id === props.userDetails.id && 
+      <TouchableOpacity onPress={() => gotoEmployeeList(item)} testID={`goto_employee_list_${item.customer_id?.slice(-6)}`}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: 10, marginLeft: 20 }}>
           <Feather name="user-plus" size={20} color="black" />
           <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>
@@ -780,8 +781,8 @@ const CustomerCommercialRentCard = props => {
             </Text>
             <CustomButtonGroup
               buttons={AppConstant.DEAL_WIN_OPTION}
-              accessibilityLabelId={`delete_option_${item.customer_id}`}
-              testID={`delete_option_id_${item.customer_id}`}
+              accessibilityLabelId={`delete_option_${item.customer_id?.slice(-6)}`}
+              testID={`delete_option_id_${item.customer_id?.slice(-6)}`}
               selectedIndices={[AppConstant.DEAL_WIN_OPTION.findIndex(option => option.text === dealWin)]}
               isMultiSelect={false}
               buttonStyle={{ backgroundColor: '#fff' }}

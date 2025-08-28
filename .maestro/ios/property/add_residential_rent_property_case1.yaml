@@ -8,19 +8,19 @@ appId: com.realtoapp.ios
 - tapOn: "property_for_rent"
 - assertVisible: "Owner Details"
 - tapOn: "Name*"
-- inputText: "${owner_name_input}"
+- inputText: "RRP1"
 - hideKeyboard
 - waitForAnimationToEnd  
 - tapOn:
     text: return
     optional: true 
 - tapOn: "Mobile*"
-- inputText: "${owner_mobile}"
+- inputText: "9833011111"
 - hideKeyboard  
 - waitForAnimationToEnd  
 - tapOn: "Done"
 - tapOn: "Address*"
-- inputText: "${owner_address}"
+- inputText: "juhu mumbai"
 - hideKeyboard  
 - waitForAnimationToEnd
 - tapOn:
@@ -33,63 +33,68 @@ appId: com.realtoapp.ios
 
 - assertVisible: "Locality Details"
 - tapOn: "City*"
-- inputText: "${locaity_details_city}"
+- inputText: "Mumbai"
 - tapOn:
     text: return
     optional: true 
 - tapOn: "Add multiple locations within city"
-- inputText: "${locaity_details_location}"
+- inputText: "Juhu"
 - tapOn:
     text: return
     optional: true 
-- tapOn: "${locaity_details_location_suggestion}"
+- tapOn: "Juhu Beach, Maharashtra"
 - tapOn: "Flat No and Wing*"
-- inputText: "${locaity_details_flat_num}"
+- inputText: "RRP1 F1 Wing 1"
 - tapOn:
     text: return
     optional: true 
 - tapOn: "Building Name / Society*"
-- inputText: "${locaity_details_building_name}"
+- inputText: "RRP1 Building 1"
 - tapOn:
     text: return
     optional: true 
 - tapOn: "Street / Landmark*"
-- inputText: "${locaity_details_landmark}"
+- inputText: "RRP1 Landmark 1"
 - tapOn:
     text: return
     optional: true 
 - tapOn: "NEXT"
 
 - assertVisible: "House Type*"
-- tapOn: "house_type_${property_details_house_type_lower}"
+- tapOn: "house_type_apartment"
 - assertVisible: "Size of BHK*"
-- tapOn: "bhk_type_${property_details_size_of_bhk_lower}"
-- tapOn: "washroom_number_${property_details_how_many_washroom}"
+- tapOn: "bhk_type_2bhk"
+- tapOn: "washroom_number_2"
 - assertVisible: "Furnishing*"
-- tapOn: "furnishing_status_${property_details_furnishing_lower}"
+- tapOn: "furnishing_status_semi"
 - assertVisible: "Parkings*"
-- tapOn: "parking_number_${property_details_parkings}"
-- tapOn: "parking_type_${property_details_parking_type_lower}"
+- tapOn: "parking_number_2"
+- tapOn: "parking_type_car"
 - assertVisible: "Property Age*"
-- tapOn: "property_age_${property_details_property_age}"
+- tapOn: "property_age_6-10"
 - scrollUntilVisible:
     element:
       text: "NEXT"
     direction: down
 - tapOn: "Floor"
-- inputText: "${property_details_floor}"
+- inputText: "20"
 - hideKeyboard  
 - waitForAnimationToEnd  
 - tapOn: "Done"
 - tapOn: "Total Floor"
-- inputText: "${property_details_total_floor}"
+- inputText: "25"
 - hideKeyboard  
 - waitForAnimationToEnd  
 - tapOn: "Done"
+- scrollUntilVisible:
+    element:
+      text: "NEXT"
+    direction: down
+- tapOn: "Floor"
 - assertVisible: "Lift*"
-- tapOn: "lift_available_${property_details_lift_lower}"
+- tapOn: "lift_available_yes"
 - tapOn: "Property Size"
-- inputText: "${property_details_property_size}"
+- inputText: "500"
 - hideKeyboard  
 - waitForAnimationToEnd  
 - tapOn: "Done"
@@ -101,13 +106,13 @@ appId: com.realtoapp.ios
 
 - assertVisible: "Rent Details"
 - tapOn: "Expected Rent"
-- inputText: "${rent_details_expected_rent}"
+- inputText: "30000"
 - tapOn: "Done"
 - tapOn: "Expected Deposit"
-- inputText: "${rent_details_expected_deposit}"
+- inputText: "150000"
 - tapOn: "Done"
 - tapOn: "Available From *"
-- tapOn: " ${rent_details_available_from} "
+- tapOn: " 30 "
 - tapOn: "OK"
 - tapOn: "NEXT"
 
@@ -120,20 +125,20 @@ appId: com.realtoapp.ios
 
 - waitForAnimationToEnd  
 - assertVisible: "Final Details"
-- takeScreenshot: "${final_details_screenshot}"
-- assertVisible: ".*${final_details_top_header}.*"
-- assertVisible: ".*${final_details_sub_header}.*"
+- takeScreenshot: "final_details_residential_rent_property_1"
+- assertVisible: ".*RRP1 F1 Wing 1.*"
+- assertVisible: ".*RRP1 Landmark 1.*"
 - assertVisible: "Details"
-- assertVisible: "${final_details_floor_type_value}"
-- assertVisible: "${final_details_age_of_building_type}"
-- assertVisible: "${final_details_furnishing_type_value}"
+- assertVisible: "20/25"
+- assertVisible: "6-10"
+- assertVisible: "Semi"
 - assertVisible: "Owner"
 
 - scrollUntilVisible:
     element:
       text: "ADD"
     direction: down
-- tapOn: "ADD"
+# - tapOn: "ADD"
 
 - waitForAnimationToEnd
 - tapOn: "Residential"

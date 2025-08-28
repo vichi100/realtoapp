@@ -55,7 +55,7 @@ Assertive
     final_details_floor_type_value=20/25
     final_details_lift_type=Lift
     final_details_lift_type_value=Yes
-    final_details_age_of_building_type=Age of Building
+    final_details_age_of_building_type=Age Of Building
     final_details_age_of_building_type=6-10
     final_details_owner_name=RSP1
     final_details_owner_mobile=9833022221

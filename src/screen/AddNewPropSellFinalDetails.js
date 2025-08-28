@@ -270,7 +270,7 @@ const AddNewPropSellFinalDetails = props => {
               <Text style={[styles.subDetailsValue]}>
                 {propertyFinalDetails.property_details.property_age}
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Age of Building</Text>
+              <Text style={[styles.subDetailsTitle]}>Age Of Building</Text>
             </View>
           </View>
         </View>

@@ -119,6 +119,7 @@ const Login = props => {
           >
 
             <TextInput
+              testID="mobileInput"  // Add this
               style={{
                 borderWidth: 1, // size/width of the border
                 borderColor: "lightgrey", // color of the border
@@ -141,6 +142,7 @@ const Login = props => {
             />
             <TouchableOpacity
               accessibilityLabel="controller_play_login_icon"
+              testID="controller_play_login_icon"  // Add this line
               onPress={() => onNext()}
               style={{
                 padding: 5,

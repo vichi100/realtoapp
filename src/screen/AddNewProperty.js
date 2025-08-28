@@ -45,9 +45,9 @@ const AddNewProperty = props => {
 
   const [selectedPropType, setSelectedPropType] = useState("Residential");
   const [propertyFor, setPropertyFor] = useState("Rent");
-  
 
-  
+
+
   const dismissSnackBar = () => {
     setIsVisible(false);
   };
@@ -114,7 +114,7 @@ const AddNewProperty = props => {
             <Text>Select Property For</Text>
           </View>
           <View
-            style={[ { marginBottom: 10, marginTop: 15 }]}
+            style={[{ marginBottom: 10, marginTop: 15 }]}
           >
             {/* <Text>Select Property For</Text> */}
             <CustomButtonGroup
@@ -133,7 +133,7 @@ const AddNewProperty = props => {
               }}
             />
 
-            
+
           </View>
 
           <View style={[styles.header, { marginTop: 30 }]}>
@@ -141,6 +141,7 @@ const AddNewProperty = props => {
           </View>
           <View style={styles.propSection}>
             <TextInput
+              testID="ownerNameInput"
               label="Name*"
               value={ownerName}
               // returnKeyType={"done"}
@@ -158,6 +159,7 @@ const AddNewProperty = props => {
               }}
             />
             <TextInput
+              testID="ownerMobileInput"
               label="Mobile*"
               value={ownerMobile}
               onChangeText={text => setOwnerMobile(text)}
@@ -179,6 +181,7 @@ const AddNewProperty = props => {
               }}
             />
             <TextInput
+              testID="ownerAddressInput"
               label="Address*"
               value={ownerAddress}
               // returnKeyType={"done"}

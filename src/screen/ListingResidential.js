@@ -525,10 +525,10 @@ const ListingResidential = props => {
         // console.log(rentPropCount.length);
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")} accessibilityLabelId={`residential-rent-${index}`}
-          testID={`residential-rent-${index}`}>
+            testID={`residential-rent-${index}`}>
             <CardResidentialRent navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox}
-              disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} 
-              />
+              disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj}
+            />
 
           </TouchableOpacity>
         );
@@ -536,10 +536,10 @@ const ListingResidential = props => {
         // sellPropCount.push("1");
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")} accessibilityLabelId={`residential-rent-${index}`}
-          testID={`residential-rent-${index}`}>
+            testID={`residential-rent-${index}`}>
             <CardResidentialSell navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox}
-              disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} 
-               />
+              disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj}
+            />
           </TouchableOpacity>
         );
       }
@@ -747,6 +747,14 @@ const ListingResidential = props => {
     setVisible(false);
   };
 
+  const FlatListFooter = () => {
+    return (
+      <View style={{ padding: 10, alignItems: 'center' }}>
+        <Text style={{ color: '#fff' }} testID="end_of_list">End</Text>
+      </View>
+    );
+  };
+
 
 
   return (
@@ -786,9 +794,10 @@ const ListingResidential = props => {
               //Item Separator View
               renderItem={ItemView}
               keyExtractor={(item, index) => index.toString()}
-            // refreshControl={
-            //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            // }
+              // refreshControl={
+              //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              // }
+              ListFooterComponent={FlatListFooter} // Pass the footer component here
 
             />
             <View style={styles.fab}>
@@ -900,7 +909,7 @@ const ListingResidential = props => {
                   }}
                 />
               </View>
-              
+
               <Text style={styles.marginBottom10}>BHK Type</Text>
               <View style={styles.propSubSection}>
                 <CustomButtonGroup

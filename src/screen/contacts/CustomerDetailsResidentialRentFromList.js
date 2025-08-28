@@ -12,7 +12,7 @@ import { numDifferentiation } from "../../util/methods";
 import Feather from "react-native-vector-icons/Feather";
 import { connect } from "react-redux";
 import Reminder from "../Reminder";
-import { formatIsoDateToCustomString } from "../../util/methods";
+import { formatIsoDateToCustomString, camalize } from "../../util/methods";
 
 const CustomerDetailsResidentialRentFromList = props => {
   const { navigation } = props;
@@ -86,7 +86,7 @@ const CustomerDetailsResidentialRentFromList = props => {
               : `+91 ${item.customer_details.mobile1}`}
           </Text>
           <Text style={[StyleSheet.subTitle, { marginTop: 5 }]}>
-            {item.customer_details.address}
+            {camalize(item.customer_details.address)}
           </Text>
         </View>
         {displayMatchCount && <TouchableOpacity
@@ -236,7 +236,7 @@ const CustomerDetailsResidentialRentFromList = props => {
               <Text style={[styles.subDetailsValue]}>
                 {item.customer_property_details.property_age} years
               </Text>
-              <Text style={[styles.subDetailsTitle]}>Age of Building</Text>
+              <Text style={[styles.subDetailsTitle]}>Age Of Building</Text>
             </View> */}
           </View>
         </View>

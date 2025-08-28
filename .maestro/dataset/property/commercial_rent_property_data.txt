@@ -45,7 +45,7 @@ Assertive
     final_details_ideal_for_type_value=Shop
     final_details_building_type_value=Mall
     final_details_parking_type_vlue=Public
-    final_details_age_of_building_type=Age of Building
+    final_details_age_of_building_type=Age Of Building
     final_details_age_of_building_type=6-10
     final_details_owner_name=CRP1
     final_details_owner_mobile=9833033331

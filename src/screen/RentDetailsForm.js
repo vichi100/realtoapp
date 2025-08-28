@@ -149,6 +149,7 @@ const RentDetailsForm = props => {
         <ScrollView>
           <View style={styles.container}>
             <TextInput
+              testID="expectedRent"
               mode="outlined"
               keyboardType={"numeric"}
               returnKeyType={"done"}
@@ -175,6 +176,7 @@ const RentDetailsForm = props => {
               }}
             />
             <TextInput
+              testID="expectedDeposit"
               mode="outlined"
               style={styles.inputContainerStyle}
               keyboardType={"numeric"}
@@ -207,6 +209,7 @@ const RentDetailsForm = props => {
             {/* <MaterialIcons style={styles.searchIcon} name="calendar-month-outline" color="#FF6347" size={20} /> */}
             {/* <Icon style={styles.searchIcon} name="ios-search" size={20} color="#000"/> */}
             <TextInput
+              testID="availableFrom"
               mode="outlined"
               // editable={false}
               style={styles.inputContainerStyle}
@@ -320,6 +323,8 @@ const RentDetailsForm = props => {
         onCancel={onDismiss}
         onConfirm={onChange}
         dateStringFormat={"dd-mmm-yyyy"}
+        confirmButtonTestID="datePickerOk"
+  cancelButtonTestID="datePickerCancel"
       />
       <Snackbar
         visible={isVisible}

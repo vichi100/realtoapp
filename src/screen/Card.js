@@ -573,28 +573,30 @@ const Card = props => {
               }}>
                 <Text style={[styles.title]}
                   accessibilityLabel={`Rent In ${item.property_address.building_name}`}
-                  testID={`header_id_${item.property_id}`}
+                  testID={`header_id_${item.property_id?.slice(-6)}`}
                 >
                   Rent In {item.property_address.building_name},{" "}
                   {item.property_address.landmark_or_street}
                 </Text>
                 <Text style={{ paddingRight: 10 }}
                   accessibilityLabel={item.property_address.formatted_address}
-                  testID={`address_id_${item.property_id}`}
+                  testID={`address_id_${item.property_id?.slice(-6)}`}
                 >
                   {item.property_address.formatted_address}
                 </Text>
                 <Text style={{ paddingRight: 10, color: "#0f1a20", marginTop: 5 }}
-                  accessibilityLabel={` Reference id: ${item.property_id?.slice(-6)}`}
-                  testID={`ref_id_${item.property_id}`}
+                  // accessibilityLabel={`ref_${item.property_id?.slice(-6)}`}
+                  testID={`ref_id_${item.property_id?.slice(-6)}`}
+                  // accessibilityLabel={100000}
+                  // testID={100000}
                 >
                   Reference id: {item.property_id?.slice(-6)}
                 </Text>
               </View>
               {props.userDetails.works_for === props.userDetails.id && item.agent_id === props.userDetails.id &&
                 <TouchableOpacity onPress={() => gotoEmployeeList(item)}
-                  accessibilityLabel={`employee_${item.property_id}`}
-                  testID={`employee_id_${item.property_id}`}
+                  accessibilityLabel={`employee_${item.property_id?.slice(-6)}`}
+                  testID={`employee_id_${item.property_id?.slice(-6)}`}
                 >
                   <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginBottom: 10, marginTop: 0, marginLeft: 20 }}>
                     {/* <MaterialIcons name="alarm" size={20} color="black" /> */}

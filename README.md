@@ -521,4 +521,15 @@ if you get anu date related error install below
 "@react-native-community/datetimepicker": "8.3.0",
 
 
-###############
+############### Detox 
+
+1. Build the iOS App for Testing
+
+detox build --configuration ios.sim.debug
+2. Run Detox Tests
+
+make sure your application is running on simulator
+
+npm run start:dev
+
+detox test --configuration ios.sim.debug

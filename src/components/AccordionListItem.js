@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const AccordionListItem = ({ title, children, open = false }) => {
+const AccordionListItem = ({ title, children, open = false, testID }) => {
   const [isOpen, setIsOpen] = useState(open);
   const animatedController = useRef(new Animated.Value(open ? 1 : 0)).current;
   const [bodySectionHeight, setBodySectionHeight] = useState();
@@ -56,7 +56,7 @@ const AccordionListItem = ({ title, children, open = false }) => {
 
   return (
     <>
-      <TouchableWithoutFeedback onPress={() => toggleListItem()}>
+      <TouchableWithoutFeedback onPress={() => toggleListItem()} testID={testID}>
         <View style={styles.titleContainer}>
           <Text>{title}</Text>
           <Animated.View style={{ transform: [{ rotateZ: arrowAngle }] }}>

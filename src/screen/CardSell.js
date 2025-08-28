@@ -543,19 +543,19 @@ const Card = props => {
                 paddingBottom: 20, paddingTop: 5, minHeight: 90
               }}>
                 <Text style={[styles.title]}
-                  accessibilityLabel={`header_${item.property_id}`}
-                  testID={`header_id_${item.property_id}`}>
+                  accessibilityLabel={`header_${item.property_id?.slice(-6)}`}
+                  testID={`header_id_${item.property_id?.slice(-6)}`}>
                   Sell Off In {item.property_address.building_name},{" "}
                   {item.property_address.landmark_or_street}
                 </Text>
                 <Text style={{ paddingRight: 10 }}
-                  accessibilityLabel={`address_${item.property_id}`}
-                  testID={`address_id_${item.property_id}`}>
+                  accessibilityLabel={`address_${item.property_id?.slice(-6)}`}
+                  testID={`address_id_${item.property_id?.slice(-6)}`}>
                   {item.property_address.formatted_address}
                 </Text>
                 <Text style={{ paddingRight: 10, color: "#0f1a20", marginTop: 5 }}
-                  accessibilityLabel={`ref_${item.property_id}`}
-                  testID={`ref_id_${item.property_id}`}
+                  accessibilityLabel={`ref_${item.property_id?.slice(-6)}`}
+                  testID={`ref_id_${item.property_id?.slice(-6)}`}
                 >
                   Reference id: {item.property_id?.slice(-6)}
                 </Text>
@@ -563,7 +563,7 @@ const Card = props => {
               {props.userDetails.works_for === props.userDetails.id && item.agent_id === props.userDetails.id &&
                 <TouchableOpacity onPress={() => gotoEmployeeList(item)}
                   accessibilityLabel={`employee_${item.property_id}`}
-                  testID={`employee_id_${item.property_id}`}
+                  testID={`employee_id_${item.property_id?.slice(-6)}`}
                 >
                   <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginBottom: 10, marginTop: 0, marginLeft: 20 }}>
                     {/* <MaterialIcons name="alarm" size={20} color="black" /> */}

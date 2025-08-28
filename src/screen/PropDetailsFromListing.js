@@ -26,7 +26,7 @@ import { SERVER_URL } from "../util/Constant";
 import axios from "axios";
 import AppConstant from "../util/AppConstant";
 import { formatIsoDateToCustomString } from "../util/methods";
-import { makeCall } from "../util/methods";
+import { makeCall, camalize } from "../util/methods";
 
 
 const PropDetailsFromListing = props => {
@@ -285,14 +285,14 @@ const PropDetailsFromListing = props => {
                 <Text style={[styles.subDetailsValue]}>
                   {item.property_details.property_age} years
                 </Text>
-                <Text style={[styles.subDetailsTitle]}>Age of Building</Text>
+                <Text style={[styles.subDetailsTitle]}>Age Of Building</Text>
               </View>
             </View>
           </View>
         </View>
       </AccordionListItem>
       <View style={styles.margin1}></View>
-      <AccordionListItem title="Owner" open={false} onPress={scrollToAccordion}>
+      <AccordionListItem title="Owner" open={false} onPress={scrollToAccordion} testID="owner_accordion">
         <View style={styles.ownerDetails}>
           <View style={{ flexDirection: "row", marginBottom: 0, alignItems: "center", justifyContent: "space-between" }}>
             <View style={{ flexDirection: "column", }}>
@@ -306,12 +306,13 @@ const PropDetailsFromListing = props => {
             <TouchableOpacity
               onPress={() => makeCall(item.owner_details.mobile1)}
               style={{ padding: 0, marginRight: 35 }}
+              testID="owner_phone"
             >
               <FontAwesome5 name="phone-alt" color={"#00bfa5"} size={25} />
               {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>OWNER</Text> */}
             </TouchableOpacity>
           </View>
-          <Text style={{ marginTop: 5 }}>{item.owner_details.address}</Text>
+          <Text style={{ marginTop: 5 }}>{camalize(item.owner_details.address)}</Text>
 
 
         </View>
@@ -320,16 +321,18 @@ const PropDetailsFromListing = props => {
         <Text style={{ color: "#000" }}>Mettings Details</Text>
       </View> */}
       {loading ? <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'rgba(245,245,245, .4)'
-        }}
-      >
-        <ActivityIndicator animating size="large" color={'#000'} />
-        {/* <ActivityIndicator animating size="large" /> */}
-      </View> : reqUserId === propertyAgentId ? <PropertyReminder navigation={navigation} reminderListX={reminderListX} /> : <View></View>}
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'rgba(245,245,245, .4)'
+              }}
+            >
+              <ActivityIndicator animating size="large" color={'#000'} />
+              {/* <ActivityIndicator animating size="large" /> */}
+            </View> : <PropertyReminder navigation={navigation} reminderListX={reminderListX} />}
+
+
       {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
         <Text style={{ color: "#000" }}>Matched Customer</Text>
         <Text style={{ color: "#000" }}>20</Text>
