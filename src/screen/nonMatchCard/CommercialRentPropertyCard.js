@@ -437,7 +437,7 @@ const CommercialRentPropertyCard = props => {
           {/* <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>800 sqft</Text>
-            <Text style={[styles.subDetailsTitle]}>Buildup</Text>
+            <Text style={[styles.subDetailsTitle]}>Builtup</Text>
           </View> */}
         </View>
       </View>

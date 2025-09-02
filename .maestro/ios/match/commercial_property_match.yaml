@@ -2,17 +2,18 @@ appId: com.realtoapp.ios
 ---
 - tapOn: "bottom_tab_properties_icon"
 - assertVisible: "Residential"
+- tapOn: "Commercial"
+- assertVisible: "Commercial"
 - tapOn:
-    id: "match_id_526830"
-    optional: true
+    id: "match_id_909779"
 - tapOn: "My Customer"
 - assertVisible:
-    text: ".*Customer Buy Residential 1.*"
+    text: ".*Customer Buy Commercial 1.*"
 - assertVisible:
-    text: ".*9933066666.*"
+    text: ".*9933088888.*"
 - assertVisible:
-    id: "ref_id_568630"
-- assertVisible: ".*66%.*"
+    id: "ref_id_066539"
+- assertVisible: ".*75%.*"
 - assertVisible: ".*Match.*"
 - assertVisible: " No Employees Assigned"
 - tapOn: "Other's Customer"
@@ -21,23 +22,23 @@ appId: com.realtoapp.ios
 - assertVisible:
     text: ".*9000000002.*"
 - assertVisible:
-    id: "ref_id_215818"
-- assertVisible: ".*66%.*"
+    id: "ref_id_319044"
+- assertVisible: ".*75%.*"
 - assertVisible: ".*Match.*"
 
 
 - tapOn: "Go back"
 - tapOn:
-    id: "match_id_968284"
+    id: "match_id_056863"
     optional: true
 - tapOn: "My Customer"
 - assertVisible:
-    text: ".*Customer Rent Residential 1.*"
+    text: ".*Customer Rent Commercial 1.*"
 - assertVisible:
-    text: ".*9933055555.*"
+    text: ".*9933057777.*"
 - assertVisible:
-    id: "ref_id_678800"
-- assertVisible: ".*84%.*"
+    id: "ref_id_520167"
+- assertVisible: ".*85%.*"
 - assertVisible: ".*Match.*"
 - assertVisible: " No Employees Assigned"
 - tapOn: "Other's Customer"
@@ -46,7 +47,7 @@ appId: com.realtoapp.ios
 - assertVisible:
     text: ".*9000000002.*"
 - assertVisible:
-    id: "ref_id_755667"
-- assertVisible: ".*84%.*"
+    id: "ref_id_804551"
+- assertVisible: ".*85%.*"
 - assertVisible: ".*Match.*"
 - tapOn: "Go back"

@@ -5,7 +5,7 @@
 ---
 
 - waitForAnimationToEnd # Wait for any initial launch animations to finish
-- assertVisible: 'Supercharge your property broking'
+- assertVisible: 'Supercharge Your Property Broking'
 - takeScreenshot: "login_screen_current"
 - tapOn: "Enter Mobile Number"
 - assertVisible: "Enter Mobile Number"

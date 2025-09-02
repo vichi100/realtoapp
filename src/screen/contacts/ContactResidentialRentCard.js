@@ -457,8 +457,9 @@ const ContactResidentialRentCard = props => {
           {displayMatchCount === true && (
             <>
               <TouchableOpacity onPress={() => getMatched(item)}
-                accessibilityLabel={`match_${item.customer_id}`}
-                testID={`match_id_${item.customer_id}`}
+                // accessibilityLabel={`match_${item.customer_id?.slice(-6)}`}
+                testID={`match_id_${item.customer_id?.slice(-6)}`}
+                style={{ borderWidth: 1, borderColor: 'red' }}
               >
                 <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
                   <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
@@ -545,16 +546,16 @@ const ContactResidentialRentCard = props => {
           >
             <View style={{ paddingLeft: 20, paddingTop: 10 }}>
               <Text style={[styles.title]}
-                accessibilityLabel={`name_${item.customer_id?.slice(-6)}`}
-                testID={`name_id_${item.customer_id?.slice(-6)}`}
+                // accessibilityLabel={`name_${item.customer_id?.slice(-6)}`}
+                // testID={`name_id_${item.customer_id?.slice(-6)}`}
               >
                 {item.customer_details.name}
               </Text>
               <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
                 <MaterialCommunityIcons name="phone-dial" color={"#0f1a20"} size={20} />
                 <Text style={[styles.subTitle, { paddingLeft: 10, color: "#0f1a20" }]}
-                  accessibilityLabel={`mobile_${item.customer_id?.slice(-6)}`}
-                  testID={`mobile_id_${item.customer_id?.slice(-6)}`}
+                  // accessibilityLabel={`mobile_${item.customer_id?.slice(-6)}`}
+                  // testID={`mobile_id_${item.customer_id?.slice(-6)}`}
                 >
                   {item.customer_details.mobile1?.startsWith("+91")
                     ? item.customer_details.mobile1
@@ -778,7 +779,7 @@ const ContactResidentialRentCard = props => {
           {/* <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>800 sqft</Text>
-            <Text style={[styles.subDetailsTitle]}>Buildup</Text>
+            <Text style={[styles.subDetailsTitle]}>Builtup</Text>
           </View> */}
         </View>
       </View>
@@ -799,8 +800,8 @@ const ContactResidentialRentCard = props => {
             </Text>
             <CustomButtonGroup
               buttons={AppConstant.DEAL_WIN_OPTION}
-              accessibilityLabelId={`delete_option_${item.customer_id}`}
-              testID={`delete_option_id_${item.customer_id}`}
+              accessibilityLabelId={`delete_option_${item.customer_id?.slice(-6)}`}
+              testID={`delete_option_id_${item.customer_id?.slice(-6)}`}
               selectedIndices={[AppConstant.DEAL_WIN_OPTION.findIndex(option => option.text === dealWin)]}
               isMultiSelect={false}
               buttonStyle={{ backgroundColor: '#fff' }}

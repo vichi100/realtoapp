@@ -450,8 +450,9 @@ const CustomerCommercialBuyCard = props => {
           {displayMatchCount === true && (
             <>
               <TouchableOpacity onPress={() => getMatched(item)}
-                accessibilityLabel={`match_${item.customer_id?.slice(-6)}`}
+                // accessibilityLabel={`match_${item.customer_id?.slice(-6)}`}
                 testID={`match_id_${item.customer_id?.slice(-6)}`}
+                style={{ width: 1, height: 1 }}
               >
                 <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
                   <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
@@ -460,7 +461,9 @@ const CustomerCommercialBuyCard = props => {
                   position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
                   backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
                   width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
-                }}>
+                }}
+                testID={`match_idx_${item.customer_id?.slice(-6)}`}
+                >
                   <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
                 </View>
               </TouchableOpacity>
@@ -535,16 +538,16 @@ const CustomerCommercialBuyCard = props => {
           >
             <View style={{ paddingLeft: 20, paddingTop: 10 }}>
               <Text style={[styles.title]}
-                accessibilityLabel={`name_${item.customer_id?.slice(-6)}`}
-                testID={`name_id_${item.customer_id?.slice(-6)}`}
+                // accessibilityLabel={`name_${item.customer_id?.slice(-6)}`}
+                // testID={`name_id_${item.customer_id?.slice(-6)}`}
               >
                 {item.customer_details.name}
               </Text>
               <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
                 <MaterialCommunityIcons name="phone-dial" color={"#0f1a20"} size={20} />
                 <Text style={[styles.subTitle, { paddingLeft: 10, color: "#0f1a20" }]}
-                  accessibilityLabel={`mobile_${item.customer_id?.slice(-6)}`}
-                  testID={`mobile_id_${item.customer_id?.slice(-6)}`}
+                  // accessibilityLabel={`mobile_${item.customer_id?.slice(-6)}`}
+                  // testID={`mobile_id_${item.customer_id?.slice(-6)}`}
                 >
                   {item.customer_details.mobile1?.startsWith("+91")
                     ? item.customer_details.mobile1
@@ -762,7 +765,7 @@ const CustomerCommercialBuyCard = props => {
           {/* <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>800 sqft</Text>
-            <Text style={[styles.subDetailsTitle]}>Buildup</Text>
+            <Text style={[styles.subDetailsTitle]}>Builtup</Text>
           </View> */}
         </View>
       </View>

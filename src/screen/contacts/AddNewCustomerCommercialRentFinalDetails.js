@@ -209,7 +209,7 @@ const AddNewCustomerCommercialRentFinalDetails = props => {
             <Text style={[styles.subDetailsValue]}>
               {customerFinalDetails.customer_property_details.property_size}sqft
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Buildup Apx</Text>
+            <Text style={[styles.subDetailsTitle]}>Builtup Apx</Text>
           </View>
         </View>
       </View>

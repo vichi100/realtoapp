@@ -8,9 +8,17 @@ appId: com.realtoapp.ios
 - runFlow:
     file: login.yaml
 - runFlow:
-    file: list/commercial_customer_list.yaml
-- runFlow:
-    file: list/residential_customer_list.yaml
+    file: match/commercial_customer_match.yaml
+# - runFlow:
+#     file: match/residential_customer_match.yaml
+# - runFlow:
+#     file: match/residential_property_match.yaml
+# - runFlow:
+#     file: match/commercial_property_match.yaml
+# - runFlow:
+#     file: list/commercial_customer_list.yaml
+# - runFlow:
+#     file: list/residential_customer_list.yaml
 # - runFlow:
 #     file: list/commercial_property_list.yaml
 # - runFlow:

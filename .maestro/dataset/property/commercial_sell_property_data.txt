@@ -38,7 +38,7 @@ Assertive
     final_details_property_type_value=Shop
     final_details_sell_type=Sell
     final_details_sell_type_value=3 Cr
-    final_details_buildup_type=Buildup
+    final_details_buildup_type=Builtup
     final_details_buildup_type_value=500sqft
     final_details_ideal_for_type=Ideal For
     final_details_ideal_for_type_value=Shop

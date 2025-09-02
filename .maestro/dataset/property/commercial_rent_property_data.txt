@@ -39,7 +39,7 @@ Assertive
     final_details_rent_type_value=30 K
     final_details_deposit_type=Deposit
     final_details_deposit_type_value=1.5 Lac
-    final_details_buildup_type=Buildup
+    final_details_buildup_type=Builtup
     final_details_buildup_type_value=500sqft
     final_details_ideal_for_type=Ideal For
     final_details_ideal_for_type_value=Shop

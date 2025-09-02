@@ -103,7 +103,7 @@ const Login = props => {
               fontWeight: "500",
               // borderRadius: 5
               fontSize: 18
-            }}>Supercharge your property broking</Text>
+            }}>Supercharge Your Property Broking</Text>
           </View>
 
 

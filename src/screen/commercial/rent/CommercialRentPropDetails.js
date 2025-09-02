@@ -223,7 +223,7 @@ const CommercialRentPropDetails = props => {
             <Text style={[styles.subDetailsValue]}>
               {item.property_details.property_size}sqft
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Buildup</Text>
+            <Text style={[styles.subDetailsTitle]}>Builtup</Text>
           </View>
         </View>
       </View>

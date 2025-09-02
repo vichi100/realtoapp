@@ -516,8 +516,8 @@ const Card = props => {
           }}>
             {displayMatchCount && 
             <TouchableOpacity onPress={() => getMatched(item)}
-              accessibilityLabel={`match_${item.property_id}`}
-              testID={`match_id_${item.property_id}`}>
+              accessibilityLabel={`match_${item.property_id?.slice(-6)}`}
+              testID={`match_id_${item.property_id?.slice(-6)}`}>
               {<View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
                 <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
               </View>}
@@ -568,19 +568,19 @@ const Card = props => {
 
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
               <View style={{
-                flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: displayMatchPercent ? 0 : 40, paddingRight: 20,
+                flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: displayMatchPercent ? 1 : 40, paddingRight: 20,
                 paddingBottom: 20, paddingTop: 5, minHeight: 90
               }}>
                 <Text style={[styles.title]}
-                  accessibilityLabel={`Rent In ${item.property_address.building_name}`}
-                  testID={`header_id_${item.property_id?.slice(-6)}`}
+                  // accessibilityLabel={`Rent In ${item.property_address.building_name}`}
+                  // testID={`header_id_${item.property_id?.slice(-6)}`}
                 >
                   Rent In {item.property_address.building_name},{" "}
                   {item.property_address.landmark_or_street}
                 </Text>
                 <Text style={{ paddingRight: 10 }}
-                  accessibilityLabel={item.property_address.formatted_address}
-                  testID={`address_id_${item.property_id?.slice(-6)}`}
+                  // accessibilityLabel={item.property_address.formatted_address}
+                  // testID={`address_id_${item.property_id?.slice(-6)}`}
                 >
                   {item.property_address.formatted_address}
                 </Text>
@@ -626,8 +626,8 @@ const Card = props => {
             >
               <CheckBox
                 onPress={() => onClickCheckBox(item)}
-                accessibilityLabel={`checkbox_${item.property_id}`}
-                testID={`checkbox_id_${item.property_id}`}
+                accessibilityLabel={`checkbox_${item.property_id?.slice(-6)}`}
+                testID={`checkbox_id_${item.property_id?.slice(-6)}`}
                 center
                 // title="Select"
                 checked={
@@ -656,8 +656,8 @@ const Card = props => {
             >
               <CheckBox
                 onPress={() => onClickCheckBoxForEmployee(item)}
-                accessibilityLabel={`emp_checkbox_${item.property_id}`}
-                testID={`emp_checkbox_id_${item.property_id}`}
+                accessibilityLabel={`emp_checkbox_${item.property_id?.slice(-6)}`}
+                testID={`emp_checkbox_id_${item.property_id?.slice(-6)}`}
                 center
                 // title="Select"
                 checked={isAssetChecked(item)}
@@ -702,16 +702,16 @@ const Card = props => {
                 // overflow: "hidden", // Prevent content overflow
               },
             ]}
-            accessibilityLabel={`animated_${item.property_id}`}
-            testID={`animated_id_${item.property_id}`}
+            accessibilityLabel={`animated_${item.property_id?.slice(-6)}`}
+            testID={`animated_id_${item.property_id?.slice(-6)}`}
           >
             <View style={[styles.Main_Sliding_Drawer_Container, { width: slidingDrawerWidth, paddingHorizontal: 0 }]}>
               {/* Put All Your Components Here Which You Want To Show Inside Sliding Drawer. */}
               <TouchableOpacity
                 onPress={ShowSlidingDrawer}
                 style={{ paddingTop: 20 }}
-                accessibilityLabel={`chevron_left_icon_${item.property_id}`}
-                testID={`chevron_left_icon_id_${item.property_id}`}
+                accessibilityLabel={`chevron_left_icon_${item.property_id?.slice(-6)}`}
+                testID={`chevron_left_icon_id_${item.property_id?.slice(-6)}`}
               >
                 <MaterialCommunityIcons
                   name="chevron-left"
@@ -727,8 +727,8 @@ const Card = props => {
                     setModalVisible(true);
                   }}
                   style={{ padding: 15, backgroundColor: "#e57373" }}
-                  accessibilityLabel={`close_sharp_icon_${item.property_id}`}
-                  testID={`close_sharp_icon_id_${item.property_id}`}
+                  accessibilityLabel={`close_sharp_icon_${item.property_id?.slice(-6)}`}
+                  testID={`close_sharp_icon_id_${item.property_id?.slice(-6)}`}
                 >
                   <Ionicons name="close-sharp" color={"#ffffff"} size={30} />
                 </TouchableOpacity>}
@@ -736,8 +736,8 @@ const Card = props => {
               <TouchableOpacity
                 onPress={() => onShare(item)}
                 style={{ padding: 15, backgroundColor: "#0091ea" }}
-                accessibilityLabel={`share_social_icon_${item.property_id}`}
-                testID={`share_social_icon_id_${item.property_id}`}
+                accessibilityLabel={`share_social_icon_${item.property_id?.slice(-6)}`}
+                testID={`share_social_icon_id_${item.property_id?.slice(-6)}`}
               >
                 <Ionicons name="share-social" color={"#ffffff"} size={30} />
                 {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Share</Text> */}
@@ -745,8 +745,8 @@ const Card = props => {
               <TouchableOpacity
                 onPress={() => onClickMeeting(item)}
                 style={{ padding: 15, backgroundColor: "#ffd600" }}
-                accessibilityLabel={`alarm_outline_icon_${item.property_id}`}
-                testID={`alarm_outline_icon_id_${item.property_id}`}
+                accessibilityLabel={`alarm_outline_icon_${item.property_id?.slice(-6)}`}
+                testID={`alarm_outline_icon_id_${item.property_id?.slice(-6)}`}
               >
                 <Ionicons
                   name="alarm-outline"
@@ -758,8 +758,8 @@ const Card = props => {
               <TouchableOpacity
                 onPress={() => makeCall(item.owner_details.mobile1)}
                 style={{ padding: 15, backgroundColor: "#00bfa5" }}
-                accessibilityLabel={`call_icon_${item.property_id}`}
-                testID={`call_icon_id_${item.property_id}`}
+                accessibilityLabel={`call_icon_${item.property_id?.slice(-6)}`}
+                testID={`call_icon_id_${item.property_id?.slice(-6)}`}
               >
                 <Ionicons name="call" color={"#ffffff"} size={30} />
                 {/* <Text style={{ fontSize: 8, paddingTop: 5 }}>Owner</Text> */}
@@ -806,7 +806,7 @@ const Card = props => {
           {/* <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
             <Text style={[styles.subDetailsValue]}>800 sqft</Text>
-            <Text style={[styles.subDetailsTitle]}>Buildup</Text>
+            <Text style={[styles.subDetailsTitle]}>Builtup</Text>
           </View> */}
         </View>
       </View>
@@ -827,8 +827,8 @@ const Card = props => {
             </Text>
             <CustomButtonGroup
               buttons={AppConstant.DEAL_WIN_OPTION}
-              accessibilityLabelId={`delete_option_${item.property_id}`}
-              testID={`delete_option_id_${item.property_id}`}
+              accessibilityLabelId={`delete_option_${item.property_id?.slice(-6)}`}
+              testID={`delete_option_id_${item.property_id?.slice(-6)}`}
               selectedIndices={[AppConstant.DEAL_WIN_OPTION.findIndex(option => option.text === dealWin)]}
               isMultiSelect={false}
               buttonStyle={{ backgroundColor: '#fff' }}

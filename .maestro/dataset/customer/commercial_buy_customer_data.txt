@@ -34,7 +34,7 @@ Assertive
     final_details_looking_for_tag_value=Shop
     final_details_max_buy_tag=Buy
     final_details_max_buy_tag_value=3 Cr
-    final_details_max_buildup_tag=Buildup Apx
+    final_details_max_buildup_tag=Builtup Apx
     final_details_max_buildup_tag_value=500sqft
     final_details_city_tag=City
     final_details_city_tag_value=Mumbai

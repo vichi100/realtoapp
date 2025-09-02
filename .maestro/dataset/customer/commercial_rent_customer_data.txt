@@ -36,7 +36,7 @@ Assertive
     final_details_max_rent_tag_value=30 K
     final_details_max_deposit_tag=Max Deposit
     final_details_max_rent_tag_value=1.5 Lac
-    final_details_max_buildup_tag=Buildup Apx
+    final_details_max_buildup_tag=Builtup Apx
     final_details_max_buildup_tag_value=500sqft
     final_details_city_tag=City
     final_details_city_tag_value=Mumbai

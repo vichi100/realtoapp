@@ -728,7 +728,7 @@ const GlobalCommercialCustomersSearchResult = props => {
                 />
               </View>
             )}
-            {/* <Text>Buildup area Range</Text>
+            {/* <Text>Builtup area Range</Text>
             <Slider
               min={50}
               max={10000}

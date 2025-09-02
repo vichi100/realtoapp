@@ -46,7 +46,7 @@ Assertive
     final_details_sell_type_value=2.5 Cr
     final_details_furnishing_type=Furnishing
     final_details_furnishing_type_value=Semi
-    final_details_buildup_type=Buildup
+    final_details_buildup_type=Builtup
     final_details_buildup_type_value=500sqft
     final_details_washroom_type_value=2
     final_details_parking_type_vlue=2 Car

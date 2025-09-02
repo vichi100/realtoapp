@@ -490,9 +490,9 @@ flows:
    vichirajan@192 realtoapp % maestro test .maestro/ios/test_suite.yaml
 
    npm run start:dev in a terminal
-   npx expo run:ios --no-build-cache  if want ot rebuild 
-   maestro test .maestro/ios/test_suite.yaml start runining test cases
-   maestro studio to start maestro studio
+   npx expo run:ios --no-build-cache                     if want ot rebuild 
+   maestro test .maestro/ios/test_suite.yaml             start runining test cases
+   maestro studio                                        to start maestro studio
 
 6) run add test cases for diffrent mobile number
 vichirajan@192 ios % node run_tests_with_mobiles.js

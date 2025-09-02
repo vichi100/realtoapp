@@ -176,7 +176,7 @@ const Profile = props => {
     try {
       const result = await Share.share({
         message:
-          "Realto AI is a real estate app that Supercharge your property broking!",
+          "Realto AI is a real estate app that Supercharge Your Property Broking!",
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {

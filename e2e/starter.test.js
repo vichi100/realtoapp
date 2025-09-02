@@ -7,7 +7,7 @@ module.exports = function starterTests() {
     });
 
     it('should display the logo, tagline, input field, play button, and skip button', async () => {
-      await expect(element(by.text('Supercharge your property broking'))).toBeVisible();
+      await expect(element(by.text('Supercharge Your Property Broking'))).toBeVisible();
       await expect(element(by.text('Enter Mobile Number'))).toBeVisible();
       await waitFor(element(by.id('controller_play_login_icon'))).toBeVisible().withTimeout(5000);
       await expect(element(by.text('Skip'))).toBeVisible();

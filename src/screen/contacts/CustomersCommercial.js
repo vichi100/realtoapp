@@ -970,7 +970,7 @@ const CustomersCommercial = props => {
                   />
                 </View>
               )}
-              <Text style={{ marginBottom: 10, marginTop: 10 }}>Buildup area Range</Text>
+              <Text style={{ marginBottom: 10, marginTop: 10 }}>Builtup area Range</Text>
 
               <SliderSmallNum
                 min={50}

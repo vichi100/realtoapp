@@ -138,7 +138,7 @@ const CustomerDetailsResidentialBuyFromList = props => {
             <Text style={[styles.subDetailsValue]}>
               {item.customer_property_details.property_size}
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Buildup</Text>
+            <Text style={[styles.subDetailsTitle]}>Builtup</Text>
           </View> */}
           <View style={styles.verticalLine}></View>
           <View style={[styles.subDetails]}>
@@ -152,7 +152,7 @@ const CustomerDetailsResidentialBuyFromList = props => {
             <Text style={[styles.subDetailsValue]}>
               {item.customer_property_details.property_size}sqft
             </Text>
-            <Text style={[styles.subDetailsTitle]}>Buildup</Text>
+            <Text style={[styles.subDetailsTitle]}>Builtup</Text>
           </View> */}
         </View>
       </View>
