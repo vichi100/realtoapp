@@ -4,44 +4,56 @@ appId: com.realtoapp.ios
 - assertVisible: "Residential"
 - tapOn: "Residential"
 - assertVisible: "Search By Name, Address, Id, Mobile"
-- assertVisible: "header_17523305258015682692248"
-- assertVisible: ".*Rent In .*"
-- assertVisible: "address_17523305258015682692248"
-- assertVisible: "ref_17523305258015682692248"
-- assertVisible: ".*Reference id.*"
 
+- assertVisible: ".*Rent In RRP1 Building 1, RRP1 Landmark 1.*"
+- assertVisible: ".*Juhu Beach, Maharashtra, India.*"
+- assertVisible: ".*Reference id: 968284.*"
+- scrollUntilVisible:
+    element:
+      id: "end_of_list"
+    direction: down
+    visibilityPercentage: 100
+    timeout: 10000
+- assertVisible: ".*Rent.*"
+- assertVisible: ".*Deposit.*"
+- assertVisible: ".*Furnishing.*"
+- assertVisible: ".*match_968284.*"
 
-- tapOn: "chevron_left_icon_17523305258015682692248"
-- tapOn: "alarm_outline_icon_17523305258015682692248"
-- assertVisible: "Reminders"
-- assertVisible: "Create a call/visiting schedule to show property to customer and get reminder on time"
-- assertVisible: "Reminder For ?"
-- tapOn: "reminder_type_meeting"
+# - tapOn: "Vertical scroll bar, 2 pages 󰅁 󰅂 match_968284 Rent In RRP1 Building 1, RRP1 Landmark 1 Juhu Beach, Maharashtra, 
+# India Reference id: 968284 employee_968284 animated_968284 2BHK 30 K 
+# Rent 1.5 Lac Deposit Semi Furnishing"
+
+- tapOn:
+    id: "chevron_left_icon_id_968284"
+- tapOn:
+    id: "alarm_outline_icon_id_968284"
+- assertVisible: ".*Create a call/visiting schedule to show property to client and get reminder on time.*"
+- assertVisible: ".*Reminder For ?.*"
+- tapOn: "reminder_type_call"
 - tapOn: " Add Customer For Meeting."
-
 - assertVisible: "Customer List"
-- tapOn: "checkbox_17511833038704386455857"
-- tapOn: "Reminders, back"
-
-- assertVisible: "Customer Name*"
-- assertVisible: "Customer Mobile*"
-- assertVisible: "Date*"
-- tapOn: " 30 "
+- tapOn:
+    id: "checkbox_id_755667"
+- tapOn: "Go back"
+- tapOn: "Date*"
+- tapOn: " 28 "
 - tapOn: "OK"
 - tapOn: "Time*"
 - tapOn: "Hour"
 - inputText: "11"
-- tapOn: "Done"
 - tapOn: "Minute"
 - inputText: "30"
-- tapOn: "Done"
 - tapOn: "AM"
 - tapOn: "Apply"
-- assertVisible: "Date*"
-- assertVisible: "Time*"
+- assertVisible: "11:30 AM"
 - tapOn: "Save"
+- assertVisible: "Upcoming Meetings"
+- assertVisible: "Past Meetings"
+- assertVisible: "Customer Buy
 
-- assertVisible: "Customer 1\nResidential Rent"
-- assertVisible: "Call"
-- tapOn: "Customer 1\nResidential Rent"
+    Residential 1 +91 9933066666 Call 11:30 AM Sun Sep 28 2025"
+- tapOn: "Customer Buy
 
+    Residential 1 +91 9933066666 Call 11:30 AM Sun Sep 28 2025"
+- assertVisible: "Meeting Details"
+- assertVisible: "Vertical scroll bar, 2 pages 󰅁 󰅂 66% Match Sell Off In RSP1 Building 1, RSP1 Landmark 1 Juhu Beach, Maharashtra, India Reference id: 526830 employee_526830 2BHK 2.5 Cr Price 500 Builtup Semi Furnishing"

@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 import { makeCall } from "../util/methods";
-import {formatIsoDateToCustomString, formatClientNameForDisplay} from "../util/methods"; 
+import { formatIsoDateToCustomString, formatClientNameForDisplay } from "../util/methods";
 
 
 const PropertyReminder = props => {
@@ -100,7 +100,12 @@ const PropertyReminder = props => {
             >
               {formatClientNameForDisplay(item.client_name)}
             </Text>
-            <Text>+91 {item.client_mobile}</Text>
+            <Text>
+              {item.client_mobile.startsWith("+91") ? item.client_mobile : `+91 ${item.client_mobile}`}
+            </Text>
+            <Text>
+              {"Reference id: " + item.property_reference_id}
+            </Text>
           </View>
           <View>
             <View style={{ padding: 10 }}>

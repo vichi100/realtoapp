@@ -1,0 +1,48 @@
+appId: com.realtoapp.ios
+---
+- tapOn: "bottom_tab_properties_icon"
+- assertVisible: "Residential"
+- tapOn: "Residential"
+- assertVisible: "Search By Name, Address, Id, Mobile"
+
+- assertVisible: ".*Sell Off In RSP1 Building 1, RSP1 Landmark 1.*"
+- assertVisible: ".*Juhu Beach, Maharashtra, India.*"
+- assertVisible: ".*Reference id: 526830.*"
+- assertVisible: ".*Price.*"
+- assertVisible: ".*Builtup.*"
+- assertVisible: ".*Furnishing.*"
+- assertVisible: ".*match_526830.*"
+- tapOn:
+    id: "chevron_left_icon_id_526830"
+- tapOn:
+    id: "alarm_outline_icon_id_526830"
+- assertVisible: ".*Create a call/visiting schedule to show property to client and get reminder on time.*"
+- assertVisible: ".*Reminder For ?.*"
+- tapOn: "reminder_type_call"
+- tapOn: " Add Customer For Meeting."
+- assertVisible: "Customer List"
+- tapOn:
+    id: "checkbox_id_568630"
+- tapOn: "Go back"
+- tapOn: "Date*"
+- tapOn: " 28 "
+- tapOn: "OK"
+- tapOn: "Time*"
+- tapOn: "Hour"
+- inputText: "11"
+- tapOn: "Minute"
+- inputText: "30"
+- tapOn: "AM"
+- tapOn: "Apply"
+- assertVisible: "11:30 AM"
+- tapOn: "Save"
+- assertVisible: "Upcoming Meetings"
+- assertVisible: "Past Meetings"
+- assertVisible: "Customer Buy
+
+    Residential 1 +91 9933066666 Call 11:30 AM Sun Sep 28 2025"
+- tapOn: "Customer Buy
+
+    Residential 1 +91 9933066666 Call 11:30 AM Sun Sep 28 2025"
+- assertVisible: "Meeting Details"
+- assertVisible: "Vertical scroll bar, 2 pages 󰅁 󰅂 66% Match Sell Off In RSP1 Building 1, RSP1 Landmark 1 Juhu Beach, Maharashtra, India Reference id: 526830 employee_526830 2BHK 2.5 Cr Price 500 Builtup Semi Furnishing"

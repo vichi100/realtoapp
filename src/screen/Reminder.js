@@ -283,7 +283,12 @@ const Reminder = props => {
             >
               {formatClientNameForDisplay(item.client_name)}
             </Text>
-            <Text>+91 {item.client_mobile}</Text>
+            <Text>
+              {item.client_mobile.startsWith("+91") ? item.client_mobile : `+91 ${item.client_mobile}`}
+            </Text>
+            <Text>
+              {"Reference id: " + item.property_reference_id}
+            </Text>
           </View>
           <View>
             <View style={{ padding: 10 }}>
