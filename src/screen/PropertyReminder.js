@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 import { makeCall } from "../util/methods";
-import { formatIsoDateToCustomString, formatClientNameForDisplay } from "../util/methods";
+import { formatIsoDateToCustomString, formatClientNameForDisplay, formatMobileNumber } from "../util/methods";
 
 
 const PropertyReminder = props => {
@@ -37,18 +37,28 @@ const PropertyReminder = props => {
     const future = [];
     const past = [];
     for (const value of dataArr) {
-      console.log(value);
-      const todayDate = new Date();
-      const meetingDate = new Date(value.meeting_date.toString());
-      if (todayDate < meetingDate) {
-        // console.log("date1 is earlier than date2");
+      const todayDateTime = new Date();
+      // Convert stored date to a proper local date with meeting time
+      const meetingDate = new Date(value.meeting_date);
+      const meetingTime = value.meeting_time || "12:00 AM";
+
+      // Parse "11:30 AM" → hours/minutes
+      const [time, modifier] = meetingTime.split(" ");
+      let [hours, minutes] = time.split(":").map(Number);
+      if (modifier === "PM" && hours < 12) hours += 12;
+      if (modifier === "AM" && hours === 12) hours = 0;
+
+      // Combine local date + time
+      const meetingDateTime = new Date(meetingDate);
+      meetingDateTime.setHours(hours, minutes, 0, 0);
+
+      console.log("todayDateTime:", todayDateTime);
+      console.log("meetingDateTime:", meetingDateTime);
+
+      if (meetingDateTime > todayDateTime) {
         future.push(value);
-      } else if (todayDate > meetingDate) {
-        // console.log("date1 is later than date2");
-        past.push(value);
       } else {
-        // console.log("Both dates are equal");
-        future.push(value);
+        past.push(value);
       }
 
     }
@@ -100,9 +110,7 @@ const PropertyReminder = props => {
             >
               {formatClientNameForDisplay(item.client_name)}
             </Text>
-            <Text>
-              {item.client_mobile.startsWith("+91") ? item.client_mobile : `+91 ${item.client_mobile}`}
-            </Text>
+            <Text>{formatMobileNumber(item.client_mobile)}</Text>
             <Text>
               {"Reference id: " + item.property_reference_id}
             </Text>
@@ -165,7 +173,7 @@ const PropertyReminder = props => {
             >
               {formatClientNameForDisplay(item.client_name)}
             </Text>
-            <Text>+91 {item.client_mobile}</Text>
+            <Text>{formatMobileNumber(item.client_mobile)}</Text>
           </View>
           <View>
             <View style={{ padding: 10 }}>
@@ -225,7 +233,7 @@ const PropertyReminder = props => {
             >
               {formatClientNameForDisplay(item.client_name)}
             </Text>
-            <Text>+91 {item.client_mobile}</Text>
+            <Text>{formatMobileNumber(item.client_mobile)}</Text>
           </View>
           <View>
             <View style={{ padding: 10 }}>

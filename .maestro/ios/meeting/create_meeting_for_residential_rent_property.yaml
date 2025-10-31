@@ -49,11 +49,8 @@ appId: com.realtoapp.ios
 - tapOn: "Save"
 - assertVisible: "Upcoming Meetings"
 - assertVisible: "Past Meetings"
-- assertVisible: "Customer Buy
-
-    Residential 1 +91 9933066666 Call 11:30 AM Sun Sep 28 2025"
-- tapOn: "Customer Buy
-
-    Residential 1 +91 9933066666 Call 11:30 AM Sun Sep 28 2025"
+- assertVisible: "Agent +91 9000000002 Call 11:30 AM Sun Sep 28 2025"
+- tapOn: "Agent +91 9000000002 Call 11:30 AM Sun Sep 28 2025"
 - assertVisible: "Meeting Details"
-- assertVisible: "Vertical scroll bar, 2 pages 󰅁 󰅂 66% Match Sell Off In RSP1 Building 1, RSP1 Landmark 1 Juhu Beach, Maharashtra, India Reference id: 526830 employee_526830 2BHK 2.5 Cr Price 500 Builtup Semi Furnishing"
+- assertVisible: "Vertical scroll bar, 1 page 󰅁 󰅂 84% Match Rent In RRP1 Building 1, RRP1 Landmark 1 Juhu Beach, Maharashtra, India Reference id: 968284 employee_968284 2BHK 30 K Rent 1.5 Lac Deposit Semi Furnishing"
+- tapOn: "Go back"

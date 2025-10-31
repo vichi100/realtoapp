@@ -79,3 +79,9 @@ export const formatClientNameForDisplay = (inputString) => {
 
   return formattedString;
 }
+
+export const formatMobileNumber = (mobile) => {
+  if (!mobile) return '';
+  // Remove any existing +91 or 91 prefix, then add +91 cleanly
+  return `+91 ${mobile.replace(/^(\+91|91)/, '').trim()}`;
+};

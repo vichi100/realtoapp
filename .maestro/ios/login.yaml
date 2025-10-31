@@ -13,7 +13,7 @@
 - inputText: "9000000001"
 - pressKey: "escape"
 - hideKeyboard
-# - tapOn: 'Done'
+- tapOn: 'Done'
 - waitForAnimationToEnd  
 - tapOn: "controller_play_login_icon" # Assuming this is a button to proceed or confirm
 
