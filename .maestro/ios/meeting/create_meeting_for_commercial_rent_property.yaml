@@ -1,0 +1,56 @@
+appId: com.realtoapp.ios
+---
+- tapOn: "bottom_tab_properties_icon"
+- assertVisible: "Commercial"
+- tapOn: "Commercial"
+- assertVisible: "Search By Name, Address, Id, Mobile"
+
+- assertVisible: ".*Rent In CRP1 Building 1, CRP1 Landmark 1.*"
+- assertVisible: ".*Juhu Beach, Maharashtra, India.*"
+- assertVisible: ".*Reference id: 056863.*"
+- scrollUntilVisible:
+    element:
+      id: "end_of_list"
+    direction: down
+    visibilityPercentage: 100
+    timeout: 10000
+- assertVisible: ".*Rent.*"
+- assertVisible: ".*Deposit.*"
+- assertVisible: ".*Builtup.*"
+- assertVisible: ".*match_056863.*"
+
+# - tapOn: "Vertical scroll bar, 2 pages 󰅁 󰅂 match_968284 Rent In RRP1 Building 1, RRP1 Landmark 1 Juhu Beach, Maharashtra, 
+# India Reference id: 968284 employee_968284 animated_968284 2BHK 30 K 
+# Rent 1.5 Lac Deposit Semi Furnishing"
+
+- tapOn:
+    id: "chevron_left_icon_id_056863"
+- tapOn:
+    id: "alarm_outline_icon_id_056863"
+- assertVisible: ".*Create a call/visiting schedule to show property to client and get reminder on time.*"
+- assertVisible: ".*Reminder For ?.*"
+- tapOn: "reminder_type_call"
+- tapOn: " Add Customer For Meeting."
+- assertVisible: "Customer List"
+- tapOn:
+    id: "checkbox_id_804551"
+- tapOn: "Go back"
+- tapOn: "Date*"
+- tapOn: " 28 "
+- tapOn: "OK"
+- tapOn: "Time*"
+- tapOn: "Hour"
+- inputText: "11"
+- tapOn: "Minute"
+- inputText: "30"
+- tapOn: "AM"
+- tapOn: "Apply"
+- assertVisible: "11:30 AM"
+# - tapOn: "Save"
+- assertVisible: "Upcoming Meetings"
+- assertVisible: "Past Meetings"
+- assertVisible: "Agent +91 9000000002 Call 11:30 AM Sat Nov 1 2025"
+- tapOn: "Agent +91 9000000002 Call 11:30 AM Sat Nov 1 2025"
+- assertVisible: "Meeting Details"
+- assertVisible: "Vertical scroll bar, 1 page 󰅁 󰅂 85% Match Rent In CRP1 Building 1, CRP1 Landmark 1 Juhu Beach, Maharashtra, India Reference id: 056863 employee_056863 Shop Prop Type 30 K Rent 1.5 Lac Deposit 500 Builtup"
+- tapOn: "Back"

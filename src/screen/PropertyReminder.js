@@ -267,6 +267,14 @@ const PropertyReminder = props => {
     );
   };
 
+  const FlatListFooter = () => {
+    return (
+      <View style={{ padding: 10, alignItems: 'center' }}>
+        <Text style={{ color: '#fff' }} testID="end_of_list">End</Text>
+      </View>
+    );
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <ScrollView>
@@ -297,6 +305,7 @@ const PropertyReminder = props => {
           //Item Separator View
           renderItem={ItemView}
           keyExtractor={(item, index) => index.toString()}
+          ListFooterComponent={FlatListFooter} // Pass the footer component here
         /> : <View style={{ flex: 1, alignContent: 'center', justifyContent: 'center', backgroundColor: "rgba(239, 239, 240, .9)" }}>
           <Text style={{ textAlign: "center", fontSize: 15, fontWeight: 300, marginTop: 0, marginBottom: 20, marginTop: 20 }}>
             No Meetings

@@ -627,7 +627,7 @@ const CustomersCommercial = props => {
     }
   };
 
-  
+
 
   const deleteMe = (itemToDelete) => {
     setLoading(true);
@@ -736,6 +736,15 @@ const CustomersCommercial = props => {
     }
   }, [props.commercialCustomerList]);
 
+  const FlatListFooter = () => {
+    return (
+      <View style={{ padding: 10, alignItems: 'center' }}>
+        <Text style={{ color: '#fff' }} testID="end_of_list">End</Text>
+      </View>
+    );
+  };
+
+
   return (
     loading ? <View
       style={{
@@ -749,7 +758,7 @@ const CustomersCommercial = props => {
       {/* <ActivityIndicator animating size="large" /> */}
     </View> :
       <View style={{ flex: 1 }}>
-        
+
         <View style={styles.searchBar}>
           <AntDesign name="search1" size={20} color="#999" style={{ marginRight: 5, }} />
           {/* <View style={{ flexDirection: "row", margin: 10, justifyContent: "space-between" }}>
@@ -774,6 +783,7 @@ const CustomersCommercial = props => {
               //Item Separator View
               renderItem={ItemView}
               keyExtractor={(item, index) => index.toString()}
+              ListFooterComponent={FlatListFooter} // Pass the footer component here
             />
             <View style={styles.fab}>
               <TouchableOpacity

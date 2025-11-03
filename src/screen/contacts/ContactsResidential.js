@@ -693,6 +693,14 @@ const ContactsResidential = props => {
 
   }, [props.residentialCustomerList])
 
+  const FlatListFooter = () => {
+    return (
+      <View style={{ padding: 10, alignItems: 'center' }}>
+        <Text style={{ color: '#fff' }} testID="end_of_list">End</Text>
+      </View>
+    );
+  };
+
   return (
     loading ? <View
       style={{
@@ -706,7 +714,7 @@ const ContactsResidential = props => {
       {/* <ActivityIndicator animating size="large" /> */}
     </View> :
       <View style={{ flex: 1 }}>
-        
+
         <View style={styles.searchBar}>
           <AntDesign name="search1" size={20} color="#999" style={{ marginRight: 5, }} />
           {/* <View style={{ flexDirection: "row", margin: 10, justifyContent: "space-between" }}>
@@ -731,6 +739,7 @@ const ContactsResidential = props => {
               //Item Separator View
               renderItem={ItemView}
               keyExtractor={(item, index) => index.toString()}
+              ListFooterComponent={FlatListFooter} // Pass the footer component here
             />
             <View style={styles.fab}>
               <TouchableOpacity
@@ -841,7 +850,7 @@ const ContactsResidential = props => {
                   }}
                 />
               </View>
-              
+
               <Text style={styles.marginBottom10}>BHK Type</Text>
               <View style={styles.propSubSection}>
                 <CustomButtonGroup
@@ -1029,7 +1038,7 @@ const ContactsResidential = props => {
           (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)
           )) ?
           <TouchableOpacity
-          accessibilityLabel="add_customer_icon"
+            accessibilityLabel="add_customer_icon"
             style={{
               // borderWidth: 1,
               // borderColor: "rgba(0,0,0,0.2)",

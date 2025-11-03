@@ -7,8 +7,25 @@ appId: com.realtoapp.ios
 
 - runFlow:
     file: login.yaml
+
 - runFlow:
-    file: meeting/create_meeting_for_residential_rent_property.yaml
+    file: meeting/create_meeting_for_commercial_buy_customer.yaml
+    
+# - runFlow:
+#     file: meeting/create_meeting_for_commercial_rent_customer.yaml
+
+    
+# - runFlow:
+#     file: meeting/create_meeting_for_residential_buy_customer.yaml
+# - runFlow:
+#     file: meeting/create_meeting_for_residential_rent_customer.yaml
+# - runFlow:
+#     file: meeting/create_meeting_for_commercial_sell_property.yaml
+# - runFlow:
+#     file: meeting/create_meeting_for_commercial_rent_property.yaml
+    
+# - runFlow:
+#     file: meeting/create_meeting_for_residential_rent_property.yaml
 # - runFlow:
 #     file: match/commercial_customer_match.yaml
 # - runFlow:

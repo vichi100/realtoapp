@@ -1,0 +1,63 @@
+appId: com.realtoapp.ios
+---
+- tapOn: "bottom_tab_contacts_icon"
+- assertVisible: "Residential"
+- tapOn: "Residential"
+- assertVisible: "Search By Name, Address, Id, Mobile"
+- assertVisible: "match_678800 Customer Rent Residential 1 󱕙 +91 9933055555 Reference id: 678800 animated_678800  Juhu Beach  No Employees Assigned 2BHK 30 K Rent 1.5 Lac Deposit Semi Furnishing C"
+- assertVisible: ".*Customer Rent Residential 1.*"
+- assertVisible: ".*Juhu Beach.*"
+- assertVisible: ".*Reference id: 678800.*"
+- scrollUntilVisible:
+    element:
+      id: "end_of_list"
+    direction: down
+    visibilityPercentage: 100
+    timeout: 10000
+- assertVisible: ".*Rent.*"
+- assertVisible: ".*Deposit.*"
+- assertVisible: ".*Furnishing.*"
+- assertVisible: ".*match_678800.*"
+- tapOn:
+    id: "chevron_left_icon_id_678800"
+- tapOn:
+    id: "alarm_outline_icon_id_678800"
+- assertVisible: "Reminders"
+- assertVisible: "Create a call/visiting schedule to show property to client and get reminder on time"
+- assertVisible: "Reminder For ?"
+- tapOn: "reminder_type_call"
+- tapOn: " Add Residential Properties For Rent"
+- assertVisible: "Property List"
+- assertVisible: "Search by property address, owner"
+- assertVisible: "Vertical scroll bar, 1 page 󰅁 󰅂 84% Match Rent In RRP1 Building 1, RRP1 Landmark 1 Juhu Beach, Maharashtra, India Reference id: 968284 employee_968284 checkbox_968284 2BHK 30 K Rent 1.5 Lac Deposit Semi Furnishing"
+- tapOn:
+    id: "checkbox_id_968284"
+- tapOn: "Reminders, back"
+- tapOn: "Date*"
+- tapOn: " 28 "
+- tapOn: "OK"
+- tapOn: "Time*"
+- tapOn: "Hour"
+- inputText: "11"
+- tapOn: "Minute"
+- inputText: "30"
+- tapOn: "AM"
+- tapOn: "Apply"
+- assertVisible: "11:30 AM"
+# - tapOn: "Save"
+- assertVisible: "Upcoming Meetings"
+- assertVisible: "Past Meetings"
+- scrollUntilVisible:
+    element:
+      id: "end_of_list"
+    direction: down
+    visibilityPercentage: 100
+    timeout: 10000
+- tapOn: "Customer Rent
+
+    Residential 1 +91 9933055555 Call 11:30 AM Tue Nov 4 2025"
+- assertVisible: "Meeting Details"
+- assertVisible: "Customer Rent Residential 1"
+- assertVisible: "Reference id: 678800"
+- assertVisible: "Vertical scroll bar, 2 pages 󰅁 󰅂 84% Match Rent In RRP1 Building 1, RRP1 Landmark 1 Juhu Beach, Maharashtra, India Reference id: 968284 employee_968284 2BHK 30 K Rent 1.5 Lac Deposit Semi Furnishing"
+- tapOn: "Go back"

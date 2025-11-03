@@ -1,0 +1,63 @@
+appId: com.realtoapp.ios
+---
+- tapOn: "bottom_tab_contacts_icon"
+- assertVisible: "Commercial"
+- tapOn: "Commercial"
+- assertVisible: "Search By Name, Address, Id, Mobile"
+- assertVisible: "match_066539 Customer Buy Commercial 1 󱕙 +91 9933088888 Reference id: 066539 animated_066539  Juhu Beach  No Employees Assigned Shop Prop Type 3 Cr Buy Mall Building Type C"
+- assertVisible: ".*Customer Buy Commercial 1.*"
+- assertVisible: ".*Juhu Beach.*"
+- assertVisible: ".*Reference id: 066539.*"
+- scrollUntilVisible:
+    element:
+      id: "end_of_list"
+    direction: down
+    visibilityPercentage: 100
+    timeout: 10000
+- assertVisible: ".*Buy.*"
+- assertVisible: ".*Building Type.*"
+- assertVisible: ".*Prop Type.*"
+- assertVisible: ".*match_066539.*"
+- tapOn:
+    id: "chevron_left_icon_id_066539"
+- tapOn:
+    id: "alarm_outline_icon_id_066539"
+- assertVisible: "Reminders"
+- assertVisible: "Create a call/visiting schedule to show property to client and get reminder on time"
+- assertVisible: "Reminder For ?"
+- tapOn: "reminder_type_call"
+- tapOn: " Add Commercial Properties For Buy"
+- assertVisible: "Property List"
+- assertVisible: "Search by property address, owner"
+- assertVisible: "Vertical scroll bar, 1 page 󰅁 󰅂 75% Match Sell Off in CSP1 Building 1, CSP1 Landmark 1 Juhu Beach, Maharashtra, India Reference id: 909779 employee_909779 checkbox_909779 Shop Prop Type 3 Cr Price Mall Building Type 800 sqft Builtup"
+- tapOn:
+    id: "checkbox_id_909779"
+- tapOn: "Reminders, back"
+- tapOn: "Date*"
+- tapOn: " 28 "
+- tapOn: "OK"
+- tapOn: "Time*"
+- tapOn: "Hour"
+- inputText: "11"
+- tapOn: "Minute"
+- inputText: "30"
+- tapOn: "AM"
+- tapOn: "Apply"
+- assertVisible: "11:30 AM"
+# - tapOn: "Save"
+- assertVisible: "Upcoming Meetings"
+- assertVisible: "Past Meetings"
+- scrollUntilVisible:
+    element:
+      id: "end_of_list"
+    direction: down
+    visibilityPercentage: 100
+    timeout: 10000
+- tapOn: "Customer Buy
+
+    Commercial 1 +91 9933088888 Call 11:30 AM Mon Nov 3 2025"
+- assertVisible: "Meeting Details"
+- assertVisible: "Customer Buy Commercial 1"
+- assertVisible: "Reference id: 066539"
+- assertVisible: "Vertical scroll bar, 2 pages 󰅁 󰅂 75% Match Sell Off in CSP1 Building 1, CSP1 Landmark 1 Juhu Beach, Maharashtra, India Reference id: 909779 employee_909779 Shop Prop Type 3 Cr Price Mall Building Type 800 sqft Builtup"
+- tapOn: "Go back"

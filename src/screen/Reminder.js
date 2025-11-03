@@ -462,6 +462,14 @@ const Reminder = props => {
     );
   };
 
+  const FlatListFooter = () => {
+    return (
+      <View style={{ padding: 10, alignItems: 'center' }}>
+        <Text style={{ color: '#fff' }} testID="end_of_list">End</Text>
+      </View>
+    );
+  };
+
   return (
     loading ? (
       <View
@@ -550,6 +558,7 @@ const Reminder = props => {
                 ItemSeparatorComponent={ItemSeparatorView}
                 renderItem={ItemView}
                 keyExtractor={(item, index) => index.toString()}
+                ListFooterComponent={FlatListFooter} // Pass the footer component here
               />
             ) : (
               <View

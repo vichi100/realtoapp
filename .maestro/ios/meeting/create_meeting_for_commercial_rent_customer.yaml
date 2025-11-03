@@ -1,14 +1,63 @@
-property
- -residential
-  -rent
-  -sell
- -commercial
-  -rent
-  -sell
-customer
- -residential
-  -rent
-  -buy
- -commercial
-  -rent
-  -buy
+appId: com.realtoapp.ios
+---
+- tapOn: "bottom_tab_contacts_icon"
+- assertVisible: "Commercial"
+- tapOn: "Commercial"
+- assertVisible: "Search By Name, Address, Id, Mobile"
+- assertVisible: "match_520167 Customer Rent Commercial 1 󱕙 +91 99330577777 Reference id: 520167 animated_520167  Juhu Beach  No Employees Assigned Shop Prop Type 30 K Rent 1.5 Lac Deposit C"
+- assertVisible: ".*Customer Rent Commercial 1.*"
+- assertVisible: ".*Juhu Beach.*"
+- assertVisible: ".*Reference id: 520167.*"
+- scrollUntilVisible:
+    element:
+      id: "end_of_list"
+    direction: down
+    visibilityPercentage: 100
+    timeout: 10000
+- assertVisible: ".*Rent.*"
+- assertVisible: ".*Deposit.*"
+- assertVisible: ".*Prop Type.*"
+- assertVisible: ".*match_520167*"
+- tapOn:
+    id: "chevron_left_icon_id_520167"
+- tapOn:
+    id: "alarm_outline_icon_id_520167"
+- assertVisible: "Reminders"
+- assertVisible: "Create a call/visiting schedule to show property to client and get reminder on time"
+- assertVisible: "Reminder For ?"
+- tapOn: "reminder_type_call"
+- tapOn: " Add Commercial Properties For Rent"
+- assertVisible: "Property List"
+- assertVisible: "Search by property address, owner"
+- assertVisible: "Vertical scroll bar, 1 page 󰅁 󰅂 85% Match Rent In CRP1 Building 1, CRP1 Landmark 1 Juhu Beach, Maharashtra, India Reference id: 056863 employee_056863 checkbox_056863 Shop Prop Type 30 K Rent 1.5 Lac Deposit 500 Builtup"
+- tapOn:
+    id: "checkbox_id_056863"
+- tapOn: "Reminders, back"
+- tapOn: "Date*"
+- tapOn: " 28 "
+- tapOn: "OK"
+- tapOn: "Time*"
+- tapOn: "Hour"
+- inputText: "11"
+- tapOn: "Minute"
+- inputText: "30"
+- tapOn: "AM"
+- tapOn: "Apply"
+- assertVisible: "11:30 AM"
+# - tapOn: "Save"
+- assertVisible: "Upcoming Meetings"
+- assertVisible: "Past Meetings"
+- scrollUntilVisible:
+    element:
+      id: "end_of_list"
+    direction: down
+    visibilityPercentage: 100
+    timeout: 10000
+- tapOn: "Customer Rent
+
+    Commercial 1 +91 99330577777 Call 11:30 AM Sun Nov 2 2025"
+- assertVisible: "Meeting Details"
+- assertVisible: "Customer Rent Commercial 1"
+- assertVisible: "Reference id: 520167"
+- assertVisible: "Vertical scroll bar, 2 pages 󰅁 󰅂 85% Match Rent In CRP1 Building 1, CRP1 Landmark 1 Juhu Beach, Maharashtra, India Reference id: 056863 employee_056863 Shop Prop Type 30 K Rent 1.5 Lac Deposit 500 Builtup"
+- tapOn: "Go back"

@@ -83,6 +83,14 @@ const CustomerMeeting = props => {
     props.setPropListForMeeting([])
   }
 
+  const clearDate = () => {
+    setNewDate("");
+    setNewTime("");
+    setHour("");
+    setMinutes("");
+    setAMPMIndex(-1);
+  }
+
   const setModalVisibleTemp = flag => {
     // // console.log("setModalVisible: " + flag);
     setModalVisible(flag);
@@ -135,7 +143,7 @@ const CustomerMeeting = props => {
   const onChange = React.useCallback(({ date }) => {
     setVisible(false);
     setIsVisible(false);
-    clearState();
+    clearDate();
     // const x = date.toString().split("00:00");
     // setNewDate(x[0]);
     const x = dateFormat(date.toString());
@@ -435,7 +443,7 @@ const CustomerMeeting = props => {
             />
             {props.propListForMeeting.length > 0 ? (
               <View style={{ marginBottom: 10 }}>
-                <Text style={{ marginBottom: 5 }}>Property List</Text>
+                <Text style={{ marginBottom: 5 , marginTop: 10 }}>Property List</Text>
                 <FlatList
                   data={props.propListForMeeting}
                   //data defined in constructor

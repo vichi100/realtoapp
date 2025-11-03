@@ -457,7 +457,7 @@ const ContactResidentialRentCard = props => {
           {displayMatchCount === true && (
             <>
               <TouchableOpacity onPress={() => getMatched(item)}
-                // accessibilityLabel={`match_${item.customer_id?.slice(-6)}`}
+                accessibilityLabel={`match_${item.customer_id?.slice(-6)}`}
                 testID={`match_id_${item.customer_id?.slice(-6)}`}
                 style={{ borderWidth: 1, borderColor: 'red' }}
               >
@@ -563,7 +563,7 @@ const ContactResidentialRentCard = props => {
                 </Text>
               </View>
               <Text style={{ paddingRight: 10, color: "#0f1a20", marginTop: 5, marginBottom: 5 }}
-                accessibilityLabel={`ref_${item.customer_id?.slice(-6)}`}
+                // accessibilityLabel={`ref_${item.customer_id?.slice(-6)}`}
                 testID={`ref_id_${item.customer_id?.slice(-6)}`}
               >
                 Reference id: {item.customer_id?.slice(-6)}
