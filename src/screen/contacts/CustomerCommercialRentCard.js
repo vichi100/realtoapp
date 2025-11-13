@@ -26,7 +26,7 @@ import axios from "axios";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { numDifferentiation } from "../../util/methods";
 import { SERVER_URL } from "../../util/Constant";
-import { EMPLOYEE_ROLE } from "../../util/AppConstant";
+import { EMPLOYEE_ROLE, EMPLOYEE_ROLE_DELETE } from "../../util/AppConstant";
 import {
   setUserMobile,
   setUserDetails,
@@ -57,6 +57,7 @@ const CustomerCommercialRentCard = props => {
     displayCheckBox,
     displayChat,
     deleteMe,
+    closeMe,
     navigatedFrom = "none",
     displayMatchCount = true,
     displayMatchPercent = false,
@@ -77,9 +78,20 @@ const CustomerCommercialRentCard = props => {
   const [Sliding_Drawer_Width, setSlidingDrawerWidth] = useState(195);
   const [Sliding_Drawer_Width_WO_Delete, setSlidingDrawerWidthWODelete] = useState(140);
 
-  const canAddDelete = props.userDetails &&
+  // --- NEW CODE: Determine if the property is closed ---
+  const iscustomerClosed = item && item.customer_status === 0;
+  // ---------------------------------------------------
+
+  const canDelete = props.userDetails &&
     ((props.userDetails.works_for === props.userDetails.id) ||
-      (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)));
+      (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE_DELETE.includes(props.userDetails.employee_role)))
+
+
+  const canAddDelete = true;
+
+  // const canAddDelete = props.userDetails &&
+  //   ((props.userDetails.works_for === props.userDetails.id) ||
+  //     (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)));
 
   const slidingDrawerWidth = canAddDelete
     ? Sliding_Drawer_Width
@@ -90,7 +102,7 @@ const CustomerCommercialRentCard = props => {
     if (item && item.agent_id === props.userDetails.works_for) {
       setSlidingDrawerWidth(195); // Increase width
     } else {
-      setSlidingDrawerWidth(140); // Default width if dont want to see delete option
+      setSlidingDrawerWidth(195); // Default width if dont want to see delete option 140
     }
   }, [item, props.userDetails.works_for]);
 
@@ -430,7 +442,10 @@ const CustomerCommercialRentCard = props => {
   };
 
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, iscustomerClosed && {
+      opacity: 0.6,
+      backgroundColor: 'rgba(128, 128, 128, 0.3)' // Adds semi-transparent gray
+    }]}>
       <View style={styles.MainContainer}>
         <View
           style={[
@@ -442,7 +457,7 @@ const CustomerCommercialRentCard = props => {
               // paddingBottom: 16,
               // paddingTop: 16,
               width: "100%",
-              backgroundColor: "#ffffff"
+              backgroundColor: iscustomerClosed ? "rgba(128, 128, 128, 0.2)" : "#ffffff",
             }
             // { backgroundColor: "rgba(245,245,245, 0.8)" }
           ]}
@@ -452,7 +467,7 @@ const CustomerCommercialRentCard = props => {
               <TouchableOpacity onPress={() => getMatched(item)}
                 accessibilityLabel={`match_${item.customer_id?.slice(-6)}`}
                 testID={`match_id_${item.customer_id?.slice(-6)}`}
-                style={{ height: 1, width:1 }}
+                style={{ height: 1, width: 1 }}
               >
                 <View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
                   <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
@@ -462,10 +477,10 @@ const CustomerCommercialRentCard = props => {
                   backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
                   width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
                 }}
-                testID={`match_idx_${item.customer_id?.slice(-6)}`}
+                  testID={`match_idx_${item.customer_id?.slice(-6)}`}
                 >
                   <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}
-                  
+
                   >Match</Text>
                 </View>
               </TouchableOpacity>
@@ -538,16 +553,16 @@ const CustomerCommercialRentCard = props => {
           >
             <View style={{ paddingLeft: 20, paddingTop: 10 }}>
               <Text style={[styles.title]}
-                // accessibilityLabel={`name_${item.customer_id?.slice(-6)}`}
-                // testID={`name_id_${item.customer_id?.slice(-6)}`}
+              // accessibilityLabel={`name_${item.customer_id?.slice(-6)}`}
+              // testID={`name_id_${item.customer_id?.slice(-6)}`}
               >
                 {item.customer_details.name}
               </Text>
               <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
                 <MaterialCommunityIcons name="phone-dial" color={"#0f1a20"} size={20} />
                 <Text style={[styles.subTitle, { paddingLeft: 10, color: "#0f1a20" }]}
-                  // accessibilityLabel={`mobile_${item.customer_id?.slice(-6)}`}
-                  // testID={`mobile_id_${item.customer_id?.slice(-6)}`}
+                // accessibilityLabel={`mobile_${item.customer_id?.slice(-6)}`}
+                // testID={`mobile_id_${item.customer_id?.slice(-6)}`}
                 >
                   {item.customer_details.mobile1?.startsWith("+91")
                     ? item.customer_details.mobile1
@@ -721,17 +736,17 @@ const CustomerCommercialRentCard = props => {
         </Text>
       </View>
 
-      {props.userDetails.works_for === props.userDetails.id && item.agent_id === props.userDetails.id && 
-      <TouchableOpacity onPress={() => gotoEmployeeList(item)} testID={`goto_employee_list_${item.customer_id?.slice(-6)}`}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: 10, marginLeft: 20 }}>
-          <Feather name="user-plus" size={20} color="black" />
-          <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>
-            {Array.isArray(item.assigned_to_employee_name) && item.assigned_to_employee_name.length > 0
-              ? item.assigned_to_employee_name.join(", ")
-              : "No Employees Assigned"}
-          </Text>
-        </View>
-      </TouchableOpacity>}
+      {props.userDetails.works_for === props.userDetails.id && item.agent_id === props.userDetails.id &&
+        <TouchableOpacity onPress={() => gotoEmployeeList(item)} testID={`goto_employee_list_${item.customer_id?.slice(-6)}`}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: 10, marginLeft: 20 }}>
+            <Feather name="user-plus" size={20} color="black" />
+            <Text style={{ fontSize: 14, fontWeight: '300', color: '#000', marginLeft: 20, marginRight: 20 }}>
+              {Array.isArray(item.assigned_to_employee_name) && item.assigned_to_employee_name.length > 0
+                ? item.assigned_to_employee_name.join(", ")
+                : "No Employees Assigned"}
+            </Text>
+          </View>
+        </TouchableOpacity>}
 
       <View style={[styles.detailsContainer]}>
         <View style={[styles.details]}>
@@ -781,13 +796,15 @@ const CustomerCommercialRentCard = props => {
       >
         <View style={styles.centeredView1}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>
+            {iscustomerClosed ? <Text style={styles.modalText}>
+              Do you want to open this customer?
+            </Text> : <Text style={styles.modalText}>
               Did you win deal for this customer?
-            </Text>
-            <CustomButtonGroup
+            </Text>}
+            {!iscustomerClosed ? <CustomButtonGroup
               buttons={AppConstant.DEAL_WIN_OPTION}
-              accessibilityLabelId={`delete_option_${item.customer_id?.slice(-6)}`}
-              testID={`delete_option_id_${item.customer_id?.slice(-6)}`}
+              accessibilityLabelId={`delete_option_${item.property_id?.slice(-6)}`}
+              testID={`delete_option_id_${item.property_id?.slice(-6)}`}
               selectedIndices={[AppConstant.DEAL_WIN_OPTION.findIndex(option => option.text === dealWin)]}
               isMultiSelect={false}
               buttonStyle={{ backgroundColor: '#fff' }}
@@ -802,9 +819,11 @@ const CustomerCommercialRentCard = props => {
                 // Query update is handled by useEffect after state change
               }}
 
-            />
-
-            <Text style={{ marginBottom: 50 }}>You are going to delete?</Text>
+            /> : null}
+            {
+              !iscustomerClosed ? (canDelete ? <Text style={{ marginBottom: 50, fontSize: 12, marginTop: 20 }}>You can close or delete customer. Close will keep customer in list for 10 days, Delete will remove permanently.</Text> :
+                <Text style={{ marginBottom: 50, fontSize: 12, marginTop: 20 }}>You can close customer. Close will keep customer in list for 10 days. </Text>) : null
+            }
 
             <View
               style={{
@@ -818,6 +837,26 @@ const CustomerCommercialRentCard = props => {
                 // justifyContent: "flex-end"
               }}
             >
+              {canDelete ? <TouchableHighlight
+                style={{ ...styles.applyButton }}
+                onPress={() => {
+                  deleteMe(item);
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Delete</Text>
+              </TouchableHighlight> : null}
+
+              <TouchableHighlight
+                style={{ ...styles.applyButton }}
+                onPress={() => {
+                  closeMe(item);
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>{iscustomerClosed ? "Open" : "Close"}</Text>
+              </TouchableHighlight>
+
               <TouchableHighlight
                 style={{ ...styles.cancelButton }}
                 onPress={() => {
@@ -826,16 +865,10 @@ const CustomerCommercialRentCard = props => {
               >
                 <Text style={styles.textStyle}>Cancel</Text>
               </TouchableHighlight>
-              <TouchableHighlight
-                style={{ ...styles.applyButton }}
-                onPress={() => {
-                  deleteMe(item);
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <Text style={styles.textStyle}>Apply</Text>
-              </TouchableHighlight>
+
+
             </View>
+
           </View>
         </View>
       </Modal>

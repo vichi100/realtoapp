@@ -35,7 +35,7 @@ import {
   setPropertyDetails,
 } from "../../../reducers/Action";
 import { SERVER_URL } from "../../../util/Constant";
-import { EMPLOYEE_ROLE } from "../../../util/AppConstant";
+import { EMPLOYEE_ROLE, EMPLOYEE_ROLE_DELETE } from "../../../util/AppConstant";
 import Feather from "react-native-vector-icons/Feather";
 import { makeCall } from "../../../util/methods";
 import * as  AppConstant from "../../../util/AppConstant";
@@ -55,6 +55,7 @@ const Card = props => {
     displayCheckBox = false,
     displayChat,
     deleteMe,
+    closeMe,
     displayMatchCount = true,
     displayMatchPercent = false,
     displayCheckBoxForEmployee = false,
@@ -74,10 +75,27 @@ const Card = props => {
 
   const [dealWin, setDealWin] = useState("Yes");
 
-  const canAddDelete = props.userDetails &&
-    ((props.userDetails.works_for === props.userDetails.id) ||
-      (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)));
+  // --- NEW CODE: Determine if the property is closed ---
+  const isPropertyClosed = item && item.property_status === 0;
+  // ---------------------------------------------------
 
+  const canDelete = props.userDetails &&
+      ((props.userDetails.works_for === props.userDetails.id) ||
+        (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE_DELETE.includes(props.userDetails.employee_role)))
+
+  const canAddDelete = true; // props.userDetails &&
+  // ((props.userDetails.works_for === props.userDetails.id) ||
+  //   (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)));
+
+  // const canDelete = props.userDetails &&
+  //   ((props.userDetails.works_for === props.userDetails.id) ||
+  //     (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE_DELETE.includes(props.userDetails.employee_role)))
+
+  // const canAddDelete = props.userDetails &&
+  //   ((props.userDetails.works_for === props.userDetails.id) ||
+  //     (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)));
+
+  // const canAddDelete = true;
   const slidingDrawerWidth = canAddDelete
     ? Sliding_Drawer_Width
     : Sliding_Drawer_Width_WO_Delete;
@@ -87,7 +105,7 @@ const Card = props => {
     if (item && item.agent_id === props.userDetails.works_for) {
       setSlidingDrawerWidth(250); // Increase width
     } else {
-      setSlidingDrawerWidth(200); // Default width if dont want to see delete option
+      setSlidingDrawerWidth(250); // Default width if dont want to see delete option
     }
   }, [item, props.userDetails.works_for]);
 
@@ -448,11 +466,21 @@ const Card = props => {
 
   return (
     // <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-    <View style={styles.card}>
+    <View style={[styles.card, isPropertyClosed && {
+      opacity: 0.6,
+      backgroundColor: 'rgba(128, 128, 128, 0.3)' // Adds semi-transparent gray
+    }]}>
+
       <Slideshow
         dataSource={item.image_urls}
       />
-
+      {/* --- NEW CODE: Conditional Overlay for Closed Property --- */}
+      {isPropertyClosed && (
+        <View style={styles.overlay}>
+          {/* <Text style={styles.overlayText}>CLOSED</Text> */}
+        </View>
+      )}
+      {/* -------------------------------------------------------- */}
       <View style={styles.MainContainer}>
         <View
           style={[
@@ -467,7 +495,7 @@ const Card = props => {
           <View style={{
             flex: 1,
             flexDirection: "row",
-            backgroundColor: "#ffffff",
+            backgroundColor: isPropertyClosed ? "rgba(128, 128, 128, 0.3)" : "#ffffff",
             marginTop: -5,
             marginBottom: 5,
           }}>
@@ -528,15 +556,15 @@ const Card = props => {
                 paddingBottom: 20, paddingTop: 5, minHeight: 90
               }}>
                 <Text style={[styles.title]}
-                  // accessibilityLabel={`header_${item.property_id?.slice(-6)}`}
-                  // testID={`header_id_${item.property_id?.slice(-6)}`}
+                // accessibilityLabel={`header_${item.property_id?.slice(-6)}`}
+                // testID={`header_id_${item.property_id?.slice(-6)}`}
                 >
                   Rent In {item.property_address.building_name},{" "}
                   {item.property_address.landmark_or_street}
                 </Text>
                 <Text style={{ paddingRight: 10 }}
-                  // accessibilityLabel={`address_${item.property_id?.slice(-6)}`}
-                  // testID={`address_id_${item.property_id?.slice(-6)}`}
+                // accessibilityLabel={`address_${item.property_id?.slice(-6)}`}
+                // testID={`address_id_${item.property_id?.slice(-6)}`}
                 >
                   {item.property_address.formatted_address}
                 </Text>
@@ -776,10 +804,12 @@ const Card = props => {
       >
         <View style={styles.centeredView1}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>
+            {isPropertyClosed ? <Text style={styles.modalText}>
+              Do you want to open this property?
+            </Text> : <Text style={styles.modalText}>
               Did you win deal for this property?
-            </Text>
-            <CustomButtonGroup
+            </Text>}
+            {!isPropertyClosed ? <CustomButtonGroup
               buttons={AppConstant.DEAL_WIN_OPTION}
               accessibilityLabelId={`delete_option_${item.property_id?.slice(-6)}`}
               testID={`delete_option_id_${item.property_id?.slice(-6)}`}
@@ -797,9 +827,11 @@ const Card = props => {
                 // Query update is handled by useEffect after state change
               }}
 
-            />
-
-            <Text style={{ marginBottom: 50 }}>You are going to delete?</Text>
+            /> : null}
+            {
+              !isPropertyClosed ? (canDelete ? <Text style={{ marginBottom: 50, fontSize: 12, marginTop: 20 }}>You can close or delete property. Close will keep property in list for 10 days, Delete will remove permanently.</Text> :
+                <Text style={{ marginBottom: 50, fontSize: 12, marginTop: 20 }}>You can close property. Close will keep property in list for 10 days. </Text>) : null
+            }
 
             <View
               style={{
@@ -813,6 +845,26 @@ const Card = props => {
                 // justifyContent: "flex-end"
               }}
             >
+              {canDelete ? <TouchableHighlight
+                style={{ ...styles.applyButton }}
+                onPress={() => {
+                  deleteMe(item);
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Delete</Text>
+              </TouchableHighlight> : null}
+
+              <TouchableHighlight
+                style={{ ...styles.applyButton }}
+                onPress={() => {
+                  closeMe(item);
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>{isPropertyClosed ? "Open" : "Close"}</Text>
+              </TouchableHighlight>
+
               <TouchableHighlight
                 style={{ ...styles.cancelButton }}
                 onPress={() => {
@@ -821,16 +873,10 @@ const Card = props => {
               >
                 <Text style={styles.textStyle}>Cancel</Text>
               </TouchableHighlight>
-              <TouchableHighlight
-                style={{ ...styles.applyButton }}
-                onPress={() => {
-                  deleteMe(item);
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <Text style={styles.textStyle}>Apply</Text>
-              </TouchableHighlight>
+
+
             </View>
+
           </View>
         </View>
       </Modal>

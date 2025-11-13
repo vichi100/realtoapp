@@ -1,0 +1,16 @@
+appId: com.realtoapp.ios
+---
+- tapOn: "bottom_tab_profile_icon"
+- tapOn: "MY EMPLOYEE"
+# - tapOn: "Add New Employee"
+- tapOn: "add_employee_icon"
+- assertVisible: "Add New Employee"
+- assertVisible: "Add employees so they can have access/edit rights for your properties listing, you can any time change any employees rights"
+- tapOn: "Employee Name*"
+- inputText: "Emp Master 1"
+- tapOn: "Employee Mobile*"
+- inputText: "5555555533"
+- tapOn: 'Done'
+- waitForAnimationToEnd
+- tapOn: "emp_role_master"  
+- tapOn: "manage_employee_add_button"

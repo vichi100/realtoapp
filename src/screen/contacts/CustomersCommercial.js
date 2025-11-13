@@ -674,6 +674,59 @@ const CustomersCommercial = props => {
 
   }
 
+
+  const closeMe = (itemToClose) => {
+    setLoading(true);
+    const reqData = {
+      req_user_id: props.userDetails.id,
+      agent_id: props.userDetails.works_for,
+      dataToClose: itemToClose
+    };
+    // delete the item from the database
+    axios(SERVER_URL + "/closeCommercialCustomer", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: reqData
+    }).then(
+      response => {
+        // console.log("response.data:      ", response.data);
+        // response.data.map(item => {
+        //   item.image_urls.map(image => {
+        //     image.url = SERVER_URL + image.url
+        //   })
+        // })
+        // setData(response.data);
+        // props.setResidentialPropertyList(response.data);
+        if (response.data === "success") {
+          if(itemToClose.customer_status == 0){
+            itemToClose.customer_status = 1
+          }else if(itemToClose.customer_status == 1){
+            itemToClose.customer_status = 0
+          }
+          setData(data => data.map(item => 
+            item.customer_id === itemToClose.customer_id ? itemToClose : item
+          ));
+        } else {
+          setErrorMessage(response.data || "Failed to delete customer");
+        }
+
+        setLoading(false);
+        // console.log("response.data:      ", response.data);
+        // After successfully fetching, reset the Redux refresh flag
+        dispatch(resetRefresh());
+      },
+      error => {
+        // console.log(error);
+        setLoading(false);
+        console.log(error);
+      }
+    );
+
+  }
+
   // const deleteMe = (itemToDelete) => {
   //   // console.log("props.setPropertyDetails(item: deleteMe: )", itemToDelete);
   //   setData((data) => data.filter((item) => item.customer_id !== itemToDelete.customer_id));
@@ -687,14 +740,14 @@ const CustomersCommercial = props => {
       if (item.customer_locality.property_for === "Rent") {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <CustomerCommercialRentCard navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox}
+            <CustomerCommercialRentCard navigation={navigation} item={item} deleteMe={deleteMe} closeMe={closeMe} displayCheckBox={displayCheckBox}
               disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} />
           </TouchableOpacity>
         );
       } else if (item.customer_locality.property_for === "Buy") {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Buy")}>
-            <CustomerCommercialBuyCard navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox}
+            <CustomerCommercialBuyCard navigation={navigation} item={item} deleteMe={deleteMe} closeMe={closeMe} displayCheckBox={displayCheckBox}
               disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} />
           </TouchableOpacity>
         );

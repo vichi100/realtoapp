@@ -300,8 +300,8 @@ const EmployeeCard = props => {
   //   Linking.openURL(url);
   // };
 
-  const checkDeleteDecision = (item)=>{
-    if(index === 0){
+  const checkDeleteDecision = (item) => {
+    if (index === 0) {
       deleteMe(item);
       setModalVisible(false);
       Animated.timing(Animation, {
@@ -312,16 +312,16 @@ const EmployeeCard = props => {
         Sliding_Drawer_Toggle = false;
       });
     }
-    if(index ===1){
+    if (index === 1) {
       setModalVisible(false);
     }
-    
+
   }
 
   const editEmployee = async (empData) => {
     // https://docs.expo.io/versions/latest/react-native/share/
     try {
-      navigation.navigate("ManageEmployee", {empData:empData, editEmp: true}, );
+      navigation.navigate("ManageEmployee", { empData: empData, editEmp: true },);
     } catch (error) {
       alert(error.message);
     }
@@ -522,7 +522,7 @@ const EmployeeCard = props => {
 
 
 
-          <View style={{ marginLeft: !displayMatchPercent ? 10 : 0, alignItems: 'center', marginBottom:5, justifyContent:'center' }}>
+          <View style={{ marginLeft: !displayMatchPercent ? 10 : 0, alignItems: 'center', marginBottom: 5, justifyContent: 'center' }}>
             <Avatar
               square
               size={55}
@@ -710,7 +710,9 @@ const EmployeeCard = props => {
               onPress={() => {
                 openPropertiesList(item);
               }}
-            // style={{ padding: 15, backgroundColor: "#e57373" }}
+              // style={{ padding: 15, backgroundColor: "#e57373" }}
+              accessibilityLabel={`add_property_icon_id_${item.mobile?.slice(-6)}`}
+              testID={`add_property_icon_id_${item.mobile?.slice(-6)}`}
             >
               <MaterialCommunityIcons
                 name="bank-plus"
@@ -728,7 +730,9 @@ const EmployeeCard = props => {
               onPress={() => {
                 openCustomerList(item);
               }}
-            // style={{ padding: 15, backgroundColor: "#e57373" }}
+              // style={{ padding: 15, backgroundColor: "#e57373" }}
+              accessibilityLabel={`add_customer_icon_id_${item.mobile?.slice(-6)}`}
+              testID={`add_customer_icon_id_${item.mobile?.slice(-6)}`}
             >
               <MaterialCommunityIcons
                 name="account-plus-outline"

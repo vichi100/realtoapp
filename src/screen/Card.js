@@ -27,7 +27,7 @@ import Slideshow from "../components/Slideshow";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { numDifferentiation } from "../util/methods";
 import { SERVER_URL, WEB_APP_URL } from "../util/Constant";
-import { EMPLOYEE_ROLE } from "../util/AppConstant";
+import { EMPLOYEE_ROLE, EMPLOYEE_ROLE_DELETE } from "../util/AppConstant";
 import { MaterialIcons } from "@expo/vector-icons";
 import {
   setUserMobile,
@@ -67,6 +67,7 @@ const Card = props => {
     displayCheckBox = false,
     displayChat,
     deleteMe,
+    closeMe,
     displayMatchCount = true,
     displayMatchPercent = false,
     displayCheckBoxForEmployee = false,
@@ -87,9 +88,17 @@ const Card = props => {
 
   const [dealWin, setDealWin] = useState("Yes");
 
-  const canAddDelete = props.userDetails &&
+  // --- NEW CODE: Determine if the property is closed ---
+  const isPropertyClosed = item && item.property_status === 0;
+  // ---------------------------------------------------
+
+  const canAddDelete = true; // props.userDetails &&
+  // ((props.userDetails.works_for === props.userDetails.id) ||
+  //   (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)));
+
+  const canDelete = props.userDetails &&
     ((props.userDetails.works_for === props.userDetails.id) ||
-      (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)));
+      (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE_DELETE.includes(props.userDetails.employee_role)))
 
   const slidingDrawerWidth = canAddDelete
     ? Sliding_Drawer_Width
@@ -100,7 +109,7 @@ const Card = props => {
     if (item && item.agent_id === props.userDetails.works_for) {
       setSlidingDrawerWidth(250); // Increase width
     } else {
-      setSlidingDrawerWidth(200); // Default width if dont want to see delete option
+      setSlidingDrawerWidth(250); // Default width if dont want to see delete option
     }
   }, [item, props.userDetails.works_for]);
 
@@ -490,12 +499,21 @@ const Card = props => {
 
   return (
     // <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-    <View style={styles.card}>
+    <View style={[styles.card, isPropertyClosed && {
+      opacity: 0.6,
+      backgroundColor: 'rgba(128, 128, 128, 0.3)' // Adds semi-transparent gray
+    }]}>
       <Slideshow
         dataSource={item.image_urls}
       />
-
-      <View style={styles.MainContainer}>
+      {/* --- NEW CODE: Conditional Overlay for Closed Property --- */}
+      {isPropertyClosed && (
+        <View style={styles.overlay}>
+          {/* <Text style={styles.overlayText}>CLOSED</Text> */}
+        </View>
+      )}
+      {/* -------------------------------------------------------- */}
+      <View style={[styles.MainContainer]}>
         <View
           style={[
             {
@@ -510,25 +528,25 @@ const Card = props => {
           <View style={{
             flex: 1,
             flexDirection: "row",
-            backgroundColor: "#ffffff",
+            backgroundColor: isPropertyClosed ? "rgba(128, 128, 128, 0.3)" : "#ffffff",
             marginTop: -5,
             marginBottom: 5,
           }}>
-            {displayMatchCount && 
-            <TouchableOpacity onPress={() => getMatched(item)}
-              accessibilityLabel={`match_${item.property_id?.slice(-6)}`}
-              testID={`match_id_${item.property_id?.slice(-6)}`}>
-              {<View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
-                <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
-              </View>}
-              <View style={{
-                position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
-                backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
-                width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
-              }}>
-                <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
-              </View>
-            </TouchableOpacity>}
+            {displayMatchCount &&
+              <TouchableOpacity onPress={() => getMatched(item)}
+                accessibilityLabel={`match_${item.property_id?.slice(-6)}`}
+                testID={`match_id_${item.property_id?.slice(-6)}`}>
+                {<View style={{ backgroundColor: 'rgba(234, 155, 20, 0.7)', position: 'absolute', left: 0, top: 0, alignItems: 'center', justifyContent: 'center', width: 50, height: 20, marginLeft: -20 }}>
+                  <Text style={{ fontSize: 15, fontWeight: '500', color: '#000', paddingLeft: 20 }}>{item.match_count ? item.match_count : 0}</Text>
+                </View>}
+                <View style={{
+                  position: 'absolute', left: 0, top: 20, transform: [{ rotate: '270deg' }],
+                  backgroundColor: 'rgba(80, 200, 120, 0.7)', alignItems: 'center', justifyContent: 'center',
+                  width: 70, height: 30, padding: 0, marginLeft: -20, marginTop: 20, marginBottom: 15
+                }}>
+                  <Text style={{ fontSize: 14, fontWeight: '300', color: '#000' }}>Match</Text>
+                </View>
+              </TouchableOpacity>}
             {displayMatchPercent === true && (
               <>
                 {/* <View style={{ justifyContent: 'center', alignItems: 'center' }}> */}
@@ -572,23 +590,23 @@ const Card = props => {
                 paddingBottom: 20, paddingTop: 5, minHeight: 90
               }}>
                 <Text style={[styles.title]}
-                  // accessibilityLabel={`Rent In ${item.property_address.building_name}`}
-                  // testID={`header_id_${item.property_id?.slice(-6)}`}
+                // accessibilityLabel={`Rent In ${item.property_address.building_name}`}
+                // testID={`header_id_${item.property_id?.slice(-6)}`}
                 >
                   Rent In {item.property_address.building_name},{" "}
                   {item.property_address.landmark_or_street}
                 </Text>
                 <Text style={{ paddingRight: 10 }}
-                  // accessibilityLabel={item.property_address.formatted_address}
-                  // testID={`address_id_${item.property_id?.slice(-6)}`}
+                // accessibilityLabel={item.property_address.formatted_address}
+                // testID={`address_id_${item.property_id?.slice(-6)}`}
                 >
                   {item.property_address.formatted_address}
                 </Text>
                 <Text style={{ paddingRight: 10, color: "#0f1a20", marginTop: 5 }}
                   // accessibilityLabel={`ref_${item.property_id?.slice(-6)}`}
                   testID={`ref_id_${item.property_id?.slice(-6)}`}
-                  // accessibilityLabel={100000}
-                  // testID={100000}
+                // accessibilityLabel={100000}
+                // testID={100000}
                 >
                   Reference id: {item.property_id?.slice(-6)}
                 </Text>
@@ -822,10 +840,12 @@ const Card = props => {
       >
         <View style={styles.centeredView1}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>
+            {isPropertyClosed ? <Text style={styles.modalText}>
+              Do you want to open this property?
+            </Text> : <Text style={styles.modalText}>
               Did you win deal for this property?
-            </Text>
-            <CustomButtonGroup
+            </Text>}
+            {!isPropertyClosed ? <CustomButtonGroup
               buttons={AppConstant.DEAL_WIN_OPTION}
               accessibilityLabelId={`delete_option_${item.property_id?.slice(-6)}`}
               testID={`delete_option_id_${item.property_id?.slice(-6)}`}
@@ -843,9 +863,12 @@ const Card = props => {
                 // Query update is handled by useEffect after state change
               }}
 
-            />
+            /> : null}
+            {
+              !isPropertyClosed ? (canDelete ? <Text style={{ marginBottom: 50, fontSize: 12, marginTop: 20 }}>You can close or delete property. Close will keep property in list for 10 days, Delete will remove permanently.</Text> :
+                <Text style={{ marginBottom: 50, fontSize: 12, marginTop: 20 }}>You can close property. Close will keep property in list for 10 days. </Text>) : null
+            }
 
-            <Text style={{ marginBottom: 50 }}>You are going to delete?</Text>
             <View
               style={{
                 position: "absolute",
@@ -858,6 +881,26 @@ const Card = props => {
                 // justifyContent: "flex-end"
               }}
             >
+              {canDelete ? <TouchableHighlight
+                style={{ ...styles.applyButton }}
+                onPress={() => {
+                  deleteMe(item);
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Delete</Text>
+              </TouchableHighlight> : null}
+
+              <TouchableHighlight
+                style={{ ...styles.applyButton }}
+                onPress={() => {
+                  closeMe(item);
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>{isPropertyClosed ? "Open" : "Close"}</Text>
+              </TouchableHighlight>
+
               <TouchableHighlight
                 style={{ ...styles.cancelButton }}
                 onPress={() => {
@@ -866,17 +909,12 @@ const Card = props => {
               >
                 <Text style={styles.textStyle}>Cancel</Text>
               </TouchableHighlight>
-              <TouchableHighlight
-                style={{ ...styles.applyButton }}
-                onPress={() => {
-                  deleteMe(item);
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <Text style={styles.textStyle}>Apply</Text>
-              </TouchableHighlight>
+
+
             </View>
+
           </View>
+
         </View>
       </Modal>
 
@@ -1136,7 +1174,17 @@ const styles = StyleSheet.create({
     alignContent: "center",
     // width: Sliding_Drawer_Width,
     flexDirection: "row"
-  }
+  },
+  overlayText: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: 'white',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+    overflow: 'hidden', // to respect borderRadius
+  },
 });
 
 // export default Card;

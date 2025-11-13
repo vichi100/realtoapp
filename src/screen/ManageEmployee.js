@@ -360,6 +360,7 @@ const ManageEmployee = props => {
                     onValueChange={toggleAddSwitch}
                     value={isAddEnabled} //{isReadEnabled}
                     style={{ transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }] }}
+                    accessibilityLabel="emp_role_add"
                   />
                 </View>
                 <View
@@ -380,6 +381,7 @@ const ManageEmployee = props => {
                     onValueChange={toggleMasterSwitch}
                     value={isMasterEnabled}
                     style={{ transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }] }}
+                    accessibilityLabel="emp_role_master"
                   />
                 </View>
                 <View
@@ -400,6 +402,7 @@ const ManageEmployee = props => {
                     onValueChange={toggleAdminSwitch}
                     value={isAdminEnabled}
                     style={{ transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }] }}
+                    accessibilityLabel="emp_role_admin"
                   />
                 </View>
               </View>
@@ -425,8 +428,21 @@ const ManageEmployee = props => {
                 // marginRight: 10
               }}
             >
-              {!editEmp ? <Button title="ADD" onPress={() => onSubmit()} /> :
-              <Button title="UPDATE" onPress={() => updateEmployeeDetails()} />}
+              {!editEmp ? (
+                <Button
+                  title="ADD"
+                  onPress={() => onSubmit()}
+                  accessibilityLabel="manage_employee_add_button"
+                  testID="manage_employee_add_button"
+                />
+              ) : (
+                <Button
+                  title="UPDATE"
+                  onPress={() => updateEmployeeDetails()}
+                  accessibilityLabel="manage_employee_update_button"
+                  testID="manage_employee_update_button"
+                />
+              )}
             </View>
           </View>
           {/* Property releted reminder list */}

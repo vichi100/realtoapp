@@ -241,6 +241,7 @@ const EmployeeList = props => {
                 (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)
                 )) ?
                 <TouchableOpacity onPress={() => navigateTo()}>
+                  
                   <Text
                     style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
                   >
@@ -254,6 +255,7 @@ const EmployeeList = props => {
           )) ?
           <TouchableOpacity
             style={styles.addButton}
+            accessibilityLabel="add_employee_icon"
             onPress={() => navigation.navigate("ManageEmployee")}
           >
             <AntDesign name="pluscircleo" size={40} color="#ffffff" />

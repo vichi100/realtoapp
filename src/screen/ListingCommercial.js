@@ -718,6 +718,57 @@ const ListingCommercial = props => {
 
   }
 
+  const closeMe = (itemToClose) => {
+    setLoading(true);
+    const reqData = {
+      req_user_id: props.userDetails.id,
+      agent_id: props.userDetails.works_for,
+      dataToClose: itemToClose
+    };
+    // delete the item from the database
+    axios(SERVER_URL + "/closeCommercialProperty", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: reqData
+    }).then(
+      response => {
+        // console.log("response.data:      ", response.data);
+        // response.data.map(item => {
+        //   item.image_urls.map(image => {
+        //     image.url = SERVER_URL + image.url
+        //   })
+        // })
+        // setData(response.data);
+        // props.setResidentialPropertyList(response.data);
+        if (response.data === "success") {
+          if(itemToClose.property_status == 0){
+            itemToClose.property_status = 1
+          }else if(itemToClose.property_status == 1){
+            itemToClose.property_status = 0
+          }
+          setData(data => data.map(item => 
+            item.property_id === itemToClose.property_id ? itemToClose : item
+          ));
+        } else {
+          setErrorMessage(response.data || "Failed to delete property");
+        }
+
+        setLoading(false);
+        // console.log("response.data:      ", response.data);
+        // After successfully fetching, reset the Redux refresh flag
+        dispatch(resetRefresh());
+      },
+      error => {
+        // console.log(error);
+        setLoading(false);
+        console.log(error);
+      }
+    );
+
+  }
   
 
   const ItemView = ({ item }) => {
@@ -725,14 +776,14 @@ const ListingCommercial = props => {
       if (item.property_for.toLowerCase() === "Rent".toLowerCase()) {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Rent")}>
-            <CardRent navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox}
+            <CardRent navigation={navigation} item={item} deleteMe={deleteMe} closeMe={closeMe} displayCheckBox={displayCheckBox}
               disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} />
           </TouchableOpacity>
         );
       } else if (item.property_for.toLowerCase() === "Sell".toLowerCase()) {
         return (
           <TouchableOpacity onPress={() => navigateToDetails(item, "Sell")}>
-            <CardSell navigation={navigation} item={item} deleteMe={deleteMe} displayCheckBox={displayCheckBox}
+            <CardSell navigation={navigation} item={item} deleteMe={deleteMe} closeMe={closeMe} displayCheckBox={displayCheckBox}
               disableDrawer={disableDrawer} displayCheckBoxForEmployee={displayCheckBoxForEmployee} employeeObj={employeeObj} />
           </TouchableOpacity>
         );

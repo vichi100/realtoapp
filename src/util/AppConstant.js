@@ -1,4 +1,5 @@
-export const EMPLOYEE_ROLE = ["add", "master", "admin"]
+export const EMPLOYEE_ROLE = ["add", "master", "admin"]// this is who can add employee
+export const EMPLOYEE_ROLE_DELETE = ["admin"]
 export const RENT = "Rent";
 export const SELL = "Sell";
 export const BUY = "Buy";
