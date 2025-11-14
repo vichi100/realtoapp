@@ -14,3 +14,74 @@ appId: com.realtoapp.ios
 - waitForAnimationToEnd  
 - tapOn: "emp_role_admin"
 # - tapOn: "manage_employee_add_button"
+# comment this is add button is enable
+- tapOn: "Go back"
+
+- scrollUntilVisible:
+    element:
+      id: "end_of_list"
+    direction: down
+    visibilityPercentage: 100
+    timeout: 10000
+
+# Assign property to emplyee
+- tapOn: "add_property_icon_id_555544"
+- assertVisible: "Properties"
+- tapOn: "Residential"
+- assertVisible: "Search By Name, Address, Id, Mobile"
+- assertVisible: "Vertical scroll bar, 1 page 󰅁 󰅂 match_526830 Sell Off In RSP1 Building 1, RSP1 Landmark 1 Juhu Beach, Maharashtra, India Reference id: 526830 employee_526830 emp_checkbox_526830 2BHK 2.5 Cr Price 500 Builtup Semi Furnishing"
+- tapOn: "emp_checkbox_526830"
+- tapOn: "Go back"
+- scrollUntilVisible:
+    element:
+      id: "end_of_list"
+    direction: down
+    visibilityPercentage: 100
+    timeout: 10000
+- assertVisible: "count_property_555544_1"
+
+- tapOn: "add_property_icon_id_555544"
+- assertVisible: "Properties"
+- tapOn: "Commercial"
+- assertVisible: "Search By Name, Address, Id, Mobile"
+- assertVisible: "Vertical scroll bar, 1 page 󰅁 󰅂 match_909779 Sell Off in CSP1 Building 1, CSP1 Landmark 1 Juhu Beach, Maharashtra, India Reference id: 909779 employee_909779 emp_checkbox_909779 Shop Prop Type 3 Cr Price Mall Building Type 800 sqft Builtup"
+- tapOn: "emp_checkbox_909779"
+- tapOn: "Go back"
+- scrollUntilVisible:
+    element:
+      id: "end_of_list"
+    direction: down
+    visibilityPercentage: 100
+    timeout: 10000
+- assertVisible: "count_property_555544_2"
+
+# Assign customer to emplyee
+- tapOn: "add_customer_icon_id_555544"
+- assertVisible: "Customers"
+- tapOn: "RESIDENTIAL CUSTOMER"
+- assertVisible: "Search By Name, Address, Id, Mobile"
+- assertVisible: ".*match_678800 Customer Rent Residential 1.*"
+- tapOn: "emp_checkbox_678800"
+- tapOn: "Employee, back"
+- scrollUntilVisible:
+    element:
+      id: "end_of_list"
+    direction: down
+    visibilityPercentage: 100
+    timeout: 10000
+- assertVisible: "count_customer_555544_1"
+
+- tapOn: "add_customer_icon_id_555544"
+- assertVisible: "Customers"
+- tapOn: "Commercial"
+- assertVisible: "Search By Name, Address, Id, Mobile"
+- assertVisible: ".*match_066539 Customer Buy Commercial 1.*"
+- tapOn: "emp_checkbox_066539"
+- tapOn: "Employee, back"
+- scrollUntilVisible:
+    element:
+      id: "end_of_list"
+    direction: down
+    visibilityPercentage: 100
+    timeout: 10000
+- assertVisible: "count_customer_555544_2"

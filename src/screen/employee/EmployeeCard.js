@@ -86,6 +86,18 @@ const EmployeeCard = props => {
     assigned_commercial_buy_customers = [],
   } = item || {}; // Ensure item is not null or undefined
 
+  const totalAssignedProperties =
+    (assigned_residential_rent_properties?.length || 0) +
+    (assigned_residential_sell_properties?.length || 0) +
+    (assigned_commercial_rent_properties?.length || 0) +
+    (assigned_commercial_sell_properties?.length || 0);
+
+  const totalAssignedCustomers =
+    (assigned_residential_rent_customers?.length || 0) +
+    (assigned_residential_buy_customers?.length || 0) +
+    (assigned_commercial_rent_customers?.length || 0) +
+    (assigned_commercial_buy_customers?.length || 0);
+
   // check if item type is customer or property
   // check it item is for rent or sell/Buy
   // check if item is commercial or residential
@@ -544,9 +556,9 @@ const EmployeeCard = props => {
               }}
             />
             {item.employee_role == "admin" ?
-              <Text style={{ fontSize: 15, fontWeight: 500, color: "rgba(255, 76, 48, .9)" }}>{camalize(item.employee_role)} </Text> :
+              <Text style={{ fontSize: 15, fontWeight: 500, color: "rgba(255, 34, 0, 1)" }}>{camalize(item.employee_role)} </Text> :
               item.employee_role == "master" ?
-                <Text style={{ fontSize: 15, fontWeight: 500, color: "rgba(249, 105, 14, 1)" }}>{camalize(item.employee_role)} </Text> :
+                <Text style={{ fontSize: 15, fontWeight: 500, color: "rgba(249, 105, 14, .8)" }}>{camalize(item.employee_role)} </Text> :
                 item.employee_role == "add" ?
                   <Text style={{ fontSize: 15, fontWeight: 500, color: "rgba(25, 181, 254, 1))" }}>{camalize(item.employee_role)} </Text> :
                   <Text style={{ fontSize: 15, fontWeight: 500, color: "rgba(22, 160, 133, 1)" }}>{camalize(item.employee_role)} </Text>}
@@ -701,9 +713,7 @@ const EmployeeCard = props => {
               <Text style={[styles.subDetailsValue, { marginTop: 0 }]}>
                 Properties
               </Text>
-              <Text style={[styles.subDetailsTitle]}>{assigned_residential_rent_properties?.length
-                + assigned_residential_sell_properties?.length + assigned_commercial_rent_properties?.length
-                + assigned_commercial_sell_properties?.length}</Text>
+              <Text style={[styles.subDetailsTitle]} accessibilityLabel={`count_property_${item.mobile?.slice(-6)}_` + totalAssignedProperties}>{totalAssignedProperties}</Text>
             </View>
             <TouchableOpacity
               // disabled={Sliding_Drawer_Toggle}
@@ -745,9 +755,7 @@ const EmployeeCard = props => {
               <Text style={[styles.subDetailsValue]}>
                 Customers
               </Text>
-              <Text style={[styles.subDetailsTitle]}>{assigned_residential_rent_customers?.length
-                + assigned_residential_buy_customers?.length + assigned_commercial_rent_customers?.length
-                + assigned_commercial_buy_customers?.length}</Text>
+              <Text style={[styles.subDetailsTitle]} accessibilityLabel={`count_customer_${item.mobile?.slice(-6)}_` + totalAssignedCustomers}>{totalAssignedCustomers}</Text>
             </View>
           </View>
         </View>

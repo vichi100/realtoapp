@@ -23,6 +23,7 @@ appId: com.realtoapp.ios
 - assertVisible: "Vertical scroll bar, 1 page 󰅁 󰅂 match_526830 Sell Off In RSP1 Building 1, RSP1 Landmark 1 Juhu Beach, Maharashtra, India Reference id: 526830 employee_526830 emp_checkbox_526830 2BHK 2.5 Cr Price 500 Builtup Semi Furnishing"
 - tapOn: "emp_checkbox_526830"
 - tapOn: "Go back"
+- assertVisible: "count_property_555522_1"
 
 - tapOn: "add_property_icon_id_555522"
 - assertVisible: "Properties"
@@ -31,6 +32,7 @@ appId: com.realtoapp.ios
 - assertVisible: "Vertical scroll bar, 1 page 󰅁 󰅂 match_909779 Sell Off in CSP1 Building 1, CSP1 Landmark 1 Juhu Beach, Maharashtra, India Reference id: 909779 employee_909779 emp_checkbox_909779 Shop Prop Type 3 Cr Price Mall Building Type 800 sqft Builtup"
 - tapOn: "emp_checkbox_909779"
 - tapOn: "Go back"
+- assertVisible: "count_property_555522_2"
 
 # Assign customer to emplyee
 - tapOn: "add_customer_icon_id_555522"
@@ -40,6 +42,7 @@ appId: com.realtoapp.ios
 - assertVisible: ".*match_678800 Customer Rent Residential 1.*"
 - tapOn: "emp_checkbox_678800"
 - tapOn: "Employee, back"
+- assertVisible: "count_customer_555522_1"
 
 - tapOn: "add_customer_icon_id_555522"
 - assertVisible: "Customers"
@@ -48,3 +51,4 @@ appId: com.realtoapp.ios
 - assertVisible: ".*match_066539 Customer Buy Commercial 1.*"
 - tapOn: "emp_checkbox_066539"
 - tapOn: "Employee, back"
+- assertVisible: "count_customer_555522_2"

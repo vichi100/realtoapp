@@ -163,6 +163,14 @@ const EmployeeList = props => {
     <View style={{ height: 0.5, width: "100%", backgroundColor: "#C8C8C8" }} />
   );
 
+  const FlatListFooter = () => {
+    return (
+      <View style={{ padding: 10, alignItems: 'center' }}>
+        <Text style={{ color: '#fff' }} testID="end_of_list">End</Text>
+      </View>
+    );
+  };
+
   const navigateTo = () => {
     navigation.navigate("ManageEmployee");
   };
@@ -202,6 +210,7 @@ const EmployeeList = props => {
               data={data}
               renderItem={ItemView}
               keyExtractor={(item, index) => index.toString()}
+              ListFooterComponent={FlatListFooter} // Pass the footer component here
             />
             <View style={styles.fab}>
               <TouchableOpacity
@@ -241,7 +250,7 @@ const EmployeeList = props => {
                 (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE.includes(props.userDetails.employee_role)
                 )) ?
                 <TouchableOpacity onPress={() => navigateTo()}>
-                  
+
                   <Text
                     style={{ color: "#00BFFF", textAlign: "center", marginTop: 20 }}
                   >

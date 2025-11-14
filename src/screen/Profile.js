@@ -32,6 +32,7 @@ import {
 } from "../reducers/Action";
 import axios from "axios";
 import { SERVER_URL, EMAIL_PDF_SERVER } from "../util/Constant";
+import { EMPLOYEE_ROLE_DELETE } from "../util/AppConstant";
 import Home from "../screen/Home";
 import { useFocusEffect } from '@react-navigation/native';
 import { makeCall } from "../util/methods";
@@ -441,9 +442,15 @@ const Profile = props => {
 
         </View>
       ) : null}
+      {/* {
+      props.userDetails &&
+          ((props.userDetails.works_for === props.userDetails.id) ||
+            (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE_DELETE.includes(props.userDetails.employee_role)))
+      } */}
 
       {props.userDetails &&
-        props.userDetails.user_type === "agent" ? (
+          ((props.userDetails.works_for === props.userDetails.id) ||
+            (props.userDetails.user_type === "employee" && EMPLOYEE_ROLE_DELETE.includes(props.userDetails.employee_role))) ? (
         <View style={[{ flexDirection: "column", marginTop: 20 }]}>
           <View
             style={{

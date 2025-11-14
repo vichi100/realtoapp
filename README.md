@@ -494,6 +494,11 @@ flows:
    maestro test .maestro/ios/test_suite.yaml             start runining test cases
    maestro studio                                        to start maestro studio
 
+
+   Command to run the test and pass the phone number at run time:
+
+   maestro test .maestro/ios/test_suite.yaml -e MOBILE_NUMBER=9000000001
+
 6) run add test cases for diffrent mobile number
 vichirajan@192 ios % node run_tests_with_mobiles.js
 
