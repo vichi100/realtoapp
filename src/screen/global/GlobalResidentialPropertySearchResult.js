@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import {
   FlatList,
   View,
@@ -34,6 +35,12 @@ import { addDays, numDifferentiation } from "../../util/methods";
 import Snackbar from "../../components/SnackbarComponent";
 import AppConstant from "../../util/AppConstant";
 
+import { resetRefresh } from '../../reducers/dataRefreshReducer'; // Import the action creator ./reducers/dataRefreshReducer
+import { useIsFocused } from '@react-navigation/native'; //
+import { useSelector, useDispatch } from 'react-redux'; // Import hooks
+
+
+
 // Dynamic query
 // https://stackoverflow.com/questions/29831164/how-to-filter-in-mongodb-dynamically#:~:text=answer%20was%20accepted%E2%80%A6-,var%20fName%3D%22John%22%2C%20fCountry%3D%22US%22,fName%7D)%3B%20%7D%20if%20(fCountry%20!%3D%3D
 
@@ -48,7 +55,8 @@ const sortByAvailabilityArray = ["Earliest First", "Oldest First"];
 const sortByPostedDateArray = ["Recent First", "Oldest Fist"];
 
 const GlobalResidentialPropertySearchResult = props => {
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const { searchGlobalResult } = route.params || {};
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [search, setSearch] = useState("");
@@ -71,6 +79,45 @@ const GlobalResidentialPropertySearchResult = props => {
   const [sortByAvailabilityIndex, setSortByAvailabilityIndex] = useState(-1);
   const [sortByPostedDateIndex, setSortByPostedDateIndex] = useState(-1);
   const [lookingForIndexSortBy, setLookingForIndexSortBy] = useState(-1);
+  const [loading, setLoading] = useState(false);
+
+  // Select the 'shouldRefresh' state from the 'dataRefresh' slice
+  const shouldRefresh = useSelector((state) => state.dataRefresh.shouldRefresh);
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+
+  // Use useFocusEffect to refresh when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      console.log('Screen focused - refreshing data');
+      if (searchGlobalResult) {
+        searchGlobalResult();
+        // Update local data with Redux state after search completes
+
+      } else {
+        // If no searchGlobalResult function passed, use existing data
+        setData(props.globalSearchResult);
+      }
+    }, [])
+  );
+
+  // Also refresh when shouldRefresh changes
+  useEffect(() => {
+    if (shouldRefresh) {
+      console.log('Refresh triggered by Redux');
+      if (searchGlobalResult) {
+        searchGlobalResult();
+      }
+      setData(props.globalSearchResult);
+      dispatch(resetRefresh());
+    }
+  }, [shouldRefresh, searchGlobalResult, props.globalSearchResult, dispatch]);
+
+  // Update data when globalSearchResult changes
+  useEffect(() => {
+    console.log('globalSearchResult updated, setting data');
+    setData(props.globalSearchResult);
+  }, [props.globalSearchResult]);
 
   const resetSortBy = () => {
     setLookingForIndexSortBy(-1);
@@ -444,18 +491,119 @@ const GlobalResidentialPropertySearchResult = props => {
     }
   };
 
+  const closeMe = (itemToClose) => {
+    setLoading(true);
+    const reqData = {
+      req_user_id: props.userDetails.id,
+      agent_id: props.userDetails.works_for,
+      dataToClose: itemToClose
+    };
+    // delete the item from the database
+    axios(SERVER_URL + "/closeResidentialProperty", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: reqData
+    }).then(
+      response => {
+        // console.log("response.data:      ", response.data);
+        // response.data.map(item => {
+        //   item.image_urls.map(image => {
+        //     image.url = SERVER_URL + image.url
+        //   })
+        // })
+        // setData(response.data);
+        // props.setResidentialPropertyList(response.data);
+        if (response.data === "success") {
+          // setData(data);
+          if (itemToClose.property_status == 0) {
+            itemToClose.property_status = 1
+          } else if (itemToClose.property_status == 1) {
+            itemToClose.property_status = 0
+          }
+          setData(data => data.map(item =>
+            item.property_id === itemToClose.property_id ? itemToClose : item
+          ));
+        } else {
+          setErrorMessage(response.data || "Failed to delete property");
+        }
+
+        setLoading(false);
+        // console.log("response.data:      ", response.data);
+        // After successfully fetching, reset the Redux refresh flag
+        dispatch(resetRefresh());
+      },
+      error => {
+        // console.log(error);
+        setLoading(false);
+        console.log(error);
+      }
+    );
+
+  }
+
+  const deleteMe = (itemToDelete) => {
+    setLoading(true);
+    const reqData = {
+      req_user_id: props.userDetails.id,
+      agent_id: props.userDetails.works_for,
+      dataToDelete: itemToDelete
+    };
+    // delete the item from the database
+    axios(SERVER_URL + "/deleteResidentialProperty", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: reqData
+    }).then(
+      response => {
+        // console.log("response.data:      ", response.data);
+        // response.data.map(item => {
+        //   item.image_urls.map(image => {
+        //     image.url = SERVER_URL + image.url
+        //   })
+        // })
+        // setData(response.data);
+        // props.setResidentialPropertyList(response.data);
+        if (response.data === "success") {
+          setData((data) => data.filter((item) => item.property_id !== itemToDelete.property_id));
+        } else {
+          setErrorMessage(response.data || "Failed to delete property");
+        }
+
+        setLoading(false);
+        // console.log("response.data:      ", response.data);
+        // After successfully fetching, reset the Redux refresh flag
+        dispatch(resetRefresh());
+      },
+      error => {
+        // console.log(error);
+        setLoading(false);
+        console.log(error);
+      }
+    );
+
+  }
+
+
   const ItemView = ({ item }) => {
     // // console.log(item);
     if (item.property_type === "Residential") {
       if (item.property_for === "Rent") {
         return (
           <TouchableOpacity
-            onPress={() => navigation.navigate("PropDetailsFromListing", 
-              {item:item, displayMatchCount: true, displayMatchPercent: false})}
+            onPress={() => navigation.navigate("PropDetailsFromListing",
+              { item: item, displayMatchCount: true, displayMatchPercent: false })}
           >
             <CardResidentialRent
               navigation={navigation}
               item={item}
+              deleteMe={deleteMe}
+              closeMe={closeMe}
               disableDrawer={false}
               displayChat={false}
               displayMatchCount={true}
@@ -467,13 +615,15 @@ const GlobalResidentialPropertySearchResult = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("PropDetailsFromListingForSell", 
-                {item:item, displayMatchCount: true, displayMatchPercent: false})
+              navigation.navigate("PropDetailsFromListingForSell",
+                { item: item, displayMatchCount: true, displayMatchPercent: false })
             }
           >
             <CardResidentialSell
               navigation={navigation}
               item={item}
+              deleteMe={deleteMe}
+              closeMe={closeMe}
               disableDrawer={false}
               displayChat={false}
               displayMatchCount={true}
@@ -881,7 +1031,7 @@ const GlobalResidentialPropertySearchResult = props => {
           />
         </View>
       </BottomSheet>
-      
+
     </View>
   );
 };
@@ -969,7 +1119,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: "#009688",
     backgroundColor: "#FFFFFF",
-    color:"black"
+    color: "black"
   },
   marginBottom10: {
     marginBottom: 10

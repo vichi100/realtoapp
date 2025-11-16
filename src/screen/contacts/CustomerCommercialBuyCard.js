@@ -102,7 +102,7 @@ const CustomerCommercialBuyCard = props => {
     if (item && item.agent_id === props.userDetails.works_for) {
       setSlidingDrawerWidth(195); // Increase width
     } else {
-      setSlidingDrawerWidth(195); // Default width if dont want to see delete option 140
+      setSlidingDrawerWidth(140); // Default width if dont want to see delete option 140
     }
   }, [item, props.userDetails.works_for]);
 

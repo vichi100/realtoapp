@@ -109,7 +109,7 @@ const Card = props => {
     if (item && item.agent_id === props.userDetails.works_for) {
       setSlidingDrawerWidth(250); // Increase width
     } else {
-      setSlidingDrawerWidth(250); // Default width if dont want to see delete option
+      setSlidingDrawerWidth(195); // Default width if dont want to see delete option
     }
   }, [item, props.userDetails.works_for]);
 
@@ -589,12 +589,11 @@ const Card = props => {
                 flex: 1, alignItems: "flex-start", justifyContent: 'center', paddingLeft: displayMatchPercent ? 1 : 40, paddingRight: 20,
                 paddingBottom: 20, paddingTop: 5, minHeight: 90
               }}>
-                <Text style={[styles.title]}
-                // accessibilityLabel={`Rent In ${item.property_address.building_name}`}
-                // testID={`header_id_${item.property_id?.slice(-6)}`}
-                >
-                  Rent In {item.property_address.building_name},{" "}
-                  {item.property_address.landmark_or_street}
+                <Text style={[styles.title, { flexShrink: 1, flexWrap: "wrap" }]}>
+                  {`Rent In ${item.property_address.building_name?.trim()
+                    ? item.property_address.building_name.trim() + ", "
+                    : ""
+                    }${item.property_address.landmark_or_street?.trim()}`}
                 </Text>
                 <Text style={{ paddingRight: 10 }}
                 // accessibilityLabel={item.property_address.formatted_address}

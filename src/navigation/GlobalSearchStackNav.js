@@ -47,7 +47,7 @@ const GlobalSearchStackNav = () => {
       <Stack.Screen
         name="GlobalCommercialPropertySearchResult"
         component={GlobalCommercialPropertySearchResult}
-        options={{ tabBarLabel: "Home!", tabBarVisible: false, headerShown: true }}
+        options={{ title: "Results", tabBarLabel: "Home!", tabBarVisible: false, headerShown: true }}
       />
       <Stack.Screen
         name="GlobalResidentialContactsSearchResult"

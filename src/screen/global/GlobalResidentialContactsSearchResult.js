@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import {
   FlatList,
   View,
@@ -33,6 +34,10 @@ import { addDays, numDifferentiation } from "../../util/methods";
 import Snackbar from "../../components/SnackbarComponent";
 import AppConstant from "../../util/AppConstant";
 
+import { resetRefresh } from '../../reducers/dataRefreshReducer'; // Import the action creator ./reducers/dataRefreshReducer
+import { useIsFocused } from '@react-navigation/native'; //
+import { useSelector, useDispatch } from 'react-redux'; // Import hooks
+
 const lookingForArray = ["Rent", "Buy"];
 const homeTypeArray = ["Apartment", "Villa", "Independent House"];
 const bhkTypeArray = ["1RK", "1BHK", "2BHK", "3BHK", "4BHK", "4+BHK"];
@@ -44,7 +49,8 @@ const lookingForArraySortBy = ["Rent", "Buy"];
 const sortByPostedDateArray = ["Recent First", "Oldest Fist"];
 
 const GlobalResidentialContactsSearchResult = props => {
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const { searchGlobalResult } = route.params || {};
   const [isVisible, setIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [search, setSearch] = useState("");
@@ -66,6 +72,46 @@ const GlobalResidentialContactsSearchResult = props => {
   const [sortByNameIndex, setSortByNameIndex] = useState(-1);
   const [sortByPostedDateIndex, setSortByPostedDateIndex] = useState(-1);
   const [lookingForIndexSortBy, setLookingForIndexSortBy] = useState(-1);
+  const [loading, setLoading] = useState(false);
+
+  // Select the 'shouldRefresh' state from the 'dataRefresh' slice
+  const shouldRefresh = useSelector((state) => state.dataRefresh.shouldRefresh);
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+
+  // Use useFocusEffect to refresh when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      console.log('Screen focused - refreshing data');
+      if (searchGlobalResult) {
+        searchGlobalResult();
+        // Update local data with Redux state after search completes
+
+      } else {
+        // If no searchGlobalResult function passed, use existing data
+        setData(props.globalSearchResult);
+      }
+    }, [])
+  );
+
+  // Also refresh when shouldRefresh changes
+  useEffect(() => {
+    if (shouldRefresh) {
+      console.log('Refresh triggered by Redux');
+      if (searchGlobalResult) {
+        searchGlobalResult();
+      }
+      setData(props.globalSearchResult);
+      dispatch(resetRefresh());
+    }
+  }, [shouldRefresh, searchGlobalResult, props.globalSearchResult, dispatch]);
+
+  // Update data when globalSearchResult changes
+  useEffect(() => {
+    console.log('globalSearchResult updated, setting data');
+    setData(props.globalSearchResult);
+  }, [props.globalSearchResult]);
+
 
   const resetSortBy = () => {
     setLookingForIndexSortBy(-1);
@@ -387,6 +433,103 @@ const GlobalResidentialContactsSearchResult = props => {
     }
   };
 
+  const deleteMe = (itemToDelete) => {
+    setLoading(true);
+    const reqData = {
+      req_user_id: props.userDetails.id,
+      agent_id: props.userDetails.works_for,
+      dataToDelete: itemToDelete
+    };
+    // delete the item from the database
+    axios(SERVER_URL + "/deleteResidintialCustomer", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: reqData
+    }).then(
+      response => {
+        // console.log("response.data:      ", response.data);
+        // response.data.map(item => {
+        //   item.image_urls.map(image => {
+        //     image.url = SERVER_URL + image.url
+        //   })
+        // })
+        // setData(response.data);
+        // props.setResidentialPropertyList(response.data);
+        if (response.data === "success") {
+          setData((data) => data.filter((item) => item.customer_id !== itemToDelete.customer_id));
+        } else {
+          setErrorMessage(response.data || "Failed to delete property");
+        }
+
+        setLoading(false);
+        // console.log("response.data:      ", response.data);
+        // After successfully fetching, reset the Redux refresh flag
+        dispatch(resetRefresh());
+      },
+      error => {
+        // console.log(error);
+        setLoading(false);
+        console.log(error);
+      }
+    );
+
+  }
+
+  const closeMe = (itemToClose) => {
+    setLoading(true);
+    const reqData = {
+      req_user_id: props.userDetails.id,
+      agent_id: props.userDetails.works_for,
+      dataToClose: itemToClose
+    };
+    // delete the item from the database
+    axios(SERVER_URL + "/closeResidintialCustomer", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: reqData
+    }).then(
+      response => {
+        // console.log("response.data:      ", response.data);
+        // response.data.map(item => {
+        //   item.image_urls.map(image => {
+        //     image.url = SERVER_URL + image.url
+        //   })
+        // })
+        // setData(response.data);
+        // props.setResidentialPropertyList(response.data);
+        if (response.data === "success") {
+          if(itemToClose.customer_status == 0){
+            itemToClose.customer_status = 1
+          }else if(itemToClose.customer_status == 1){
+            itemToClose.customer_status = 0
+          }
+          setData(data => data.map(item => 
+            item.customer_id === itemToClose.customer_id ? itemToClose : item
+          ));
+        } else {
+          setErrorMessage(response.data || "Failed to delete customer");
+        }
+
+        setLoading(false);
+        // console.log("response.data:      ", response.data);
+        // After successfully fetching, reset the Redux refresh flag
+        dispatch(resetRefresh());
+      },
+      error => {
+        // console.log(error);
+        setLoading(false);
+        console.log(error);
+      }
+    );
+
+  }
+
   const ItemView = ({ item }) => {
     // // console.log(item);
     if (item.customer_locality.property_type === "Residential") {
@@ -396,13 +539,15 @@ const GlobalResidentialContactsSearchResult = props => {
             onPress={() =>
               navigation.navigate(
                 "CustomerDetailsResidentialRentFromList",
-                {item:item, displayMatchCount: true, displayMatchPercent: false}
+                { item: item, displayMatchCount: true, displayMatchPercent: false }
               )
             }
           >
             <ContactResidentialRentCard
               navigation={navigation}
               item={item}
+              deleteMe={deleteMe}
+              closeMe={closeMe}
               disableDrawer={false}
               displayChat={false}
             />
@@ -412,13 +557,15 @@ const GlobalResidentialContactsSearchResult = props => {
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("CustomerDetailsResidentialBuyFromList", 
-                {item:item, displayMatchCount: true, displayMatchPercent: false})
+              navigation.navigate("CustomerDetailsResidentialBuyFromList",
+                { item: item, displayMatchCount: true, displayMatchPercent: false })
             }
           >
             <ContactResidentialSellCard
               navigation={navigation}
               item={item}
+              deleteMe={deleteMe}
+              closeMe={closeMe}
               disableDrawer={false}
               displayChat={false}
             />
@@ -823,7 +970,7 @@ const GlobalResidentialContactsSearchResult = props => {
           />
         </View>
       </BottomSheet>
-      
+
     </View>
   );
 };

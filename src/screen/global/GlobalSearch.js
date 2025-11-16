@@ -131,7 +131,7 @@ const GlobalSearch = props => {
     if (purpose && lookingFor.toLowerCase() === "customer") {
       console.log("purpose: ", purpose);
       newQuery += `to ${purpose.toLowerCase()} a ${whatType.toLowerCase()} property for`;
-    }else if (purpose && lookingFor.toLowerCase() === "property") {
+    } else if (purpose && lookingFor.toLowerCase() === "property") {
       newQuery += `to ${purpose.toLowerCase()}`;
     }
 
@@ -267,15 +267,23 @@ const GlobalSearch = props => {
         props.setGlobalSearchResult(response.data);
         if (lookingFor.toLowerCase() === "Property".toLowerCase()) {
           if (whatType.toLowerCase() === "Residential".toLowerCase()) {
-            navigation.navigate("GlobalResidentialPropertySearchResult");
+            navigation.navigate("GlobalResidentialPropertySearchResult", {
+              searchGlobalResult: searchGlobalResult
+            });
           } else if (whatType.toLowerCase() === "Commercial".toLowerCase()) {
-            navigation.navigate("GlobalCommercialPropertySearchResult");
+            navigation.navigate("GlobalCommercialPropertySearchResult", {
+              searchGlobalResult: searchGlobalResult
+            });
           }
         } else if (lookingFor.toLowerCase() == "Customer".toLowerCase()) {
           if (whatType.toLowerCase() === "Residential".toLowerCase()) {
-            navigation.navigate("GlobalResidentialContactsSearchResult");
+            navigation.navigate("GlobalResidentialContactsSearchResult", {
+              searchGlobalResult: searchGlobalResult
+            });
           } else if (whatType.toLowerCase() === "Commercial".toLowerCase()) {
-            navigation.navigate("GlobalCommercialCustomersSearchResult");
+            navigation.navigate("GlobalCommercialCustomersSearchResult", {
+              searchGlobalResult: searchGlobalResult
+            });
           }
         }
       },
@@ -285,6 +293,92 @@ const GlobalSearch = props => {
       }
     );
   };
+
+
+  const searchGlobalResult = () => {
+    if (city.trim() === "") {
+      setErrorMessage("City is missing");
+      setIsVisible(true);
+      return;
+    }
+
+    if (selectedLocationArray.length === 0) {
+      setErrorMessage("Please add a location of your city");
+      setIsVisible(true);
+      return;
+    }
+
+    if (props.userDetails === null) {
+      console.log("You are not logged in, please login");
+      setModalVisible(true);
+      return;
+    }
+
+    const match = reqWithin.match(/\d+/); // Find the number in the string
+    const daysFromReqWithin = match ? parseInt(match[0], 10) : null; // Convert to integer and return
+    console.log("daysFromReqWithin: ", daysFromReqWithin);
+    const today = new Date(); // Get today's date
+    today.setDate(today.getDate() + daysFromReqWithin);
+
+    // setLoading(true); // Uncomment to enable loading indicator
+
+    const queryObject = {
+      req_user_id: props.userDetails?.works_for,
+      city: city.trim(),
+      selectedLocationArray: selectedLocationArray,
+      lookingFor: lookingFor,
+      whatType: whatType,
+      purpose: purpose,
+      selectedBHK: selectedBHK,
+      selectedRequiredFor: selectedRequiredFor,
+      selectedBuildingType: selectedBuildingType,
+      priceRange: priceRange,
+      priceRangeCr: priceRangeCr,
+      reqWithin: today,
+      tenant: tenant
+    };
+    axios(SERVER_URL + "/getGlobalSearchResult", {
+      method: "post",
+      headers: {
+        "Content-type": "Application/json",
+        Accept: "Application/json"
+      },
+      data: queryObject
+    }).then(
+      response => {
+        console.log("response.data:      ", response.data);
+        response.data.forEach(item => {
+          if (Array.isArray(item.image_urls)) { // Ensure image_urls is an array
+            item.image_urls.forEach(image => {
+              image.url = SERVER_URL + image.url;
+            });
+          } else {
+            console.warn("image_urls is not an array for item:", item);
+          }
+        });
+        setData(response.data);
+        props.setGlobalSearchResult(response.data);
+        // if (lookingFor.toLowerCase() === "Property".toLowerCase()) {
+        //   if (whatType.toLowerCase() === "Residential".toLowerCase()) {
+        //     navigation.navigate("GlobalResidentialPropertySearchResult");
+        //   } else if (whatType.toLowerCase() === "Commercial".toLowerCase()) {
+        //     navigation.navigate("GlobalCommercialPropertySearchResult");
+        //   }
+        // } else if (lookingFor.toLowerCase() == "Customer".toLowerCase()) {
+        //   if (whatType.toLowerCase() === "Residential".toLowerCase()) {
+        //     navigation.navigate("GlobalResidentialContactsSearchResult");
+        //   } else if (whatType.toLowerCase() === "Commercial".toLowerCase()) {
+        //     navigation.navigate("GlobalCommercialCustomersSearchResult");
+        //   }
+        // }
+      },
+      error => {
+        console.log(error);
+        // setLoading(false); // Uncomment to hide loading indicator on error
+      }
+    );
+  };
+
 
   const onSelectPlace = (data, details) => {
     console.log("details: ", JSON.stringify(details))
@@ -383,8 +477,10 @@ const GlobalSearch = props => {
             <MaterialCommunityIcons name="heart-outline" color={"rgb(137, 135, 135)"} size={30} />
           </View>
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', 
-          backgroundColor: 'rgba(63, 195, 128, .2)', }}>
+        <View style={{
+          flexDirection: 'row', justifyContent: 'center', alignItems: 'center',
+          backgroundColor: 'rgba(63, 195, 128, .2)',
+        }}>
           <Text style={{ marginTop: 15, marginBottom: 15, marginLeft: 10, marginRight: 10, fontSize: 16 }}>Hi, {query}</Text>
         </View>
       </View>

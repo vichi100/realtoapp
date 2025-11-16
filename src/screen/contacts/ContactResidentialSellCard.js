@@ -99,7 +99,7 @@ const ContactResidentialSellCard = props => {// this is for customer who want to
     if (item && item.agent_id === props.userDetails.works_for) {
       setSlidingDrawerWidth(195); // Increase width
     } else {
-      setSlidingDrawerWidth(195); // Default width if dont want to see delete option
+      setSlidingDrawerWidth(140); // Default width if dont want to see delete option
     }
   }, [item, props.userDetails.works_for]);
 

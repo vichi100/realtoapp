@@ -141,7 +141,7 @@ const OtpScreen = (props) => {
 						alignItems: 'center'
 					}}
 				>
-					<Text style={{ color: '#000000', fontSize: 18, fontWeight: '500' }}>OTP sent to mobile</Text>
+					<Text style={{ color: '#000000', fontSize: 18, fontWeight: '500' }}>OTP Sent To Mobile</Text>
 					<Text style={{ color: '#696969', fontSize: 16, fontWeight: '500', marginTop: 10 }}>
 						{props.countryCode + ' ' + props.userMobileNumber}
 					</Text>

@@ -126,11 +126,16 @@ const PropDetailsFromListing = props => {
             paddingTop: 16,
             // backgroundColor: "#d1d1d1",
           }}>
-            <Text style={[styles.title]}>
-              Rent In {item.property_address.flat_number},{" "} {item.property_address.building_name},{" "}
-              {item.property_address.landmark_or_street}
+            <Text style={[styles.title, { flexShrink: 1, flexWrap: "wrap" }]}>
+              {`Rent In ${item.property_address.building_name?.trim()
+                ? item.property_address.building_name.trim() + ", "
+                : ""
+                }${item.property_address.landmark_or_street?.trim()}`}
             </Text>
-            <Text style={[StyleSheet.subTitle]}>
+
+
+            {/* ADDRESS */}
+            <Text style={{ paddingRight: 10, flexShrink: 1, flexWrap: "wrap" }}>
               {item.property_address.formatted_address}
             </Text>
           </View>
@@ -321,16 +326,16 @@ const PropDetailsFromListing = props => {
         <Text style={{ color: "#000" }}>Mettings Details</Text>
       </View> */}
       {loading ? <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'rgba(245,245,245, .4)'
-              }}
-            >
-              <ActivityIndicator animating size="large" color={'#000'} />
-              {/* <ActivityIndicator animating size="large" /> */}
-            </View> : <PropertyReminder navigation={navigation} reminderListX={reminderListX} />}
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(245,245,245, .4)'
+        }}
+      >
+        <ActivityIndicator animating size="large" color={'#000'} />
+        {/* <ActivityIndicator animating size="large" /> */}
+      </View> : <PropertyReminder navigation={navigation} reminderListX={reminderListX} />}
 
 
       {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>

@@ -98,7 +98,7 @@ const Card = props => {
     if (item && item.agent_id === props.userDetails.works_for) {
       setSlidingDrawerWidth(250); // Increase width
     } else {
-      setSlidingDrawerWidth(250); // Default width if dont want to see delete option
+      setSlidingDrawerWidth(195); // Default width if dont want to see delete option
     }
   }, [item, props.userDetails.works_for]);
 
