@@ -2,9 +2,9 @@ import "react-native-get-random-values";
 import { registerRootComponent } from 'expo';
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import MainScreen from "./src/navigation/MainScreen";
+import MainScreen from "./src/navigation/main/AppNavigator";
 import { Provider } from "react-redux";
-import configureStore from "./Store";
+import configureStore from "./src/store";
 import { LogBox } from 'react-native';
 import { Keyboard } from 'react-native';
 
@@ -65,10 +65,10 @@ LogBox.ignoreAllLogs();
 // To prevent keyboard from appearing
 Keyboard.dismiss();
 
-const App=()=> {
-  
+const App = () => {
 
-  
+
+
 
   return (
     <Provider store={store} >

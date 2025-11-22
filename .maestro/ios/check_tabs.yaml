@@ -1,0 +1,13 @@
+appId: com.realtoapp.ios
+---
+- launchApp:
+    clearState: true
+
+# Skip Login Flow
+- waitForAnimationToEnd
+- tapOn: "Skip"
+- waitForAnimationToEnd
+
+# Check Global Search Screen
+- assertVisible: "GLocal Search"
+- assertVisible: "Search"

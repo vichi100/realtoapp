@@ -15,7 +15,7 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 
-import { SERVER_URL } from "../util/Constant"
+import { SERVER_URL } from "./../utils/Constant"
 // https://github.com/kamalpandey/react-native-image-slider-show
 
 const reactNativePackage = require("react-native/package.json");
