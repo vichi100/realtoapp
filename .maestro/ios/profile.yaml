@@ -1,0 +1,19 @@
+appId: com.realtoapp.ios
+env:
+  MOBILE_NUMBER: ${MOBILE_NUMBER || "9000000001"}
+---
+- launchApp:
+    clearState: true
+
+# Login (skip if already logged in)
+- waitForAnimationToEnd
+- tapOn: "Skip"
+- waitForAnimationToEnd
+
+# Open Profile
+- tapOn: "Me"
+- waitForAnimationToEnd
+- assertVisible: "Profile"
+- takeScreenshot: "profile_screen"
+
+- assertVisible: "Realto AI is a real estate app"

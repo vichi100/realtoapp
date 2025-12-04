@@ -27,8 +27,19 @@
   },
   "jest": {
     "preset": "jest-expo",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.test.{js,jsx,ts,tsx}"
+    ],
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?|expo(nent)?|@expo(.)?|react-navigation|@react-navigation/.*|sentry-expo|native-base|react-native-code-push|react-redux|redux-mock-store|@rneui/themed|@rneui/base|react-native-btr|react-native-iphone-x-helper|expo-modules-core|@testing-library/react-native|react-native-size-matters|react-native-ratings|@ptomasroos/react-native-multi-slider|expo-font|@expo/vector-icons|expo-asset)/)"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/**/__tests__/**"
     ]
   },
   "dependencies": {

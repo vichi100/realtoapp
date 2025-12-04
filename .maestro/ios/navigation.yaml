@@ -1,0 +1,21 @@
+appId: com.realtoapp.ios
+env:
+  MOBILE_NUMBER: ${MOBILE_NUMBER || "9000000001"}
+---
+- launchApp:
+    clearState: true
+
+# Basic tab navigation checks
+- waitForAnimationToEnd
+- tapOn: "Skip"
+- waitForAnimationToEnd
+
+- tapOn: "Home"
+- assertVisible: "Supercharge Your Property Broking"
+- tapOn: "Messages"
+- waitForAnimationToEnd
+- assertVisible: "Messages"
+- tapOn: "Me"
+- waitForAnimationToEnd
+- assertVisible: "Profile"
+- takeScreenshot: "tabs_navigation"

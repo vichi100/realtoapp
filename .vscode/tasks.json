@@ -1,0 +1,38 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "jest-single-file-coverage",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"test",
+				"--",
+				"--coverage",
+				"__tests__/screens/contacts/commercial/buy/AddNewCustomerCommercialBuyFinalDetails.test.js"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$jest-stare"
+			],
+			"group": "test"
+		},
+		{
+			"label": "jest-single-file-coverage",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"test",
+				"--",
+				"--coverage",
+				"--watchAll=false",
+				"--collectCoverageFrom=src/screens/contacts/commercial/buy/CustomerCommercialBuyCard.js",
+				"__tests__/screens/contacts/commercial/buy/CustomerCommercialBuyCard.test.js"
+			],
+			"isBackground": false,
+			"group": "test"
+		}
+	]
+}

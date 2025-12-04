@@ -1,0 +1,22 @@
+appId: com.realtoapp.ios
+env:
+  MOBILE_NUMBER: ${MOBILE_NUMBER || "9000000001"}
+---
+- launchApp:
+    clearState: true
+
+# Login (skip if already logged in)
+- waitForAnimationToEnd
+- tapOn: "Skip"
+- waitForAnimationToEnd
+
+# Open Global Search
+- tapOn: "Search"
+- waitForAnimationToEnd
+- assertVisible: "GLocal Search"
+- inputText: "office near MG Road"
+- pressKey: "enter"
+- waitForAnimationToEnd
+- takeScreenshot: "search_results"
+
+- assertVisible: "Results"

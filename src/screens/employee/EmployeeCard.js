@@ -40,7 +40,9 @@ import { makeCall, camalize } from "../../utils/methods";
 // https://www.skptricks.com/2019/05/react-native-custom-animated-sliding-drawer.html
 
 const Sliding_Drawer_Width = 195;
-const width = Dimensions.get("window").width;
+const width = (Dimensions && typeof Dimensions.get === "function")
+  ? Dimensions.get("window").width
+  : 400;
 
 const EmployeeCard = props => {
   const {
@@ -65,6 +67,7 @@ const EmployeeCard = props => {
   const [index, setIndex] = useState(-1);
   const [chatModalVisible, setChatModalVisible] = useState(false);
   const [refresh, setRefresh] = useState(false); // Add a state to trigger re-render
+  const [loading, setLoading] = useState(false);
 
   // const [text, onChangeText] = React.useState("I have customer for this property. Please call me.");
   const [message, setMessage] = useState(
